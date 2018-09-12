@@ -1,5 +1,6 @@
 <?php
-namespace Xpressengine\Plugins\XeroStore;
+
+namespace Xpressengine\Plugins\XeroStore\Controllers;
 
 use XeFrontend;
 use XePresenter;

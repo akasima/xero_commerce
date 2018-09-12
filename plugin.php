@@ -3,6 +3,8 @@ namespace Xpressengine\Plugins\XeroStore;
 
 use Route;
 use Xpressengine\Plugin\AbstractPlugin;
+use Xpressengine\Plugins\XeroStore\Plugin\Database;
+use Xpressengine\Plugins\XeroStore\Plugin\Resources;
 
 class Plugin extends AbstractPlugin
 {
@@ -13,24 +15,8 @@ class Plugin extends AbstractPlugin
      */
     public function boot()
     {
-        // implement code
-
-        $this->route();
-    }
-
-    protected function route()
-    {
-        // implement code
-
-        Route::fixed(
-            $this->getId(),
-            function () {
-                Route::get('/', [
-                    'as' => 'xero_store::index','uses' => 'Xpressengine\Plugins\XeroStore\Controller@index'
-                ]);
-            }
-        );
-
+        Resources::bindClasses();
+        Resources::registerRoute();
     }
 
     /**
@@ -52,7 +38,7 @@ class Plugin extends AbstractPlugin
      */
     public function install()
     {
-        // implement code
+        Database::create();
     }
 
     /**
