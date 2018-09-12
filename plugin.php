@@ -17,6 +17,7 @@ class Plugin extends AbstractPlugin
     {
         Resources::bindClasses();
         Resources::registerRoute();
+        Resources::registerSettingMenu();
     }
 
     /**
