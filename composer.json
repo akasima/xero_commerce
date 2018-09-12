@@ -1,0 +1,35 @@
+{
+  "name": "xpressengine-plugin/xero_store",
+  "description": "This Package is Xpressengine Plugin - xero_store.",
+  "keywords": [
+    "xpressengine",
+    "plugin"
+  ],
+  "license": "LGPL-2.1",
+  "version": "1.0.0",
+  "type": "xpressengine-plugin",
+  "support": {
+    "email": "input@your.email"
+  },
+  "authors": [
+    {
+      "name": "input your name",
+      "email": "input@your.email",
+      "homepage": "http://input.your.site",
+      "role": "Developer"
+    }
+  ],
+  "extra": {
+    "xpressengine": {
+      "title": "xero_store",
+      "component": {}
+    }
+  },
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Xpressengine\\Plugins\\XeroStore\\": "src/"
+    }
+  }
+}
