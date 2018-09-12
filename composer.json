@@ -22,7 +22,13 @@
   "extra": {
     "xpressengine": {
       "title": "xero_store",
-      "component": {}
+      "component": {
+        "module/xero_store@xero_store_module": {
+          "class": "Xpressengine\\Plugins\\XeroStore\\Components\\Modules\\XeroStoreModule",
+          "name": "XeroStore Module",
+          "description": ""
+        }
+      }
     }
   },
   "require": {
