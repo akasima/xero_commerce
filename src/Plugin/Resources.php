@@ -3,12 +3,20 @@
 namespace Xpressengine\Plugins\XeroStore\Plugin;
 
 use XeRegister;
+use Route;
 
 class Resources
 {
     public static function registerRoute()
     {
-
+        Route::settings('xero_store', function () {
+            Route::group([
+                'namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers\\Settings'
+            ], function () {
+                Route::get('/', ['as' => 'xero_store::setting.product.index', 'uses' => 'ProductController@index',
+                    'settings_menu' => 'xero_store.product.list']);
+            });
+        });
     }
 
     public static function bindClasses()
