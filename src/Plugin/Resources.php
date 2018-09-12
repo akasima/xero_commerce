@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroStore\Plugin;
 
 use XeRegister;
 use Route;
+use Xpressengine\Plugins\XeroStore\Plugin;
 
 class Resources
 {
@@ -15,6 +16,9 @@ class Resources
             ], function () {
                 Route::get('/', ['as' => 'xero_store::setting.product.index', 'uses' => 'ProductController@index',
                     'settings_menu' => 'xero_store.product.list']);
+                Route::get('/category', ['as' => 'xero_store::setting.category.index',
+                    'uses' => 'CategoryController@index',
+                    'settings_menu' => 'xero_store.product.category']);
             });
         });
     }
@@ -22,6 +26,20 @@ class Resources
     public static function bindClasses()
     {
 
+    }
+
+    /**
+     * @return void
+     */
+    public static function setConfig()
+    {
+        $category = \XeCategory::create([
+            'name' => '상품 분류'
+        ]);
+
+        \XeConfig::add(Plugin::getId(), [
+            'categoryId' => $category->id,
+        ]);
     }
 
     /**
