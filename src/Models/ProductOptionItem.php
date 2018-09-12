@@ -4,8 +4,11 @@ namespace Xpressengine\Plugins\XeroStore\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 
-class Product extends DynamicModel
+class ProductOptionItem extends DynamicModel
 {
+    const TYPE_OPTION_ITEM = 1;
+    const TYPE_ADDITION_ITEM = 2;
+
     const DISPLAY_VISIBLE = 1;
     const DISPLAY_HIDDEN = 2;
 
@@ -13,7 +16,18 @@ class Product extends DynamicModel
     const DEAL_PAUSE = 2;
     const DEAL_END = 3;
 
-    protected $table = 'xero_store_products';
+    protected $table = 'xero_store_product_option_item';
+
+    /**
+     * @return array
+     */
+    public function getOptionTypes()
+    {
+        return [
+            self::TYPE_OPTION_ITEM => '옵션 상품',
+            self::TYPE_ADDITION_ITEM => '추가 상품',
+        ];
+    }
 
     /**
      * @return array

@@ -9,6 +9,34 @@ class Database
 {
     public static function create()
     {
+        Schema::create('xero_store_products', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('product_code');
+            $table->integer('first_category_id');
+            $table->integer('second_category_id');
+            $table->integer('third_category_id');
+            $table->string('name');
+            $table->integer('price');
+            $table->integer('min_buy_count')->nullable();
+            $table->integer('max_buy_count')->nullable();
+            $table->text('description');
+            $table->integer('state_display');
+            $table->integer('state_deal');
+            $table->timestamps();
+        });
+
+        Schema::create('xero_store_product_option_item', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('product_id');
+            $table->integer('option_type');
+            $table->string('name');
+            $table->integer('addition_price');
+            $table->integer('stock');
+            $table->integer('alert_stock');
+            $table->integer('state_display');
+            $table->integer('state_deal');
+        });
+
         Schema::create('xero_store_order', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 36);
