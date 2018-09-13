@@ -40,7 +40,6 @@ class Database
         Schema::create('xero_store_order', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 36);
-            $table->integer('pay_id');
             $table->smallInteger('code');
             $table->softDeletes();
             $table->timestamps();
@@ -51,6 +50,7 @@ class Database
             $table->string('user_id', 36);
             $table->integer('product_id');
             $table->integer('option_id');
+            $table->integer('count');
             $table->timestamps();
         });
 
@@ -67,12 +67,13 @@ class Database
             $table->integer('order_id');
             $table->integer('product_id');
             $table->integer('option_id');
-            $table->integer('delivery_id');
+            $table->integer('count');
             $table->timestamps();
         });
 
         Schema::create('xero_store_delivery', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('option_order_id');
             $table->integer('ship_no');
             $table->integer('company_id');
             $table->string('recv_name');
@@ -93,6 +94,7 @@ class Database
 
         Schema::create('xero_store_payment', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('order_id');
             $table->string('method');
             $table->string('info');
             $table->integer('price');

@@ -5,9 +5,13 @@ namespace Xpressengine\Plugins\XeroStore\Plugin;
 use App\Facades\XeInterception;
 use XeRegister;
 use Route;
+use Xpressengine\Plugins\XeroStore\Handlers\CartHandler;
+use Xpressengine\Plugins\XeroStore\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroStore\Plugin;
+use Xpressengine\Plugins\XeroStore\TestOrder;
+use Xpressengine\User\Models\User;
 
 class Resources
 {
@@ -40,7 +44,7 @@ class Resources
                 //주문 관리
                 Route::group(['prefix' => 'order'], function () {
                     Route::get('/', [
-                        'as' => 'xero_store.order.index',
+                        'as' => 'xero_store::setting.order.index',
                         'uses' => 'OrderController@index',
                         'settings_menu' => 'xero_store.order.index'
                     ]);
@@ -72,7 +76,29 @@ class Resources
 
             return $instance;
         });
+
         $app->alias(ProductOptionItemHandler::class, 'xero_store.productOptionItemHandler');
+
+        $app->singleton(OrderHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(OrderHandler::class);
+
+            $instance = new $proxyHandler(new TestOrder());
+
+            return $instance;
+        });
+
+        $app->alias(OrderHandler::class, 'xero_store.orderHandler');
+
+
+        $app->singleton(CartHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(CartHandler::class);
+
+            $instance = new $proxyHandler(User::first());
+
+            return $instance;
+        });
+
+        $app->alias(CartHandler::class, 'xero_store.cartHandler');
     }
 
     /**

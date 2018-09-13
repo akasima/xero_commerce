@@ -3,8 +3,10 @@
 namespace Xpressengine\Plugins\XeroStore\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Xpressengine\Plugins\XeroStore\Handlers\OrderHandler;
 
-class Order extends Model
+class Order extends Model implements \Xpressengine\Plugins\XeroStore\Order
 {
     protected $table = 'xero_store_order';
 
@@ -21,20 +23,30 @@ class Order extends Model
     public function options()
     {
         return $this->belongsToMany(
-            'Xpressengine\Plugins\XeroStore\Models\Option',
+            'Xpressengine\Plugins\XeroStore\Models\ProductOptionItem',
             'xero_store_option_order',
             'order_id',
             'option_id'
-        );
+        )->withPivot(['product_id', 'count', 'delivery_id'])->withTimestamps();
     }
 
     public function payment()
     {
-        return $this->belongsTo('Xpressengine\Plugins\XeroStore\Models\Payment', 'pay_id');
+        return $this->hasOne('Xpressengine\Plugins\XeroStore\Models\Payment');
     }
 
-    public function delivery()
+    public function getStatus()
     {
-        return $this->belongsTo('Xpressengine\Plugins\XeroStore\Models\Delivery', 'delivery_id');
+        if (is_null($this->code)) {
+            $this->code = 0;
+        }
+        return OrderHandler::STATUS[$this->code];
+    }
+
+    public function readyToOrder()
+    {
+        $this->code = self::TEMP;
+        $this->user_id = Auth::id();
+        $this->save();
     }
 }

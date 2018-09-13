@@ -9,16 +9,50 @@
 namespace Xpressengine\Plugins\XeroStore;
 
 
-interface Goods
+class Goods
 {
-    public function getProduct();
+    public $option;
+    public $count;
 
-    public function getOption();
+    public function __construct(Option $option, $count = 1)
+    {
+        $this->option = $option;
+        $this->count = $count;
+    }
 
-    public function getInfo();
+    public function getProduct()
+    {
+        return $this->option->product();
+    }
 
-    public function setCount();
+    public function getOption()
+    {
+        return $this->option;
+    }
 
-    public function getcount();
+    public function getInfo()
+    {
+        return $this->getProduct()->description;
+    }
+
+    public function setCount($count)
+    {
+        return $this->count = $count;
+    }
+
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    public function getEachPrice()
+    {
+        return $this->option->getPrice();
+    }
+
+    public function getPrice()
+    {
+        return $this->getcount() * $this->getEachPrice();
+    }
 
 }

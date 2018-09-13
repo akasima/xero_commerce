@@ -27,6 +27,11 @@
           "class": "Xpressengine\\Plugins\\XeroStore\\Components\\Modules\\XeroStoreModule",
           "name": "XeroStore Module",
           "description": ""
+        },
+        "module/xero_store@xero_store_cart_module": {
+          "class": "Xpressengine\\Plugins\\XeroStore\\Components\\Modules\\XeroStoreCartModule",
+          "name": "장바구니 모듈",
+          "description": "장바구니모듈"
         }
       }
     }
