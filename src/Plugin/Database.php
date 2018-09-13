@@ -13,8 +13,8 @@ class Database
             $table->increments('id');
             $table->integer('product_code');
             $table->integer('first_category_id');
-            $table->integer('second_category_id');
-            $table->integer('third_category_id');
+            $table->integer('second_category_id')->nullable();
+            $table->integer('third_category_id')->nullable();
             $table->string('name');
             $table->integer('price');
             $table->integer('min_buy_count')->nullable();

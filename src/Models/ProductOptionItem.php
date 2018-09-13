@@ -18,6 +18,9 @@ class ProductOptionItem extends DynamicModel
 
     protected $table = 'xero_store_product_option_item';
 
+    protected $fillable = ['product_id', 'option_type', 'name', 'addition_price', 'stock', 'alert_stock',
+        'state_display', 'state_deal'];
+
     /**
      * @return array
      */

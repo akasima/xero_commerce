@@ -2,20 +2,37 @@
 
 namespace Xpressengine\Plugins\XeroStore\Plugin;
 
+use App\Facades\XeInterception;
 use XeRegister;
 use Route;
+use Xpressengine\Plugins\XeroStore\Handlers\ProductHandler;
+use Xpressengine\Plugins\XeroStore\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroStore\Plugin;
 
 class Resources
 {
+    /**
+     * @return void
+     */
     public static function registerRoute()
     {
         Route::settings('xero_store', function () {
             Route::group([
                 'namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers\\Settings'
             ], function () {
-                Route::get('/', ['as' => 'xero_store::setting.product.index', 'uses' => 'ProductController@index',
-                    'settings_menu' => 'xero_store.product.list']);
+                //상품관리
+                Route::group(['prefix' => 'product'], function () {
+                    Route::get('/', ['as' => 'xero_store::setting.product.index', 'uses' => 'ProductController@index',
+                        'settings_menu' => 'xero_store.product.list']);
+                    Route::get('/create', ['as' => 'xero_store::setting.product.create',
+                        'uses' => 'ProductController@create', 'settings_menu' => 'xero_store.product.create']);
+                    Route::post('/store', ['as' => 'xero_store::setting.product.store',
+                        'uses' => 'ProductController@store']);
+                    Route::get('/{productId}', ['as' => 'xero_store::setting.product.show',
+                        'uses' => 'ProductController@show']);
+                });
+
+                //분류 관리
                 Route::get('/category', ['as' => 'xero_store::setting.category.index',
                     'uses' => 'CategoryController@index',
                     'settings_menu' => 'xero_store.product.category']);
@@ -23,9 +40,30 @@ class Resources
         });
     }
 
+    /**
+     * @return void
+     */
     public static function bindClasses()
     {
+        $app = app();
 
+        $app->singleton(ProductHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(ProductHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(ProductHandler::class, 'xero_store.productHandler');
+
+        $app->singleton(ProductOptionItemHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(ProductOptionItemHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(ProductOptionItemHandler::class, 'xero_store.productOptionItemHandler');
     }
 
     /**
@@ -37,9 +75,12 @@ class Resources
             'name' => '상품 분류'
         ]);
 
-        \XeConfig::add(Plugin::getId(), [
-            'categoryId' => $category->id,
-        ]);
+        $config = \XeConfig::get(Plugin::getId());
+        if ($config === null) {
+            \XeConfig::add(Plugin::getId(), [
+                'categoryId' => $category->id,
+            ]);
+        }
     }
 
     /**
