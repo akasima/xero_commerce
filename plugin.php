@@ -40,6 +40,7 @@ class Plugin extends AbstractPlugin
     public function install()
     {
         Database::create();
+        Resources::setConfig();
     }
 
     /**

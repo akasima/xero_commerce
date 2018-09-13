@@ -2,27 +2,49 @@
 
 namespace Xpressengine\Plugins\XeroStore\Plugin;
 
-use Illuminate\Support\Facades\Route;
 use XeRegister;
+use Route;
+use Xpressengine\Plugins\XeroStore\Plugin;
 
 class Resources
 {
     public static function registerRoute()
     {
         Route::settings('xero_store', function () {
-            Route::get('order', [
-                'as' => 'xero_store.order.index',
-                'uses' => 'OrderController@index',
-                'settings_menu' => 'xero_store.order.index',
-            ]);
-        }, [
-            'namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers'
-        ]);
+            Route::group([
+                'namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers\\Settings'
+            ], function () {
+                Route::get('/', ['as' => 'xero_store::setting.product.index', 'uses' => 'ProductController@index',
+                    'settings_menu' => 'xero_store.product.list']);
+                Route::get('/category', ['as' => 'xero_store::setting.category.index',
+                    'uses' => 'CategoryController@index',
+                    'settings_menu' => 'xero_store.product.category']);
+                Route::get('order', [
+                    'as' => 'xero_store.order.index',
+                    'uses' => 'OrderController@index',
+                    'settings_menu' => 'xero_store.order.index'
+                ]);
+            });
+        });
     }
 
     public static function bindClasses()
     {
 
+    }
+
+    /**
+     * @return void
+     */
+    public static function setConfig()
+    {
+        $category = \XeCategory::create([
+            'name' => '상품 분류'
+        ]);
+
+        \XeConfig::add(Plugin::getId(), [
+            'categoryId' => $category->id,
+        ]);
     }
 
     /**
