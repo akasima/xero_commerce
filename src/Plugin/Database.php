@@ -35,6 +35,7 @@ class Database
             $table->integer('alert_stock');
             $table->integer('state_display');
             $table->integer('state_deal');
+            $table->timestamps();
         });
 
         Schema::create('xero_store_order', function (Blueprint $table) {

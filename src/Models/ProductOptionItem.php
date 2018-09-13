@@ -54,4 +54,12 @@ class ProductOptionItem extends DynamicModel
             self::DEAL_END => '거래 종료',
         ];
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }

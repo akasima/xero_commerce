@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroStore;
 use Route;
 use Xpressengine\Plugin\AbstractPlugin;
 use Xpressengine\Plugins\XeroStore\Plugin\Database;
+use Xpressengine\Plugins\XeroStore\Plugin\EventManager;
 use Xpressengine\Plugins\XeroStore\Plugin\Resources;
 
 class Plugin extends AbstractPlugin
@@ -18,6 +19,7 @@ class Plugin extends AbstractPlugin
         Resources::bindClasses();
         Resources::registerRoute();
         Resources::registerSettingMenu();
+        EventManager::listenEvents();
     }
 
     /**
