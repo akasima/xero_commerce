@@ -1,3 +1,7 @@
+<?php
+use Xpressengine\Plugins\XeroStore\Models\Product;
+?>
+
 @section('page_title')
     <h2>상품 등록</h2>
 @endsection
@@ -65,6 +69,26 @@
                         <div class="form-group">
                             설명
                             <textarea name="description" value="{{ Request::old('description') }}"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            출력여부
+                            <select name="state_display">
+                                <option value="">선택</option>
+                                @foreach ($displayStates as $value => $displayState)
+                                    <option value="{{ $value }}" @if ($value == Product::DISPLAY_VISIBLE) selected @endif>{{ $displayState }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            거래여부
+                            <select name="state_deal">
+                                <option value="">선택</option>
+                                @foreach ($dealStates as $value => $dealState)
+                                    <option value="{{ $value }}" @if ($value == Product::DEAL_ON_SALE) selected @endif>{{ $dealState }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroStore\Handlers;
 
+use Xpressengine\Plugins\XeroStore\Events\NewProductRegisterEvent;
 use Xpressengine\Plugins\XeroStore\Models\Product;
 
 class ProductHandler
@@ -49,6 +50,8 @@ class ProductHandler
         $newProduct->fill($args);
 
         $newProduct->save();
+
+        \Event::dispatch(new NewProductRegisterEvent($newProduct));
 
         return $newProduct->id;
     }

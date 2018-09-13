@@ -6,15 +6,21 @@ use XePresenter;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroStore\Models\Product;
+use Xpressengine\Plugins\XeroStore\Services\ProductOptionItemSettingService;
 use Xpressengine\Plugins\XeroStore\Services\ProductSettingService;
 
 class ProductController extends Controller
 {
+    /** @var ProductSettingService $productSettingService */
     protected $productSettingService;
+
+    /** @var ProductOptionItemSettingService $productOptionItemSettingService */
+    protected $productOptionItemSettingService;
 
     public function __construct()
     {
         $this->productSettingService = new ProductSettingService();
+        $this->productOptionItemSettingService = new ProductOptionItemSettingService();
     }
 
     public function index(Request $request)
@@ -38,13 +44,18 @@ class ProductController extends Controller
 
     public function create()
     {
-        return XePresenter::make('xero_store::views.setting.product.create');
+        $displayStates = Product::getDisplayStates();
+        $dealStates = Product::getDealStates();
+
+        return XePresenter::make('xero_store::views.setting.product.create', compact('displayStates', 'dealStates'));
     }
 
     public function store(Request $request)
     {
-        $id = $this->productSettingService->store($request);
+        $productId = $this->productSettingService->store($request);
 
-        return redirect()->route('xero_store::setting.product.show', ['productId' => $id]);
+        $this->productOptionItemSettingService->defaultOptionStore($request, $productId);
+
+        return redirect()->route('xero_store::setting.product.show', ['productId' => $productId]);
     }
 }
