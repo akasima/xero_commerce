@@ -1,9 +1,8 @@
 <?php
 
-
 namespace Xpressengine\Plugins\XeroStore\Handlers;
 
-
+use Xpressengine\Plugins\XeroStore\Goods;
 use Xpressengine\Plugins\XeroStore\Order;
 
 class OrderHandler
@@ -18,7 +17,7 @@ class OrderHandler
     public function register(Array $goods)
     {
         $order = $this->makeOrder();
-        foreach($goods as $each){
+        foreach ($goods as $each) {
             $order->options()->save($each->getOption(), [
                 'product_id' => $each->getProduct()->id,
                 'price' => $each->getPrice(),

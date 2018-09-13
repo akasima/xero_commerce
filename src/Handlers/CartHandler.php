@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Xpressengine\Plugins\XeroStore\Handlers;
 
 use Xpressengine\Plugins\XeroStore\Goods;
@@ -45,5 +44,4 @@ class CartHandler
             return $goods;
         })->toArray();
     }
-
 }

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: yeong-ung-gim
- * Date: 2018. 9. 13.
- * Time: 오전 10:15
- */
 
 namespace Xpressengine\Plugins\XeroStore;
-
 
 class Goods
 {

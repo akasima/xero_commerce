@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpressengine\Plugins\XeroStore;
 
 use Route;

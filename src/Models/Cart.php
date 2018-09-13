@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: yeong-ung-gim
- * Date: 2018. 9. 13.
- * Time: 오후 12:12
- */
 
 namespace Xpressengine\Plugins\XeroStore\Models;
-
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 

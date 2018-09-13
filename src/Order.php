@@ -1,17 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: yeong-ung-gim
- * Date: 2018. 9. 13.
- * Time: 오후 3:53
- */
 
 namespace Xpressengine\Plugins\XeroStore;
 
-
 interface Order
 {
-
     const TEMP = 0;
     const ORDERED = 1;
     const PAID = 2;
