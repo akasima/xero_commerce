@@ -36,6 +36,11 @@ class Resources
                 Route::get('/category', ['as' => 'xero_store::setting.category.index',
                     'uses' => 'CategoryController@index',
                     'settings_menu' => 'xero_store.product.category']);
+                Route::get('order', [
+                    'as' => 'xero_store.order.index',
+                    'uses' => 'OrderController@index',
+                    'settings_menu' => 'xero_store.order.index'
+                ]);
             });
         });
     }

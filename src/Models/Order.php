@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $table='xero_store_order';
+    protected $table = 'xero_store_order';
 
     public function products()
     {
