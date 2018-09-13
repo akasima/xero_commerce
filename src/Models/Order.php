@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $table='xero_store_order';
+    protected $table = 'xero_store_order';
 
     public function products()
     {
@@ -21,7 +21,8 @@ class Order extends Model
             'Xpressengine\Plugins\XeroStore\Models\Product',
             'xero_store_option_order',
             'order_id',
-            'product_id');
+            'product_id'
+        );
     }
 
     public function options()
@@ -30,16 +31,17 @@ class Order extends Model
             'Xpressengine\Plugins\XeroStore\Models\Option',
             'xero_store_option_order',
             'order_id',
-            'option_id');
+            'option_id'
+        );
     }
 
     public function payment()
     {
-        return $this->belongsTo('Xpressengine\Plugins\XeroStore\Models\Payment','pay_id');
+        return $this->belongsTo('Xpressengine\Plugins\XeroStore\Models\Payment', 'pay_id');
     }
 
     public function delivery()
     {
-        return $this->belongsTo('Xpressengine\Plugins\XeroStore\Models\Delivery','delivery_id');
+        return $this->belongsTo('Xpressengine\Plugins\XeroStore\Models\Delivery', 'delivery_id');
     }
 }

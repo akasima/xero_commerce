@@ -2,13 +2,22 @@
 
 namespace Xpressengine\Plugins\XeroStore\Plugin;
 
+use Illuminate\Support\Facades\Route;
 use XeRegister;
 
 class Resources
 {
     public static function registerRoute()
     {
-
+        Route::settings('xero_store', function () {
+            Route::get('order', [
+                'as' => 'xero_store.order.index',
+                'uses' => 'OrderController@index',
+                'settings_menu' => 'xero_store.order.index',
+            ]);
+        }, [
+            'namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers'
+        ]);
     }
 
     public static function bindClasses()
