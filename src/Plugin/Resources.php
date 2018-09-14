@@ -9,8 +9,8 @@ use Xpressengine\Plugins\XeroStore\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\ProductOptionItemHandler;
+use Xpressengine\Plugins\XeroStore\Models\Order;
 use Xpressengine\Plugins\XeroStore\Plugin;
-use Xpressengine\Plugins\XeroStore\Tests\TestOrder;
 use Xpressengine\User\Models\User;
 
 class Resources
@@ -89,7 +89,7 @@ class Resources
         $app->singleton(OrderHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(OrderHandler::class);
 
-            $instance = new $proxyHandler(new TestOrder());
+            $instance = new $proxyHandler(new Order());
 
             return $instance;
         });
