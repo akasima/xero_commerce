@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroStore;
 
 use Route;
 use Xpressengine\Plugin\AbstractPlugin;
+use Xpressengine\Plugins\XeroStore\Models\Store;
 use Xpressengine\Plugins\XeroStore\Plugin\Database;
 use Xpressengine\Plugins\XeroStore\Plugin\EventManager;
 use Xpressengine\Plugins\XeroStore\Plugin\Resources;
@@ -32,7 +33,7 @@ class Plugin extends AbstractPlugin
      */
     public function activate($installedVersion = null)
     {
-        // implement code
+        Resources::storeDefaultStore();
     }
 
     /**
@@ -54,8 +55,6 @@ class Plugin extends AbstractPlugin
      */
     public function checkInstalled()
     {
-        // implement code
-
         return parent::checkInstalled();
     }
 
@@ -66,7 +65,7 @@ class Plugin extends AbstractPlugin
      */
     public function update()
     {
-        // implement code
+        Resources::storeDefaultStore();
     }
 
     /**
@@ -77,8 +76,15 @@ class Plugin extends AbstractPlugin
      */
     public function checkUpdated()
     {
-        // implement code
+        //TODO 테스트 코드 삭제
+        $checkedUpdate = false;
+        $userId = \Auth::user()->getId();
 
-        return parent::checkUpdated();
+        $store = Store::where('user_id', $userId)->first();
+        if ($store != null) {
+            $checkedUpdate = true;
+        }
+
+        return $checkedUpdate;
     }
 }

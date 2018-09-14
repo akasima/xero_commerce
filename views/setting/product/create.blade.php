@@ -16,7 +16,7 @@ use Xpressengine\Plugins\XeroStore\Models\Product;
                 <div class="panel">
                     <div class="panel-body">
                         <div class="form-group">
-                            상품 코드
+                            상품 코드 (비워두면 timestamp)
                             <input type="text" name="product_code" value="{{ Request::old('product_id') }}">
                         </div>
 
@@ -42,8 +42,18 @@ use Xpressengine\Plugins\XeroStore\Models\Product;
                         </div>
 
                         <div class="form-group">
-                            가격
-                            <input type="text" name="price" value="{{ Request::old('price') }}">
+                            실제 가격
+                            <input type="text" name="original_price" value="{{ Request::old('original_price') }}">
+                        </div>
+
+                        <div class="form-group">
+                            판매 가격
+                            <input type="text" name="sell_price" value="{{ Request::old('sell_price') }}">
+                        </div>
+
+                        <div class="form-group">
+                            할인율 (실제 가격, 판매 가격 변동되면 계산해서 출력하고 출력된 값이나 수정한 값으로 저장)<p></p>
+                            <input type="text" name="discount_percentage" value="{{ Request::old('discount_percentage') }}">%
                         </div>
 
                         <div class="form-group">
@@ -53,7 +63,7 @@ use Xpressengine\Plugins\XeroStore\Models\Product;
 
                         <div class="form-group">
                             품절 알림 재고
-                            <input type="text" name="alert_stock" value="{{ Request::old('alsert_stock') }}">
+                            <input type="text" name="alert_stock" value="{{ Request::old('alert_stock') }}">
                         </div>
 
                         <div class="form-group">

@@ -60,7 +60,7 @@
 
                     <div class="form-group">
                         설명
-                        <textarea name="description" value="{{ $product->description }}"></textarea>
+                        <textarea readonly>{{ $product->description }}</textarea>
                     </div>
                 </div>
             </div>

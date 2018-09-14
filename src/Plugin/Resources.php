@@ -9,6 +9,8 @@ use Xpressengine\Plugins\XeroStore\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\ProductOptionItemHandler;
+use Xpressengine\Plugins\XeroStore\Handlers\StoreHandler;
+use Xpressengine\Plugins\XeroStore\Models\Store;
 use Xpressengine\Plugins\XeroStore\Plugin;
 use Xpressengine\Plugins\XeroStore\TestOrder;
 use Xpressengine\User\Models\User;
@@ -60,6 +62,15 @@ class Resources
     {
         $app = app();
 
+        $app->singleton(StoreHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(StoreHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(StoreHandler::class, 'xero_store.storeHandler');
+
         $app->singleton(ProductHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(ProductHandler::class);
 
@@ -76,7 +87,6 @@ class Resources
 
             return $instance;
         });
-
         $app->alias(ProductOptionItemHandler::class, 'xero_store.productOptionItemHandler');
 
         $app->singleton(OrderHandler::class, function ($app) {
@@ -86,7 +96,6 @@ class Resources
 
             return $instance;
         });
-
         $app->alias(OrderHandler::class, 'xero_store.orderHandler');
 
 
@@ -97,7 +106,6 @@ class Resources
 
             return $instance;
         });
-
         $app->alias(CartHandler::class, 'xero_store.cartHandler');
     }
 
@@ -116,6 +124,17 @@ class Resources
                 'categoryId' => $category->id,
             ]);
         }
+    }
+
+    public static function storeDefaultStore()
+    {
+        $userId = \Auth::user()->getId();
+
+        $newStore = new Store();
+        $newStore['user_id'] = $userId;
+        $newStore['store_type'] = Store::TYPE_STORE;
+        $newStore['store_name'] = 'basic store';
+        $newStore->save();
     }
 
     /**

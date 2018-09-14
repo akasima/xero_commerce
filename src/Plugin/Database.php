@@ -9,30 +9,44 @@ class Database
 {
     public static function create()
     {
+        Schema::create('xero_store_store', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('user_id', 36);
+            $table->string('store_name');
+            $table->integer('store_type');
+        });
+
         Schema::create('xero_store_products', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('store_id');
             $table->integer('product_code');
-            $table->integer('first_category_id');
-            $table->integer('second_category_id')->nullable();
-            $table->integer('third_category_id')->nullable();
             $table->string('name');
-            $table->integer('price');
+            $table->integer('original_price');
+            $table->integer('sell_price');
+            $table->double('discount_percentage');
             $table->integer('min_buy_count')->nullable();
             $table->integer('max_buy_count')->nullable();
             $table->text('description');
             $table->integer('state_display');
             $table->integer('state_deal');
+            $table->softDeletes();
             $table->timestamps();
+        });
+
+        Schema::create('xero_store_product_category', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('product_id');
+            $table->integer('category_id');
         });
 
         Schema::create('xero_store_product_option_item', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_id');
+            $table->integer('product_id')->index();
             $table->integer('option_type');
             $table->string('name');
             $table->integer('addition_price');
             $table->integer('stock');
-            $table->integer('alert_stock');
+            $table->integer('alert_stock')->nullable();
             $table->integer('state_display');
             $table->integer('state_deal');
             $table->timestamps();

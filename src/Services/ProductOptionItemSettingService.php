@@ -26,7 +26,7 @@ class ProductOptionItemSettingService
 
         $productOptionItemArgs = [];
         $productOptionItemArgs['product_id'] = $productId;
-        $productOptionItemArgs['option_type'] = ProductOptionItem::TYPE_OPTION_ITEM;
+        $productOptionItemArgs['option_type'] = ProductOptionItem::TYPE_DEFAULT_OPTION;
         $productOptionItemArgs['name'] = $productArgs['name'];
         $productOptionItemArgs['addition_price'] = 0;
         $productOptionItemArgs['stock'] = $productArgs['stock'];

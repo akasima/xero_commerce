@@ -2,10 +2,13 @@
 
 namespace Xpressengine\Plugins\XeroStore\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 class Product extends DynamicModel
 {
+    use SoftDeletes;
+
     const DISPLAY_VISIBLE = 1;
     const DISPLAY_HIDDEN = 2;
 
@@ -15,8 +18,8 @@ class Product extends DynamicModel
 
     protected $table = 'xero_store_products';
 
-    protected $fillable = ['product_code', 'first_category_id', 'second_category_id', 'third_category_id', 'name',
-        'price', 'min_buy_count', 'max_buy_count', 'description', 'state_display', 'state_deal'];
+    protected $fillable = ['store_id', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
+        'min_buy_count', 'max_buy_count', 'description', 'state_display', 'state_deal'];
 
     /**
      * @return array

@@ -6,8 +6,9 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class ProductOptionItem extends DynamicModel
 {
-    const TYPE_OPTION_ITEM = 1;
-    const TYPE_ADDITION_ITEM = 2;
+    const TYPE_DEFAULT_OPTION = 1;
+    const TYPE_OPTION_ITEM = 2;
+    const TYPE_ADDITION_ITEM = 3;
 
     const DISPLAY_VISIBLE = 1;
     const DISPLAY_HIDDEN = 2;

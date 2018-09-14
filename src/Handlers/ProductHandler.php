@@ -36,6 +36,10 @@ class ProductHandler
 
     private function commonMakeWhere($request, $query)
     {
+        if ($name = $request->get('name')) {
+            $query = $query->where('name', 'like', '%' . $name . '%');
+        }
+
         return $query;
     }
 
