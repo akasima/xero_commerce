@@ -11,8 +11,8 @@ use Xpressengine\Plugins\XeroStore\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\StoreHandler;
 use Xpressengine\Plugins\XeroStore\Models\Store;
+use Xpressengine\Plugins\XeroStore\Models\Order;
 use Xpressengine\Plugins\XeroStore\Plugin;
-use Xpressengine\Plugins\XeroStore\TestOrder;
 use Xpressengine\User\Models\User;
 
 class Resources
@@ -51,6 +51,13 @@ class Resources
                         'settings_menu' => 'xero_store.order.index'
                     ]);
                 });
+            });
+        });
+        Route::fixed('xero_store', function () {
+            Route::group([
+                'namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers'
+            ], function () {
+                Route::get('/cart', 'CartController@index');
             });
         });
     }
@@ -92,7 +99,7 @@ class Resources
         $app->singleton(OrderHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(OrderHandler::class);
 
-            $instance = new $proxyHandler(new TestOrder());
+            $instance = new $proxyHandler(new Order());
 
             return $instance;
         });

@@ -2,8 +2,11 @@
 
 namespace Xpressengine\Plugins\XeroStore;
 
+use Faker\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Xpressengine\Plugins\XeroStore\Models\Product;
+use Xpressengine\Plugins\XeroStore\Models\ProductOptionItem;
 use Xpressengine\Plugins\XeroStore\Plugin\Database;
 use Xpressengine\Plugins\XeroStore\Plugin\Resources;
 
@@ -33,5 +36,38 @@ class Dev
     public function setConfig()
     {
         Resources::setConfig();
+    }
+
+    public function makeProduct($count = 1)
+    {
+        for ($i = 0; $i < $count; $i++) {
+            $faker = Factory::create('ko_kr');
+            $product = new Product();
+            $product->product_code = $faker->numerify('###########');
+            $product->first_category_id = $faker->numerify('###########');
+            $product->name = $faker->word;
+            $product->price = $faker->numberBetween(1, 50) * 1000;
+            $product->description = $faker->text(100);
+            $product->state_display = 1;
+            $product->state_deal = 1;
+            $product->save();
+            $this->makeProductOption($product->id);
+        }
+        return Product::all();
+    }
+
+    public function makeProductOption($product_id)
+    {
+        $op = new ProductOptionItem();
+        $faker = Factory::create('ko_kr');
+        $op->product_id = $product_id;
+        $op->option_type = 1;
+        $op->name = $faker->colorName;
+        $op->addition_price = $faker->numberBetween(0, 10) * 500;
+        $op->stock = 10;
+        $op->alert_stock = 1;
+        $op->state_display = 1;
+        $op->state_deal = 1;
+        $op->save();
     }
 }

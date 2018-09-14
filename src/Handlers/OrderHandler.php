@@ -2,28 +2,26 @@
 
 namespace Xpressengine\Plugins\XeroStore\Handlers;
 
+use Illuminate\Support\Facades\Auth;
 use Xpressengine\Plugins\XeroStore\Goods;
-use Xpressengine\Plugins\XeroStore\Order;
+use Xpressengine\Plugins\XeroStore\Models\Cart;
+use Xpressengine\Plugins\XeroStore\Models\Order;
+use Xpressengine\User\Models\User;
 
 class OrderHandler
 {
-    protected $order;
-
-    public function __construct(Order $order)
-    {
-        $this->order = $order;
-    }
-
-    public function register(Array $goods)
+    public function register($carts_id)
     {
         $order = $this->makeOrder();
-        foreach ($goods as $each) {
-            $order->options()->save($each->getOption(), [
-                'product_id' => $each->getProduct()->id,
-                'price' => $each->getPrice(),
-                'count' => $each->getCount()
+        $carts = Cart::find($carts_id);
+        foreach ($carts as $each) {
+            $order->options()->save($each->option, [
+                'product_id' => $each->product_id,
+                'price' => $each->price,
+                'count' => $each->count
             ]);
         }
+        $order->code = $order::ORDERED;
         return $order->save();
     }
 
@@ -44,6 +42,9 @@ class OrderHandler
 
     public function makeOrder()
     {
-        return $this->order->readyToOrder();
+        $order = new Order();
+        $order->code = $order::TEMP;
+        $order->user_id = Auth::id() ? : 1;
+        return $order;
     }
 }
