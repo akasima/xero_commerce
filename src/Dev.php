@@ -43,10 +43,12 @@ class Dev
         for ($i = 0; $i < $count; $i++) {
             $faker = Factory::create('ko_kr');
             $product = new Product();
+            $product->store_id = 1;
             $product->product_code = $faker->numerify('###########');
-            $product->first_category_id = $faker->numerify('###########');
             $product->name = $faker->word;
-            $product->price = $faker->numberBetween(1, 50) * 1000;
+            $product->original_price = $faker->numberBetween(1, 50) * 1000;
+            $product->sell_price = $faker->numberBetween(0, 5) * 500;
+            $product->discount_percentage = round(($product->sell_price*100 / $product->original_price));
             $product->description = $faker->text(100);
             $product->state_display = 1;
             $product->state_deal = 1;

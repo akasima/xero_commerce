@@ -57,7 +57,18 @@ class Resources
             Route::group([
                 'namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers'
             ], function () {
-                Route::get('/cart', 'CartController@index');
+                Route::get('/cart', [
+                    'uses' => 'CartController@index',
+                    'as' => 'xero_store::cart.index'
+                ]);
+                Route::get('/cart/draw/{cart}', [
+                    'uses' => 'CartController@draw',
+                    'as' => 'xero_store::cart.draw'
+                ]);
+                Route::post('/order', [
+                    'uses' => 'OrderController@register',
+                    'as' => 'xero_store::order.register'
+                ]);
             });
         });
     }

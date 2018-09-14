@@ -3,6 +3,7 @@
 namespace Xpressengine\Plugins\XeroStore\Services;
 
 
+use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroStore\Handlers\OrderHandler;
 
 class OrderService
@@ -17,8 +18,13 @@ class OrderService
         $this->orderHandler = app('xero_store.orderHandler');
     }
 
-    public function order(array $cart_ids)
+    public function order(Request $request)
     {
-        $this->orderHandler->register($cart_ids);
+        $this->orderHandler->register($this->getCartsFromRequest($request));
+    }
+
+    public function getCartsFromRequest(Request $request)
+    {
+        return $request->get('cart_id');
     }
 }

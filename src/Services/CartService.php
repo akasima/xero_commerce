@@ -25,9 +25,9 @@ class CartService
         return $this->cartHandler->getCartList();
     }
 
-    public function addList(ProductOptionItem $option)
+    public function addList(ProductOptionItem $option, $count = 1)
     {
-        return $this->cartHandler->addCart($option);
+        return $this->cartHandler->addCart($option, $count);
     }
 
     public function drawList(Cart $cart)
