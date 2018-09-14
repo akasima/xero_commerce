@@ -3,7 +3,7 @@
 namespace Xpressengine\Plugins\XeroStore\Handlers;
 
 use Xpressengine\Plugins\XeroStore\Goods;
-use Xpressengine\Plugins\XeroStore\Order;
+use Xpressengine\Plugins\XeroStore\Interfaces\Order;
 
 class OrderHandler
 {

@@ -3,8 +3,8 @@
 namespace Xpressengine\Plugins\XeroStore\Handlers;
 
 use Xpressengine\Plugins\XeroStore\Goods;
+use Xpressengine\Plugins\XeroStore\Interfaces\Option;
 use Xpressengine\Plugins\XeroStore\Models\Cart;
-use Xpressengine\Plugins\XeroStore\Option;
 use Xpressengine\User\Models\User;
 
 class CartHandler
@@ -18,7 +18,7 @@ class CartHandler
 
     public function getCartList()
     {
-        return Cart::where('user_id', $this->user->getId())->with('option')->get();
+        return Cart::where('user_id', $this->user->getId())->with('option.product')->get();
     }
 
     public function addCart(Option $option)
