@@ -65,6 +65,7 @@ class Plugin extends AbstractPlugin
      */
     public function update()
     {
+        //TODO 테스트 코드 삭제
         Resources::storeDefaultStore();
     }
 

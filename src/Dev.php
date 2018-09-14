@@ -50,8 +50,8 @@ class Dev
             $product->sell_price = $faker->numberBetween(0, 5) * 500;
             $product->discount_percentage = round(($product->sell_price*100 / $product->original_price));
             $product->description = $faker->text(100);
-            $product->state_display = 1;
-            $product->state_deal = 1;
+            $product->state_display = Product::DISPLAY_VISIBLE;
+            $product->state_deal = Product::DEAL_ON_SALE;
             $product->save();
             $this->makeProductOption($product->id);
         }
@@ -63,13 +63,13 @@ class Dev
         $op = new ProductOptionItem();
         $faker = Factory::create('ko_kr');
         $op->product_id = $product_id;
-        $op->option_type = 1;
+        $op->option_type = ProductOptionItem::TYPE_DEFAULT_OPTION;
         $op->name = $faker->colorName;
         $op->addition_price = $faker->numberBetween(0, 10) * 500;
         $op->stock = 10;
         $op->alert_stock = 1;
-        $op->state_display = 1;
-        $op->state_deal = 1;
+        $op->state_display = ProductOptionItem::DISPLAY_VISIBLE;
+        $op->state_deal = ProductOptionItem::DEAL_ON_SALE;
         $op->save();
     }
 }

@@ -51,6 +51,16 @@ class Resources
                         'settings_menu' => 'xero_store.order.index'
                     ]);
                 });
+
+                //쇼핑몰 설정
+                Route::group(['prefix' => 'shop_config'], function () {
+                    Route::get('/create', ['as' => 'xero_store::setting.config.create',
+                        'uses' => 'ShopConfigController@create',
+                        'settings_menu' => 'xero_store.config.shopInfo']);
+
+                    Route::post('/store', ['as' => 'xero_store::setting.config.store',
+                        'uses' => 'ShopConfigController@store']);
+                });
             });
         });
         Route::fixed('xero_store', function () {
@@ -241,15 +251,15 @@ class Resources
     private static function menuConfigure()
     {
         return [
-            'xero_store.configure' => [
+            'xero_store.config' => [
                 'title' => '환경설정',
                 'display' => true,
                 'description' => '',
                 'ordering' => 10003
             ],
 
-            'xero_store.configure.shopInfo' => [
-                'title' => '정보 등록',
+            'xero_store.config.shopInfo' => [
+                'title' => '쇼핑몰 정보 등록',
                 'display' => true,
                 'description' => '',
                 'ordering' => 100011
