@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroStore\Handlers;
 
+use Illuminate\Support\Facades\Auth;
 use Xpressengine\Plugins\XeroStore\Goods;
 use Xpressengine\Plugins\XeroStore\Models\Cart;
 use Xpressengine\Plugins\XeroStore\Models\ProductOptionItem;
@@ -9,22 +10,15 @@ use Xpressengine\User\Models\User;
 
 class CartHandler
 {
-    public $user;
-
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
     public function getCartList()
     {
-        return Cart::where('user_id', $this->user->getId())->with('option.product')->get();
+        return Cart::where('user_id', Auth::id()? : User::first()->id)->with('option.product')->get();
     }
 
     public function addCart(ProductOptionItem $option, $count = 1)
     {
         $cart = new Cart();
-        $cart->user_id = $this->user->id;
+        $cart->user_id = Auth::id()? : User::first()->id;
         $cart->product_id = $option->product_id;
         $cart->option_id = $option->id;
         $cart->count = $count;

@@ -45,6 +45,7 @@ class OrderHandler
         $order = new Order();
         $order->code = $order::TEMP;
         $order->user_id = Auth::id() ? : 1;
+        $order->save();
         return $order;
     }
 }
