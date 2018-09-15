@@ -20,21 +20,7 @@ use Xpressengine\Plugins\XeroStore\Models\Product;
                             <input type="text" name="product_code" value="{{ Request::old('product_id') }}">
                         </div>
 
-                        ///////분류 카테고리로 변환 필요/////////
-                        <div class="form-group">
-                            1차 상품 분류
-                            <input type="text" name="first_category_id" value="{{ Request::old('first_category_id') }}">
-                        </div>
-
-                        <div class="form-group">
-                            2차 상품 분류
-                            <input type="text" name="second_category_id" value="{{ Request::old('second_category_id') }}">
-                        </div>
-
-                        <div class="form-group">
-                            3차 상품 분류
-                            <input type="text" name="third_category_id" value="{{ Request::old('third_category_id') }}">
-                        </div>
+                        ///////카테고리 추가 필요/////////
 
                         <div class="form-group">
                             상품명
@@ -78,7 +64,7 @@ use Xpressengine\Plugins\XeroStore\Models\Product;
 
                         <div class="form-group">
                             설명
-                            <textarea name="description" value="{{ Request::old('description') }}"></textarea>
+                            <textarea name="description">{{ Request::old('description') }}</textarea>
                         </div>
 
                         <div class="form-group">

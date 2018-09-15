@@ -56,6 +56,11 @@ class ProductSettingService
             $productArgs['product_code'] = time();
         }
 
+        if ($productArgs['buy_count_not_use'] == 'on') {
+            unset($productArgs['min_buy_count']);
+            unset($productArgs['max_buy_count']);
+        }
+
         //TODO 스토어 임시 하드코딩
         $productArgs['store_id'] = Store::where('store_name', 'basic store')->first()['id'];
 

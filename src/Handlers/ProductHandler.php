@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroStore\Handlers;
 
+use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroStore\Events\NewProductRegisterEvent;
 use Xpressengine\Plugins\XeroStore\Models\Product;
 
@@ -18,7 +19,12 @@ class ProductHandler
         return $item;
     }
 
-    public function getProductsQuery($request)
+    /**
+     * @param Request $request request
+     *
+     * @return Product
+     */
+    public function getProductsQuery(Request $request)
     {
         $query = new Product();
 
@@ -27,14 +33,26 @@ class ProductHandler
         return $query;
     }
 
-    private function settingMakeWhere($request, $query)
+    /**
+     * @param Request $request request
+     * @param Product $query   product
+     *
+     * @return Product
+     */
+    private function settingMakeWhere(Request $request, Product $query)
     {
         $query = $this->commonMakeWhere($request, $query);
 
         return $query;
     }
 
-    private function commonMakeWhere($request, $query)
+    /**
+     * @param Request $request request
+     * @param Product $query   product
+     *
+     * @return Product
+     */
+    private function commonMakeWhere(Request $request, Product $query)
     {
         if ($name = $request->get('name')) {
             $query = $query->where('name', 'like', '%' . $name . '%');

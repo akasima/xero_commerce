@@ -20,6 +20,12 @@ class ProductOptionItemSettingService
         $this->productOptionItemHandler = app('xero_store.productOptionItemHandler');
     }
 
+    /**
+     * @param Request $request   request
+     * @param int     $productId productId
+     *
+     * @return void
+     */
     public function defaultOptionStore(Request $request, $productId)
     {
         $productArgs = $request->all();
