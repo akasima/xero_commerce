@@ -1,10 +1,10 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Controllers;
+namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Services\OrderService;
+use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 
 class OrderController extends Controller
 {

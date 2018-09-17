@@ -1,12 +1,12 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Services;
+namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 
 
-use Xpressengine\Plugins\XeroStore\Handlers\CartHandler;
-use Xpressengine\Plugins\XeroStore\Models\Cart;
-use Xpressengine\Plugins\XeroStore\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Cart;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 
 class CartService
 {

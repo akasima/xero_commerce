@@ -1,12 +1,12 @@
 <?php
-use Xpressengine\Plugins\XeroStore\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
 ?>
 
 @section('page_title')
     <h2>상품 등록</h2>
 @endsection
 
-<form method="post" action="{{ route('xero_store::setting.product.store') }}">
+<form method="post" action="{{ route('xero_store') }}">
     {{ csrf_field() }}
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
 
@@ -62,6 +62,7 @@ use Xpressengine\Plugins\XeroStore\Models\Product;
                             <input type="text" name="max_buy_count" value="{{ Request::old('max_buy_count') }}" disabled="disabled">
                         </div>
 
+                        /////////// 에디터 변경 ////////////
                         <div class="form-group">
                             설명
                             <textarea name="description">{{ Request::old('description') }}</textarea>

@@ -1,11 +1,11 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Controllers\Settings;
+namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
 use XeConfig;
 use XePresenter;
 use Xpressengine\Category\Models\Category;
-use Xpressengine\Plugins\XeroStore\Plugin;
+use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class CategoryController
 {

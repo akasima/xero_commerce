@@ -1,10 +1,10 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Handlers;
+namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Events\NewProductRegisterEvent;
-use Xpressengine\Plugins\XeroStore\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
 
 class ProductHandler
 {

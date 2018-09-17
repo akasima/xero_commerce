@@ -2,7 +2,7 @@
     <h2>상품 목록</h2>
 @endsection
 
-<form method="get" action="{{ route('xero_store::setting.product.index') }}">
+<form method="get" action="{{ route('xero_store') }}">
     <div class="row">
         <div class="col-sm-12">
             <div class="panel-group">
@@ -23,12 +23,12 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="panel-group">
-            <a href="{{ route('xero_store::setting.product.create') }}" class="xe-btn">등록</a>
+            <a href="{{ route('xero_store') }}" class="xe-btn">등록</a>
             <div class="panel">
                 <div class="panel-body">
                     @foreach ($products as $product)
                         <li>
-                            <a href="{{ route('xero_store::setting.product.show', ['productId' => $product->id]) }}">
+                            <a href="{{ route('xero_commerce::setting.product.show', ['productId' => $product->id]) }}">
                                 <div>
                                     <span>{{ $product->name }}</span>
                                     <span>{{ $product->price }}</span>

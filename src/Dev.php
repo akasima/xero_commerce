@@ -1,14 +1,14 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore;
+namespace Xpressengine\Plugins\XeroCommerce;
 
 use Faker\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Xpressengine\Plugins\XeroStore\Models\Product;
-use Xpressengine\Plugins\XeroStore\Models\ProductOptionItem;
-use Xpressengine\Plugins\XeroStore\Plugin\Database;
-use Xpressengine\Plugins\XeroStore\Plugin\Resources;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
+use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
 
 class Dev
 {
@@ -20,6 +20,13 @@ class Dev
     public function dropTable()
     {
         $tables = DB::select('SHOW TABLES LIKE "xe_xero_store_%"');
+        foreach ($tables as $table) {
+            $table_name = str_replace('xe_', '', head($table));
+            Schema::dropIfExists($table_name);
+            dump($table_name);
+        }
+
+        $tables = DB::select('SHOW TABLES LIKE "xe_xero_commerce_%"');
         foreach ($tables as $table) {
             $table_name = str_replace('xe_', '', head($table));
             Schema::dropIfExists($table_name);

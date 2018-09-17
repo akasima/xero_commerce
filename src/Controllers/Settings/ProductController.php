@@ -1,13 +1,13 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Controllers\Settings;
+namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
 use XePresenter;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Models\Product;
-use Xpressengine\Plugins\XeroStore\Services\ProductOptionItemSettingService;
-use Xpressengine\Plugins\XeroStore\Services\ProductSettingService;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductOptionItemSettingService;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductSettingService;
 
 class ProductController extends Controller
 {

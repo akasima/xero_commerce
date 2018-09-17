@@ -2,7 +2,7 @@
     <h2>쇼핑몰 설정</h2>
 @endsection
 
-<form method="post" action="{{ route('xero_store::setting.config.store') }}">
+<form method="post" action="{{ route('xero_store') }}">
     {{ csrf_field() }}
     <div class="row">
         <div class="col-sm-12">

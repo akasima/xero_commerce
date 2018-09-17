@@ -1,9 +1,9 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Services;
+namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Handlers\ProductHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 
 class OrderSettingService
 {

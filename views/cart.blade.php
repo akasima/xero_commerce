@@ -27,7 +27,7 @@
                     <br>
                     @foreach($cartProduct as $cartOption)
                     <span style="color:grey">{{$cartOption->option->name}} / {{$cartOption->count}} 개</span>
-                        <a href="{{route('xero_store::cart.draw', ['cart'=>$cartOption->id])}}">x 해당 옵션 삭제</a>
+                        <a href="{{route('xero_commerce::cart.draw', ['cart'=>$cartOption->id])}}">x 해당 옵션 삭제</a>
                         <br>
                     @endforeach
                 </td>

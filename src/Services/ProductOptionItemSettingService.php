@@ -1,11 +1,11 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Services;
+namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Handlers\ProductOptionItemHandler;
-use Xpressengine\Plugins\XeroStore\Models\Product;
-use Xpressengine\Plugins\XeroStore\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 
 class ProductOptionItemSettingService
 {

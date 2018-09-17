@@ -1,14 +1,14 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Models;
+namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Database\Eloquent\DynamicModel;
-use Xpressengine\Plugins\XeroStore\Handlers\OrderHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 
 class Order extends DynamicModel
 {
-    protected $table = 'xero_store_order';
+    protected $table = 'xero_commerce_order';
 
     const TEMP = 0;
     const ORDERED = 1;
@@ -29,8 +29,8 @@ class Order extends DynamicModel
     public function products()
     {
         return $this->belongsToMany(
-            'Xpressengine\Plugins\XeroStore\Models\Product',
-            'xero_store_option_order',
+            'Xpressengine\Plugins\XeroCommerce\Models\Product',
+            'xero_commerce_option_order',
             'order_id',
             'product_id'
         );
@@ -39,8 +39,8 @@ class Order extends DynamicModel
     public function options()
     {
         return $this->belongsToMany(
-            'Xpressengine\Plugins\XeroStore\Models\ProductOptionItem',
-            'xero_store_option_order',
+            'Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem',
+            'xero_commerce_option_order',
             'order_id',
             'option_id'
         )->withPivot(['product_id', 'count', 'delivery_id'])->withTimestamps();
@@ -48,7 +48,7 @@ class Order extends DynamicModel
 
     public function payment()
     {
-        return $this->hasOne('Xpressengine\Plugins\XeroStore\Models\Payment');
+        return $this->hasOne('Xpressengine\Plugins\XeroCommerce\Models\Payment');
     }
 
     public function getStatus()

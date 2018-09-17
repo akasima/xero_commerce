@@ -1,11 +1,11 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Handlers;
+namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
-use Xpressengine\Plugins\XeroStore\Goods;
-use Xpressengine\Plugins\XeroStore\Models\Cart;
-use Xpressengine\Plugins\XeroStore\Models\Order;
+use Xpressengine\Plugins\XeroCommerce\Goods;
+use Xpressengine\Plugins\XeroCommerce\Models\Cart;
+use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\User\Models\User;
 
 class OrderHandler
