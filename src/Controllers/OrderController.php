@@ -18,12 +18,12 @@ class OrderController extends Controller
 
     public function index()
     {
-        return \XePresenter::make('xero_store::views.index', ['title' => 'test']);
+        return \XePresenter::make('xero_commerce::views.index', ['title' => 'test']);
     }
 
     public function register(Request $request)
     {
         $order = $this->orderService->order($request);
-        return \XePresenter::make('xero_store::views.register', ['title'=>'test', 'order'=>$order]);
+        return \XePresenter::make('xero_commerce::views.register', ['title'=>'test', 'order'=>$order]);
     }
 }

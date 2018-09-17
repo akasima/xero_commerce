@@ -1,5 +1,5 @@
 <h2>장바구니</h2>
-<form action="{{route('xero_store::order.register')}}" method="post">
+<form action="{{route('xero_commerce::order.register')}}" method="post">
     {{csrf_field()}}
 
     <table class="xe-table">
@@ -29,7 +29,7 @@
                         <br>
                         @foreach($cartProduct as $cartOption)
                         <span style="color:grey">{{$cartOption->option->name}} / {{$cartOption->count}} 개</span>
-                            <a href="{{route('xero_store::cart.draw', ['cart'=>$cartOption->id])}}">x 해당 옵션 삭제</a>
+                            <a href="{{route('xero_commerce::cart.draw', ['cart'=>$cartOption->id])}}">x 해당 옵션 삭제</a>
                             <br>
                         @endforeach
                         쇼핑몰 : {{$cartProduct->first()->option->product->store->store_name}}

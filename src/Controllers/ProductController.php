@@ -8,6 +8,6 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return \XePresenter::make('xero_store::views.index', ['title' => 'test']);
+        return \XePresenter::make('xero_commerce::views.index', ['title' => 'test']);
     }
 }

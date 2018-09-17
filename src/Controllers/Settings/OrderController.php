@@ -11,7 +11,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return \XePresenter::make('xero_store::views.index', ['title' => 'xero_store']);
+        return \XePresenter::make('xero_commerce::views.index', ['title' => 'xero_commerce']);
     }
 
     public function detail()

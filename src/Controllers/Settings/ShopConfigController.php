@@ -13,7 +13,7 @@ class ShopConfigController
     {
         $config = XeConfig::getOrNew(Plugin::getId());
 
-        return XePresenter::make('xero_store::views.setting.config.create', compact('config'));
+        return XePresenter::make('xero_commerce::views.setting.config.create', compact('config'));
     }
 
     public function store(Request $request)
@@ -28,7 +28,7 @@ class ShopConfigController
 
         XeConfig::modify($config);
 
-        return redirect()->route('xero_store::setting.config.create')
+        return redirect()->route('xero_commerce::setting.config.create')
             ->with('alert', ['type' => 'success', 'message' => '저장 완료']);
     }
 }

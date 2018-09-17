@@ -16,7 +16,7 @@ class OrderService
 
     public function __construct()
     {
-        $this->orderHandler = app('xero_store.orderHandler');
+        $this->orderHandler = app('xero_commerce.orderHandler');
     }
 
     public function order(Request $request)

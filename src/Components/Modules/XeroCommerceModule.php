@@ -10,7 +10,7 @@ class XeroCommerceModule extends AbstractModule
     public static function boot()
     {
         Route::instance(XeroCommerceModule::getId(), function () {
-            Route::get('/', ['as' => 'xero_store.product.index', 'uses' => 'ProductController@index']);
+            Route::get('/', ['as' => 'xero_commerce.product.index', 'uses' => 'ProductController@index']);
         }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
     }
 

@@ -6,7 +6,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
     <h2>상품 등록</h2>
 @endsection
 
-<form method="post" action="{{ route('xero_store') }}">
+<form method="post" action="{{ route('xero_commerce::setting.product.store') }}">
     {{ csrf_field() }}
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
 

@@ -22,66 +22,66 @@ class Resources
      */
     public static function registerRoute()
     {
-        Route::settings('xero_store', function () {
+        Route::settings('xero_commerce', function () {
             Route::group([
                 'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers\\Settings'
             ], function () {
                 //상품관리
                 Route::group(['prefix' => 'product'], function () {
-                    Route::get('/', ['as' => 'xero_store::setting.product.index', 'uses' => 'ProductController@index',
-                        'settings_menu' => 'xero_store.product.list']);
-                    Route::get('/create', ['as' => 'xero_store::setting.product.create',
-                        'uses' => 'ProductController@create', 'settings_menu' => 'xero_store.product.create']);
-                    Route::post('/store', ['as' => 'xero_store::setting.product.store',
+                    Route::get('/', ['as' => 'xero_commerce::setting.product.index', 'uses' => 'ProductController@index',
+                        'settings_menu' => 'xero_commerce.product.list']);
+                    Route::get('/create', ['as' => 'xero_commerce::setting.product.create',
+                        'uses' => 'ProductController@create', 'settings_menu' => 'xero_commerce.product.create']);
+                    Route::post('/store', ['as' => 'xero_commerce::setting.product.store',
                         'uses' => 'ProductController@store']);
-                    Route::get('/{productId}', ['as' => 'xero_store::setting.product.show',
+                    Route::get('/{productId}', ['as' => 'xero_commerce::setting.product.show',
                         'uses' => 'ProductController@show']);
                 });
 
                 //분류 관리
-                Route::get('/category', ['as' => 'xero_store::setting.category.index',
+                Route::get('/category', ['as' => 'xero_commerce::setting.category.index',
                     'uses' => 'CategoryController@index',
-                    'settings_menu' => 'xero_store.product.category']);
+                    'settings_menu' => 'xero_commerce.product.category']);
 
                 //주문 관리
                 Route::group(['prefix' => 'order'], function () {
                     Route::get('/', [
-                        'as' => 'xero_store::setting.order.index',
+                        'as' => 'xero_commerce::setting.order.index',
                         'uses' => 'OrderController@index',
-                        'settings_menu' => 'xero_store.order.index'
+                        'settings_menu' => 'xero_commerce.order.index'
                     ]);
                 });
 
                 //쇼핑몰 설정
                 Route::group(['prefix' => 'shop_config'], function () {
-                    Route::get('/create', ['as' => 'xero_store::setting.config.create',
+                    Route::get('/create', ['as' => 'xero_commerce::setting.config.create',
                         'uses' => 'ShopConfigController@create',
-                        'settings_menu' => 'xero_store.config.shopInfo']);
+                        'settings_menu' => 'xero_commerce.config.shopInfo']);
 
-                    Route::post('/store', ['as' => 'xero_store::setting.config.store',
+                    Route::post('/store', ['as' => 'xero_commerce::setting.config.store',
                         'uses' => 'ShopConfigController@store']);
                 });
             });
         });
-        Route::fixed('xero_store', function () {
+        Route::fixed('xero_commerce', function () {
             Route::group([
                 'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers'
             ], function () {
                 Route::get('/cart', [
                     'uses' => 'CartController@index',
-                    'as' => 'xero_store::cart.index'
+                    'as' => 'xero_commerce::cart.index'
                 ]);
                 Route::get('/cart/draw/{cart}', [
                     'uses' => 'CartController@draw',
-                    'as' => 'xero_store::cart.draw'
+                    'as' => 'xero_commerce::cart.draw'
                 ]);
                 Route::post('/order', [
                     'uses' => 'OrderController@register',
-                    'as' => 'xero_store::order.register'
+                    'as' => 'xero_commerce::order.register'
                 ]);
                 Route::get('/order', [
                     'uses' => 'OrderController@index',
-                    'as' => 'xero_store::order.index'
+                    'as' => 'xero_commerce::order.index'
                 ]);
             });
         });
@@ -101,7 +101,7 @@ class Resources
 
             return $instance;
         });
-        $app->alias(StoreHandler::class, 'xero_store.storeHandler');
+        $app->alias(StoreHandler::class, 'xero_commerce.storeHandler');
 
         $app->singleton(ProductHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(ProductHandler::class);
@@ -110,7 +110,7 @@ class Resources
 
             return $instance;
         });
-        $app->alias(ProductHandler::class, 'xero_store.productHandler');
+        $app->alias(ProductHandler::class, 'xero_commerce.productHandler');
 
         $app->singleton(ProductOptionItemHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(ProductOptionItemHandler::class);
@@ -119,7 +119,7 @@ class Resources
 
             return $instance;
         });
-        $app->alias(ProductOptionItemHandler::class, 'xero_store.productOptionItemHandler');
+        $app->alias(ProductOptionItemHandler::class, 'xero_commerce.productOptionItemHandler');
 
         $app->singleton(OrderHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(OrderHandler::class);
@@ -128,7 +128,7 @@ class Resources
 
             return $instance;
         });
-        $app->alias(OrderHandler::class, 'xero_store.orderHandler');
+        $app->alias(OrderHandler::class, 'xero_commerce.orderHandler');
 
 
         $app->singleton(CartHandler::class, function ($app) {
@@ -138,7 +138,7 @@ class Resources
 
             return $instance;
         });
-        $app->alias(CartHandler::class, 'xero_store.cartHandler');
+        $app->alias(CartHandler::class, 'xero_commerce.cartHandler');
     }
 
     /**
@@ -178,7 +178,7 @@ class Resources
     {
         $menus = array_merge(
             [
-                'xero_store' => [
+                'xero_commerce' => [
                     'title' => '쇼핑몰 관리',
                     'display' => true,
                     'description' => '',
@@ -201,25 +201,25 @@ class Resources
     private static function menuProduct()
     {
         return [
-            'xero_store.product' => [
+            'xero_commerce.product' => [
                 'title' => '상품관리',
                 'display' => true,
                 'description' => '',
                 'ordering' => 10001
             ],
-            'xero_store.product.list' => [
+            'xero_commerce.product.list' => [
                 'title' => '전체 상품목록',
                 'display' => true,
                 'description' => '',
                 'ordering' => 100011
             ],
-            'xero_store.product.category' => [
+            'xero_commerce.product.category' => [
                 'title' => '분류 관리',
                 'display' => true,
                 'description' => '',
                 'ordering' => 100012
             ],
-            'xero_store.product.create' => [
+            'xero_commerce.product.create' => [
                 'title' => '상품 등록',
                 'display' => true,
                 'description' => '',
@@ -234,13 +234,13 @@ class Resources
     private static function menuOrder()
     {
         return [
-            'xero_store.order' => [
+            'xero_commerce.order' => [
                 'title' => '주문',
                 'display' => true,
                 'description' => '',
                 'ordering' => 10002
             ],
-            'xero_store.order.index' => [
+            'xero_commerce.order.index' => [
                 'title' => '전체 주문내역',
                 'display' => true,
                 'description' => '',
@@ -255,14 +255,14 @@ class Resources
     private static function menuConfigure()
     {
         return [
-            'xero_store.config' => [
+            'xero_commerce.config' => [
                 'title' => '환경설정',
                 'display' => true,
                 'description' => '',
                 'ordering' => 10003
             ],
 
-            'xero_store.config.shopInfo' => [
+            'xero_commerce.config.shopInfo' => [
                 'title' => '쇼핑몰 정보 등록',
                 'display' => true,
                 'description' => '',

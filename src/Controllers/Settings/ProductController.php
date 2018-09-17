@@ -30,7 +30,7 @@ class ProductController extends Controller
         $products = $this->productSettingService->getProducts($request);
 
         return XePresenter::make(
-            'xero_store::views.setting.product.index',
+            'xero_commerce::views.setting.product.index',
             compact('displayStates', 'dealStates', 'products')
         );
     }
@@ -39,7 +39,7 @@ class ProductController extends Controller
     {
         $product = $this->productSettingService->getProduct($productId);
 
-        return XePresenter::make('xero_store::views.setting.product.show', compact('product'));
+        return XePresenter::make('xero_commerce::views.setting.product.show', compact('product'));
     }
 
     public function create()
@@ -47,7 +47,7 @@ class ProductController extends Controller
         $displayStates = Product::getDisplayStates();
         $dealStates = Product::getDealStates();
 
-        return XePresenter::make('xero_store::views.setting.product.create', compact('displayStates', 'dealStates'));
+        return XePresenter::make('xero_commerce::views.setting.product.create', compact('displayStates', 'dealStates'));
     }
 
     public function store(Request $request)
@@ -56,6 +56,6 @@ class ProductController extends Controller
 
         $this->productOptionItemSettingService->defaultOptionStore($request, $productId);
 
-        return redirect()->route('xero_store::setting.product.show', ['productId' => $productId]);
+        return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
 }

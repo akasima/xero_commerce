@@ -17,7 +17,7 @@ class ProductOptionItemSettingService
      */
     public function __construct()
     {
-        $this->productOptionItemHandler = app('xero_store.productOptionItemHandler');
+        $this->productOptionItemHandler = app('xero_commerce.productOptionItemHandler');
     }
 
     /**

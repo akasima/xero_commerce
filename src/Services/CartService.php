@@ -17,7 +17,7 @@ class CartService
 
     public function __construct()
     {
-        $this->cartHandler = app('xero_store.cartHandler');
+        $this->cartHandler = app('xero_commerce.cartHandler');
     }
 
     public function getList()

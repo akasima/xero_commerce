@@ -19,7 +19,7 @@ class CartController extends Controller
     public function index()
     {
         return \XePresenter::make(
-            'xero_store::views.cart',
+            'xero_commerce::views.cart',
             [
                 'title' => '장바구니',
                 'carts' => $this->cartService->getList()->groupBy('product_id'),
@@ -30,12 +30,12 @@ class CartController extends Controller
     public function add(ProductOptionItem $optionItem)
     {
         $this->cartService->addList($optionItem);
-        return redirect()->route('xero_store::cart.index');
+        return redirect()->route('xero_commerce::cart.index');
     }
 
     public function draw(Cart $cart)
     {
         $this->cartService->drawList($cart);
-        return redirect()->route('xero_store::cart.index');
+        return redirect()->route('xero_commerce::cart.index');
     }
 }
