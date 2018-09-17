@@ -16,7 +16,6 @@ class Database
             $table->integer('store_type');
         });
 
-        Schema::create('xero_commerce_products', function (Blueprint $table) {
         Schema::create('xero_commerce_store_delivery', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('store_id');

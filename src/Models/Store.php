@@ -19,7 +19,7 @@ class Store extends DynamicModel
     {
         return $this->belongsToMany(
             DeliveryCompany::class,
-            'xero_store_store_delivery'
+            'xero_commerce_store_delivery'
         )
             ->withPivot(
                 ['delivery_fare', 'up_to_free']

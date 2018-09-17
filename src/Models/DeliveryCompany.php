@@ -1,10 +1,10 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Models;
+namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class DeliveryCompany extends Model
 {
-    protected $table='xero_store_delivery_company';
+    protected $table='xero_commerce_delivery_company';
 }
