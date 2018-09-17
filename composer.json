@@ -35,7 +35,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Xpressengine\\Plugins\\XeroCommerce\\": "src/"
+        "Xpressengine\\Plugins\\XeroCommerce\\": "src/"
     }
   }
 }
