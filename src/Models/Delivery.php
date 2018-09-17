@@ -2,9 +2,10 @@
 
 namespace Xpressengine\Plugins\XeroStore\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Delivery extends Model
+use Xpressengine\Database\Eloquent\DynamicModel;
+
+class Delivery extends DynamicModel
 {
     protected $table='xero_store_delivery';
 }

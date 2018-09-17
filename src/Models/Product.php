@@ -51,4 +51,9 @@ class Product extends DynamicModel
     {
         return $this->hasMany(ProductOptionItem::class, 'product_id', 'id');
     }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

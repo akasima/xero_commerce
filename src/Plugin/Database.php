@@ -16,6 +16,15 @@ class Database
             $table->integer('store_type');
         });
 
+        Schema::create('xero_store_store_delivery', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('store_id');
+            $table->integer('delivery_company_id');
+            $table->integer('delivery_fare');
+            $table->integer('up_to_free');
+            $table->boolean('is_default');
+        });
+
         Schema::create('xero_store_products', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('store_id');
@@ -81,7 +90,10 @@ class Database
             $table->increments('id');
             $table->integer('order_id');
             $table->integer('product_id');
+            $table->integer('delivery_id');
             $table->integer('option_id');
+            $table->integer('original_price');
+            $table->integer('sell_price');
             $table->integer('count');
             $table->timestamps();
         });

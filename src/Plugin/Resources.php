@@ -79,6 +79,10 @@ class Resources
                     'uses' => 'OrderController@register',
                     'as' => 'xero_store::order.register'
                 ]);
+                Route::get('/order', [
+                    'uses' => 'OrderController@index',
+                    'as' => 'xero_store::order.index'
+                ]);
             });
         });
     }

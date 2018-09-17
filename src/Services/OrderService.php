@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroStore\Services;
 
 
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroStore\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroStore\Handlers\OrderHandler;
 
 class OrderService
@@ -20,11 +21,12 @@ class OrderService
 
     public function order(Request $request)
     {
-        $this->orderHandler->register($this->getCartsFromRequest($request));
+        return $this->orderHandler->register($this->getCartsFromRequest($request));
     }
 
-    public function getCartsFromRequest(Request $request)
+    private function getCartsFromRequest(Request $request)
     {
-        return $request->get('cart_id');
+        $cartService = new CartService();
+        return $cartService->getCartsFromProduct($request->get('product_id'));
     }
 }

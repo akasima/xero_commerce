@@ -17,20 +17,17 @@ class OrderHandler
         foreach ($carts as $each) {
             $order->options()->save($each->option, [
                 'product_id' => $each->product_id,
-                'price' => $each->price,
+                'original_price' => $each->option->add_price + $each->option->product->original_price,
+                'sell_price' => $each->option->product->sell_price,
                 'count' => $each->count
             ]);
         }
         $order->code = $order::ORDERED;
-        return $order->save();
+        $order->save();
+        return $order->load('options.product.store');
     }
 
     public function cancel(Goods $goods)
-    {
-
-    }
-
-    public function exchange(Goods $goods)
     {
 
     }

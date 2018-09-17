@@ -40,4 +40,14 @@ class CartService
         return $this->cartHandler->resetCart();
     }
 
+    public function getCartsFromProduct($product_ids)
+    {
+        return $this->cartHandler->getCartListByProductIds($product_ids)->pluck('id');
+    }
+
+    public function summary()
+    {
+        return $this->cartHandler->cartSummary();
+    }
+
 }

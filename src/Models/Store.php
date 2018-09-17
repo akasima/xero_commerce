@@ -14,4 +14,15 @@ class Store extends DynamicModel
     protected $fillable = ['user_id', 'store_type'];
 
     public $timestamps = false;
+
+    public function deliveryCompanys()
+    {
+        return $this->belongsToMany(
+            DeliveryCompany::class,
+            'xero_store_store_delivery'
+        )
+            ->withPivot(
+                ['delivery_fare', 'up_to_free']
+            );
+    }
 }
