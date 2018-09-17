@@ -1,8 +1,8 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Plugin;
+namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
-use Xpressengine\Plugins\XeroStore\Events\NewProductRegisterEvent;
+use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
 
 class EventManager
 {

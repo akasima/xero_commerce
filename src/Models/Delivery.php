@@ -1,11 +1,11 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Models;
+namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 class Delivery extends DynamicModel
 {
-    protected $table='xero_store_delivery';
+    protected $table='xero_commerce_delivery';
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Models;
+namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 class Cart extends DynamicModel
 {
-    protected $table = 'xero_store_cart';
+    protected $table = 'xero_commerce_cart';
 
     public function option()
     {
-        return $this->belongsTo('Xpressengine\Plugins\XeroStore\Models\ProductOptionItem', 'option_id');
+        return $this->belongsTo('Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem', 'option_id');
     }
 }

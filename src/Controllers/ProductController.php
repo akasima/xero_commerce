@@ -1,6 +1,6 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Controllers;
+namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
 use App\Http\Controllers\Controller;
 

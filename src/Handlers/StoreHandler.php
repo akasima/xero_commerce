@@ -1,6 +1,6 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Handlers;
+namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 class StoreHandler
 {

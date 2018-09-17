@@ -1,11 +1,11 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Services;
+namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Handlers\ProductHandler;
-use Xpressengine\Plugins\XeroStore\Models\Product;
-use Xpressengine\Plugins\XeroStore\Models\Store;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\Store;
 
 class ProductSettingService
 {
@@ -17,12 +17,12 @@ class ProductSettingService
      */
     public function __construct()
     {
-        $this->productHandler = app('xero_store.productHandler');
+        $this->productHandler = app('xero_commerce.productHandler');
     }
 
     /**
      * @param  integer $productId productId
-     * @return \Xpressengine\Plugins\XeroStore\Models\Product
+     * @return \Xpressengine\Plugins\XeroCommerce\Models\Product
      */
     public function getProduct($productId)
     {
@@ -54,6 +54,11 @@ class ProductSettingService
 
         if (empty($productArgs['product_code']) === true) {
             $productArgs['product_code'] = time();
+        }
+
+        if ($productArgs['buy_count_not_use'] == 'on') {
+            unset($productArgs['min_buy_count']);
+            unset($productArgs['max_buy_count']);
         }
 
         //TODO 스토어 임시 하드코딩

@@ -1,11 +1,11 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Services;
+namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Handlers\CartHandler;
-use Xpressengine\Plugins\XeroStore\Handlers\OrderHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 
 class OrderService
 {

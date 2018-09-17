@@ -1,11 +1,11 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Services;
+namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Handlers\ProductOptionItemHandler;
-use Xpressengine\Plugins\XeroStore\Models\Product;
-use Xpressengine\Plugins\XeroStore\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 
 class ProductOptionItemSettingService
 {
@@ -20,6 +20,12 @@ class ProductOptionItemSettingService
         $this->productOptionItemHandler = app('xero_store.productOptionItemHandler');
     }
 
+    /**
+     * @param Request $request   request
+     * @param int     $productId productId
+     *
+     * @return void
+     */
     public function defaultOptionStore(Request $request, $productId)
     {
         $productArgs = $request->all();

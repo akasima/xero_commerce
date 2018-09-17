@@ -1,6 +1,6 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Plugin;
+namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,14 +9,15 @@ class Database
 {
     public static function create()
     {
-        Schema::create('xero_store_store', function (Blueprint $table) {
+        Schema::create('xero_commerce_store', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 36);
             $table->string('store_name');
             $table->integer('store_type');
         });
 
-        Schema::create('xero_store_store_delivery', function (Blueprint $table) {
+        Schema::create('xero_commerce_products', function (Blueprint $table) {
+        Schema::create('xero_commerce_store_delivery', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('store_id');
             $table->integer('delivery_company_id');
@@ -25,7 +26,7 @@ class Database
             $table->boolean('is_default');
         });
 
-        Schema::create('xero_store_products', function (Blueprint $table) {
+        Schema::create('xero_commerce_products', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('store_id');
             $table->integer('product_code');
@@ -42,13 +43,13 @@ class Database
             $table->timestamps();
         });
 
-        Schema::create('xero_store_product_category', function (Blueprint $table) {
+        Schema::create('xero_commerce_product_category', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id');
             $table->integer('category_id');
         });
 
-        Schema::create('xero_store_product_option_item', function (Blueprint $table) {
+        Schema::create('xero_commerce_product_option_item', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id')->index();
             $table->integer('option_type');
@@ -61,7 +62,7 @@ class Database
             $table->timestamps();
         });
 
-        Schema::create('xero_store_order', function (Blueprint $table) {
+        Schema::create('xero_commerce_order', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 36);
             $table->smallInteger('code');
@@ -69,7 +70,7 @@ class Database
             $table->timestamps();
         });
 
-        Schema::create('xero_store_cart', function (Blueprint $table) {
+        Schema::create('xero_commerce_cart', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 36);
             $table->integer('product_id');
@@ -78,7 +79,7 @@ class Database
             $table->timestamps();
         });
 
-        Schema::create('xero_store_wish', function (Blueprint $table) {
+        Schema::create('xero_commerce_wish', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 36);
             $table->integer('product_id');
@@ -86,7 +87,7 @@ class Database
             $table->timestamps();
         });
 
-        Schema::create('xero_store_option_order', function (Blueprint $table) {
+        Schema::create('xero_commerce_option_order', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('order_id');
             $table->integer('product_id');
@@ -98,7 +99,7 @@ class Database
             $table->timestamps();
         });
 
-        Schema::create('xero_store_delivery', function (Blueprint $table) {
+        Schema::create('xero_commerce_delivery', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('option_order_id');
             $table->integer('ship_no');
@@ -111,7 +112,7 @@ class Database
             $table->timestamps();
         });
 
-        Schema::create('xero_store_delivery_company', function (Blueprint $table) {
+        Schema::create('xero_commerce_delivery_company', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('uri');
@@ -119,7 +120,7 @@ class Database
             $table->timestamps();
         });
 
-        Schema::create('xero_store_payment', function (Blueprint $table) {
+        Schema::create('xero_commerce_payment', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('order_id');
             $table->string('method');
@@ -132,14 +133,14 @@ class Database
             $table->timestamps();
         });
 
-        Schema::create('xero_store_order_log', function (Blueprint $table) {
+        Schema::create('xero_commerce_order_log', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('order_id');
             $table->string('status');
             $table->timestamps();
         });
 
-        Schema::create('xero_store_pay_log', function (Blueprint $table) {
+        Schema::create('xero_commerce_pay_log', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('pay_id');
             $table->string('status');

@@ -1,8 +1,8 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Handlers;
+namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
-use Xpressengine\Plugins\XeroStore\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 
 class ProductOptionItemHandler
 {

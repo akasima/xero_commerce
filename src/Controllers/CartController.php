@@ -1,13 +1,11 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Controllers;
+namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
-use App\Facades\XePresenter;
 use App\Http\Controllers\Controller;
-use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Models\Cart;
-use Xpressengine\Plugins\XeroStore\Models\ProductOptionItem;
-use Xpressengine\Plugins\XeroStore\Services\CartService;
+use Xpressengine\Plugins\XeroCommerce\Models\Cart;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 
 class CartController extends Controller
 {

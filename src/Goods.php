@@ -1,6 +1,6 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore;
+namespace Xpressengine\Plugins\XeroCommerce;
 
 class Goods
 {

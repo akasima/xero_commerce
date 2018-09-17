@@ -1,13 +1,13 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore;
+namespace Xpressengine\Plugins\XeroCommerce;
 
 use Route;
 use Xpressengine\Plugin\AbstractPlugin;
-use Xpressengine\Plugins\XeroStore\Models\Store;
-use Xpressengine\Plugins\XeroStore\Plugin\Database;
-use Xpressengine\Plugins\XeroStore\Plugin\EventManager;
-use Xpressengine\Plugins\XeroStore\Plugin\Resources;
+use Xpressengine\Plugins\XeroCommerce\Models\Store;
+use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
+use Xpressengine\Plugins\XeroCommerce\Plugin\EventManager;
+use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
 
 class Plugin extends AbstractPlugin
 {

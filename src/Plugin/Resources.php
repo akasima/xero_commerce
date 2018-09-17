@@ -1,18 +1,18 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Plugin;
+namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
 use App\Facades\XeInterception;
 use XeRegister;
 use Route;
-use Xpressengine\Plugins\XeroStore\Handlers\CartHandler;
-use Xpressengine\Plugins\XeroStore\Handlers\OrderHandler;
-use Xpressengine\Plugins\XeroStore\Handlers\ProductHandler;
-use Xpressengine\Plugins\XeroStore\Handlers\ProductOptionItemHandler;
-use Xpressengine\Plugins\XeroStore\Handlers\StoreHandler;
-use Xpressengine\Plugins\XeroStore\Models\Store;
-use Xpressengine\Plugins\XeroStore\Models\Order;
-use Xpressengine\Plugins\XeroStore\Plugin;
+use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\StoreHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Store;
+use Xpressengine\Plugins\XeroCommerce\Models\Order;
+use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\User\Models\User;
 
 class Resources
@@ -24,7 +24,7 @@ class Resources
     {
         Route::settings('xero_store', function () {
             Route::group([
-                'namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers\\Settings'
+                'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers\\Settings'
             ], function () {
                 //상품관리
                 Route::group(['prefix' => 'product'], function () {
@@ -65,7 +65,7 @@ class Resources
         });
         Route::fixed('xero_store', function () {
             Route::group([
-                'namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers'
+                'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers'
             ], function () {
                 Route::get('/cart', [
                     'uses' => 'CartController@index',

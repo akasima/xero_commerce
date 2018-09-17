@@ -1,6 +1,6 @@
 {
-  "name": "xpressengine-plugin/xero_store",
-  "description": "This Package is Xpressengine Plugin - xero_store.",
+  "name": "xpressengine-plugin/xero_commerce",
+  "description": "This Package is Xpressengine Plugin - xero_commerce.",
   "keywords": [
     "xpressengine",
     "plugin"
@@ -21,11 +21,11 @@
   ],
   "extra": {
     "xpressengine": {
-      "title": "xero_store",
+      "title": "xero_commerce",
       "component": {
-        "module/xero_store@xero_store_module": {
-          "class": "Xpressengine\\Plugins\\XeroStore\\Components\\Modules\\XeroStoreModule",
-          "name": "XeroStore Module",
+        "module/xero_commerce@xero_commerce_module": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Modules\\XeroCommerceModule",
+          "name": "XeroCommerce Module",
           "description": ""
         }
       }
@@ -35,7 +35,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Xpressengine\\Plugins\\XeroStore\\": "src/"
+      "Xpressengine\\Plugins\\XeroCommerce\\": "src/"
     }
   }
 }

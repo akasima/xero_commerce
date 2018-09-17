@@ -1,17 +1,17 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Components\Modules;
+namespace Xpressengine\Plugins\XeroCommerce\Components\Modules;
 
 use Route;
 use Xpressengine\Menu\AbstractModule;
 
-class XeroStoreModule extends AbstractModule
+class XeroCommerceModule extends AbstractModule
 {
     public static function boot()
     {
-        Route::instance(XeroStoreModule::getId(), function () {
+        Route::instance(XeroCommerceModule::getId(), function () {
             Route::get('/', ['as' => 'xero_store.product.index', 'uses' => 'ProductController@index']);
-        }, ['namespace' => 'Xpressengine\\Plugins\\XeroStore\\Controllers']);
+        }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
     }
 
     public function createMenuForm()

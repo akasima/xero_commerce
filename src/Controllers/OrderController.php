@@ -1,12 +1,11 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroStore\Controllers;
+namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
-use App\Facades\XePresenter;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroStore\Services\CartService;
-use Xpressengine\Plugins\XeroStore\Services\OrderService;
+use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
+use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 
 class OrderController extends Controller
 {
@@ -25,6 +24,6 @@ class OrderController extends Controller
     public function register(Request $request)
     {
         $order = $this->orderService->order($request);
-        return XePresenter::make('xero_store::views.register', ['title'=>'test', 'order'=>$order]);
+        return \XePresenter::make('xero_store::views.register', ['title'=>'test', 'order'=>$order]);
     }
 }
