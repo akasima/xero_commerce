@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce;
 
+use Illuminate\Support\Facades\Schema;
 use Route;
 use Xpressengine\Plugin\AbstractPlugin;
 use Xpressengine\Plugins\XeroCommerce\Models\Store;
@@ -79,11 +80,14 @@ class Plugin extends AbstractPlugin
     {
         //TODO 테스트 코드 삭제
         $checkedUpdate = false;
-        $userId = \Auth::user()->getId();
 
-        $store = Store::where('user_id', $userId)->first();
-        if ($store != null) {
-            $checkedUpdate = true;
+        if (Schema::hasTable('xero_commerce_store') === true) {
+            $userId = \Auth::user()->getId();
+
+            $store = Store::where('user_id', $userId)->first();
+            if ($store != null) {
+                $checkedUpdate = true;
+            }
         }
 
         return $checkedUpdate;

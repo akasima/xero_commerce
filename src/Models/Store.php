@@ -9,6 +9,8 @@ class Store extends DynamicModel
     const TYPE_STORE = 1;
     const TYPE_INDIVIDUAL = 2;
 
+    const BASIC_STORE_NAME = 'basic_store';
+
     protected $table = 'xero_commerce_store';
 
     protected $fillable = ['user_id', 'store_type'];

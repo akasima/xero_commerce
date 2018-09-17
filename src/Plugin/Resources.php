@@ -162,11 +162,13 @@ class Resources
     {
         $userId = \Auth::user()->getId();
 
-        $newStore = new Store();
-        $newStore['user_id'] = $userId;
-        $newStore['store_type'] = Store::TYPE_STORE;
-        $newStore['store_name'] = 'basic store';
-        $newStore->save();
+        if (Store::where('store_name', Store::BASIC_STORE_NAME)->first() == null) {
+            $newStore = new Store();
+            $newStore['user_id'] = $userId;
+            $newStore['store_type'] = Store::TYPE_STORE;
+            $newStore['store_name'] = Store::BASIC_STORE_NAME;
+            $newStore->save();
+        }
     }
 
     /**
