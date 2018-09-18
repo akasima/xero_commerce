@@ -6,6 +6,11 @@ use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 
 class ShopHandler
 {
+    /**
+     * @param array $args args
+     *
+     * @return Shop
+     */
     public function store(array $args)
     {
         $newShop = new Shop();
@@ -13,8 +18,15 @@ class ShopHandler
         $newShop->fill($args);
 
         $newShop->save();
+
+        return $newShop;
     }
 
+    /**
+     * @param array $conditions searchCondition
+     *
+     * @return Shop
+     */
     public function getShopsQuery(array $conditions)
     {
         $query = new Shop();
@@ -24,6 +36,12 @@ class ShopHandler
         return $query;
     }
 
+    /**
+     * @param array $conditions searchCondition
+     * @param Shop  $query      shop
+     *
+     * @return Shop
+     */
     private function makeWhere(array $conditions, Shop $query)
     {
         if (isset($conditions['user_id'])) {

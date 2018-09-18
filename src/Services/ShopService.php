@@ -2,8 +2,10 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Services;
 
+use Illuminate\Support\Collection;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 
 class ShopService
 {
@@ -18,6 +20,11 @@ class ShopService
         $this->handler = app('xero_commerce.shopHandler');
     }
 
+    /**
+     * @param Request $request request
+     *
+     * @return Collection
+     */
     public function getShops(Request $request)
     {
         $conditions = $request->all();
@@ -30,6 +37,11 @@ class ShopService
         return $shops;
     }
 
+    /**
+     * @param string $userId userId
+     *
+     * @return Shop
+     */
     public function getMyShops($userId)
     {
         $args['user_id'] = $userId;
@@ -41,10 +53,19 @@ class ShopService
         return $shops;
     }
 
+    /**
+     * @param Request $request request
+     *
+     * @return Shop
+     */
     public function create(Request $request)
     {
         $args = $request->all();
 
-        $this->handler->store($args);
+        $args['state_approval'] = Shop::APPROVAL_WAITING;
+
+        $newShop = $this->handler->store($args);
+
+        return $newShop;
     }
 }

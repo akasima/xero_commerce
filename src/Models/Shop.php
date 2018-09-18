@@ -23,6 +23,17 @@ class Shop extends DynamicModel
 
     protected $fillable = ['shop_name', 'shop_eng_name', 'logo_path', 'background_path', 'shop_type', 'state_approval'];
 
+    /**
+     * @return array
+     */
+    public static function getShopTypes()
+    {
+        return [
+            self::TYPE_STORE => '단체',
+            self::TYPE_INDIVIDUAL => '개인'
+        ];
+    }
+
     public function deliveryCompanys()
     {
         return $this->belongsToMany(

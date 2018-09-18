@@ -10,7 +10,28 @@
                 <div class="panel">
                     <div class="panel-body">
                         <div class="form-group">
-                            회사명
+                            입점몰 이름
+                            <input type="text" name="shop_name">
+                        </div>
+
+                        <div class="form-group">
+                            입점몰 영어 이름
+                            <input type="text" name="shop_eng_name">
+                        </div>
+
+                        <div class="form-group">
+                            입점몰 형태
+                            <select name="shop_type">
+                                <option value="">선택</option>
+                                @foreach ($shopTypes as $value => $type)
+                                    <option value="{{ $value }}">{{ $type }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            user id
+                            <input type="text" name="user_id">
                         </div>
                     </div>
                 </div>
