@@ -2,7 +2,6 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
-
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 class Delivery extends DynamicModel

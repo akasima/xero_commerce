@@ -3,10 +3,9 @@
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
-use Xpressengine\Plugins\XeroCommerce\Goods;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
+use Xpressengine\Plugins\XeroCommerce\Models\Goods;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
-use Xpressengine\User\Models\User;
 
 class OrderHandler
 {
@@ -24,7 +23,7 @@ class OrderHandler
         }
         $order->code = $order::ORDERED;
         $order->save();
-        return $order->load('options.product.store');
+        return $order->load('options.product.shop');
     }
 
     public function cancel(Goods $goods)

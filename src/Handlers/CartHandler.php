@@ -3,10 +3,8 @@
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
-use Xpressengine\Plugins\XeroCommerce\Goods;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\Orderable;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\User\Models\User;
 
 class CartHandler
@@ -52,8 +50,8 @@ class CartHandler
     public function cartSummary($product_ids = null)
     {
         $carts = $this->getCartList();
-        $storeCarts = $carts->groupBy(function($cart){
-            return $cart->orderable->getStore()->id;
+        $storeCarts = $carts->groupBy(function ($cart) {
+            return $cart->orderable->getShop()->id;
         });
         $origin =
             $carts->sum(function (Cart $cart) {
@@ -63,7 +61,7 @@ class CartHandler
             return $cart->getSellPrice();
         });
         $fare = $storeCarts->sum(function ($storeItems) {
-            $totalPrice = $storeItems->sum(function($cart){
+            $totalPrice = $storeItems->sum(function ($cart) {
                 return $cart->getSellPrice();
             });
             return $storeItems->first()->calculateFare($totalPrice);

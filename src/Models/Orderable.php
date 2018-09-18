@@ -29,5 +29,5 @@ abstract class Orderable extends DynamicModel
 
     abstract public function getDescription();
 
-    abstract public function getStore();
+    abstract public function getShop();
 }

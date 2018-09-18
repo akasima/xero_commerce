@@ -73,7 +73,7 @@ class ProductOptionItem extends Orderable
         return [
             $this->product->name,
             $this->name,
-            '쇼핑몰 : '.$this->getStore()->store_name
+            '쇼핑몰 : '.$this->getShop()->store_name
         ];
     }
 
@@ -102,8 +102,8 @@ class ProductOptionItem extends Orderable
         return $this->product->description;
     }
 
-    public function getStore()
+    public function getShop()
     {
-        return $this->product->store;
+        return $this->product->shop;
     }
 }

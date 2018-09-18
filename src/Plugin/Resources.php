@@ -9,8 +9,8 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
-use Xpressengine\Plugins\XeroCommerce\Handlers\StoreHandler;
-use Xpressengine\Plugins\XeroCommerce\Models\Store;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\User\Models\User;
@@ -28,7 +28,8 @@ class Resources
             ], function () {
                 //상품관리
                 Route::group(['prefix' => 'products'], function () {
-                    Route::get('/', ['as' => 'xero_commerce::setting.product.index', 'uses' => 'ProductController@index',
+                    Route::get('/', ['as' => 'xero_commerce::setting.product.index',
+                        'uses' => 'ProductController@index',
                         'settings_menu' => 'xero_commerce.product.list']);
                     Route::get('/create', ['as' => 'xero_commerce::setting.product.create',
                         'uses' => 'ProductController@create', 'settings_menu' => 'xero_commerce.product.create']);
@@ -68,12 +69,12 @@ class Resources
                         'uses' => 'ShopConfigController@store']);
 
                     //입점몰 관리
-                    Route::get('/storeList', ['as' => 'xero_commerce::setting.config.store.index',
-                        'uses' => 'StoreController@index', 'settings_menu' => 'xero_commerce.config.storeInfo']);
-                    Route::get('/aaa/create', ['as' => 'xero_commerce::setting.config.store.create',
-                        'uses' => 'StoreController@create']);
-                    Route::post('/aaa/store', ['as' => 'xero_commerce::setting.config.store.store',
-                        'uses' => 'StoreController@store']);
+                    Route::get('/shop', ['as' => 'xero_commerce::setting.config.shop.index',
+                        'uses' => 'ShopController@index', 'settings_menu' => 'xero_commerce.config.storeInfo']);
+                    Route::get('/shop/create', ['as' => 'xero_commerce::setting.config.shop.create',
+                        'uses' => 'ShopController@create']);
+                    Route::post('/shop/store', ['as' => 'xero_commerce::setting.config.shop.store',
+                        'uses' => 'ShopController@store']);
                 });
             });
         });
@@ -109,14 +110,14 @@ class Resources
     {
         $app = app();
 
-        $app->singleton(StoreHandler::class, function ($app) {
-            $proxyHandler = XeInterception::proxy(StoreHandler::class);
+        $app->singleton(ShopHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(ShopHandler::class);
 
             $instance = new $proxyHandler();
 
             return $instance;
         });
-        $app->alias(StoreHandler::class, 'xero_commerce.storeHandler');
+        $app->alias(ShopHandler::class, 'xero_commerce.shopHandler');
 
         $app->singleton(ProductHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(ProductHandler::class);
@@ -173,16 +174,16 @@ class Resources
         }
     }
 
-    public static function storeDefaultStore()
+    public static function storeDefaultShop()
     {
         $userId = \Auth::user()->getId();
 
-        if (Store::where('store_name', Store::BASIC_STORE_NAME)->first() == null) {
+        if (Shop::where('shop_name', Shop::BASIC_SHOP_NAME)->first() == null) {
             $args['user_id'] = $userId;
-            $args['store_type'] = Store::TYPE_STORE;
-            $args['store_name'] = Store::BASIC_STORE_NAME;
+            $args['shop_type'] = Shop::TYPE_STORE;
+            $args['shop_name'] = Shop::BASIC_SHOP_NAME;
 
-            $storeHandler = new StoreHandler();
+            $storeHandler = new ShopHandler();
             $storeHandler->store($args);
         }
     }

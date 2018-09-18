@@ -73,12 +73,12 @@ class Goods extends DynamicModel
         return
             ($this->is_fare_free($totalPrice))
                 ? 0
-                : $this->orderable->getStore()->getDefaultDeliveryCompany()->pivot->delivery_fare;
+                : $this->orderable->getShop()->getDefaultDeliveryCompany()->pivot->delivery_fare;
     }
 
     public function is_fare_free($totalPrice)
     {
-        return $totalPrice >= $this->orderable->getStore()->getDefaultDeliveryCompany()->pivot->up_to_free;
+        return $totalPrice >= $this->orderable->getShop()->getDefaultDeliveryCompany()->pivot->up_to_free;
     }
 
 }
