@@ -77,15 +77,6 @@ class Plugin extends AbstractPlugin
      */
     public function checkUpdated()
     {
-        //TODO 테스트 코드 삭제
-        $checkedUpdate = false;
-        $userId = \Auth::user()->getId();
-
-        $store = Store::where('user_id', $userId)->first();
-        if ($store != null) {
-            $checkedUpdate = true;
-        }
-
-        return $checkedUpdate;
+        return true;
     }
 }

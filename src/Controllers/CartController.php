@@ -22,7 +22,7 @@ class CartController extends Controller
             'xero_commerce::views.cart',
             [
                 'title' => '장바구니',
-                'carts' => $this->cartService->getList()->groupBy('product_id'),
+                'carts' => $this->cartService->getList(),
                 'summary' => $this->cartService->summary()
             ]);
     }

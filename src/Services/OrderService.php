@@ -27,6 +27,6 @@ class OrderService
     private function getCartsFromRequest(Request $request)
     {
         $cartService = new CartService();
-        return $cartService->getCartsFromProduct($request->get('product_id'));
+        return $cartService->getCartsById($request->get('cart_id'));
     }
 }

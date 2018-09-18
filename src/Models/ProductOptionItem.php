@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 
-class ProductOptionItem extends DynamicModel
+class ProductOptionItem extends Orderable
 {
     const TYPE_DEFAULT_OPTION = 1;
     const TYPE_OPTION_ITEM = 2;
@@ -63,5 +63,44 @@ class ProductOptionItem extends DynamicModel
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    public function getInfo()
+    {
+        return [
+            $this->product->name,
+            $this->name,
+            '쇼핑몰 : '.$this->getStore()->store_name
+        ];
+    }
+
+    public function getOriginalPrice()
+    {
+        return $this->product->original_price + $this->addition_price;
+    }
+
+    public function getSellPrice()
+    {
+        return $this->product->sell_price + $this->addition_price;
+    }
+
+    public function getOptionList()
+    {
+        return $this->product->options;
+    }
+
+    public function getThumbnailSrc()
+    {
+        return 'https://www.xpressengine.io/plugins/official_homepage/assets/theme/img/feature_02.jpg';
+    }
+
+    public function getDescription()
+    {
+        return $this->product->description;
+    }
+
+    public function getStore()
+    {
+        return $this->product->store;
     }
 }

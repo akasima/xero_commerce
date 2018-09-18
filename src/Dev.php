@@ -81,8 +81,10 @@ class Dev
             $product->product_code = $this->faker->numerify('###########');
             $product->name = $this->faker->word;
             $product->original_price = $this->faker->numberBetween(1, 50) * 1000;
-            $product->sell_price = $this->faker->numberBetween(0, 5) * 500;
-            $product->discount_percentage = round(($product->sell_price * 100 / $product->original_price));
+            $product->sell_price = $product->original_price - ($product->original_price * rand(0, 10) / 100);
+            $product->discount_percentage = round(
+                (($product->original_price - $product->sell_price) * 100 / $product->original_price)
+            );
             $product->description = $this->faker->text(100);
             $product->state_display = Product::DISPLAY_VISIBLE;
             $product->state_deal = Product::DEAL_ON_SALE;

@@ -16,38 +16,33 @@
                 <th>배송비</th>
                 <th>주문금액</th>
             </tr>
-        </thead>
+        </thead>Ø
         <tbody>
-            @foreach($carts as $cartProduct)
+            @foreach($carts as $cart)
                 <tr>
                     <td>
-                        <input type="checkbox" name="product_id[]" value="{{$cartProduct->first()->option->product->id}}" checked="checked">
+                        <input type="checkbox" name="cart_id[]" value="{{$cart->id}}" checked="checked">
                     </td>
-                    <td><img src="https://www.xpressengine.io/plugins/official_homepage/assets/theme/img/feature_02.jpg" width="150px" height="150px" alt=""></td>
+                    <td><img src="{{$cart->getThumbnailSrc()}}" width="150px" height="150px" alt=""></td>
                     <td>
-                        {{$cartProduct->first()->option->product->name}} <button class="btn btn-default">옵션변경</button>
-                        <br>
-                        @foreach($cartProduct as $cartOption)
-                        <span style="color:grey">{{$cartOption->option->name}} / {{$cartOption->count}} 개</span>
-                            <a href="{{route('xero_commerce::cart.draw', ['cart'=>$cartOption->id])}}">x 해당 옵션 삭제</a>
-                            <br>
+                        @foreach($cart->renderGoodsInfo() as $key => $row)
+                            <span @if($key==1) style="color:grey" @endif>{{$row}}</span> <br>
                         @endforeach
-                        쇼핑몰 : {{$cartProduct->first()->option->product->store->store_name}}
                     </td>
                     <td>
-                        {{number_format($cartProduct->sum('option.product.original_price'))}} 원
+                        {{number_format($cart->getOriginalPrice())}} 원
                     </td>
                     <td>
-                        {{number_format($cartProduct->sum('option.product.sell_price'))}} 원
+                        {{number_format($cart->getDiscountPrice())}} 원
                     </td>
                     <td>
-                        {{$cartProduct->sum('count')}} 개
+                        {{$cart->getCount()}} 개
                     </td>
                     <td>
                         선불
                     </td>
                     <td>
-                        <b>{{number_format($cartProduct->sum('option.product.original_price') - $cartProduct->sum('option.product.sell_price'))}} 원</b> <br>
+                        <b>{{$cart->getSellPrice()}} 원</b> <br>
                         <button class="btn xe-btn-black">주문하기</button>
                         <button class="btn btn-default">삭제하기</button>
                     </td>
@@ -69,7 +64,7 @@
             </tr>
             <tr>
                 <td>{{number_format($summary['original_price'])}} 원</td>
-                <td>{{number_format($summary['sell_price'])}} 원</td>
+                <td>{{number_format($summary['original_price']-$summary['sell_price'])}} 원</td>
                 <td>{{number_format($summary['fare'])}} 원 <br>
                     <p>적립금 혜택 100원</p>
                 </td>
@@ -82,8 +77,3 @@
         <button class="xe-btn xe-btn-lg">쇼핑 계속하기</button>
     </div>
 </form>
-<script>
-    var submit = () => {
-
-    }
-</script>

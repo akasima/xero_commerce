@@ -25,4 +25,9 @@ class Store extends DynamicModel
                 ['delivery_fare', 'up_to_free']
             );
     }
+
+    public function getDefaultDeliveryCompany()
+    {
+        return $this->deliveryCompanys()->where('is_default', 1)->first();
+    }
 }

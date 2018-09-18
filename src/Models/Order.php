@@ -26,24 +26,9 @@ class Order extends DynamicModel
         '임시', '주문', '결제완료', '배송중', '배송완료','취소중', '취소완료', '교환중', '교환완료', '환불중', '환불완료'
     ];
 
-    public function products()
+    public function orderItems()
     {
-        return $this->belongsToMany(
-            'Xpressengine\Plugins\XeroCommerce\Models\Product',
-            'xero_commerce_option_order',
-            'order_id',
-            'product_id'
-        );
-    }
-
-    public function options()
-    {
-        return $this->belongsToMany(
-            'Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem',
-            'xero_commerce_option_order',
-            'order_id',
-            'option_id'
-        )->withPivot(['product_id', 'count', 'delivery_id'])->withTimestamps();
+        return $this->hasMany(OrderItem::class);
     }
 
     public function payment()
