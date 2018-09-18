@@ -58,6 +58,7 @@ class Database
             $table->integer('alert_stock')->nullable();
             $table->integer('state_display');
             $table->integer('state_deal');
+            $table->softDeletes();
             $table->timestamps();
         });
 

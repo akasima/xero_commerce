@@ -2,10 +2,13 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 class ProductOptionItem extends Orderable
 {
+    use SoftDeletes;
+
     const TYPE_DEFAULT_OPTION = 1;
     const TYPE_OPTION_ITEM = 2;
     const TYPE_ADDITION_ITEM = 3;

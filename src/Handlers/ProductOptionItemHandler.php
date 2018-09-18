@@ -14,4 +14,9 @@ class ProductOptionItemHandler
 
         $newProductOptionItem->save();
     }
+
+    public function destroy(ProductOptionItem $item)
+    {
+        $item->delete();
+    }
 }

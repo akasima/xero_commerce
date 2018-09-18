@@ -68,4 +68,19 @@ class ProductSettingService
 
         return $newProductId;
     }
+
+    public function update(Request $request, $productId)
+    {
+        $args = $request->all();
+        $product = $this->productHandler->getProduct($productId);
+
+        $this->productHandler->update($product, $args);
+    }
+
+    public function remove($productId)
+    {
+        $product = $this->productHandler->getProduct($productId);
+
+        $this->productHandler->destroy($product);
+    }
 }

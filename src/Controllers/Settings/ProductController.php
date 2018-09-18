@@ -58,4 +58,29 @@ class ProductController extends Controller
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
+
+    public function edit(Request $request, $productId)
+    {
+        $product = $this->productSettingService->getProduct($productId);
+
+        $displayStates = Product::getDisplayStates();
+        $dealStates = Product::getDealStates();
+
+        return XePresenter::make('xero_commerce::views.setting.product.edit', compact('product', 'displayStates', 'dealStates'));
+    }
+
+    public function update(Request $request, $productId)
+    {
+        $this->productSettingService->update($request, $productId);
+
+        return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
+    }
+
+    public function remove(Request $request, $productId)
+    {
+        $this->productSettingService->remove($productId);
+        $this->productOptionItemSettingService->removeProductOptionItems($productId);
+
+        return redirect()->route('xero_commerce::setting.product.index');
+    }
 }
