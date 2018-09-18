@@ -52,4 +52,13 @@ class ProductOptionItemSettingService
 
         $this->productOptionItemHandler->store($productOptionItemArgs);
     }
+
+    public function removeProductOptionItems($productId)
+    {
+        $items = ProductOptionItem::where('product_id', $productId)->get();
+
+        foreach ($items as $item) {
+            $this->productOptionItemHandler->destroy($item);
+        }
+    }
 }

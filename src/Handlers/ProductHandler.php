@@ -77,4 +77,21 @@ class ProductHandler
 
         return $newProduct->id;
     }
+
+    public function update(Product $product, $args)
+    {
+        $attributes = $product->getAttributes();
+        foreach ($args as $name => $value) {
+            if (array_key_exists($name, $attributes) === true) {
+                $product->{$name} = $value;
+            }
+        }
+
+        $product->save();
+    }
+
+    public function destroy(Product $product)
+    {
+        $product->delete();
+    }
 }

@@ -27,7 +27,7 @@ class Resources
                 'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers\\Settings'
             ], function () {
                 //상품관리
-                Route::group(['prefix' => 'product'], function () {
+                Route::group(['prefix' => 'products'], function () {
                     Route::get('/', ['as' => 'xero_commerce::setting.product.index', 'uses' => 'ProductController@index',
                         'settings_menu' => 'xero_commerce.product.list']);
                     Route::get('/create', ['as' => 'xero_commerce::setting.product.create',
@@ -36,6 +36,12 @@ class Resources
                         'uses' => 'ProductController@store']);
                     Route::get('/{productId}', ['as' => 'xero_commerce::setting.product.show',
                         'uses' => 'ProductController@show']);
+                    Route::get('/{productId}/edit', ['as' => 'xero_commerce::setting.product.edit',
+                        'uses' => 'ProductController@edit']);
+                    Route::post('/{productId}/update', ['as' => 'xero_commerce::setting.product.update',
+                        'uses' => 'ProductController@update']);
+                    Route::post('/{productId}/remove', ['as' => 'xero_commerce::setting.product.remove',
+                        'uses' => 'ProductController@remove']);
                 });
 
                 //분류 관리
@@ -53,16 +59,25 @@ class Resources
                 });
 
                 //쇼핑몰 설정
-                Route::group(['prefix' => 'shop_config'], function () {
+                Route::group(['prefix' => 'configure'], function () {
+                    //쇼핑몰 환경 설정
                     Route::get('/create', ['as' => 'xero_commerce::setting.config.create',
                         'uses' => 'ShopConfigController@create',
                         'settings_menu' => 'xero_commerce.config.shopInfo']);
-
                     Route::post('/store', ['as' => 'xero_commerce::setting.config.store',
                         'uses' => 'ShopConfigController@store']);
+
+                    //입점몰 관리
+                    Route::get('/storeList', ['as' => 'xero_commerce::setting.config.store.index',
+                        'uses' => 'StoreController@index', 'settings_menu' => 'xero_commerce.config.storeInfo']);
+                    Route::get('/aaa/create', ['as' => 'xero_commerce::setting.config.store.create',
+                        'uses' => 'StoreController@create']);
+                    Route::post('/aaa/store', ['as' => 'xero_commerce::setting.config.store.store',
+                        'uses' => 'StoreController@store']);
                 });
             });
         });
+
         Route::fixed('xero_commerce', function () {
             Route::group([
                 'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers'
@@ -163,11 +178,12 @@ class Resources
         $userId = \Auth::user()->getId();
 
         if (Store::where('store_name', Store::BASIC_STORE_NAME)->first() == null) {
-            $newStore = new Store();
-            $newStore['user_id'] = $userId;
-            $newStore['store_type'] = Store::TYPE_STORE;
-            $newStore['store_name'] = Store::BASIC_STORE_NAME;
-            $newStore->save();
+            $args['user_id'] = $userId;
+            $args['store_type'] = Store::TYPE_STORE;
+            $args['store_name'] = Store::BASIC_STORE_NAME;
+
+            $storeHandler = new StoreHandler();
+            $storeHandler->store($args);
         }
     }
 
@@ -246,7 +262,7 @@ class Resources
                 'title' => '전체 주문내역',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100011
+                'ordering' => 100021
             ],
         ];
     }
@@ -263,12 +279,17 @@ class Resources
                 'description' => '',
                 'ordering' => 10003
             ],
-
             'xero_commerce.config.shopInfo' => [
                 'title' => '쇼핑몰 정보 등록',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100011
+                'ordering' => 100031
+            ],
+            'xero_commerce.config.storeInfo' => [
+                'title' => '입점몰 정보',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100032
             ],
         ];
     }
