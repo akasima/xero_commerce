@@ -29,7 +29,7 @@
                     @foreach ($shops as $shop)
                         <li>
                             <div>
-                                <span>{{ $shop->shop_name }}</span>
+                                <a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_name }}</span></a>
                             </div>
                         </li>
                     @endforeach

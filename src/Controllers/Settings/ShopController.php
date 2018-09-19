@@ -57,6 +57,65 @@ class ShopController extends Controller
         $newShop = $this->shopService->create($request);
         $newShopUser = $this->shopUserService->create($request, $newShop->id);
 
+        return redirect()->route('xero_commerce::setting.config.shop.show', ['shopId' => $newShop->id]);
+    }
+
+    /**
+     * @param Request $request request
+     * @param int     $shopId  shopId
+     *
+     * @return XePresenter
+     */
+    public function show(Request $request, $shopId)
+    {
+        $shop = $this->shopService->getShop($shopId);
+
+        return XePresenter::make('xero_commerce::views.setting.shop.show', compact('shop'));
+    }
+
+    /**
+     * @param Request $request request
+     * @param int     $shopId  shopId
+     *
+     * @return mixed
+     */
+    public function edit(Request $request, $shopId)
+    {
+        $shop = $this->shopService->getShop($shopId);
+        $shopTypes = Shop::getShopTypes();
+
+        return XePresenter::make('xero_commerce::views.setting.shop.edit', compact('shop', 'shopTypes'));
+    }
+
+    /**
+     * @param Request $request request
+     * @param int     $shopId  shopId
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, $shopId)
+    {
+        $this->shopService->update($request, $shopId);
+
         return redirect()->route('xero_commerce::setting.config.shop.index');
+    }
+
+    /**
+     * @param Request $request request
+     * @param int     $shopId  shopId
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function remove(Request $request, $shopId)
+    {
+        if ($this->shopService->remove($shopId) == true) {
+            $redirect = redirect()->route('xero_commerce::setting.config.shop.index')
+                ->with('alert', ['type' => 'success', 'message' => '입점몰이 삭제 되었습니다.']);
+        } else {
+            $redirect = redirect()->route('xero_commerce::setting.config.shop.index')
+                ->with('alert', ['type' => 'danger', 'message' => '기본 입점몰은 삭제 할 수 없습니다.']);
+        }
+
+        return $redirect;
     }
 }

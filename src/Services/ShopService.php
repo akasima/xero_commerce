@@ -68,4 +68,48 @@ class ShopService
 
         return $newShop;
     }
+
+    /**
+     * @param int $shopId shopId
+     *
+     * @return mixed
+     */
+    public function getShop($shopId)
+    {
+        $shop = $this->handler->getShop($shopId);
+
+        return $shop;
+    }
+
+    /**
+     * @param Request $request request
+     * @param int     $shopId  shopId
+     *
+     * @return void
+     */
+    public function update(Request $request, $shopId)
+    {
+        $args = $request->all();
+        $shop = $this->handler->getShop($shopId);
+
+        $this->handler->update($args, $shop);
+    }
+
+    /**
+     * @param int $shopId shopId
+     *
+     * @return bool
+     */
+    public function remove($shopId)
+    {
+        $shop = $this->handler->getShop($shopId);
+
+        if ($shop->isBasicShop() === true) {
+            return false;
+        }
+
+        $this->handler->destroy($shopId);
+
+        return true;
+    }
 }

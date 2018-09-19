@@ -75,6 +75,14 @@ class Resources
                         'uses' => 'ShopController@create']);
                     Route::post('/shop/store', ['as' => 'xero_commerce::setting.config.shop.store',
                         'uses' => 'ShopController@store']);
+                    Route::get('/shop/{shopId}', ['as' => 'xero_commerce::setting.config.shop.show',
+                        'uses' => 'ShopController@show']);
+                    Route::post('/shop/remove/{shopId}', ['as' => 'xero_commerce::setting.config.shop.remove',
+                        'uses' => 'ShopController@remove']);
+                    Route::get('/shop/edit/{shopId}', ['as' => 'xero_commerce::setting.config.shop.edit',
+                        'uses' => 'ShopController@edit']);
+                    Route::post('/shop/update/{shopId}', ['as' => 'xero_commerce::setting.config.shop.update',
+                        'uses' => 'ShopController@update']);
                 });
             });
         });

@@ -34,6 +34,18 @@ class Shop extends DynamicModel
         ];
     }
 
+    /**
+     * @return bool
+     */
+    public function isBasicShop()
+    {
+        if ($this->shop_type == self::TYPE_BASIC_SHOP) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function deliveryCompanys()
     {
         return $this->belongsToMany(

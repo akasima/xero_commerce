@@ -23,20 +23,20 @@ class ShopUserService
      * @param Request $request request
      * @param int     $shopId  shopId
      *
-     * @return ShopUser|void
+     * @return ShopUser|bool
      */
     public function create(Request $request, $shopId)
     {
         $args = $request->all();
 
         if (isset($args['user_id']) === false) {
-            return;
+            return false;
         }
 
         $user = User::where('id', $args['user_id'])->first();
 
         if ($user === null) {
-            return;
+            return false;
         }
 
         $args['shop_id'] = $shopId;

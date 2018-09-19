@@ -54,4 +54,44 @@ class ShopHandler
 
         return $query;
     }
+
+    /**
+     * @param array $args args
+     * @param Shop  $shop shop
+     *
+     * @return void
+     */
+    public function update(array $args, Shop $shop)
+    {
+        $attributes = $shop->getAttributes();
+        foreach ($args as $key => $value) {
+            if (array_key_exists($key, $attributes)) {
+                $shop->{$key} = $value;
+            }
+        }
+
+        $shop->save();
+    }
+
+    /**
+     * @param int $shopId shopId
+     *
+     * @return Shop|null
+     */
+    public function getShop($shopId)
+    {
+        $shop = Shop::where('id', $shopId)->first();
+
+        return $shop;
+    }
+
+    /**
+     * @param int $shopId shopId
+     *
+     * @return void
+     */
+    public function destroy($shopId)
+    {
+        Shop::where('id', $shopId)->delete();
+    }
 }
