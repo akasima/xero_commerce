@@ -1,11 +1,12 @@
 <?php
 
+
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 
-class Delivery extends DynamicModel
+abstract class OrderGroup extends DynamicModel
 {
-    protected $table='xero_commerce_delivery';
+    abstract function getCount();
 }

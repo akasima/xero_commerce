@@ -15,31 +15,28 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($order->options->groupBy('product_id') as $cartProduct)
+        @foreach($order->orderItems as $items)
             <tr>
-                <td><img src="https://www.xpressengine.io/plugins/official_homepage/assets/theme/img/feature_02.jpg" width="150px" height="150px" alt=""></td>
+                <td><img src="{{$items->getThumbnailSrc()}}" width="150px" height="150px" alt=""></td>
                 <td>
-                    {{$cartProduct->first()->product->name}}
-                    <br>
-                    @foreach($cartProduct as $cartOption)
-                        <span style="color:grey">{{$cartOption->name}} / {{$cartOption->pivot->count}} 개</span>
-                        <br>
+                    @foreach($items->renderGoodsInfo() as $key => $row)
+                        <span @if($key==1) style="color:grey" @endif>{{$row}}</span> <br>
                     @endforeach
                 </td>
                 <td>
-                    {{number_format($cartProduct->sum('product.original_price'))}} 원
+                    {{number_format($items->getOriginalPrice())}} 원
                 </td>
                 <td>
-                    {{number_format($cartProduct->sum('product.sell_price'))}} 원
+                    {{number_format($items->getDiscountPrice())}} 원
                 </td>
                 <td>
-                    {{$cartProduct->sum('pivot.count')}} 개
+                    {{$items->getCount()}} 개
                 </td>
                 <td>
-                    0 원
+                    선불
                 </td>
                 <td>
-                    <b>{{number_format($cartProduct->sum('product.original_price') - $cartProduct->sum('product.sell_price'))}} 원</b>
+                    <b>{{number_format($items->getSellPrice())}} 원</b>
                 </td>
             </tr>
         @endforeach
@@ -128,11 +125,11 @@
                     <table class="xe-table">
                         <tr>
                             <th>상품금액</th>
-                            <td>{{number_format($order->options->sum('pivot.original_price'))}}원</td>
+                            <td>{{number_format($summary['original_price'])}} 원</td>
                         </tr>
                         <tr>
                             <th>할인금액</th>
-                            <td>{{number_format($order->options->sum('pivot.product.sell_price'))}}원</td>
+                            <td>{{number_format($summary['discount_price'])}} 원</td>
                         </tr>
                         <tr>
                             <th>적립금 사용</th>
@@ -140,15 +137,15 @@
                         </tr>
                         <tr>
                             <th>배송비</th>
-                            <td>0원</td>
+                            <td>{{number_format($summary['fare'])}} 원</td>
                         </tr>
                         <tr>
                             <th>최종 결제금액</th>
-                            <td>{{number_format($order->options->sum('product.original_price') - $order->options->sum('product.sell_price'))}}원</td>
+                            <td>{{number_format($summary['sum'])}} 원</td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <button class="xe-btn xe-btn-lg xe-btn-black xe-btn-block">결제하기</button>
+                                <a href="{{route('xero_commerce::order.fail', ['order'=>$order->id])}}"><button type="button" class="xe-btn xe-btn-lg xe-btn-black xe-btn-block">결제하기</button></a>
                             </td>
                         </tr>
                     </table>

@@ -16,7 +16,7 @@
                 <th>배송비</th>
                 <th>주문금액</th>
             </tr>
-        </thead>Ø
+        </thead>
         <tbody>
             @foreach($carts as $cart)
                 <tr>
@@ -42,7 +42,7 @@
                         선불
                     </td>
                     <td>
-                        <b>{{$cart->getSellPrice()}} 원</b> <br>
+                        <b>{{number_format($cart->getSellPrice())}} 원</b> <br>
                         <button class="btn xe-btn-black">주문하기</button>
                         <button class="btn btn-default">삭제하기</button>
                     </td>
@@ -64,7 +64,7 @@
             </tr>
             <tr>
                 <td>{{number_format($summary['original_price'])}} 원</td>
-                <td>{{number_format($summary['original_price']-$summary['sell_price'])}} 원</td>
+                <td>{{number_format($summary['discount_price'])}} 원</td>
                 <td>{{number_format($summary['fare'])}} 원 <br>
                     <p>적립금 혜택 100원</p>
                 </td>
@@ -72,8 +72,10 @@
             </tr>
         </tbody>
     </table>
-    <div>
-        <button class="xe-btn xe-btn-black xe-btn-lg" type="submit">구매하기</button>
-        <button class="xe-btn xe-btn-lg">쇼핑 계속하기</button>
+    <div style="text-align: center" class="xe-col-lg-2 xe-col-lg-offset-4">
+        <button class="xe-btn xe-btn-black xe-btn-lg xe-btn-block" type="submit">구매하기</button>
+    </div>
+    <div style="text-align: center" class="xe-col-lg-2">
+        <a href="{{route('xero_commerce::order.index')}}"><button class="xe-btn xe-btn-lg xe-btn-block" type="button">쇼핑 계속하기</button></a>
     </div>
 </form>

@@ -93,13 +93,15 @@ class Database
             $table->morphs('orderable');
             $table->integer('original_price');
             $table->integer('sell_price');
+            $table->smallInteger('code');
             $table->integer('count');
             $table->timestamps();
         });
 
-        Schema::create('xero_commerce_delivery', function (Blueprint $table) {
+        Schema::create('xero_commerce_order_delivery', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('option_order_id');
+            $table->integer('order_item_id');
+            $table->smallInteger('status');
             $table->integer('ship_no');
             $table->integer('company_id');
             $table->string('recv_name');

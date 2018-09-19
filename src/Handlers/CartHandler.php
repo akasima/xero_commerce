@@ -5,11 +5,11 @@ namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Plugins\XeroCommerce\Goods;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
-use Xpressengine\Plugins\XeroCommerce\Models\Orderable;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderUnit;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\User\Models\User;
 
-class CartHandler
+class CartHandler extends OrderUnitHandler
 {
     public function getCartList()
     {
@@ -26,7 +26,7 @@ class CartHandler
         return Cart::where('user_id', Auth::id() ?: User::first()->id)->with('orderable');
     }
 
-    public function addCart(Orderable $orderable, $count = 1)
+    public function addCart(OrderUnit $orderable, $count = 1)
     {
         $cart = new Cart();
         $cart->user_id = Auth::id() ?: User::first()->id;
@@ -49,31 +49,8 @@ class CartHandler
         return $this->drawCart($cart_ids);
     }
 
-    public function cartSummary($product_ids = null)
+    public function getGoodsList()
     {
-        $carts = $this->getCartList();
-        $storeCarts = $carts->groupBy(function($cart){
-            return $cart->orderable->getStore()->id;
-        });
-        $origin =
-            $carts->sum(function (Cart $cart) {
-                return $cart->getOriginalPrice();
-            });
-        $sell = $carts->sum(function (Cart $cart) {
-            return $cart->getSellPrice();
-        });
-        $fare = $storeCarts->sum(function ($storeItems) {
-            $totalPrice = $storeItems->sum(function($cart){
-                return $cart->getSellPrice();
-            });
-            return $storeItems->first()->calculateFare($totalPrice);
-        });
-        $sum = $sell + $fare;
-        return [
-            'original_price' => $origin,
-            'sell_price' => $sell,
-            'fare' => $fare,
-            'sum' => $sum
-        ];
+        return $this->getCartList();
     }
 }

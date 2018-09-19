@@ -94,9 +94,17 @@ class Resources
                     'uses' => 'OrderController@register',
                     'as' => 'xero_commerce::order.register'
                 ]);
+                Route::get('/order/{order}', [
+                    'uses' => 'OrderController@registerAgain',
+                    'as' => 'xero_commerce::order.register.again'
+                ]);
                 Route::get('/order', [
                     'uses' => 'OrderController@index',
                     'as' => 'xero_commerce::order.index'
+                ]);
+                Route::get('/order/fail/{order}', [
+                    'uses' => 'OrderController@fail',
+                    'as' => 'xero_commerce::order.fail'
                 ]);
             });
         });

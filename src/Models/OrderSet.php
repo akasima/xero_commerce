@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 
-class Goods extends DynamicModel
+class OrderSet extends DynamicModel
 {
     public function orderable()
     {

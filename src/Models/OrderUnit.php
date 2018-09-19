@@ -5,11 +5,11 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 
-abstract class Orderable extends DynamicModel
+abstract class OrderUnit extends DynamicModel
 {
     public function goods()
     {
-        return $this->morphMany(Goods::class, 'orderable');
+        return $this->morphMany(OrderSet::class, 'orderable');
     }
 
     abstract public function getInfo();
@@ -30,4 +30,6 @@ abstract class Orderable extends DynamicModel
     abstract public function getDescription();
 
     abstract public function getStore();
+
+    abstract public function getFare();
 }

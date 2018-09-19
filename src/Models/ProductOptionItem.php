@@ -5,7 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
-class ProductOptionItem extends Orderable
+class ProductOptionItem extends OrderUnit
 {
     use SoftDeletes;
 
@@ -105,5 +105,10 @@ class ProductOptionItem extends Orderable
     public function getStore()
     {
         return $this->product->store;
+    }
+
+    public function getFare()
+    {
+        // TODO: Implement getFare() method.
     }
 }

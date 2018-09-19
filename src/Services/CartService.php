@@ -6,7 +6,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
-use Xpressengine\Plugins\XeroCommerce\Models\Orderable;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderUnit;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 
 class CartService
@@ -26,7 +26,7 @@ class CartService
         return $this->cartHandler->getCartList();
     }
 
-    public function addList(Orderable $option, $count = 1)
+    public function addList(OrderUnit $option, $count = 1)
     {
         return $this->cartHandler->addCart($option, $count);
     }
@@ -53,7 +53,7 @@ class CartService
 
     public function summary()
     {
-        return $this->cartHandler->cartSummary();
+        return $this->cartHandler->getSummary();
     }
 
 }
