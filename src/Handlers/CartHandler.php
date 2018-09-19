@@ -3,10 +3,8 @@
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
-use Xpressengine\Plugins\XeroCommerce\Goods;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderUnit;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\User\Models\User;
 
 class CartHandler extends OrderUnitHandler

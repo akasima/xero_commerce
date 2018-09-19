@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Schema;
 use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
-use Xpressengine\Plugins\XeroCommerce\Models\Store;
+use Xpressengine\Plugins\XeroCommerce\Models\Shop;
+use Xpressengine\Plugins\XeroCommerce\Models\ShopUser;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
@@ -57,27 +58,48 @@ class Dev
         Resources::setConfig();
     }
 
-    public function makeStore($count = 1)
+    public function makeShop($count = 1)
     {
+        $engFaker = Factory::create(('en'));
+        $users = User::get()->toArray();
+
         for ($i = 0; $i < $count; $i++) {
-            $store = new Store();
-            $store->store_name = $this->faker->domainName;
-            $store->user_id = User::first()->id;
-            $store->store_type = 1;
-            $store->save();
-            $store->deliveryCompanys()->save(
+            $shop = new Shop();
+            $shop->shop_name = $this->faker->name;
+            $shop->shop_eng_name = $engFaker->firstName;
+            if ($i == 0) {
+                $shopType = Shop::TYPE_BASIC_SHOP;
+            } else {
+                $shopType = $this->faker->numberBetween(Shop::TYPE_STORE, Shop::TYPE_INDIVIDUAL);
+            }
+            $shop->shop_type = $shopType;
+            $shop->state_approval = $this->faker->numberBetween(Shop::APPROVAL_WAITING, Shop::APPROVAL_REJECT);
+            $shop->save();
+
+            $shopUser = new ShopUser();
+            $shopUser['shop_id'] = $shop->id;
+
+            if ($shop->shop_type == Shop::TYPE_BASIC_SHOP) {
+                $userId = User::where('display_name', 'admin')->orWhere('display_name', 'hero')->first()['id'];
+            } else {
+                $userId = $users[(rand(0, count($users) - 1))]['id'];
+            }
+            $shopUser['user_id'] = $userId;
+            $shopUser->save();
+
+            $shop->deliveryCompanys()->save(
                 DeliveryCompany::first(),
                 ['delivery_fare' => '3000', 'up_to_free' => '50000', 'is_default' => 1]
             );
         }
-        return Store::all();
+        return Shop::all();
     }
 
     public function makeProduct($count = 1)
     {
         for ($i = 0; $i < $count; $i++) {
             $product = new Product();
-            $product->store_id = rand(1, Store::count());
+            $product->shop_id = rand(1, Shop::count());
             $product->product_code = $this->faker->numerify('###########');
             $product->name = $this->faker->word;
             $product->original_price = $this->faker->numberBetween(1, 50) * 1000;
@@ -120,7 +142,7 @@ class Dev
     public function setting()
     {
         $this->makeDeliveryCompany();
-        $this->makeStore(5);
+        $this->makeShop(5);
         $this->makeProduct(10);
         $s = new CartService();
         $rand1 = rand(1, ProductOptionItem::count());

@@ -5,7 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Services;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
-use Xpressengine\Plugins\XeroCommerce\Models\Store;
+use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 
 class ProductSettingService
 {
@@ -62,7 +62,7 @@ class ProductSettingService
         }
 
         //TODO 스토어 임시 하드코딩
-        $productArgs['store_id'] = Store::where('store_name', 'basic store')->first()['id'];
+        $productArgs['shop_id'] = Shop::where('shop_name', Shop::BASIC_SHOP_NAME)->first()['id'];
 
         $newProductId = $this->productHandler->store($productArgs);
 

@@ -18,7 +18,7 @@ class Product extends DynamicModel
 
     protected $table = 'xero_commerce_products';
 
-    protected $fillable = ['store_id', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
+    protected $fillable = ['shop_id', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
         'min_buy_count', 'max_buy_count', 'description', 'state_display', 'state_deal'];
 
     /**
@@ -52,8 +52,8 @@ class Product extends DynamicModel
         return $this->hasMany(ProductOptionItem::class, 'product_id', 'id');
     }
 
-    public function store()
+    public function shop()
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Shop::class);
     }
 }

@@ -29,7 +29,7 @@ abstract class OrderUnit extends DynamicModel
 
     abstract public function getDescription();
 
-    abstract public function getStore();
-
     abstract public function getFare();
+
+    abstract public function getShop();
 }

@@ -9,16 +9,27 @@ class Database
 {
     public static function create()
     {
-        Schema::create('xero_commerce_store', function (Blueprint $table) {
+        Schema::create('xero_commerce_shop', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id', 36);
-            $table->string('store_name');
-            $table->integer('store_type');
+            $table->string('shop_name');
+            $table->string('shop_eng_name');
+            $table->string('logo_path')->nullable();
+            $table->string('background_path')->nullable();
+            $table->integer('shop_type');
+            $table->integer('state_approval');
+            $table->softDeletes();
+            $table->timestamps();
         });
 
-        Schema::create('xero_commerce_store_delivery', function (Blueprint $table) {
+        Schema::create('xero_commerce_shop_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('store_id');
+            $table->integer('shop_id');
+            $table->string('user_id', 36);
+        });
+
+        Schema::create('xero_commerce_shop_delivery', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('shop_id');
             $table->integer('delivery_company_id');
             $table->integer('delivery_fare');
             $table->integer('up_to_free');
@@ -27,7 +38,7 @@ class Database
 
         Schema::create('xero_commerce_products', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('store_id');
+            $table->integer('shop_id');
             $table->integer('product_code');
             $table->string('name');
             $table->integer('original_price');

@@ -2,7 +2,6 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Services;
 
-
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
