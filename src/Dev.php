@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce;
 use Faker\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
@@ -144,10 +145,12 @@ class Dev
         $this->makeDeliveryCompany();
         $this->makeShop(5);
         $this->makeProduct(10);
-        $s = new CartService();
+        $s = new CartHandler();
         $rand1 = rand(1, ProductOptionItem::count());
         $rand2 = rand(1, ProductOptionItem::count());
-        $s->addList(ProductOptionItem::find($rand1), $rand2);
-        $s->addList(ProductOptionItem::find($rand2), $rand1);
+        $cg1 = $s->makeCartGroup(ProductOptionItem::find($rand1), $rand2);
+        $cg2 = $s->makeCartGroup(ProductOptionItem::find($rand2), $rand1);
+        $s->addCart(ProductOptionItem::find($rand1)->product, collect([$cg1]));
+//        $s->addCart(ProductOptionItem::find($rand2)->product, collect([$cg2]));
     }
 }

@@ -3,8 +3,11 @@
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
 use App\Http\Controllers\Controller;
+use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\SellType;
+use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 
 class CartController extends Controller
@@ -25,12 +28,6 @@ class CartController extends Controller
                 'carts' => $this->cartService->getList(),
                 'summary' => $this->cartService->summary()
             ]);
-    }
-
-    public function add(ProductOptionItem $optionItem)
-    {
-        $this->cartService->addList($optionItem);
-        return redirect()->route('xero_commerce::cart.index');
     }
 
     public function draw(Cart $cart)

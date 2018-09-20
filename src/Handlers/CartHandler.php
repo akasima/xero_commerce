@@ -3,11 +3,14 @@
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
+use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
-use Xpressengine\Plugins\XeroCommerce\Models\OrderUnit;
+use Xpressengine\Plugins\XeroCommerce\Models\CartGroup;
+use Xpressengine\Plugins\XeroCommerce\Models\SellType;
+use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\User\Models\User;
 
-class CartHandler extends OrderUnitHandler
+class CartHandler extends SellSetHandler
 {
     public function getCartList()
     {
@@ -21,16 +24,18 @@ class CartHandler extends OrderUnitHandler
 
     private function getCartQuery()
     {
-        return Cart::where('user_id', Auth::id() ?: User::first()->id)->with('orderable');
+        return Cart::where('user_id', Auth::id() ?: User::first()->id);
     }
 
-    public function addCart(OrderUnit $orderable, $count = 1)
+    public function addCart(SellType $sellType, $cartGroupList)
     {
         $cart = new Cart();
         $cart->user_id = Auth::id() ?: User::first()->id;
-        $orderable->goods()->save($cart);
-        $cart->count = $count;
+        $sellType->carts()->save($cart);
         $cart->save();
+        $cartGroupList->each(function (CartGroup $cartGroup) use($cart) {
+            $cart->addGroup($cartGroup);
+        });
     }
 
     public function drawCart($cart_id)
@@ -47,8 +52,17 @@ class CartHandler extends OrderUnitHandler
         return $this->drawCart($cart_ids);
     }
 
-    public function getGoodsList()
+    public function getSellSetList()
     {
         return $this->getCartList();
+    }
+
+    public function makeCartGroup(SellUnit $sellUnit, $count)
+    {
+        $cartGroup = new CartGroup();
+        $sellUnit->cartGroup()->save($cartGroup);
+        $cartGroup->setCount($count);
+        $cartGroup->save();
+        return $cartGroup;
     }
 }

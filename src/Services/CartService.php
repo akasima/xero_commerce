@@ -4,10 +4,11 @@ namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 
 
+use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
-use Xpressengine\Plugins\XeroCommerce\Models\OrderUnit;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\SellType;
+use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 
 class CartService
 {
@@ -19,6 +20,7 @@ class CartService
     public function __construct()
     {
         $this->cartHandler = app('xero_commerce.cartHandler');
+
     }
 
     public function getList()
@@ -26,9 +28,13 @@ class CartService
         return $this->cartHandler->getCartList();
     }
 
-    public function addList(OrderUnit $option, $count = 1)
+    public function addList(Request $request, SellType $sellType, SellUnit $sellUnit)
     {
-        return $this->cartHandler->addCart($option, $count);
+        $parms = $request->get('sell_units');
+        $cartGroupList = collect($parms)->map(function($parm) use($sellUnit){
+           return $this->cartHandler->makeCartGroup($sellUnit->find($parm['unit_id']), $parm['count']);
+        });
+        return $this->cartHandler->addCart($sellType->find($parms['sell_type_id']), $cartGroupList);
     }
 
     public function drawList(Cart $cart)
@@ -39,11 +45,6 @@ class CartService
     public function resetList()
     {
         return $this->cartHandler->resetCart();
-    }
-
-    public function getCartsFromProduct($product_ids)
-    {
-        return $this->cartHandler->getCartListByProductIds($product_ids)->pluck('id');
     }
 
     public function getCartsById($cart_ids)

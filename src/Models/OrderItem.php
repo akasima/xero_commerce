@@ -3,7 +3,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
-class OrderItem extends OrderSet
+class OrderItem extends SellSet
 {
     protected $table='xero_commerce_order_item';
 
@@ -12,18 +12,23 @@ class OrderItem extends OrderSet
     const REFUNDING = 3;
     const REFUNDED = 4;
 
-    public function getEachOriginalPrice()
+
+    public function sellGroups()
     {
-        return $this->original_price / $this->getCount();
+        return $this->hasMany(OrderItemGroup::class);
     }
 
-    public function getEachSellPrice()
+    /**
+     * @return array
+     */
+    public function renderInformation()
     {
-        return $this->sell_price / $this->getCount();
-    }
-
-    public function delivery()
-    {
-        return $this->hasOne(OrderDelivery::class);
+        $row=[];
+        $row []= $this->renderSpanBr($this->sellType->getName());
+        $this->sellGroups->each(function(SellGroup $group) use(&$row){
+            $row []= $this->renderSpanBr($group->sellUnit->getName() . ' / ' . $group->getCount() . '개', "color: grey");
+        });
+        $row []= $this->renderSpanBr($this->sellType->getStore()->store_name);
+        return $row;
     }
 }

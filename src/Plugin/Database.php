@@ -84,9 +84,15 @@ class Database
         Schema::create('xero_commerce_cart', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 36);
-            $table->morphs('orderable');
-            $table->integer('count');
+            $table->morphs('type');
             $table->timestamps();
+        });
+
+        Schema::create('xero_commerce_cart_group', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('cart_id');
+            $table->morphs('unit');
+            $table->integer('count');
         });
 
         Schema::create('xero_commerce_wish', function (Blueprint $table) {
@@ -101,12 +107,19 @@ class Database
             $table->increments('id');
             $table->integer('order_id');
             $table->integer('delivery_id');
-            $table->morphs('orderable');
+            $table->morphs('type');
             $table->integer('original_price');
             $table->integer('sell_price');
             $table->smallInteger('code');
-            $table->integer('count');
             $table->timestamps();
+        });
+
+
+        Schema::create('xero_commerce_order_item_group', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('order_item_id');
+            $table->morphs('unit');
+            $table->integer('count');
         });
 
         Schema::create('xero_commerce_order_delivery', function (Blueprint $table) {

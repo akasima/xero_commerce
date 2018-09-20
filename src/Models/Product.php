@@ -5,7 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
-class Product extends DynamicModel
+class Product extends SellType
 {
     use SoftDeletes;
 
@@ -55,5 +55,72 @@ class Product extends DynamicModel
     public function shop()
     {
         return $this->belongsTo(Shop::class);
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getInfo()
+    {
+        return $this->description;
+    }
+
+    public function getFare()
+    {
+        // TODO: Implement getFare() method.
+        return 0;
+    }
+
+    public function getShop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
+    public function getThumbnailSrc()
+    {
+        return 'https://www.xpressengine.io/plugins/official_homepage/assets/theme/img/feature_02.jpg';
+    }
+
+    function orderUnits()
+    {
+        return $this->hasMany(ProductOptionItem::class);
+    }
+
+    /**
+     * @return callable
+     */
+    function getCountMethod()
+    {
+        return function ($sellGroupCollection) {
+            return $sellGroupCollection->sum(function(SellGroup $sellGroup){
+                return $sellGroup->getCount();
+            });
+        };
+    }
+
+    /**
+     * @return callable
+     */
+    function getOriginalPriceMethod()
+    {
+        return function ($sellGroupCollection) {
+            return $sellGroupCollection->sum(function(SellGroup $sellGroup){
+                return $sellGroup->getOriginalPrice();
+            });
+        };
+    }
+
+    /**
+     * @return callable
+     */
+    function getSellPriceMethod()
+    {
+        return function ($sellGroupCollection) {
+            return $sellGroupCollection->sum(function(SellGroup $sellGroup){
+                return $sellGroup->getSellPrice();
+            });
+        };
     }
 }

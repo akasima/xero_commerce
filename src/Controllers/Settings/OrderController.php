@@ -3,12 +3,17 @@
 namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 
 class OrderController extends Controller
 {
-    /**
-     * @return mixed
-     */
+    protected $orderService;
+
+    public function __construct()
+    {
+        $this->orderService = new OrderService();
+    }
+
     public function index()
     {
         return \XePresenter::make('xero_commerce::views.index', ['title' => 'xero_commerce']);

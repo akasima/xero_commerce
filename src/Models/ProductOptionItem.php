@@ -5,7 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
-class ProductOptionItem extends OrderUnit
+class ProductOptionItem extends SellUnit
 {
     use SoftDeletes;
 
@@ -68,13 +68,20 @@ class ProductOptionItem extends OrderUnit
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
+
+    public function sellType()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
     public function getInfo()
     {
-        return [
-            $this->product->name,
-            $this->name,
-            '쇼핑몰 : '.$this->getShop()->store_name
-        ];
+        return '상세옵션';
     }
 
     public function getOriginalPrice()
@@ -85,30 +92,5 @@ class ProductOptionItem extends OrderUnit
     public function getSellPrice()
     {
         return $this->product->sell_price + $this->addition_price;
-    }
-
-    public function getOptionList()
-    {
-        return $this->product->options;
-    }
-
-    public function getThumbnailSrc()
-    {
-        return 'https://www.xpressengine.io/plugins/official_homepage/assets/theme/img/feature_02.jpg';
-    }
-
-    public function getDescription()
-    {
-        return $this->product->description;
-    }
-
-    public function getShop()
-    {
-        return $this->product->shop;
-    }
-
-    public function getFare()
-    {
-        // TODO: Implement getFare() method.
     }
 }

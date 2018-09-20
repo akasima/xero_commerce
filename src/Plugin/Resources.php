@@ -5,14 +5,21 @@ namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 use App\Facades\XeInterception;
 use XeRegister;
 use Route;
+use Xpressengine\Plugins\XeroCommerce\Controllers\CartController;
+use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\SellType;
+use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
+use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\User\Models\User;
 
 class Resources
@@ -115,6 +122,7 @@ class Resources
                     'uses' => 'OrderController@fail',
                     'as' => 'xero_commerce::order.fail'
                 ]);
+                Route::get('/test/{product}', 'CartController@test');
             });
         });
     }
@@ -171,6 +179,14 @@ class Resources
             return $instance;
         });
         $app->alias(CartHandler::class, 'xero_commerce.cartHandler');
+
+        $app->when(ProductController::class)
+        ->needs(SellUnit::class)
+        ->give(ProductOptionItem::class);
+
+        $app->when(ProductController::class)
+            ->needs(SellType::class)
+            ->give(Product::class);
     }
 
     /**

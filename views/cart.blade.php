@@ -25,8 +25,8 @@
                     </td>
                     <td><img src="{{$cart->getThumbnailSrc()}}" width="150px" height="150px" alt=""></td>
                     <td>
-                        @foreach($cart->renderGoodsInfo() as $key => $row)
-                            <span @if($key==1) style="color:grey" @endif>{{$row}}</span> <br>
+                        @foreach($cart->renderInformation() as $key => $row)
+                            {!! html_entity_decode($row) !!}
                         @endforeach
                     </td>
                     <td>

@@ -8,7 +8,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\OrderDelivery;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 
-class OrderHandler extends OrderUnitHandler
+class OrderHandler extends SellSetHandler
 {
     public function register($carts_id)
     {
@@ -113,7 +113,7 @@ class OrderHandler extends OrderUnitHandler
         return $order;
     }
 
-    public function getGoodsList()
+    public function getSellSetList()
     {
         return Order::where('user_id', Auth::id() ?: 1)->latest()->first()->orderItems;
     }
