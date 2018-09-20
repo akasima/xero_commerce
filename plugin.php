@@ -2,10 +2,8 @@
 
 namespace Xpressengine\Plugins\XeroCommerce;
 
-use Illuminate\Support\Facades\Schema;
 use Route;
 use Xpressengine\Plugin\AbstractPlugin;
-use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
 use Xpressengine\Plugins\XeroCommerce\Plugin\EventManager;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
@@ -66,8 +64,7 @@ class Plugin extends AbstractPlugin
      */
     public function update()
     {
-        //TODO 테스트 코드 삭제
-        Resources::storeDefaultShop();
+
     }
 
     /**
@@ -78,17 +75,7 @@ class Plugin extends AbstractPlugin
      */
     public function checkUpdated()
     {
-        //TODO 테스트 코드 삭제
-        $checkedUpdate = false;
-
-        if (Schema::hasTable('xero_commerce_shop') === true) {
-            $userId = \Auth::user()->getId();
-
-            $shop = Shop::where('user_id', $userId)->first();
-            if ($shop != null) {
-                $checkedUpdate = true;
-            }
-        }
+        $checkedUpdate = true;
 
         return $checkedUpdate;
     }
