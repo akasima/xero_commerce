@@ -24,7 +24,7 @@ class CartController extends XeroCommerceBasicController
     public function index()
     {
         return \XePresenter::make(
-            'cart'
+            'cart.index'
         );}
 
     public function list()
@@ -39,12 +39,12 @@ class CartController extends XeroCommerceBasicController
 
     public function change(Cart $cart)
     {
-        return view('xero_commerce::views.cart.change', ['cart'=>$cart]);
+        return view('cart.change', ['cart'=>$cart]);
     }
 
     public function draw(Cart $cart)
     {
         $this->cartService->drawList($cart);
-        return redirect()->route('xero_commerce::cart.index');
+        return redirect()->route('cart.index');
     }
 }
