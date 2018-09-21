@@ -2,17 +2,19 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
-use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\XeroCommerceDefaultSkin;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 
-class ProductController extends Controller
+class ProductController extends XeroCommerceBasicController
 {
     protected $productService;
+
     public function index()
     {
-        return \XePresenter::make('xero_commerce::views.index', ['title' => 'test']);
+        $skin = XeroCommerceDefaultSkin::class;
+
+        return \XePresenter::make('index', ['title' => 'test', 'skin' => $skin]);
     }
 
     public function cartAdd(Request $request)
