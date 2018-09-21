@@ -5,7 +5,6 @@ namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 use App\Facades\XeInterception;
 use XeRegister;
 use Route;
-use Xpressengine\Plugins\XeroCommerce\Controllers\CartController;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
@@ -19,7 +18,6 @@ use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
-use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\User\Models\User;
 
 class Resources
@@ -91,38 +89,6 @@ class Resources
                     Route::post('/shop/update/{shopId}', ['as' => 'xero_commerce::setting.config.shop.update',
                         'uses' => 'ShopController@update']);
                 });
-            });
-        });
-
-        Route::fixed('xero_commerce', function () {
-            Route::group([
-                'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers'
-            ], function () {
-                Route::get('/cart', [
-                    'uses' => 'CartController@index',
-                    'as' => 'xero_commerce::cart.index'
-                ]);
-                Route::get('/cart/draw/{cart}', [
-                    'uses' => 'CartController@draw',
-                    'as' => 'xero_commerce::cart.draw'
-                ]);
-                Route::post('/order', [
-                    'uses' => 'OrderController@register',
-                    'as' => 'xero_commerce::order.register'
-                ]);
-                Route::get('/order/{order}', [
-                    'uses' => 'OrderController@registerAgain',
-                    'as' => 'xero_commerce::order.register.again'
-                ]);
-                Route::get('/order', [
-                    'uses' => 'OrderController@index',
-                    'as' => 'xero_commerce::order.index'
-                ]);
-                Route::get('/order/fail/{order}', [
-                    'uses' => 'OrderController@fail',
-                    'as' => 'xero_commerce::order.fail'
-                ]);
-                Route::get('/test/{product}', 'CartController@test');
             });
         });
     }

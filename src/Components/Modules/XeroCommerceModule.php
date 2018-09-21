@@ -11,6 +11,32 @@ class XeroCommerceModule extends AbstractModule
     {
         Route::instance(XeroCommerceModule::getId(), function () {
             Route::get('/', ['as' => 'xero_commerce.product.index', 'uses' => 'ProductController@index']);
+
+            Route::get('/cart', [
+                'uses' => 'CartController@index',
+                'as' => 'xero_commerce::cart.index'
+            ]);
+            Route::get('/cart/draw/{cart}', [
+                'uses' => 'CartController@draw',
+                'as' => 'xero_commerce::cart.draw'
+            ]);
+            Route::post('/order', [
+                'uses' => 'OrderController@register',
+                'as' => 'xero_commerce::order.register'
+            ]);
+            Route::get('/order/{order}', [
+                'uses' => 'OrderController@registerAgain',
+                'as' => 'xero_commerce::order.register.again'
+            ]);
+            Route::get('/order', [
+                'uses' => 'OrderController@index',
+                'as' => 'xero_commerce::order.index'
+            ]);
+            Route::get('/order/fail/{order}', [
+                'uses' => 'OrderController@fail',
+                'as' => 'xero_commerce::order.fail'
+            ]);
+            Route::get('/test/{product}', 'CartController@test');
         }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
     }
 

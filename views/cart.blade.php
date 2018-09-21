@@ -1,5 +1,5 @@
 <h2>장바구니</h2>
-<form action="{{route('xero_commerce::order.register')}}" method="post">
+<form action="{{ instance_route('xero_commerce::order.register')}}" method="post">
     {{csrf_field()}}
 
     <table class="xe-table">
@@ -76,6 +76,6 @@
         <button class="xe-btn xe-btn-black xe-btn-lg xe-btn-block" type="submit">구매하기</button>
     </div>
     <div style="text-align: center" class="xe-col-lg-2">
-        <a href="{{route('xero_commerce::order.index')}}"><button class="xe-btn xe-btn-lg xe-btn-block" type="button">쇼핑 계속하기</button></a>
+        <a href="{{instance_route('xero_commerce::order.index')}}"><button class="xe-btn xe-btn-lg xe-btn-block" type="button">쇼핑 계속하기</button></a>
     </div>
 </form>
