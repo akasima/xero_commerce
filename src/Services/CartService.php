@@ -2,8 +2,6 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Services;
 
-
-
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
@@ -20,7 +18,6 @@ class CartService
     public function __construct()
     {
         $this->cartHandler = app('xero_commerce.cartHandler');
-
     }
 
     public function getList()
@@ -30,7 +27,7 @@ class CartService
 
     public function getJsonList()
     {
-        return $this->getList()->map(function(Cart $cart){
+        return $this->getList()->map(function (Cart $cart) {
             return $cart->getJsonFormat();
         });
     }
@@ -38,8 +35,8 @@ class CartService
     public function addList(Request $request, SellType $sellType, SellUnit $sellUnit)
     {
         $parms = $request->get('sell_units');
-        $cartGroupList = collect($parms)->map(function($parm) use($sellUnit){
-           return $this->cartHandler->makeCartGroup($sellUnit->find($parm['unit_id']), $parm['count']);
+        $cartGroupList = collect($parms)->map(function ($parm) use ($sellUnit) {
+            return $this->cartHandler->makeCartGroup($sellUnit->find($parm['unit_id']), $parm['count']);
         });
         return $this->cartHandler->addCart($sellType->find($parms['sell_type_id']), $cartGroupList);
     }
@@ -62,8 +59,8 @@ class CartService
     public function summary(Request $request)
     {
         $ids = $request->get('cart_ids');
-        if(!is_null($ids)){
-            if(count($ids) > 0) {
+        if (!is_null($ids)) {
+            if (count($ids) > 0) {
                 return $this->cartHandler->getSummary(Cart::find($ids));
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault;
 
 use Xpressengine\Skin\GenericSkin;
