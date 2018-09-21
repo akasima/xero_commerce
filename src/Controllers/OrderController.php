@@ -10,25 +10,27 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 
-class OrderController extends Controller
+class OrderController extends XeroCommerceBasicController
 {
     public $orderService;
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->orderService = new OrderService();
     }
 
     public function index()
     {
-        return \XePresenter::make( 'xero_commerce::views.order.dash', ['title' => '주문내역']);
+        return \XePresenter::make('order.dash', ['title' => '주문내역']);
     }
 
     public function register(Request $request)
     {
         $order = $this->orderService->order($request);
         return \XePresenter::make(
-            'xero_commerce::views.order.register',
+            'order.register',
             ['title' => 'test',
                 'order' => $order,
                 'summary' => $this->orderService->summary($order)]
@@ -38,7 +40,7 @@ class OrderController extends Controller
     public function registerAgain(Order $order)
     {
         return \XePresenter::make(
-            'xero_commerce::views.order.register',
+            'order.register',
             ['title' => 'test',
                 'order' => $order,
                 'summary' => $this->orderService->summary($order)]
@@ -48,7 +50,7 @@ class OrderController extends Controller
     public function fail(Order $order)
     {
         return \XePresenter::make(
-            'xero_commerce::views.order.fail',
+            'order.fail',
             [
                 'title' => 'fail',
                 'order' => $order

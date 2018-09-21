@@ -2,7 +2,6 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
-use App\Facades\XeFrontend;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
@@ -11,19 +10,22 @@ use Xpressengine\Plugins\XeroCommerce\Models\SellType;
 use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 
-class CartController extends Controller
+class CartController extends XeroCommerceBasicController
 {
     public $cartService;
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->cartService = new CartService();
     }
 
     public function index()
     {
-        return \XePresenter::make('xero_commerce::views.cart.index');
-    }
+        return \XePresenter::make(
+            'cart'
+        );}
 
     public function list()
     {

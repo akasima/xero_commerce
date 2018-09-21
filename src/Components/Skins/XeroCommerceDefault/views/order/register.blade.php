@@ -145,7 +145,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <a href="{{route('xero_commerce::order.fail', ['order'=>$order->id])}}"><button type="button" class="xe-btn xe-btn-lg xe-btn-black xe-btn-block">결제하기</button></a>
+                                <a href="{{instance_route('xero_commerce::order.fail', ['order'=>$order->id])}}"><button type="button" class="xe-btn xe-btn-lg xe-btn-black xe-btn-block">결제하기</button></a>
                             </td>
                         </tr>
                     </table>

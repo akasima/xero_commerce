@@ -5,7 +5,6 @@ namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 use App\Facades\XeInterception;
 use XeRegister;
 use Route;
-use Xpressengine\Plugins\XeroCommerce\Controllers\CartController;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
@@ -19,7 +18,6 @@ use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
-use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\User\Models\User;
 
 class Resources
@@ -74,6 +72,9 @@ class Resources
                         'settings_menu' => 'xero_commerce.config.shopInfo']);
                     Route::post('/store', ['as' => 'xero_commerce::setting.config.store',
                         'uses' => 'ShopConfigController@store']);
+                    Route::get('/setSkin', ['as' => 'xero_commerce::setting.config.skin',
+                        'uses' => 'ShopConfigController@setSkin',
+                        'settings_menu' => 'xero_commerce.config.setSkin']);
 
                     //입점몰 관리
                     Route::get('/shop', ['as' => 'xero_commerce::setting.config.shop.index',
@@ -329,6 +330,12 @@ class Resources
                 'display' => true,
                 'description' => '',
                 'ordering' => 100031
+            ],
+            'xero_commerce.config.setSkin' => [
+                'title' => '스킨 설정',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100032
             ],
             'xero_commerce.config.storeInfo' => [
                 'title' => '입점몰 정보',

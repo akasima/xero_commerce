@@ -28,10 +28,15 @@
                     "name": "XeroCommerce Module",
                     "description": ""
                 },
-                "theme/xero_commerce@xero_commerce_theme": {
-                    "name": "XeroCommerceTheme",
+                "theme/xero_commerce@xero_commerce_theme_default": {
+                    "name": "XeroCommerce Default Theme",
                     "description": "The theme supported by Xero_commerce plugin.",
                     "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Themes\\XeroCommerceTheme\\XeroCommerceThemeTheme"
+                },
+                "module/xero_commerce@xero_commerce_module/skin/xero_commerce@xero_commerce_default": {
+                    "name": "XeroCommerce Default Skin",
+                    "description": "The skin supported by Xero_commerce plugin.",
+                    "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\XeroCommerceDefault\\XeroCommerceDefaultSkin"
                 }
             }
         }
