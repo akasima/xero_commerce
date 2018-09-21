@@ -62,12 +62,10 @@ class CartService
     public function summary(Request $request)
     {
         $ids = $request->get('cart_ids');
-        if(!is_null($ids)){
-            if(count($ids) > 0) {
-                return $this->cartHandler->getSummary(Cart::find($ids));
-            }
+        if(is_null($ids)){
+            $ids = [];
         }
-        return $this->cartHandler->getSummary();
+        return $this->cartHandler->getSummary($this->cartHandler->getCartListByCartIds($ids));
     }
 
 }

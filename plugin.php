@@ -21,6 +21,7 @@ class Plugin extends AbstractPlugin
         Resources::registerRoute();
         Resources::registerSettingMenu();
         EventManager::listenEvents();
+
     }
 
     /**

@@ -32,7 +32,7 @@
                 </td>
                 <td>
                     {{cart.count}} 개 <br>
-                    <button type="button" class="xe-btn xe-btn-default"">변경</button>
+                    <button type="button" class="xe-btn xe-btn-default" @click="changeModal">변경</button>
                 </td>
                 <td>
                     선불
@@ -47,6 +47,45 @@
         </table>
         <button class="xe-btn">선택상품 삭제</button>
         <button class="xe-btn">선택상품 찜</button>
+        <div class="xe-modal" id="cartChangeModal">
+            <h2>주문 추가/변경</h2>
+            <div class="xe-row">
+                <div class="xe-col-sm-3">
+
+                </div>
+                <div class="xe-col-sm-9">
+
+                </div>
+            </div>
+            <div class="xe-row">
+                <div class="xe-col-sm-12">
+                    <table class="xe-table">
+                        <tr>
+                            <th>배송방법</th>
+                            <td>택배</td>
+                        </tr>
+                        <tr>
+                            <th>배송비</th>
+                            <td>택배</td>
+                        </tr>
+                        <tr>
+                            <th>배송비 결제</th>
+                            <td>택배</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="xe-row">
+                <div class="xe-col-sm-12">
+                    <table class="xe-table">
+                        <tr>
+                            <th>주문수량</th>
+                            <td><input type="number"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -75,6 +114,11 @@
       return {
         checkedList: [],
         allCheck: true
+      }
+    },
+    methods: {
+      changeModal () {
+        $('#cartChangeModal').xeModal()
       }
     }
   }
