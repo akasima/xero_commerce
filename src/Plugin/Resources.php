@@ -102,9 +102,21 @@ class Resources
                     'uses' => 'CartController@index',
                     'as' => 'xero_commerce::cart.index'
                 ]);
+                Route::get('/cart/change/{cart}', [
+                    'uses' => 'CartController@change',
+                    'as' => 'xero_commerce::cart.change'
+                ]);
                 Route::get('/cart/draw/{cart}', [
                     'uses' => 'CartController@draw',
                     'as' => 'xero_commerce::cart.draw'
+                ]);
+                Route::get('/cart/list', [
+                    'uses' => 'CartController@list',
+                    'as' => 'xero_commerce::cart.list'
+                ]);
+                Route::get('/cart/summary', [
+                    'uses' => 'CartController@summary',
+                    'as' => 'xero_commerce::cart.summary'
                 ]);
                 Route::post('/order', [
                     'uses' => 'OrderController@register',

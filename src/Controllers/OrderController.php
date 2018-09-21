@@ -21,7 +21,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        return \XePresenter::make('xero_commerce::views.order.dash', ['title' => '주문내역']);
+        return \XePresenter::make( 'xero_commerce::views.order.dash', ['title' => '주문내역']);
     }
 
     public function register(Request $request)

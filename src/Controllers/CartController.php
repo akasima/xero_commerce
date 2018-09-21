@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
+use App\Facades\XeFrontend;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
@@ -21,13 +22,22 @@ class CartController extends Controller
 
     public function index()
     {
-        return \XePresenter::make(
-            'xero_commerce::views.cart',
-            [
-                'title' => '장바구니',
-                'carts' => $this->cartService->getList(),
-                'summary' => $this->cartService->summary()
-            ]);
+        return \XePresenter::make('xero_commerce::views.cart.index');
+    }
+
+    public function list()
+    {
+        return $this->cartService->getJsonList();
+    }
+
+    public function summary(Request $request)
+    {
+        return $this->cartService->summary($request);
+    }
+
+    public function change(Cart $cart)
+    {
+        return view('xero_commerce::views.cart.change', ['cart'=>$cart]);
     }
 
     public function draw(Cart $cart)

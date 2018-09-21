@@ -82,7 +82,7 @@
 @endif
 
 <div class="container">
-    <div id="content">
+    <div id="sub-container">
         {!! $content !!}
     </div>
 

@@ -24,4 +24,17 @@ class Cart extends SellSet
         $row []= $this->renderSpanBr($this->sellType->shop->shop_name);
         return $row;
     }
+
+    function getJsonFormat()
+    {
+        return [
+            'id' => $this->id,
+            'info' => $this->renderInformation(),
+            'original_price' => $this->getOriginalPrice(),
+            'sell_price' => $this->getSellPrice(),
+            'discount_price' => $this->getDiscountPrice(),
+            'count' => $this->getCount(),
+            'src' => $this->getThumbnailSrc()
+        ];
+    }
 }

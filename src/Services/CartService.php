@@ -28,6 +28,13 @@ class CartService
         return $this->cartHandler->getCartList();
     }
 
+    public function getJsonList()
+    {
+        return $this->getList()->map(function(Cart $cart){
+            return $cart->getJsonFormat();
+        });
+    }
+
     public function addList(Request $request, SellType $sellType, SellUnit $sellUnit)
     {
         $parms = $request->get('sell_units');
@@ -52,8 +59,14 @@ class CartService
         return $this->cartHandler->getCartListByCartIds($cart_ids);
     }
 
-    public function summary()
+    public function summary(Request $request)
     {
+        $ids = $request->get('cart_ids');
+        if(!is_null($ids)){
+            if(count($ids) > 0) {
+                return $this->cartHandler->getSummary(Cart::find($ids));
+            }
+        }
         return $this->cartHandler->getSummary();
     }
 

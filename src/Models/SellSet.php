@@ -61,4 +61,6 @@ abstract class SellSet extends DynamicModel
         return $this->sellGroups()->save($sellGroup);
     }
 
+    abstract function getJsonFormat ();
+
 }

@@ -151,6 +151,6 @@ class Dev
         $cg1 = $s->makeCartGroup(ProductOptionItem::find($rand1), $rand2);
         $cg2 = $s->makeCartGroup(ProductOptionItem::find($rand2), $rand1);
         $s->addCart(ProductOptionItem::find($rand1)->product, collect([$cg1]));
-//        $s->addCart(ProductOptionItem::find($rand2)->product, collect([$cg2]));
+        $s->addCart(ProductOptionItem::find($rand2)->product, collect([$cg2]));
     }
 }
