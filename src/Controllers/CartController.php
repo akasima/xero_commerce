@@ -25,7 +25,8 @@ class CartController extends XeroCommerceBasicController
     {
         return \XePresenter::make(
             'cart.index'
-        );}
+        );
+    }
 
     public function list()
     {

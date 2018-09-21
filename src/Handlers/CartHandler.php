@@ -33,7 +33,7 @@ class CartHandler extends SellSetHandler
         $cart->user_id = Auth::id() ?: User::first()->id;
         $sellType->carts()->save($cart);
         $cart->save();
-        $cartGroupList->each(function (CartGroup $cartGroup) use($cart) {
+        $cartGroupList->each(function (CartGroup $cartGroup) use ($cart) {
             $cart->addGroup($cartGroup);
         });
     }
