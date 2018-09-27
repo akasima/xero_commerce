@@ -25,6 +25,9 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                         <div class="form-group">
                             상품명
                             <input type="text" name="name" value="{{ $product->name }}">
+
+                            <input type="checkbox" name="resetSlug"> slug 변경
+                            <input type="text" name="newSlug" value="{{ $product->getSlug() }}">
                         </div>
 
                         <div class="form-group">

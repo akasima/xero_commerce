@@ -8,6 +8,7 @@ use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductOptionItemSettingService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSettingService;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Tag\TagHandler;
 
 class ProductController extends Controller
@@ -18,7 +19,7 @@ class ProductController extends Controller
     /** @var ProductOptionItemSettingService $productOptionItemSettingService */
     protected $productOptionItemSettingService;
 
-    /** @var TagHandler */
+    /** @var TagHandler $tagHandler */
     protected $tagHandler;
 
     public function __construct(TagHandler $tagHandler)
@@ -60,6 +61,7 @@ class ProductController extends Controller
         $productId = $this->productSettingService->store($request);
         $this->productOptionItemSettingService->defaultOptionStore($request, $productId);
         $this->setTag($productId, $request);
+        ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
@@ -78,6 +80,7 @@ class ProductController extends Controller
     {
         $this->productSettingService->update($request, $productId);
         $this->setTag($productId, $request);
+        ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }

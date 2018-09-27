@@ -25,6 +25,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                         <div class="form-group">
                             상품명
                             <input type="text" name="name" value="{{ Request::old('name') }}">
+                            <input type="text" name="newSlug" value="{{ Request::old('newSlug') }}" placeholder="slug">
                         </div>
 
                         <div class="form-group">
