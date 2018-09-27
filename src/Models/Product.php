@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\DynamicModel;
+use Xpressengine\Tag\Tag;
 
 class Product extends SellType
 {
@@ -122,5 +123,10 @@ class Product extends SellType
                 return $sellGroup->getSellPrice();
             });
         };
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'taggables', 'taggable_id', 'tag_id');
     }
 }

@@ -62,7 +62,7 @@ class ProductSettingService
         }
 
         //TODO 스토어 임시 하드코딩
-        $productArgs['shop_id'] = Shop::where('shop_name', Shop::BASIC_SHOP_NAME)->first()['id'];
+        $productArgs['shop_id'] = Shop::where('shop_type', Shop::TYPE_BASIC_SHOP)->first()['id'];
 
         $newProductId = $this->productHandler->store($productArgs);
 

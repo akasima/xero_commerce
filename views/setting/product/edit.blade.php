@@ -87,6 +87,12 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="form-group">
+                            {!! uio('uiobject/xero_commerce@tag', [
+                                'tags' => $product->tags->toArray()
+                            ]) !!}
+                        </div>
                     </div>
                 </div>
             </div>
