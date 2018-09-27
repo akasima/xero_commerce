@@ -3,25 +3,31 @@
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
+use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
+use Xpressengine\Plugins\XeroCommerce\Models\CartGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderDelivery;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderItemGroup;
+use Xpressengine\Plugins\XeroCommerce\Models\Payment;
 
 class OrderHandler extends SellSetHandler
 {
-    public function register($carts_id)
+    public function register($carts)
     {
         $order = $this->makeOrder();
-        $carts = Cart::find($carts_id);
         foreach ($carts as $cart) {
             $orderItem = new OrderItem();
             $orderItem->order_id = $order->id;
-            $cart->orderable->goods()->save($orderItem);
-            $orderItem->original_price = $cart->getOriginalPrice();
-            $orderItem->sell_price = $cart->getSellPrice();
-            $orderItem->count = $cart->getCount();
+            $cart->sellType->orderItems()->save($orderItem);
             $orderItem->save();
+            $cart->sellGroups->each(function (CartGroup $cartGroup) use (&$orderItem) {
+                $orderItemGroup = new OrderItemGroup();
+                $cartGroup->sellUnit->orderItemGroup()->save($orderItemGroup);
+                $orderItemGroup->setCount($cartGroup->getCount());
+                $orderItem->sellGroups()->save($orderItemGroup);
+            });
         }
         return $this->update($order);
     }
@@ -64,16 +70,13 @@ class OrderHandler extends SellSetHandler
 
     public function deliveryCheck(Order $order)
     {
-        $hasReadyDelivery = $order->orderItems()->whereHas('delivery', function ($query) {
-            $query->where('status', OrderDelivery::READY);
-        })->exists();
         $hasProcessingDelivery = $order->orderItems()->whereHas('delivery', function ($query) {
             $query->where('status', OrderDelivery::PROCESSING);
         })->exists();
         $hasDoneDelivery = $order->orderItems()->whereHas('delivery', function ($query) {
-            $query->where('status', OrderDelivery::READY);
+            $query->where('status', OrderDelivery::DONE);
         })->exists();
-        if ($hasReadyDelivery || $hasProcessingDelivery) {
+        if ($hasProcessingDelivery) {
             return Order::DELIVER;
         }
         if ($hasDoneDelivery) {
@@ -116,5 +119,42 @@ class OrderHandler extends SellSetHandler
     public function getSellSetList()
     {
         return Order::where('user_id', Auth::id() ?: 1)->latest()->first()->orderItems;
+    }
+
+    public function getOrderItemList(Order $order)
+    {
+        return $order->orderItems;
+    }
+
+    public function makePayment(Order $order)
+    {
+        $summary = $this->getSummary($order->orderItems);
+        $payment = new Payment();
+        $payment->order_id = $order->id;
+        $payment->method = '';
+        $payment->info = '';
+        $payment->price = $summary['sum'];
+        $payment->discount = $summary['discount_price'];
+        $payment->millage = 0;
+        $payment->fare = $summary['fare'];
+        $payment->save();
+        return $this->update($order);
+    }
+
+    public function makeDelivery(Order $order, Request $request)
+    {
+        $order->orderItems->each(function (OrderItem $orderItem) use ($request) {
+            $delivery = new OrderDelivery();
+            $delivery->order_item_id = $orderItem->id;
+            $delivery->ship_no = '';
+            $delivery->company_id = $orderItem->sellType->shop->getDefaultDeliveryCompany()->id;
+            $delivery->recv_name = $request->delivery['name'];
+            $delivery->recv_phone = implode('', $request->delivery['contact']);
+            $delivery->recv_addr = $request->delivery['address'];
+            $delivery->recv_addr_detail = $request->delivery['address_detail'];
+            $delivery->recv_msg = $request->delivery['msg'];
+            $delivery->save();
+        });
+        return $this->update($order);
     }
 }

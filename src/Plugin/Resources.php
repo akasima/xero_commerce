@@ -131,6 +131,14 @@ class Resources
                     'uses' => 'OrderController@index',
                     'as' => 'xero_commerce::order.index'
                 ]);
+                Route::post('/order/pay/{order}', [
+                    'uses'=>'OrderController@pay',
+                    'as'=>'xero_commerce::order.pay'
+                ]);
+                Route::post('/order/success/{order}', [
+                    'uses'=>'OrderController@success',
+                    'as'=>'xero_commerce::order.success'
+                ]);
                 Route::get('/order/fail/{order}', [
                     'uses' => 'OrderController@fail',
                     'as' => 'xero_commerce::order.fail'
