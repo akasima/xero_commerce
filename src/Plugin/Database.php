@@ -53,6 +53,13 @@ class Database
             $table->timestamps();
         });
 
+        Schema::create('xero_commerce_product_slug', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('target_id');
+            $table->string('slug');
+            $table->string('product_name');
+        });
+
         Schema::create('xero_commerce_product_category', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id');

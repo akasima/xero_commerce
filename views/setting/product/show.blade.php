@@ -69,5 +69,11 @@
                 </div>
             </div>
         </div>
+
+        <div class="panel-group">
+            @foreach ($product->tags->toArray() as $tag)
+                <span class="xe-badge xe-black">#{{ $tag['word'] }}</span>
+            @endforeach
+        </div>
     </div>
 </div>

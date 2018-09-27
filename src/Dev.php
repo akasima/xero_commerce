@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce;
 use Faker\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
@@ -14,6 +15,8 @@ use Xpressengine\Plugins\XeroCommerce\Models\ShopUser;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
+use Xpressengine\Tag\Tag;
 use Xpressengine\User\Models\User;
 
 class Dev
@@ -52,11 +55,23 @@ class Dev
         $this->dropTable();
         $this->makeTable();
         $this->setting();
+        $this->deleteTagInfo();
     }
 
     public function setConfig()
     {
         Resources::setConfig();
+    }
+
+    public function deleteTagInfo()
+    {
+        $tags = Tag::where('instance_id', 'xero_commerce')->get();
+
+        foreach ($tags as $tag) {
+            DB::select("delete from xe_taggables where tag_id='" . $tag->id . "'");
+        }
+
+        Tag::where('instance_id', 'xero_commerce')->delete();
     }
 
     public function makeShop($count = 1)
@@ -113,6 +128,8 @@ class Dev
             $product->state_deal = Product::DEAL_ON_SALE;
             $product->save();
             $this->makeProductOption($product->id);
+
+            ProductSlugService::storeSlug($product, new Request());
         }
         return Product::all();
     }

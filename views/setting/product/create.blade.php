@@ -25,6 +25,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                         <div class="form-group">
                             상품명
                             <input type="text" name="name" value="{{ Request::old('name') }}">
+                            <input type="text" name="newSlug" value="{{ Request::old('newSlug') }}" placeholder="slug">
                         </div>
 
                         <div class="form-group">
@@ -86,6 +87,12 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                                     <option value="{{ $value }}" @if ($value == Product::DEAL_ON_SALE) selected @endif>{{ $dealState }}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            {!! uio('uiobject/xero_commerce@tag', [
+                                'tags' => []
+                            ]) !!}
                         </div>
                     </div>
                 </div>

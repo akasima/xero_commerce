@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpressengine\Plugins\XeroCommerce\Components\Themes\XeroCommerceTheme;
 
 use Xpressengine\Theme\GenericTheme;

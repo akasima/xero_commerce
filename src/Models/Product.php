@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\DynamicModel;
+use Xpressengine\Tag\Tag;
 
 class Product extends SellType
 {
@@ -52,6 +53,9 @@ class Product extends SellType
         return $this->hasMany(ProductOptionItem::class, 'product_id', 'id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function shop()
     {
         return $this->belongsTo(Shop::class);
@@ -73,6 +77,9 @@ class Product extends SellType
         return 0;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function getShop()
     {
         return $this->belongsTo(Shop::class);
@@ -83,7 +90,10 @@ class Product extends SellType
         return 'https://www.xpressengine.io/plugins/official_homepage/assets/theme/img/feature_02.jpg';
     }
 
-    function orderUnits()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orderUnits()
     {
         return $this->hasMany(ProductOptionItem::class);
     }
@@ -91,10 +101,10 @@ class Product extends SellType
     /**
      * @return callable
      */
-    function getCountMethod()
+    public function getCountMethod()
     {
         return function ($sellGroupCollection) {
-            return $sellGroupCollection->sum(function(SellGroup $sellGroup){
+            return $sellGroupCollection->sum(function (SellGroup $sellGroup) {
                 return $sellGroup->getCount();
             });
         };
@@ -103,10 +113,10 @@ class Product extends SellType
     /**
      * @return callable
      */
-    function getOriginalPriceMethod()
+    public function getOriginalPriceMethod()
     {
         return function ($sellGroupCollection) {
-            return $sellGroupCollection->sum(function(SellGroup $sellGroup){
+            return $sellGroupCollection->sum(function (SellGroup $sellGroup) {
                 return $sellGroup->getOriginalPrice();
             });
         };
@@ -115,12 +125,41 @@ class Product extends SellType
     /**
      * @return callable
      */
-    function getSellPriceMethod()
+    public function getSellPriceMethod()
     {
         return function ($sellGroupCollection) {
-            return $sellGroupCollection->sum(function(SellGroup $sellGroup){
+            return $sellGroupCollection->sum(function (SellGroup $sellGroup) {
                 return $sellGroup->getSellPrice();
             });
         };
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'taggables', 'taggable_id', 'tag_id');
+    }
+
+    public function getSlug()
+    {
+        return $this->slug->slug;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function slug()
+    {
+        return $this->belongsTo(ProductSlug::class, 'id', 'target_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function productSlug()
+    {
+        return $this->hasOne(ProductSlug::class, 'target_id');
     }
 }

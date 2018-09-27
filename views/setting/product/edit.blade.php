@@ -25,6 +25,9 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                         <div class="form-group">
                             상품명
                             <input type="text" name="name" value="{{ $product->name }}">
+
+                            <input type="checkbox" name="resetSlug"> slug 변경
+                            <input type="text" name="newSlug" value="{{ $product->getSlug() }}">
                         </div>
 
                         <div class="form-group">
@@ -86,6 +89,12 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                                     <option value="{{ $value }}" @if ($value == Product::DEAL_ON_SALE) selected @endif>{{ $dealState }}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            {!! uio('uiobject/xero_commerce@tag', [
+                                'tags' => $product->tags->toArray()
+                            ]) !!}
                         </div>
                     </div>
                 </div>

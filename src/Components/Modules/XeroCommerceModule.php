@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Components\Modules;
 
 use Route;
 use Xpressengine\Menu\AbstractModule;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 
 class XeroCommerceModule extends AbstractModule
 {
@@ -11,6 +12,7 @@ class XeroCommerceModule extends AbstractModule
     {
         Route::instance(XeroCommerceModule::getId(), function () {
             Route::get('/', ['as' => 'xero_commerce.product.index', 'uses' => 'ProductController@index']);
+            Route::get('/{strSlug}', ['as' => 'xero_commerce.product.show', 'uses' => 'ProductController@show']);
 
             Route::get('/cart', [
                 'uses' => 'CartController@index',
@@ -38,6 +40,10 @@ class XeroCommerceModule extends AbstractModule
             ]);
             Route::get('/test/{product}', 'CartController@test');
         }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
+
+        ProductSlugService::setReserved([
+            'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug'
+        ]);
     }
 
     public function createMenuForm()
