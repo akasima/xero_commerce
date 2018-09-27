@@ -33,7 +33,7 @@ class ProductController extends XeroCommerceBasicController
         $product = $this->productService->getProduct($productId);
 
         if ($product == null) {
-            return redirect()->to(instance_route('xero_commerce.product.index'))
+            return redirect()->to(instance_route('xero_commerce::product.index'))
                 ->with('alert', ['type' => 'danger', 'message' => '존재하지 않는 상품입니다.']);
         }
 
