@@ -29,12 +29,9 @@ class OrderController extends XeroCommerceBasicController
     public function register(Request $request)
     {
         $order = $this->orderService->order($request);
-        return \XePresenter::make(
-            'order.register',
-            ['title' => 'test',
-                'order' => $order,
-                'summary' => $this->orderService->summary($order)]
-        );
+        return [
+            'url' => route('xero_commerce::order.register.again', ['order' => $order->id])
+        ];
     }
 
     public function registerAgain(Order $order)
@@ -43,6 +40,7 @@ class OrderController extends XeroCommerceBasicController
             'order.register',
             ['title' => 'test',
                 'order' => $order,
+                'orderItems' => $this->orderService->orderItemList($order),
                 'summary' => $this->orderService->summary($order)]
         );
     }
@@ -58,9 +56,14 @@ class OrderController extends XeroCommerceBasicController
         );
     }
 
-    public function success(Order $order)
+    public function success(Order $order, Request $request)
     {
-        $this->orderService->complete($order);
-        return redirect()->route('xero_commerce::order.index');
+        $this->orderService->pay($order, $request);
+        return $this->orderService->complete($order, $request);
+    }
+
+    public function pay(Order $order)
+    {
+
     }
 }

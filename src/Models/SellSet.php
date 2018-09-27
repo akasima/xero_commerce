@@ -53,7 +53,7 @@ abstract class SellSet extends DynamicModel
 
     protected function renderSpanBr($var, $style = "")
     {
-        return "<span style='{$style}'>{$var}</span> <br>";
+        return "<span style=\"{$style}\">{$var}</span> <br>";
     }
 
     public function addGroup(SellGroup $sellGroup)

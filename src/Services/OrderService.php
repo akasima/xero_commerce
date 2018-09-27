@@ -6,6 +6,7 @@ use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 
 class OrderService
 {
@@ -36,8 +37,20 @@ class OrderService
         return $this->orderHandler->getSummary($order = null);
     }
 
-    public function complete(Order $order)
+    public function pay(Order $order, Request $request)
     {
-        return $this->orderHandler;
+        return $this->orderHandler->makePayment($order);
+    }
+
+    public function complete(Order $order, Request $request)
+    {
+        return $this->orderHandler->makeDelivery($order, $request);
+    }
+
+    public function orderItemList(Order $order)
+    {
+        return $this->orderHandler->getOrderItemList($order)->map(function(OrderItem $orderItem){
+           return $orderItem->getJsonFormat();
+        });
     }
 }
