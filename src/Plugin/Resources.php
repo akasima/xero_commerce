@@ -170,6 +170,7 @@ class Resources
     public static function setConfig()
     {
         \XeEditor::setInstance(Plugin::getId(), CkEditor::getId());
+        \XeEditor::setConfig(Plugin::getId(), ['uploadActive' => false]);
 
         $category = \XeCategory::create([
             'name' => '상품 분류'
