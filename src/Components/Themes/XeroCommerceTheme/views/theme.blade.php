@@ -60,6 +60,12 @@
                 </form>
             </div>
             @endif
+            <div class="navbar-form navbar-right">
+                <ul class="navbar-nav navbar-expand">
+                    <li><a href="{{instance_route('xero_commerce::order.index')}}">주문내역</a></li>
+                    <li><a href="{{instance_route('xero_commerce::cart.index')}}">장바구니</a></li>
+                </ul>
+            </div>
         </div><!--/.navbar-collapse -->
     </div>
 </nav>

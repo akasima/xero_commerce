@@ -11,6 +11,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItemGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\Payment;
+use Xpressengine\User\Models\User;
 
 class OrderHandler extends SellSetHandler
 {
@@ -28,6 +29,8 @@ class OrderHandler extends SellSetHandler
                 $orderItemGroup->setCount($cartGroup->getCount());
                 $orderItem->sellGroups()->save($orderItemGroup);
             });
+            $cart->order_id=$order->id;
+            $cart->save();
         }
         return $this->update($order);
     }
@@ -156,5 +159,15 @@ class OrderHandler extends SellSetHandler
             $delivery->save();
         });
         return $this->update($order);
+    }
+
+    public function dashboard()
+    {
+        $user_id = Auth::id() ?: User::first()->getId();
+        $count = collect(Order::STATUS)->map(function($name, $code) use($user_id) {return Order::where('user_id', $user_id)->where('code',$code)->count();});
+        return collect(Order::STATUS)->combine($count);
+        return Order::where('user_id', $user_id)->where('code','!=',Order::TEMP)->get()->groupBy(function(Order $order){return $order->getStatus();})->map(function ($codes) {
+            return $codes->count();
+        });
     }
 }

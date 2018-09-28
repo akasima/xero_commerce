@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 use App\Facades\XeFrontend;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
@@ -23,7 +24,7 @@ class OrderController extends XeroCommerceBasicController
 
     public function index()
     {
-        return \XePresenter::make('order.dash', ['title' => '주문내역']);
+        return \XePresenter::make('order.dash', ['title' => '주문내역', 'dashboard'=>$this->orderService->dashBoard()]);
     }
 
     public function register(Request $request)
@@ -59,11 +60,13 @@ class OrderController extends XeroCommerceBasicController
     public function success(Order $order, Request $request)
     {
         $this->orderService->pay($order, $request);
+        $cartService = new CartService();
+        $cartService->drawList(Cart::where('order_id',$order->id)->pluck('id'));
         return $this->orderService->complete($order, $request);
     }
 
-    public function pay(Order $order)
+    public function pay(Order $order, Request $request)
     {
-
+        return $this->orderService->pay($order, $request);
     }
 }

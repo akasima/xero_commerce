@@ -92,6 +92,7 @@ class Database
             $table->increments('id');
             $table->string('user_id', 36);
             $table->morphs('type');
+            $table->string('order_id')->nullable();
             $table->timestamps();
         });
 

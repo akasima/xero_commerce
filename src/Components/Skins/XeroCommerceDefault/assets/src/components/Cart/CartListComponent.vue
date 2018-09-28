@@ -117,13 +117,16 @@
     data () {
       return {
         checkedList: [],
-        allCheck: true
+        allCheck: false
       }
     },
     methods: {
       changeModal () {
         $('#cartChangeModal').xeModal()
       }
+    },
+    mounted () {
+      this.allCheck = true
     }
   }
 </script>

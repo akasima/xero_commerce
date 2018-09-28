@@ -53,4 +53,9 @@ class OrderService
            return $orderItem->getJsonFormat();
         });
     }
+
+    public function dashBoard()
+    {
+        return $this->orderHandler->dashboard();
+    }
 }
