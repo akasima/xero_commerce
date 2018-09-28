@@ -45,7 +45,7 @@
 
                     <div class="form-group">
                         설명
-                        <textarea readonly>{{ $product->description }}</textarea>
+                        {!! $product->description !!}
                     </div>
                 </div>
             </div>
