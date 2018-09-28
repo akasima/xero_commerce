@@ -19,12 +19,12 @@ class OrderController extends Controller
         return \XePresenter::make('xero_commerce::views.index', ['title' => 'xero_commerce']);
     }
 
-    public function detail()
+    public function dash()
     {
 
     }
 
-    public function shopList()
+    public function list()
     {
 
     }

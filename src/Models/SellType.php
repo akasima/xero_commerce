@@ -28,7 +28,7 @@ abstract class SellType extends DynamicModel
         return $this->morphMany(OrderItem::class, 'type');
     }
 
-    abstract function orderUnits();
+    abstract function sellUnits();
 
     /**
      * @return callable

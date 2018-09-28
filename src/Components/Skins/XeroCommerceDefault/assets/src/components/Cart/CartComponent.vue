@@ -5,7 +5,7 @@
         <cart-sum-component :summary="cartSummary"></cart-sum-component>
         <hr>
         <div style="text-align: center" class="xe-col-lg-2 xe-col-lg-offset-4">
-            <button class="xe-btn xe-btn-black xe-btn-lg xe-btn-block" @click="order">구매하기</button>
+            <button class="xe-btn xe-btn-black xe-btn-lg xe-btn-block" @click="order" :disabled="disable">구매하기</button>
         </div>
         <div style="text-align: center" class="xe-col-lg-2">
             <button class="xe-btn xe-btn-lg xe-btn-block" type="button">쇼핑 계속하기</button>
@@ -14,39 +14,33 @@
 </template>
 
 <script>
-    import CartListComponent from './CartListComponent'
-    import CartSumComponent from './CartSumComponent'
+  import CartListComponent from './CartListComponent'
+  import CartSumComponent from './CartSumComponent'
+
   export default {
     name: "CartComponent",
     components: {
       CartListComponent, CartSumComponent
     },
     props: [
-      'loadUrl', 'summaryUrl', 'orderUrl'
+      'cartList', 'summaryUrl', 'orderUrl'
     ],
-    data () {
+    data() {
       return {
-        cartList: [],
         cartSummary: {
           original_price: 0,
           discount_price: 0,
           fare: 0,
-          sum:0,
+          sum: 0,
           millage: 0
         },
-        checkedList: []
+        checkedList: [],
+        disable: true
       }
     },
     methods: {
-      load () {
-        $.ajax({
-          url: this.loadUrl
-        }).done((res) => {
-          this.cartList = res
-        }).fail((err) => {
-        })
-      },
-      summary (cart_ids) {
+      summary(cart_ids) {
+        this.disable = true
         this.checkedList = cart_ids
         $.ajax({
           url: this.summaryUrl,
@@ -57,11 +51,13 @@
           console.log(res)
           console.log('sum')
           this.cartSummary = res
+          this.disable = false
         }).fail((err) => {
           console.log(err)
+          this.disable = false
         })
       },
-      order () {
+      order() {
         $.ajax({
           url: this.orderUrl,
           data: {
@@ -72,11 +68,18 @@
         }).done((res) => {
           document.location.href = res.url;
         })
+      },
+      sum(array, key){
+        return array.map((v) => {
+          return v[key]
+        }).reduce((a, b) => a + b, 0);
       }
     },
-    mounted () {
-      this.load()
-      this.summary()
+    mounted() {
+      console.log(this.cartList)
+      // this.cartSummary.original_price = this.sum(this.cartList, 'original_price');
+      // this.cartSummary.discount_price = this.sum(this.cartList, 'discount_price');
+      // this.cartSummary.sum = this.sum(this.cartList, 'sell_price');
     }
   }
 </script>

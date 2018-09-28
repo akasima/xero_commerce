@@ -33,18 +33,23 @@ class CartService
         });
     }
 
-    public function addList(Request $request, SellType $sellType, SellUnit $sellUnit)
+    public function addList(Request $request, SellType $sellType)
     {
         $parms = $request->get('sell_units');
-        $cartGroupList = collect($parms)->map(function ($parm) use ($sellUnit) {
-            return $this->cartHandler->makeCartGroup($sellUnit->find($parm['unit_id']), $parm['count']);
+        $cartGroupList = collect($parms)->map(function ($parm) use($sellType) {
+            return $this->cartHandler->makeCartGroup($sellType->sellUnits()->find($parm['unit_id']), $parm['count']);
         });
-        return $this->cartHandler->addCart($sellType->find($parms['sell_type_id']), $cartGroupList);
+        return $this->cartHandler->addCart($sellType, $cartGroupList);
     }
 
-    public function drawList(Cart $cart)
+    public function draw(Cart $cart)
     {
         return $this->cartHandler->drawCart($cart->id);
+    }
+
+    public function drawList($cart_ids)
+    {
+        return $this->cartHandler->drawCart($cart_ids);
     }
 
     public function resetList()

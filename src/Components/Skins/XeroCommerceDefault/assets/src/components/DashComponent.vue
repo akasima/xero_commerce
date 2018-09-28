@@ -2,23 +2,26 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12 text-center text-white bg-dark">
                     님의 <br>
                     회원등급
+                    <div class="circle text-dark">
+                        <p>VIP</p>
+                    </div>
                 </div>
-                <div class="col-lg-12">
-                    <div>
+                <div class="col-lg-12 card">
+                    <div class="card-header">
                         <h3>적립금</h3>
                     </div>
-                    <div>
+                    <div class="card-content">
                         원
                     </div>
                 </div>
-                <div class="col-lg-12">
-                    <div>
+                <div class="col-lg-12 card">
+                    <div class="card-header">
                         <h3>쿠폰</h3>
                     </div>
-                    <div>
+                    <div class="card-content">
                         장
                     </div>
                 </div>
@@ -36,31 +39,33 @@
                                 <div class="col">
                                     <h3>입금 대기중</h3>
                                     <p>
-                                        {{orderStat[0]}}
+                                        {{dashboard['결제대기']}}
                                     </p>
                                 </div>
                                 <div class="col">
                                     <h3>배송준비중</h3>
                                     <p>
-                                        {{orderStat[1]}}
+                                        {{dashboard['상품준비']}}
                                     </p>
                                 </div>
                                 <div class="col">
                                     <h3>배송중</h3>
                                     <p>
-                                        {{orderStat[2]}}
+                                        {{dashboard['배송중']}}
                                     </p>
                                 </div>
                                 <div class="col">
                                     <h3>배송완료</h3>
                                     <p>
-                                        {{orderStat[3]}}
+                                        {{dashboard['배송완료']}}
                                     </p>
                                 </div>
                                 <div class="col">
-                                    <h3></h3>
                                     <p>
-
+                                        교환중 : {{dashboard['교환중']}}
+                                    </p>
+                                    <p>
+                                        환불중 : {{dashboard['환불중']}}
                                     </p>
                                 </div>
                             </div>
@@ -68,11 +73,12 @@
                     </div>
                 </div>
                 <div class="col-lg-12">
-                    <div class="row">
+                    <div class="row text-center">
                         <div class="col-lg-12">
                             그외 링크
                         </div>
                         <div class="col-lg-4">
+                            <i class="fas fa-desktop"></i> <br>
                             주문내역조회
                         </div>
                         <div class="col-lg-4">
@@ -100,14 +106,11 @@
 <script>
   export default {
     name: "OrderDashComponent",
+    props: [
+      'dashboard'
+    ],
     data () {
       return {
-        orderStat: [
-            1,
-            2,
-            1,
-            2
-        ]
       }
     }
   }
@@ -120,5 +123,20 @@
 .card-content .col p{
     font-size: 15pt;
     font-weight: bold;
+}
+.circle {
+    background: white;
+    border-radius: 100px;
+    color: white;
+    height: 100px;
+    font-weight: bold;
+    width: 100px;
+    display: table;
+    margin: 20px auto;
+}
+.circle p {
+    vertical-align: middle;
+    display: table-cell;
+    font-size: 20pt
 }
 </style>

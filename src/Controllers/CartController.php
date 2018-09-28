@@ -24,7 +24,10 @@ class CartController extends XeroCommerceBasicController
     public function index()
     {
         return \XePresenter::make(
-            'cart.index'
+            'cart.index',
+            [
+                'cartList' => $this->cartService->getJsonList()
+            ]
         );
     }
 
@@ -45,7 +48,7 @@ class CartController extends XeroCommerceBasicController
 
     public function draw(Cart $cart)
     {
-        $this->cartService->drawList($cart);
+        $this->cartService->draw($cart);
         return redirect()->route('cart.index');
     }
 }

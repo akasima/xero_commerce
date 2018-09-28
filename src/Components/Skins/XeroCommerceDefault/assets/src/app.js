@@ -6,6 +6,7 @@ Vue.use(BootstrapVue);
 
 require('bootstrap/dist/css/bootstrap.css');
 require('bootstrap-vue/dist/bootstrap-vue.css');
+require('@fortawesome/fontawesome-free');
 
 Vue.component('test-component', require('./components/TestComponent').default);
 Vue.component('cart-component', require('./components/Cart/CartComponent').default);

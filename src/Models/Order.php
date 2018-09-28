@@ -41,6 +41,6 @@ class Order extends DynamicModel
         if (is_null($this->code)) {
             $this->code = 0;
         }
-        return OrderHandler::STATUS[$this->code];
+        return self::STATUS[$this->code];
     }
 }

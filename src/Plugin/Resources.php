@@ -96,57 +96,57 @@ class Resources
             });
         });
 
-        Route::fixed('xero_commerce', function () {
-            Route::group([
-                'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers'
-            ], function () {
-                Route::get('/cart', [
-                    'uses' => 'CartController@index',
-                    'as' => 'xero_commerce::cart.index'
-                ]);
-                Route::get('/cart/change/{cart}', [
-                    'uses' => 'CartController@change',
-                    'as' => 'xero_commerce::cart.change'
-                ]);
-                Route::get('/cart/draw/{cart}', [
-                    'uses' => 'CartController@draw',
-                    'as' => 'xero_commerce::cart.draw'
-                ]);
-                Route::get('/cart/list', [
-                    'uses' => 'CartController@list',
-                    'as' => 'xero_commerce::cart.list'
-                ]);
-                Route::get('/cart/summary', [
-                    'uses' => 'CartController@summary',
-                    'as' => 'xero_commerce::cart.summary'
-                ]);
-                Route::post('/order', [
-                    'uses' => 'OrderController@register',
-                    'as' => 'xero_commerce::order.register'
-                ]);
-                Route::get('/order/{order}', [
-                    'uses' => 'OrderController@registerAgain',
-                    'as' => 'xero_commerce::order.register.again'
-                ]);
-                Route::get('/order', [
-                    'uses' => 'OrderController@index',
-                    'as' => 'xero_commerce::order.index'
-                ]);
-                Route::post('/order/pay/{order}', [
-                    'uses'=>'OrderController@pay',
-                    'as'=>'xero_commerce::order.pay'
-                ]);
-                Route::post('/order/success/{order}', [
-                    'uses'=>'OrderController@success',
-                    'as'=>'xero_commerce::order.success'
-                ]);
-                Route::get('/order/fail/{order}', [
-                    'uses' => 'OrderController@fail',
-                    'as' => 'xero_commerce::order.fail'
-                ]);
-                Route::get('/test/{product}', 'CartController@test');
-            });
-        });
+//        Route::fixed('xero_commerce', function () {
+//            Route::group([
+//                'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers'
+//            ], function () {
+//                Route::get('/cart', [
+//                    'uses' => 'CartController@index',
+//                    'as' => 'xero_commerce::cart.index'
+//                ]);
+//                Route::get('/cart/change/{cart}', [
+//                    'uses' => 'CartController@change',
+//                    'as' => 'xero_commerce::cart.change'
+//                ]);
+//                Route::get('/cart/draw/{cart}', [
+//                    'uses' => 'CartController@draw',
+//                    'as' => 'xero_commerce::cart.draw'
+//                ]);
+//                Route::get('/cart/list', [
+//                    'uses' => 'CartController@list',
+//                    'as' => 'xero_commerce::cart.list'
+//                ]);
+//                Route::get('/cart/summary', [
+//                    'uses' => 'CartController@summary',
+//                    'as' => 'xero_commerce::cart.summary'
+//                ]);
+//                Route::post('/order', [
+//                    'uses' => 'OrderController@register',
+//                    'as' => 'xero_commerce::order.register'
+//                ]);
+//                Route::get('/order/{order}', [
+//                    'uses' => 'OrderController@registerAgain',
+//                    'as' => 'xero_commerce::order.register.again'
+//                ]);
+//                Route::get('/order', [
+//                    'uses' => 'OrderController@index',
+//                    'as' => 'xero_commerce::order.index'
+//                ]);
+//                Route::post('/order/pay/{order}', [
+//                    'uses'=>'OrderController@pay',
+//                    'as'=>'xero_commerce::order.pay'
+//                ]);
+//                Route::post('/order/success/{order}', [
+//                    'uses'=>'OrderController@success',
+//                    'as'=>'xero_commerce::order.success'
+//                ]);
+//                Route::get('/order/fail/{order}', [
+//                    'uses' => 'OrderController@fail',
+//                    'as' => 'xero_commerce::order.fail'
+//                ]);
+//                Route::get('/test/{product}', 'CartController@test');
+//            });
+//        });
     }
 
     /**

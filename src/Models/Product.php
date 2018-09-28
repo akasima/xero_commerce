@@ -93,7 +93,7 @@ class Product extends SellType
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function orderUnits()
+    public function sellUnits()
     {
         return $this->hasMany(ProductOptionItem::class);
     }
