@@ -1,5 +1,6 @@
 <?php
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Plugin;
 ?>
 
 @section('page_title')
@@ -68,7 +69,10 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                         /////////// 에디터 변경 ////////////
                         <div class="form-group">
                             설명
-                            <textarea name="description">{{ $product->description }}</textarea>
+                            {!! editor(Plugin::getId(), [
+                              'content' => $product->description,
+                              'contentDomName' => 'description',
+                            ]) !!}
                         </div>
 
                         <div class="form-group">

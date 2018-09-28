@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 use App\Facades\XeInterception;
 use XeRegister;
 use Route;
+use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
@@ -215,6 +216,8 @@ class Resources
      */
     public static function setConfig()
     {
+        \XeEditor::setInstance(Plugin::getId(), CkEditor::getId());
+
         $category = \XeCategory::create([
             'name' => '상품 분류'
         ]);
