@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
+use App\Facades\XeFrontend;
 use App\Http\Controllers\Controller;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 
@@ -21,7 +22,11 @@ class OrderController extends Controller
 
     public function dash()
     {
-
+        XeFrontend::js('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js')->load();
+        return \XePresenter::make('xero_commerce::views.setting.order.dash', [
+            'title' => 'xero_commerce',
+            'dash' => $this->orderService->dashBoard()
+        ]);
     }
 
     public function list()
@@ -36,7 +41,9 @@ class OrderController extends Controller
 
     public function delivery()
     {
-
+        return \XePresenter::make('xero_commerce::views.setting.order.delivery', [
+            'title' => 'xero_commerce'
+        ]);
     }
 
     public function buyOption()

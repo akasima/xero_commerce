@@ -3,7 +3,7 @@
         <div class="col-lg-3">
             <div class="row">
                 <div class="col-lg-12 text-center text-white bg-dark">
-                    님의 <br>
+                    {{user.display_name}}님의 <br>
                     회원등급
                     <div class="circle text-dark">
                         <p>VIP</p>
@@ -78,23 +78,55 @@
                             그외 링크
                         </div>
                         <div class="col-lg-4">
-                            <i class="fas fa-desktop"></i> <br>
-                            주문내역조회
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="xi-desktop"></i> <br>
+                                    주문내역조회
+                                </div>
+                                <div class="card-content">
+                                    주문내역을 조회합니다
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-4">
-                            회원정보
+                            <div class="card">
+                                <div class="card-content">
+                                    <i class="xi-user"></i> <br>
+                                    회원정보
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-4">
-                            관심상품
+                            <div class="card">
+                                <div class="card-content">
+                                    <i class="xi-basket"></i> <br>
+                                    관심상품
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-4">
-                            적립금 관리
+                            <div class="card">
+                                <div class="card-content">
+                                    <i class="xi-piggy-bank"></i> <br>
+                                    적립금 관리
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-4">
-                            쿠폰 관리
+                            <div class="card">
+                                <div class="card-content">
+                                    <i class="xi-coupon"></i> <br>
+                                    쿠폰 관리
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-4">
-                            게시물 관리
+                            <div class="card">
+                                <div class="card-content">
+                                    <i class="xi-border-color"></i> <br>
+                                    게시물 관리
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,7 +139,7 @@
   export default {
     name: "OrderDashComponent",
     props: [
-      'dashboard'
+      'dashboard', 'user'
     ],
     data () {
       return {

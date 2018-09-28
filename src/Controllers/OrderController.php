@@ -31,12 +31,14 @@ class OrderController extends XeroCommerceBasicController
     {
         $order = $this->orderService->order($request);
         return [
-            'url' => route('xero_commerce::order.register.again', ['order' => $order->id])
+            'url' => instance_route('xero_commerce::order.register.again'),
+            'order_id' => $order->id
         ];
     }
 
-    public function registerAgain(Order $order)
+    public function registerAgain(Request $request)
     {
+        $order = Order::find($request->order_id);
         return \XePresenter::make(
             'order.register',
             ['title' => 'test',

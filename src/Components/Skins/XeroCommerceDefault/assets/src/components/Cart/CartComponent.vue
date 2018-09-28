@@ -10,6 +10,9 @@
         <div style="text-align: center" class="xe-col-lg-2">
             <button class="xe-btn xe-btn-lg xe-btn-block" type="button">쇼핑 계속하기</button>
         </div>
+        <form ref="form">
+            <input type="hidden" name="_token">
+        </form>
     </div>
 </template>
 
@@ -66,7 +69,16 @@
           },
           method: 'post'
         }).done((res) => {
-          document.location.href = res.url;
+          var form = this.$refs.form;
+          form.setAttribute('action',res.url)
+          form.setAttribute('method','post')
+          $('input[name=_token]').val(document.getElementById('csrf_token').value)
+          var order_id = document.createElement('input')
+          order_id.setAttribute('type','hidden')
+          order_id.setAttribute('name','order_id')
+          order_id.setAttribute('value',res.order_id)
+          form.appendChild(order_id)
+          form.submit()
         })
       },
       sum(array, key){

@@ -37,7 +37,7 @@ class XeroCommerceModule extends AbstractModule
                 'uses' => 'OrderController@register',
                 'as' => 'xero_commerce::order.register'
             ]);
-            Route::get('/order/{order}', [
+            Route::post('/order/register', [
                 'uses' => 'OrderController@registerAgain',
                 'as' => 'xero_commerce::order.register.again'
             ]);
