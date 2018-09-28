@@ -12,7 +12,6 @@ class XeroCommerceModule extends AbstractModule
     {
         Route::instance(XeroCommerceModule::getId(), function () {
             Route::get('/', ['as' => 'xero_commerce::product.index', 'uses' => 'ProductController@index']);
-            Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
 
             Route::get('/cart', [
                 'uses' => 'CartController@index',
@@ -39,10 +38,12 @@ class XeroCommerceModule extends AbstractModule
                 'as' => 'xero_commerce::order.fail'
             ]);
             Route::get('/test/{product}', 'CartController@test');
+
+            Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
         }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
 
         ProductSlugService::setReserved([
-            'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug'
+            'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug', 'cart', 'order'
         ]);
     }
 

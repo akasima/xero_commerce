@@ -37,9 +37,9 @@ class ProductSlugService
         $slug = $product->slug;
 
         if ($slug === null) {
-            if ($request->has('newSlug') == true) {
-                $newSlug = $request->get('newSlug');
-            } else {
+            $newSlug = $request->get('newSlug');
+
+            if ($newSlug === null) {
                 $newSlug = self::make($product->name, $product->id);
             }
 
