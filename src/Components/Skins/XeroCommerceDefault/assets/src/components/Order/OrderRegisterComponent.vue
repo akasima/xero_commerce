@@ -78,7 +78,7 @@
       OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent
     },
     props: [
-      'orderItemList', 'orderSummary', 'user', 'order_id'
+      'orderItemList', 'orderSummary', 'user', 'order_id', 'dashUrl', 'successUrl', 'failUrl'
     ],
     computed: {
       defaultDelivery() {
@@ -100,7 +100,7 @@
       register(pay) {
         if (pay.status) {
           $.ajax({
-            url: '/plugin/xero_commerce/order/success/' + this.order_id,
+            url: this.successUrl,
             method: 'post',
             data: {
               delivery: this.delivery,
@@ -108,14 +108,14 @@
             }
           }).done(this.complete).fail(this.fail())
         } else {
-          document.location.href = '/plugin/xero_commerce/order/fail/' + this.order_id
+          document.location.href = this.failUrl
         }
       },
       complete(res) {
-        document.location.href = '/plugin/xero_commerce/order'
+        document.location.href = this.dashUrl
       },
       fail(error) {
-        document.location.href = '/plugin/xero_commerce/order/fail/' + this.order_id
+        document.location.href = this.failUrl
       }
     }
   }

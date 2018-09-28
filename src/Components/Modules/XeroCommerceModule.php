@@ -57,10 +57,6 @@ class XeroCommerceModule extends AbstractModule
                 'uses' => 'OrderController@fail',
                 'as' => 'xero_commerce::order.fail'
             ]);
-            Route::get('/order/fail/{order}', [
-                'uses' => 'OrderController@fail',
-                'as' => 'xero_commerce::order.fail'
-            ]);
             Route::get('/test/{product}', 'CartController@test');
 
             Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);

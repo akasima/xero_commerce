@@ -48,8 +48,9 @@ class OrderController extends XeroCommerceBasicController
         );
     }
 
-    public function fail(Order $order)
+    public function fail($first, Order $order)
     {
+        $order = Order::find($order);
         return \XePresenter::make(
             'order.fail',
             [
@@ -59,16 +60,18 @@ class OrderController extends XeroCommerceBasicController
         );
     }
 
-    public function success(Order $order, Request $request)
+    public function success(Request $request, $first , $order)
     {
+        $order = Order::find($order);
         $this->orderService->pay($order, $request);
         $cartService = new CartService();
         $cartService->drawList(Cart::where('order_id',$order->id)->pluck('id'));
         return $this->orderService->complete($order, $request);
     }
 
-    public function pay(Order $order, Request $request)
+    public function pay($first, $order, Request $request)
     {
+        $order = Order::find($order);
         return $this->orderService->pay($order, $request);
     }
 }
