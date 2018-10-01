@@ -25,16 +25,6 @@
                     </div>
 
                     <div class="form-group">
-                        초기 재고
-                        {{ $product->stock }}
-                    </div>
-
-                    <div class="form-group">
-                        품절 알림 재고
-                        {{ $product->alert_stock }}
-                    </div>
-
-                    <div class="form-group">
                         <input type="checkbox" checked disabled> 제한없음 <p></p>
                         최소 구매 수량
                         {{ $product->min_buy_count }}
