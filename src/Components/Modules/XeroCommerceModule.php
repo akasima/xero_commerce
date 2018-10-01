@@ -4,13 +4,16 @@ namespace Xpressengine\Plugins\XeroCommerce\Components\Modules;
 
 use Route;
 use Xpressengine\Menu\AbstractModule;
-use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
+use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class XeroCommerceModule extends AbstractModule
 {
     public static function boot()
     {
-        Route::instance(XeroCommerceModule::getId(), function () {
+        Route::group([
+            'prefix' => Plugin::XeroCommercePrefix,
+            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers'
+        ], function () {
             Route::get('/', ['as' => 'xero_commerce::product.index', 'uses' => 'ProductController@index']);
 
             Route::get('/cart', [
@@ -60,7 +63,7 @@ class XeroCommerceModule extends AbstractModule
             Route::get('/test/{product}', 'CartController@test');
 
             Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
-        }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
+        });
     }
 
     public function createMenuForm()
