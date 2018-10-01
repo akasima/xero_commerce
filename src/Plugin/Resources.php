@@ -106,6 +106,11 @@ class Resources
                     Route::get('/setSkin', ['as' => 'xero_commerce::setting.config.skin',
                         'uses' => 'ShopConfigController@setSkin',
                         'settings_menu' => 'xero_commerce.config.setSkin']);
+                    Route::get('/editTheme', ['as' => 'xero_commerce:setting.config.editTheme',
+                        'uses' => 'ShopConfigController@editTheme',
+                        'settings_menu' => 'xero_commerce.config.setTheme']);
+                    Route::post('/updateTheme', ['as' => 'xero_commerce:setting.config.updateTheme',
+                        'uses' => 'ShopConfigController@updateTheme']);
 
                     //입점몰 관리
                     Route::get('/shop', ['as' => 'xero_commerce::setting.config.shop.index',
@@ -337,11 +342,17 @@ class Resources
                 'description' => '',
                 'ordering' => 100032
             ],
+            'xero_commerce.config.setTheme' => [
+                'title' => '테마 설정',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100033
+            ],
             'xero_commerce.config.storeInfo' => [
                 'title' => '입점몰 정보',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100032
+                'ordering' => 100034
             ],
         ];
     }
