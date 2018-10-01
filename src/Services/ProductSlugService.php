@@ -161,7 +161,7 @@ class ProductSlugService
         }
 
         while (static::has($slug, $increment) === true) {
-            $slugInfo = ProductSlug::where('slug', $slug)->first();
+            $slugInfo = ProductSlug::where('slug', self::makeIncrement($slug, $increment))->first();
 
             if ($slugInfo->id == $id) {
                 break;
