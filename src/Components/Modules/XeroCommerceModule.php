@@ -61,10 +61,6 @@ class XeroCommerceModule extends AbstractModule
 
             Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
         }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
-
-        ProductSlugService::setReserved([
-            'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug', 'cart', 'order'
-        ]);
     }
 
     public function createMenuForm()
