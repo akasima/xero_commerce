@@ -74,4 +74,9 @@ class OrderController extends XeroCommerceBasicController
         $order = Order::find($order);
         return $this->orderService->pay($order, $request);
     }
+
+    public function afterService()
+    {
+        return \XePresenter::make('order.as', ['title' => '주문내역']);
+    }
 }

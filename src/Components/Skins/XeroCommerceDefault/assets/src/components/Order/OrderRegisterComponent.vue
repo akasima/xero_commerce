@@ -100,7 +100,7 @@
       register(pay) {
         if (pay.status) {
           $.ajax({
-            url: this.successUrl,
+            url: this.successUrl, Routemoduele.name('xero_commerce::order.success')
             method: 'post',
             data: {
               delivery: this.delivery,

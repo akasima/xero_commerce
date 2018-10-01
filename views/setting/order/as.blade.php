@@ -8,14 +8,13 @@
     <div class="xe-col-lg-12">
         <table class="xe-table">
             <thead>
-                <tr>
-                    <th>주문번호</th>
-                    <th>항목</th>
-                    <th>상세정보</th>
-                    <th>배송사</th>
-                    <th>송장번호</th>
-                    <th>입력완료</th>
-                </tr>
+            <tr>
+                <th>주문번호</th>
+                <th>항목</th>
+                <th>상세정보</th>
+                <th>사유</th>
+                <th>입력완료</th>
+            </tr>
             </thead>
             <tbody>
 

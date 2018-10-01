@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Agreement;
 use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
@@ -157,8 +158,23 @@ class Dev
         return $dc;
     }
 
+    public function makeAgreement($type)
+    {
+        $contents = 'Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven\'t heard of them accusamus labore sustainable VHS.-->';
+        $agree = new Agreement();
+        $agree->type = $type;
+        $agree->name = '구매동의';
+        $agree->version = '1.0.0';
+        $agree->contents = $contents;
+        $agree->save();
+    }
+
     public function setting()
     {
+        $this->makeAgreement('contacts');
+        $this->makeAgreement('purchase');
+        $this->makeAgreement('privacy');
+        $this->makeAgreement('thirdParty');
         $this->makeDeliveryCompany();
         $this->makeShop(5);
         $this->makeProduct(10);

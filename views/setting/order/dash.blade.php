@@ -34,6 +34,18 @@
                     <td>{{$dash['취소중']}}</td>
                     <td>0</td>
                 </tr>
+                <tr>
+                    <td>환불처리</td>
+                    <td>{{$dash['환불중']}}</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>교환처리</td>
+                    <td>{{$dash['교환중']}}</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+            </tbody>
             </tbody>
         </table>
     </div>
