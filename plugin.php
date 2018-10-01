@@ -4,12 +4,15 @@ namespace Xpressengine\Plugins\XeroCommerce;
 
 use Route;
 use Xpressengine\Plugin\AbstractPlugin;
+use Xpressengine\Plugins\XeroCommerce\Exceptions\XeroCommercePrefixUsedException;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
 use Xpressengine\Plugins\XeroCommerce\Plugin\EventManager;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
 
 class Plugin extends AbstractPlugin
 {
+    const XeroCommercePrefix = 'shopping';
+
     /**
      * 이 메소드는 활성화(activate) 된 플러그인이 부트될 때 항상 실행됩니다.
      *
@@ -18,10 +21,10 @@ class Plugin extends AbstractPlugin
     public function boot()
     {
         Resources::bindClasses();
+        Resources::setXeroCommercePrefixRoute();
         Resources::registerRoute();
         Resources::registerSettingMenu();
         EventManager::listenEvents();
-
     }
 
     /**
@@ -33,6 +36,10 @@ class Plugin extends AbstractPlugin
      */
     public function activate($installedVersion = null)
     {
+        if (Resources::isUsedXeroCommercePrefix() === true) {
+            throw new XeroCommercePrefixUsedException;
+        }
+
         Resources::storeDefaultShop();
     }
 

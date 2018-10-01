@@ -82,7 +82,7 @@ class Dev
 
         for ($i = 0; $i < $count; $i++) {
             $shop = new Shop();
-            $shop->shop_name = $this->faker->name;
+            $shop->shop_name = $this->faker->name . 'Shop';
             $shop->shop_eng_name = $engFaker->firstName;
             if ($i == 0) {
                 $shopType = Shop::TYPE_BASIC_SHOP;
@@ -137,16 +137,25 @@ class Dev
 
     public function makeProductOption($product_id)
     {
-        $op = new ProductOptionItem();
-        $op->product_id = $product_id;
-        $op->option_type = ProductOptionItem::TYPE_DEFAULT_OPTION;
-        $op->name = $this->faker->colorName;
-        $op->addition_price = $this->faker->numberBetween(0, 10) * 500;
-        $op->stock = 10;
-        $op->alert_stock = 1;
-        $op->state_display = ProductOptionItem::DISPLAY_VISIBLE;
-        $op->state_deal = ProductOptionItem::DEAL_ON_SALE;
-        $op->save();
+        for ($i = 0; $i < rand(1, 4); $i++) {
+            $op = new ProductOptionItem();
+            $op->product_id = $product_id;
+
+            if ($i == 0) {
+                $op->option_type = ProductOptionItem::TYPE_DEFAULT_OPTION;
+                $op->addition_price = 0;
+            } else {
+                $op->option_type = rand(ProductOptionItem::TYPE_OPTION_ITEM, ProductOptionItem::TYPE_ADDITION_ITEM);
+                $op->addition_price = $this->faker->numberBetween(0, 10) * 500;
+            }
+
+            $op->name = $this->faker->colorName;
+            $op->stock = 10;
+            $op->alert_stock = 1;
+            $op->state_display = ProductOptionItem::DISPLAY_VISIBLE;
+            $op->state_deal = ProductOptionItem::DEAL_ON_SALE;
+            $op->save();
+        }
     }
 
     public function makeDeliveryCompany()

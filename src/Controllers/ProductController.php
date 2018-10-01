@@ -26,14 +26,14 @@ class ProductController extends XeroCommerceBasicController
         return \XePresenter::make('product.index', ['products' => $products]);
     }
 
-    public function show(Request $request, $menuUrl, $strSlug)
+    public function show(Request $request, $strSlug)
     {
         $productId = ProductSlugService::getProductId($strSlug);
 
         $product = $this->productService->getProduct($productId);
 
         if ($product == null) {
-            return redirect()->to(instance_route('xero_commerce::product.index'))
+            return redirect()->route('xero_commerce::product.index')
                 ->with('alert', ['type' => 'danger', 'message' => '존재하지 않는 상품입니다.']);
         }
 

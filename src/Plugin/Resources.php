@@ -19,10 +19,35 @@ use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
+use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\User\Models\User;
 
 class Resources
 {
+    /**
+     * @return void
+     */
+    public static function setXeroCommercePrefixRoute()
+    {
+        config(['xe.routing' => array_merge(
+            config('xe.routing'),
+            ['xero_commerce' => Plugin::XeroCommercePrefix]
+        )]);
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isUsedXeroCommercePrefix()
+    {
+        if (InstanceRoute::where('url', Plugin::XeroCommercePrefix)->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @return void
      */
@@ -100,6 +125,10 @@ class Resources
                 });
             });
         });
+
+        ProductSlugService::setReserved([
+            'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug', 'cart', 'order', Plugin::XeroCommercePrefix
+        ]);
     }
 
     /**
