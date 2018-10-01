@@ -31,7 +31,7 @@
                 "theme/xero_commerce@xero_commerce_theme_default": {
                     "name": "XeroCommerce Default Theme",
                     "description": "The theme supported by Xero_commerce plugin.",
-                    "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Themes\\XeroCommerceTheme\\XeroCommerceThemeTheme"
+                    "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Themes\\XeroCommerceTheme\\XeroCommerceTheme"
                 },
                 "module/xero_commerce@xero_commerce_module/skin/xero_commerce@xero_commerce_default": {
                     "name": "XeroCommerce Default Skin",
