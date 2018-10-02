@@ -119,7 +119,6 @@ class XeroCommerceModule extends AbstractModule
 
         $plugin = Plugin::class;
 
-
         return View::make('xero_commerce::views/setting/module/edit', [
             'categoryItems' => $categoryItems,
             'plugin' => $plugin,

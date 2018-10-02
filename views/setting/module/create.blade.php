@@ -6,6 +6,7 @@
     </div>
 
     <div>
+        <input type="hidden" name="labels[]" value="">
         @foreach ($labels as $label)
             <input type="checkbox" name="labels[]" value="{{ $label->id }}">{{ $label->name }}
         @endforeach
