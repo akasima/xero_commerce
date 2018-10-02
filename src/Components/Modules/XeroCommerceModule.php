@@ -16,7 +16,7 @@ class XeroCommerceModule extends AbstractModule
         Route::group([
             'prefix' => Plugin::XeroCommercePrefix,
             'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
-            'middleware' => ['web', 'auth']
+            'middleware' => ['web']
         ], function () {
             Route::get('/cart', [
                 'uses' => 'CartController@index',

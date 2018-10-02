@@ -54,8 +54,8 @@
                     옵션
                 </div>
 
-                <div class="panel-body">
-
+                <div id="product-container" class="panel-body">
+                    <option-table-component :options='{!! $options !!}'></option-table-component>
                 </div>
             </div>
         </div>

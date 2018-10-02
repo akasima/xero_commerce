@@ -24,7 +24,7 @@ class OrderController extends XeroCommerceBasicController
 
     public function index()
     {
-        return \XePresenter::make('order.dash', ['title' => '주문내역', 'dashboard'=>$this->orderService->dashBoard()]);
+        return \XePresenter::make('order.dash', ['title' => '주문내역', 'dashboard' => $this->orderService->dashBoard()]);
     }
 
     public function register(Request $request)
@@ -48,7 +48,7 @@ class OrderController extends XeroCommerceBasicController
         );
     }
 
-    public function fail($first, Order $order)
+    public function fail(Order $order)
     {
         $order = Order::find($order);
         return \XePresenter::make(
@@ -60,12 +60,12 @@ class OrderController extends XeroCommerceBasicController
         );
     }
 
-    public function success(Request $request, $first , $order)
+    public function success(Request $request, $order)
     {
         $order = Order::find($order);
         $this->orderService->pay($order, $request);
         $cartService = new CartService();
-        $cartService->drawList(Cart::where('order_id',$order->id)->pluck('id'));
+        $cartService->drawList(Cart::where('order_id', $order->id)->pluck('id'));
         return $this->orderService->complete($order, $request);
     }
 
