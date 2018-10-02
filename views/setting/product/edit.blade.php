@@ -95,6 +95,20 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
 
                         <div class="form-group">
+                            라벨
+                            @foreach ($labels as $label)
+                                <input type="checkbox" name="labels[]" value="{{ $label->id }}" @if (in_array($label->id, $productLabelIds) == true) checked @endif>{{ $label->name }}
+                            @endforeach
+                        </div>
+
+                        <div class="form-group">
+                            뱃지
+                            @foreach ($badges as $badge)
+                                <input type="radio" name="badge_id" value="{{ $badge->id }}" @if ($product->badge_id == $badge->id) checked @endif> {{ $badge->name }}
+                            @endforeach
+                        </div>
+
+                        <div class="form-group">
                             {!! uio('uiobject/xero_commerce@tag', [
                                 'tags' => $product->tags->toArray()
                             ]) !!}

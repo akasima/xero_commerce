@@ -8,10 +8,14 @@ use Route;
 use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Badge;
+use Xpressengine\Plugins\XeroCommerce\Models\Label;
+use Xpressengine\Plugins\XeroCommerce\Models\Mark;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\Plugins\XeroCommerce\Models\SellType;
@@ -170,6 +174,15 @@ class Resources
         });
         $app->alias(ProductOptionItemHandler::class, 'xero_commerce.productOptionItemHandler');
 
+        $app->singleton(LabelHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(LabelHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(LabelHandler::class, 'xero_commerce.labelHandler');
+
         $app->singleton(OrderHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(OrderHandler::class);
 
@@ -216,8 +229,44 @@ class Resources
                 'categoryId' => $category->id,
             ]);
         }
+
+        self::storeDefaultMarks();
     }
 
+    /**
+     * @return void
+     */
+    public static function storeDefaultMarks()
+    {
+        $labels[] = ['name' => '히트', 'eng_name' => 'hit'];
+        $labels[] = ['name' => '추천', 'eng_name' => 'recommend'];
+        $labels[] = ['name' => '신규', 'eng_name' => 'new'];
+        $labels[] = ['name' => '인기', 'eng_name' => 'popular'];
+        $labels[] = ['name' => '할인', 'eng_name' => 'sale'];
+
+        foreach ($labels as $label) {
+            $newLabel = new Label();
+            $newLabel->name = $label['name'];
+            $newLabel->eng_name = $label['eng_name'];
+
+            $newLabel->save();
+        }
+
+        $badges[] = ['name' => '세일', 'eng_name' => 'sale'];
+        $badges[] = ['name' => '히트', 'eng_name' => 'hit'];
+
+        foreach ($badges as $badge) {
+            $newBadge = new Badge();
+            $newBadge->name = $badge['name'];
+            $newBadge->eng_name = $badge['eng_name'];
+
+            $newBadge->save();
+        }
+    }
+
+    /**
+     * @return void
+     */
     public static function storeDefaultShop()
     {
         $userId = \Auth::user()->getId();
