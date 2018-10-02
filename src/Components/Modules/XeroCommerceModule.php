@@ -3,6 +3,9 @@
 namespace Xpressengine\Plugins\XeroCommerce\Components\Modules;
 
 use Route;
+use XeConfig;
+use View;
+use Xpressengine\Category\Models\Category;
 use Xpressengine\Menu\AbstractModule;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
@@ -14,12 +17,8 @@ class XeroCommerceModule extends AbstractModule
         Route::group([
             'prefix' => Plugin::XeroCommercePrefix,
             'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
-            'middleware' => [
-                'web', 'auth'
-            ]
+            'middleware' => ['web']
         ], function () {
-            Route::get('/', ['as' => 'xero_commerce::product.index', 'uses' => 'ProductController@index']);
-
             Route::get('/cart', [
                 'uses' => 'CartController@index',
                 'as' => 'xero_commerce::cart.index'
@@ -77,25 +76,56 @@ class XeroCommerceModule extends AbstractModule
                 'as' => 'xero_commerce::agreement.contacts.save'
             ]);
         });
+
+        Route::instance(XeroCommerceModule::getId(), function () {
+            Route::get('/', ['as' => 'xero_commerce::product.index', 'uses' => 'ProductController@index']);
+        }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
     }
 
     public function createMenuForm()
     {
-        return '';
+        $config = XeConfig::get(Plugin::getId());
+        $categoryItems = Category::find($config->get('categoryId'))->getProgenitors();
+        $plugin = Plugin::class;
+
+        return View::make('xero_commerce::views/setting/module/create', [
+            'categoryItems' => $categoryItems,
+            'plugin' => $plugin
+        ])->render();
     }
 
     public function storeMenu($instanceId, $menuTypeParams, $itemParams)
     {
+        XeConfig::add(sprintf('%s.%s', Plugin::getId(), $instanceId), [
+            'categoryItemId' => $menuTypeParams['categoryItemId'],
+            'categoryItemDepth' => $menuTypeParams['categoryItemDepth'],
+        ]);
+
         return '';
     }
 
     public function editMenuForm($instanceId)
     {
-        return '';
+        //TODO 수정 기존 데이터 전달 필요
+        $config = XeConfig::get(Plugin::getId());
+        $categoryItems = Category::find($config->get('categoryId'))->getProgenitors();
+        $plugin = Plugin::class;
+
+        return View::make('xero_commerce::views/setting/module/edit', [
+            'categoryItems' => $categoryItems,
+            'plugin' => $plugin
+        ])->render();
     }
 
     public function updateMenu($instanceId, $menuTypeParams, $itemParams)
     {
+        $config = XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId));
+
+        $config['categoryItemId'] = $menuTypeParams['categoryItemId'];
+        $config['categoryItemDepth'] = $menuTypeParams['categoryItemDepth'];
+
+        XeConfig::modify($config);
+
         return '';
     }
 
@@ -106,6 +136,8 @@ class XeroCommerceModule extends AbstractModule
 
     public function deleteMenu($instanceId)
     {
+        XeConfig::remove(XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId)));
+
         return '';
     }
 

@@ -44,8 +44,9 @@ class ProductController extends Controller
     public function show(Request $request, $productId)
     {
         $product = $this->productSettingService->getProduct($productId);
+        $options = $product->productOption;
 
-        return XePresenter::make('xero_commerce::views.setting.product.show', compact('product'));
+        return XePresenter::make('xero_commerce::views.setting.product.show', compact('product', 'options'));
     }
 
     public function create()

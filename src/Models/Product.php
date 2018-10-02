@@ -17,10 +17,14 @@ class Product extends SellType
     const DEAL_PAUSE = 2;
     const DEAL_END = 3;
 
+    const TAX_TYPE_TAX = 1;
+    const TAX_TYPE_NO = 2;
+    const TAX_TYPE_FREE = 3;
+
     protected $table = 'xero_commerce_products';
 
     protected $fillable = ['shop_id', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
-        'min_buy_count', 'max_buy_count', 'description', 'state_display', 'state_deal'];
+        'min_buy_count', 'max_buy_count', 'description', 'tax_type', 'state_display', 'state_deal'];
 
     /**
      * @return array
@@ -43,6 +47,28 @@ class Product extends SellType
             self::DEAL_PAUSE => '판매 일시 중지',
             self::DEAL_END => '거래 종료',
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTaxTypes()
+    {
+        return [
+            self::TAX_TYPE_TAX => '과세',
+            self::TAX_TYPE_NO => '비과세',
+            self::TAX_TYPE_FREE => '면세',
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxTypeName()
+    {
+        $taxType = self::getTaxTypes();
+
+        return $taxType[$this->tax_type];
     }
 
     /**

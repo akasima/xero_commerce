@@ -64,7 +64,6 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             <input type="text" name="max_buy_count" value="{{ Request::old('max_buy_count') }}" disabled="disabled">
                         </div>
 
-                        /////////// 에디터 변경 ////////////
                         <div class="form-group">
                             설명
                             {!! editor(Plugin::getId(), [
@@ -74,10 +73,20 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
 
                         <div class="form-group">
+                            과세 유형
+                            <select name="tax_type">
+                                <option value="">선택</option>
+                                @foreach (Product::getTaxTypes() as $value => $taxType)
+                                    <option value="{{ $value }}" @if ($value == Product::TAX_TYPE_TAX) selected @endif>{{ $taxType }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             출력여부
                             <select name="state_display">
                                 <option value="">선택</option>
-                                @foreach ($displayStates as $value => $displayState)
+                                @foreach (Product::getDisplayStates() as $value => $displayState)
                                     <option value="{{ $value }}" @if ($value == Product::DISPLAY_VISIBLE) selected @endif>{{ $displayState }}</option>
                                 @endforeach
                             </select>
@@ -87,7 +96,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             거래여부
                             <select name="state_deal">
                                 <option value="">선택</option>
-                                @foreach ($dealStates as $value => $dealState)
+                                @foreach (Product::getDealStates() as $value => $dealState)
                                     <option value="{{ $value }}" @if ($value == Product::DEAL_ON_SALE) selected @endif>{{ $dealState }}</option>
                                 @endforeach
                             </select>

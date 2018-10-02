@@ -1,4 +1,4 @@
 vendor
 composer.lock
 Tests
-src/Components/Skins/XeroCommerceDefault/assets/node_modules
+assets/node_modules
