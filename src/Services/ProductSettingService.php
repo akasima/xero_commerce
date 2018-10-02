@@ -37,7 +37,7 @@ class ProductSettingService
      */
     public function getProducts(Request $request)
     {
-        $query = $this->productHandler->getProductsQuery($request);
+        $query = $this->productHandler->getProductsQueryForSetting($request);
 
         $products = $query->get();
 

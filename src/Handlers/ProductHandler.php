@@ -2,14 +2,19 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
+use Xpressengine\Category\Models\Category;
+use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
 
 class ProductHandler
 {
     /**
      * @param  integer $productId productId
+     *
      * @return Product
      */
     public function getProduct($productId)
@@ -24,35 +29,72 @@ class ProductHandler
      *
      * @return Product
      */
-    public function getProductsQuery(Request $request)
+    public function getProductsQueryForSetting(Request $request)
     {
         $query = new Product();
 
         $query = $this->settingMakeWhere($request, $query);
-
-        return $query;
-    }
-
-    /**
-     * @param Request $request request
-     * @param Product $query   product
-     *
-     * @return Product
-     */
-    private function settingMakeWhere(Request $request, Product $query)
-    {
         $query = $this->commonMakeWhere($request, $query);
 
         return $query;
     }
 
+    public function getProductsQueryForModule(Request $request, $config)
+    {
+        $query = new Product();
+
+        $query = $this->moduleMakeWhere($request, $query, $config);
+        $query = $this->commonMakeWhere($request, $query);
+
+        return $query;
+    }
+
+    private function moduleMakeWhere(Request $request, $query, $config)
+    {
+        $targetProductIds = [];
+        if ($categoryItemId = $config->get('categoryItemId')) {
+            $categoryItem = CategoryItem::where('id', $categoryItemId)->first();
+
+            $categoryIds[] = $categoryItem->id;
+            foreach ($categoryItem->descendants as $desc) {
+                $categoryIds[] = $desc->id;
+            }
+
+            $productIds = ProductCategory::whereIn('category_id', $categoryIds)->pluck('product_id')->toArray();
+
+            $targetProductIds = array_merge($targetProductIds, $productIds);
+        }
+
+        if ($labels = $config->get('labels')) {
+            $productIds = ProductLabel::whereIn('label_id', $labels)->pluck('product_id')->toArray();
+
+            $targetProductIds = array_intersect($targetProductIds, $productIds);
+        }
+
+        $targetProductIds = array_unique($targetProductIds);
+        $query = $query->whereIn('id', $targetProductIds);
+
+        return $query;
+    }
+
     /**
      * @param Request $request request
      * @param Product $query   product
      *
      * @return Product
      */
-    private function commonMakeWhere(Request $request, Product $query)
+    private function settingMakeWhere(Request $request, $query)
+    {
+        return $query;
+    }
+
+    /**
+     * @param Request $request request
+     * @param Product $query   product
+     *
+     * @return Product
+     */
+    private function commonMakeWhere(Request $request, $query)
     {
         if ($name = $request->get('name')) {
             $query = $query->where('name', 'like', '%' . $name . '%');
@@ -63,6 +105,7 @@ class ProductHandler
 
     /**
      * @param  array $args productArgs
+     *
      * @return integer
      */
     public function store(array $args)

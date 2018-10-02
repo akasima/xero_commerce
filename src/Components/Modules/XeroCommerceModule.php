@@ -99,11 +99,16 @@ class XeroCommerceModule extends AbstractModule
 
     public function storeMenu($instanceId, $menuTypeParams, $itemParams)
     {
-        XeConfig::add(sprintf('%s.%s', Plugin::getId(), $instanceId), [
-            'categoryItemId' => $menuTypeParams['categoryItemId'],
-            'categoryItemDepth' => $menuTypeParams['categoryItemDepth'],
-            'labels' => $menuTypeParams['labels']
-        ]);
+        $configValue['categoryItemId'] = $menuTypeParams['categoryItemId'];
+        $configValue['categoryItemDepth'] = $menuTypeParams['categoryItemDepth'];
+
+        //menuTypeParams['label'][0]은 null이 들어있음
+        if (isset($menuTypeParams['labels'][1])) {
+            array_shift($menuTypeParams['labels']);
+            $configValue['labels'] = $menuTypeParams['labels'];
+        }
+
+        XeConfig::add(sprintf('%s.%s', Plugin::getId(), $instanceId), $configValue);
 
         return '';
     }
@@ -116,6 +121,9 @@ class XeroCommerceModule extends AbstractModule
 
         $labels = Label::get();
         $moduleLabels = XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId))['labels'];
+        if ($moduleLabels === null) {
+            $moduleLabels = [];
+        }
 
         $plugin = Plugin::class;
 
@@ -133,7 +141,11 @@ class XeroCommerceModule extends AbstractModule
 
         $config['categoryItemId'] = $menuTypeParams['categoryItemId'];
         $config['categoryItemDepth'] = $menuTypeParams['categoryItemDepth'];
-        $config['labels'] = $menuTypeParams['labels'];
+
+        if (isset($menuTypeParams['labels'][1])) {
+            array_shift($menuTypeParams['labels']);
+            $config['labels'] = $menuTypeParams['labels'];
+        }
 
         XeConfig::modify($config);
 

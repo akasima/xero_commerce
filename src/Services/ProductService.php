@@ -18,9 +18,9 @@ class ProductService
         $this->handler = app('xero_commerce.productHandler');
     }
 
-    public function getProducts(Request $request)
+    public function getProducts(Request $request, $config)
     {
-        $query = $this->handler->getProductsQuery($request);
+        $query = $this->handler->getProductsQueryForModule($request, $config);
 
         return $query->get();
     }
