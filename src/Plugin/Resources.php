@@ -350,18 +350,30 @@ class Resources
                 'description' => '',
                 'ordering' => 100011
             ],
-            'xero_commerce.product.category' => [
-                'title' => '분류 관리',
-                'display' => true,
-                'description' => '',
-                'ordering' => 100012
-            ],
             'xero_commerce.product.create' => [
                 'title' => '상품 등록',
                 'display' => true,
                 'description' => '',
+                'ordering' => 100012
+            ],
+            'xero_commerce.product.category' => [
+                'title' => '분류 관리',
+                'display' => true,
+                'description' => '',
                 'ordering' => 100013
             ],
+            'xero_commerce.product.label' => [
+                'title' => '라벨 관리',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100014
+            ],
+            'xero_commerce.product.badge' => [
+                'title' => '배지 관리',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100015
+            ]
         ];
     }
 
