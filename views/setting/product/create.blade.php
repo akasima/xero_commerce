@@ -73,6 +73,16 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
 
                         <div class="form-group">
+                            과세 유형
+                            <select name="tax_type">
+                                <option value="">선택</option>
+                                @foreach (Product::getTaxTypes() as $value => $taxType)
+                                    <option value="{{ $value }}" @if ($value == Product::TAX_TYPE_TAX) selected @endif>{{ $taxType }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             출력여부
                             <select name="state_display">
                                 <option value="">선택</option>

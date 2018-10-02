@@ -47,6 +47,7 @@ class Database
             $table->integer('min_buy_count')->nullable();
             $table->integer('max_buy_count')->nullable();
             $table->text('description');
+            $table->integer('tax_type');
             $table->integer('state_display');
             $table->integer('state_deal');
             $table->softDeletes();

@@ -2,6 +2,17 @@
     <h2>상품 수정</h2>
 @endsection
 
+{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
+
+<div>
+    <a href="{{ route('xero_commerce::setting.product.edit', ['productId' => $product->id]) }}" class="xe-btn">수정</a>
+    <form method="post" action="{{ route('xero_commerce::setting.product.remove', ['productId' => $product->id]) }}">
+        {{ csrf_field() }}
+        <button type="submit" class="xe-btn xe-btn-danger">삭제</button>
+    </form>
+    <a href="{{ route('xero_commerce::setting.product.index') }}" class="xe-btn">목록</a>
+</div>
+
 <div class="row">
     <div class="col-sm-12">
         <div class="panel-group">
@@ -34,18 +45,16 @@
                     </div>
 
                     <div class="form-group">
+                        과세 유형
+                        {{ $product->getTaxTypeName() }}
+                    </div>
+
+                    <div class="form-group">
                         설명
                         {!! $product->description !!}
                     </div>
                 </div>
             </div>
-
-            <a href="{{ route('xero_commerce::setting.product.edit', ['productId' => $product->id]) }}" class="xe-btn">수정</a>
-
-            <form method="post" action="{{ route('xero_commerce::setting.product.remove', ['productId' => $product->id]) }}">
-                {{ csrf_field() }}
-                <button type="submit" class="xe-btn xe-btn-danger">삭제</button>
-            </form>
         </div>
 
         <div class="panel-group">
