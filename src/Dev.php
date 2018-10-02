@@ -167,12 +167,12 @@ class Dev
         return $dc;
     }
 
-    public function makeAgreement($type)
+    public function makeAgreement($type, $name)
     {
         $contents = 'Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven\'t heard of them accusamus labore sustainable VHS.-->';
         $agree = new Agreement();
         $agree->type = $type;
-        $agree->name = '구매동의';
+        $agree->name = $name;
         $agree->version = '1.0.0';
         $agree->contents = $contents;
         $agree->save();
@@ -180,10 +180,10 @@ class Dev
 
     public function setting()
     {
-        $this->makeAgreement('contacts');
-        $this->makeAgreement('purchase');
-        $this->makeAgreement('privacy');
-        $this->makeAgreement('thirdParty');
+        $this->makeAgreement('contacts', '주문자정보 수집 동의');
+        $this->makeAgreement('purchase', '구매 동의');
+        $this->makeAgreement('privacy', '개인정보 수집 및 이용동의');
+        $this->makeAgreement('thirdParty', '개인정보 제3자 제공/위탁동의');
         $this->makeDeliveryCompany();
         $this->makeShop(5);
         $this->makeProduct(10);

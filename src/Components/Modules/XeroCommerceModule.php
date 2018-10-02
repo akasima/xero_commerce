@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Components\Modules;
 
 use Route;
 use Xpressengine\Menu\AbstractModule;
+use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class XeroCommerceModule extends AbstractModule
@@ -12,7 +13,10 @@ class XeroCommerceModule extends AbstractModule
     {
         Route::group([
             'prefix' => Plugin::XeroCommercePrefix,
-            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers'
+            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
+            'middleware' => [
+                'web', 'auth'
+            ]
         ], function () {
             Route::get('/', ['as' => 'xero_commerce::product.index', 'uses' => 'ProductController@index']);
 
@@ -40,10 +44,10 @@ class XeroCommerceModule extends AbstractModule
                 'uses' => 'OrderController@register',
                 'as' => 'xero_commerce::order.register'
             ]);
-            Route::post('/order/register', [
+            Route::get('/order/register', [
                 'uses' => 'OrderController@registerAgain',
                 'as' => 'xero_commerce::order.register.again'
-            ]);
+            ])->middleware(AgreementMiddleware::class);
             Route::get('/order', [
                 'uses' => 'OrderController@index',
                 'as' => 'xero_commerce::order.index'
@@ -63,6 +67,15 @@ class XeroCommerceModule extends AbstractModule
             Route::get('/test/{product}', 'CartController@test');
 
             Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
+
+            Route::get('/agreement/contacts', [
+                'uses' => 'AgreementController@contacts',
+                'as' => 'xero_commerce::agreement.contacts'
+            ]);
+            Route::post('/agreement/contacts', [
+                'uses' => 'AgreementController@saveContacts',
+                'as' => 'xero_commerce::agreement.contacts.save'
+            ]);
         });
     }
 

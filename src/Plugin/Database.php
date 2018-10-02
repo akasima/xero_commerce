@@ -28,6 +28,7 @@ class Database
         });
         Schema::create('xero_commerce_user_agreement', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('user_id');
             $table->integer('agreement_id');
             $table->timestamps();
         });
@@ -111,7 +112,7 @@ class Database
         });
 
         Schema::create('xero_commerce_order', function (Blueprint $table) {
-            $table->increments('id');
+            $table->string('id');
             $table->string('user_id', 36);
             $table->smallInteger('code');
             $table->softDeletes();
@@ -120,7 +121,7 @@ class Database
 
         Schema::create('xero_commerce_order_agreement', function (Blueprint $table) {
            $table->increments('id');
-           $table->integer('order_id');
+           $table->string('order_id');
            $table->integer('agreement_id');
            $table->timestamps();
         });
@@ -150,7 +151,7 @@ class Database
 
         Schema::create('xero_commerce_order_item', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id');
+            $table->string('order_id');
             $table->integer('delivery_id');
             $table->morphs('type');
             $table->integer('original_price');
@@ -191,7 +192,7 @@ class Database
 
         Schema::create('xero_commerce_payment', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id');
+            $table->string('order_id');
             $table->string('method');
             $table->string('info');
             $table->integer('price');
@@ -204,7 +205,7 @@ class Database
 
         Schema::create('xero_commerce_order_log', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id');
+            $table->string('order_id');
             $table->string('status');
             $table->timestamps();
         });

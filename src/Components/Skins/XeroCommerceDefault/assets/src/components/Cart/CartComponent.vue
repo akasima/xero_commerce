@@ -71,7 +71,7 @@
         }).done((res) => {
           var form = this.$refs.form;
           form.setAttribute('action',res.url)
-          form.setAttribute('method','post')
+          form.setAttribute('method','get')
           $('input[name=_token]').val(document.getElementById('csrf_token').value)
           var order_id = document.createElement('input')
           order_id.setAttribute('type','hidden')

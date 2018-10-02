@@ -9,6 +9,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 class Order extends DynamicModel
 {
     protected $table = 'xero_commerce_order';
+    public $incrementing = false;
 
     const TEMP = 0;
     const ORDERED = 1;

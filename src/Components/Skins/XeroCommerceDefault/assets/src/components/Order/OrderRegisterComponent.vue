@@ -11,11 +11,11 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>이름</th>
-                                <td>{{user.display_name}}</td>
+                                <td>{{userInfo.name}}</td>
                             </tr>
                             <tr>
                                 <th>연락처</th>
-                                <td>010-0000-0000</td>
+                                <td>{{userInfo.phone}}</td>
                             </tr>
                             <tr>
                                 <th>이메일</th>
@@ -60,7 +60,7 @@
             </div>
             <div class="xe-col-lg-4">
                 <order-bill-component :summary="orderSummary" @pay="register"></order-bill-component>
-                <order-agreement-component></order-agreement-component>
+                <order-agreement-component :agreements="agreements"></order-agreement-component>
             </div>
         </div>
     </div>
@@ -78,7 +78,7 @@
       OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent
     },
     props: [
-      'orderItemList', 'orderSummary', 'user', 'order_id', 'dashUrl', 'successUrl', 'failUrl'
+      'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements'
     ],
     computed: {
       defaultDelivery() {
@@ -100,7 +100,7 @@
       register(pay) {
         if (pay.status) {
           $.ajax({
-            url: this.successUrl, Routemoduele.name('xero_commerce::order.success')
+            url: this.successUrl,
             method: 'post',
             data: {
               delivery: this.delivery,
