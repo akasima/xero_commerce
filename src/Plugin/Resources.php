@@ -7,6 +7,7 @@ use XeRegister;
 use Route;
 use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
+use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
@@ -108,6 +109,14 @@ class Resources
                     Route::get('/', ['as' => 'xero_commerce::setting.badge.index',
                         'uses' => 'BadgeController@index',
                         'settings_menu' => 'xero_commerce.product.badge']);
+                    Route::get('/create', ['as' => 'xero_commerce::setting.badge.create',
+                        'uses' => 'BadgeController@create']);
+                    Route::post('/store', ['as' => 'xero_commerce::setting.badge.store',
+                        'uses' => 'BadgeController@store']);
+                    Route::get('/edit/{id}', ['as' => 'xero_commerce::setting.badge.edit',
+                        'uses' => 'BadgeController@edit']);
+                    Route::post('/remove/{id}', ['as' => 'xero_commerce::setting.badge.remove',
+                        'uses' => 'BadgeController@remove']);
                 });
 
                 //주문 관리
@@ -207,6 +216,15 @@ class Resources
             return $instance;
         });
         $app->alias(LabelHandler::class, 'xero_commerce.labelHandler');
+
+        $app->singleton(BadgeHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(BadgeHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(BadgeHandler::class, 'xero_commerce.badgeHandler');
 
         $app->singleton(OrderHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(OrderHandler::class);
