@@ -2,6 +2,18 @@
 
 <div>
     <div class="clearfix">
+        <label>모듈에 사용할 라벨을 선택하세요.</label>
+    </div>
+
+    <div>
+        @foreach ($labels as $label)
+            <input type="checkbox" name="labels[]" value="{{ $label->id }}" @if (in_array($label->id, $moduleLabels) == true) checked @endif>{{ $label->name }}
+        @endforeach
+    </div>
+</div>
+
+<div>
+    <div class="clearfix">
         <label>리스트에 표시할 카테고리를 선택하세요.
             <small class="categoryItemId xe-category-navigator"> </small>
         </label>

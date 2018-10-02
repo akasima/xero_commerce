@@ -8,6 +8,7 @@ use View;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Menu\AbstractModule;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
+use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class XeroCommerceModule extends AbstractModule
@@ -86,11 +87,13 @@ class XeroCommerceModule extends AbstractModule
     {
         $config = XeConfig::get(Plugin::getId());
         $categoryItems = Category::find($config->get('categoryId'))->getProgenitors();
+        $labels = Label::get();
         $plugin = Plugin::class;
 
         return View::make('xero_commerce::views/setting/module/create', [
             'categoryItems' => $categoryItems,
-            'plugin' => $plugin
+            'plugin' => $plugin,
+            'labels' => $labels
         ])->render();
     }
 
@@ -99,6 +102,7 @@ class XeroCommerceModule extends AbstractModule
         XeConfig::add(sprintf('%s.%s', Plugin::getId(), $instanceId), [
             'categoryItemId' => $menuTypeParams['categoryItemId'],
             'categoryItemDepth' => $menuTypeParams['categoryItemDepth'],
+            'labels' => $menuTypeParams['labels']
         ]);
 
         return '';
@@ -109,11 +113,18 @@ class XeroCommerceModule extends AbstractModule
         //TODO 수정 기존 데이터 전달 필요
         $config = XeConfig::get(Plugin::getId());
         $categoryItems = Category::find($config->get('categoryId'))->getProgenitors();
+
+        $labels = Label::get();
+        $moduleLabels = XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId))['labels'];
+
         $plugin = Plugin::class;
+
 
         return View::make('xero_commerce::views/setting/module/edit', [
             'categoryItems' => $categoryItems,
-            'plugin' => $plugin
+            'plugin' => $plugin,
+            'labels' => $labels,
+            'moduleLabels' => $moduleLabels
         ])->render();
     }
 
@@ -123,6 +134,7 @@ class XeroCommerceModule extends AbstractModule
 
         $config['categoryItemId'] = $menuTypeParams['categoryItemId'];
         $config['categoryItemDepth'] = $menuTypeParams['categoryItemDepth'];
+        $config['labels'] = $menuTypeParams['labels'];
 
         XeConfig::modify($config);
 
