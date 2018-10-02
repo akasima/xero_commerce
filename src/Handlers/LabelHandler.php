@@ -2,19 +2,34 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
+use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
 
 class LabelHandler
 {
+    public function store(array $args)
+    {
+        $newLabel = new Label();
+
+        $newLabel->fill($args);
+
+        $newLabel->save();
+    }
+
+    public function destroy($id)
+    {
+        Label::where('id', $id)->delete();
+    }
+
     public function storeProductLabel($productId, array $labelIds)
     {
         foreach ($labelIds as $labelId) {
-            $newLabel = new ProductLabel();
+            $newProductLabel = new ProductLabel();
 
-            $newLabel->product_id = $productId;
-            $newLabel->label_id = $labelId;
+            $newProductLabel->product_id = $productId;
+            $newProductLabel->label_id = $labelId;
 
-            $newLabel->save();
+            $newProductLabel->save();
         }
     }
 

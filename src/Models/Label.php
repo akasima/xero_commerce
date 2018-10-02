@@ -11,4 +11,9 @@ class Label extends DynamicModel
     public $timestamps = false;
 
     protected $fillable = ['name', 'eng_name'];
+
+    public function product()
+    {
+        return $this->belongsToMany(Product::class, 'xero_commerce_product_label', 'label_id', 'product_id');
+    }
 }

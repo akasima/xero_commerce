@@ -78,12 +78,37 @@ class Resources
                         'uses' => 'ProductController@update']);
                     Route::post('/{productId}/remove', ['as' => 'xero_commerce::setting.product.remove',
                         'uses' => 'ProductController@remove']);
+
+                    Route::post('/productOptionItem/store', ['as' => 'xero_commerce:setting.product.option.store',
+                        'uses' => 'ProductController@storeOptionItems']);
                 });
 
                 //분류 관리
                 Route::get('/category', ['as' => 'xero_commerce::setting.category.index',
                     'uses' => 'CategoryController@index',
                     'settings_menu' => 'xero_commerce.product.category']);
+
+                //라벨 관리
+                Route::group(['prefix' => 'label'], function () {
+                    Route::get('/', ['as' => 'xero_commerce::setting.label.index',
+                        'uses' => 'LabelController@index',
+                        'settings_menu' => 'xero_commerce.product.label']);
+                    Route::get('/create', ['as' => 'xero_commerce::setting.label.create',
+                        'uses' => 'LabelController@create']);
+                    Route::post('/store', ['as' => 'xero_commerce::setting.label.store',
+                        'uses' => 'LabelController@store']);
+                    Route::get('/edit/{id}', ['as' => 'xero_commerce::setting.label.edit',
+                        'uses' => 'LabalController@edit']);
+                    Route::post('/remove/{id}', ['as' => 'xero_commerce::setting.label.remove',
+                        'uses' => 'LabelController@remove']);
+                });
+
+                //배지 관리
+                Route::group(['prefix' => 'badge'], function () {
+                    Route::get('/', ['as' => 'xero_commerce::setting.badge.index',
+                        'uses' => 'BadgeController@index',
+                        'settings_menu' => 'xero_commerce.product.badge']);
+                });
 
                 //주문 관리
                 Route::group(['prefix' => 'order'], function () {
