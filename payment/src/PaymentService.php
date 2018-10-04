@@ -24,4 +24,9 @@ class PaymentService
     {
 
     }
+
+    public function methodList()
+    {
+
+    }
 }

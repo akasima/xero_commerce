@@ -1,6 +1,6 @@
 <template>
     <div>
-        <cart-list-component :cart-list="cartList" @checked="summary" @change="reload"></cart-list-component>
+        <cart-list-component :cart-list="cartList" @checked="summary" @change="reload" @only="onlyOrder"></cart-list-component>
         <hr>
         <cart-sum-component :summary="cartSummary"></cart-sum-component>
         <hr>
@@ -78,6 +78,11 @@
           form.appendChild(order_id)
           form.submit()
         })
+      },
+      onlyOrder(order_id)
+      {
+        this.checkedList = [order_id]
+        this.order()
       },
       sum(array, key){
         return array.map((v) => {

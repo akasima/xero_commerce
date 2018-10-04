@@ -7,10 +7,14 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     <h2>상품 등록</h2>
 @endsection
 
+{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 <form method="post" action="{{ route('xero_commerce::setting.product.store') }}">
     {{ csrf_field() }}
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
-
+    <div>
+        <div></div>
+        <div></div>
+    </div>
     <div class="row">
         <div class="col-sm-12">
             <div class="panel-group">
@@ -65,14 +69,6 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
 
                         <div class="form-group">
-                            설명
-                            {!! editor(Plugin::getId(), [
-                              'content' => Request::old('description'),
-                              'contentDomName' => 'description',
-                            ]) !!}
-                        </div>
-
-                        <div class="form-group">
                             과세 유형
                             <select name="tax_type">
                                 <option value="">선택</option>
@@ -115,15 +111,23 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 <input type="radio" name="badge_id" value="{{ $badge->id }}">{{ $badge->name }}
                             @endforeach
                         </div>
-
-                        <div class="form-group">
-                            {!! uio('uiobject/xero_commerce@tag', [
-                                'tags' => []
-                            ]) !!}
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="form-group">
+        설명
+        {!! editor(Plugin::getId(), [
+          'content' => Request::old('description'),
+          'contentDomName' => 'description',
+        ]) !!}
+    </div>
+
+    <div class="form-group">
+        {!! uio('uiobject/xero_commerce@tag', [
+            'tags' => []
+        ]) !!}
     </div>
 </form>

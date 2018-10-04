@@ -1,7 +1,9 @@
 window.Vue = require('vue')
 window.BootstrapVue = require('bootstrap-vue');
+window.VueDaumPostcode = require('vue-daum-postcode');
 
 Vue.use(BootstrapVue);
+Vue.use(VueDaumPostcode);
 
 require('bootstrap/dist/css/bootstrap.css');
 require('bootstrap-vue/dist/bootstrap-vue.css');

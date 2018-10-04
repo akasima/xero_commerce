@@ -39,7 +39,7 @@
                 </td>
                 <td>
                     <b>{{cart.sell_price.toLocaleString()}} 원</b> <br>
-                    <button class="btn xe-btn-black">주문하기</button>
+                    <button class="btn xe-btn-black" @click="onlyThisCart(cart.id)">주문하기</button>
                     <button class="btn btn-default" @click="draw(cart.id)">삭제하기</button>
                 </td>
             </tr>
@@ -201,6 +201,9 @@
       },
       dropOption(key){
         this.selectedCart.choose.splice(key, 1)
+      },
+      onlyThisCart(cart_id){
+        this.$emit('only', cart_id)
       }
     },
     mounted () {

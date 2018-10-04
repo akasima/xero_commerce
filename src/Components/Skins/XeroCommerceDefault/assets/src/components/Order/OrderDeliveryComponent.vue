@@ -30,10 +30,10 @@
                 <tr>
                     <th>주소</th>
                     <td>
-                        <input type="text">
-                        <button @click="consoling">우편번호</button>
+                        <input type="text" @click="modal" readonly>
+                        <button @click="modal">우편번호</button>
                         <input type="text" class="form-control" readonly="true" v-model="delivery.addr">
-                        <input type="text" class="form-control" v-model="delivery.addr_detail">
+                        <input id="addr_detail" type="text" class="form-control" v-model="delivery.addr_detail">
                     </td>
                 </tr>
                 <tr>
@@ -41,6 +41,15 @@
                     <td><input type="text" class="form-control" v-model="delivery.msg"></td>
                 </tr>
             </table>
+        </div>
+        <div class="xe-modal" id="addressModal">
+            <div class="xe-modal-dialog">
+                <div class="xe-modal-content">
+                    <div class="xe-modal-body">
+                        <vue-daum-postcode @complete="addressRegister" style="height:300px;overflow-y: scroll"></vue-daum-postcode>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -100,8 +109,8 @@
           contact: [
             '', '', ''
           ],
-          address: '',
-          address_detail: '',
+          addr: '',
+          addr_detail: '',
           msg: ''
         }
       },
@@ -113,6 +122,18 @@
         this.userInfo.user_delivery.push(this.delivery)
         this.deliveryCheck = this.new_name
         this.new_name = ''
+      },
+      modal () {
+        $('#addressModal').xeModal()
+        setTimeout(()=>{
+          console.log($(".post_search #region_name"))
+          $(".post_search #region_name").focus()
+        },500)
+      },
+      addressRegister (res) {
+        this.delivery.addr = res.address
+        $('#addressModal').xeModal('hide')
+        $("#addr_detail").focus()
       }
     },
     mounted () {

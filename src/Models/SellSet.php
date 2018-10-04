@@ -58,7 +58,7 @@ abstract class SellSet extends DynamicModel
 
     public function addGroup(SellGroup $sellGroup)
     {
-        return $this->sellGroups()->save($sellGroup);
+        return ($sellGroup->getCount() > 0) ? $this->sellGroups()->save($sellGroup) : $sellGroup->delete();
     }
 
     abstract function getJsonFormat ();
