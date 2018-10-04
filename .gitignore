@@ -2,3 +2,4 @@ vendor
 composer.lock
 Tests
 assets/node_modules
+src/Components/Skins/assets/node_modules
