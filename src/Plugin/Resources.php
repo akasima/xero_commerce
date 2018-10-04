@@ -7,11 +7,16 @@ use XeRegister;
 use Route;
 use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
+use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Badge;
+use Xpressengine\Plugins\XeroCommerce\Models\Label;
+use Xpressengine\Plugins\XeroCommerce\Models\Mark;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\Plugins\XeroCommerce\Models\SellType;
@@ -74,12 +79,45 @@ class Resources
                         'uses' => 'ProductController@update']);
                     Route::post('/{productId}/remove', ['as' => 'xero_commerce::setting.product.remove',
                         'uses' => 'ProductController@remove']);
+
+                    Route::post('/productOptionItem/store', ['as' => 'xero_commerce:setting.product.option.store',
+                        'uses' => 'ProductController@storeOptionItems']);
                 });
 
                 //분류 관리
                 Route::get('/category', ['as' => 'xero_commerce::setting.category.index',
                     'uses' => 'CategoryController@index',
                     'settings_menu' => 'xero_commerce.product.category']);
+
+                //라벨 관리
+                Route::group(['prefix' => 'label'], function () {
+                    Route::get('/', ['as' => 'xero_commerce::setting.label.index',
+                        'uses' => 'LabelController@index',
+                        'settings_menu' => 'xero_commerce.product.label']);
+                    Route::get('/create', ['as' => 'xero_commerce::setting.label.create',
+                        'uses' => 'LabelController@create']);
+                    Route::post('/store', ['as' => 'xero_commerce::setting.label.store',
+                        'uses' => 'LabelController@store']);
+                    Route::get('/edit/{id}', ['as' => 'xero_commerce::setting.label.edit',
+                        'uses' => 'LabalController@edit']);
+                    Route::post('/remove/{id}', ['as' => 'xero_commerce::setting.label.remove',
+                        'uses' => 'LabelController@remove']);
+                });
+
+                //배지 관리
+                Route::group(['prefix' => 'badge'], function () {
+                    Route::get('/', ['as' => 'xero_commerce::setting.badge.index',
+                        'uses' => 'BadgeController@index',
+                        'settings_menu' => 'xero_commerce.product.badge']);
+                    Route::get('/create', ['as' => 'xero_commerce::setting.badge.create',
+                        'uses' => 'BadgeController@create']);
+                    Route::post('/store', ['as' => 'xero_commerce::setting.badge.store',
+                        'uses' => 'BadgeController@store']);
+                    Route::get('/edit/{id}', ['as' => 'xero_commerce::setting.badge.edit',
+                        'uses' => 'BadgeController@edit']);
+                    Route::post('/remove/{id}', ['as' => 'xero_commerce::setting.badge.remove',
+                        'uses' => 'BadgeController@remove']);
+                });
 
                 //주문 관리
                 Route::group(['prefix' => 'order'], function () {
@@ -170,6 +208,24 @@ class Resources
         });
         $app->alias(ProductOptionItemHandler::class, 'xero_commerce.productOptionItemHandler');
 
+        $app->singleton(LabelHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(LabelHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(LabelHandler::class, 'xero_commerce.labelHandler');
+
+        $app->singleton(BadgeHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(BadgeHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(BadgeHandler::class, 'xero_commerce.badgeHandler');
+
         $app->singleton(OrderHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(OrderHandler::class);
 
@@ -216,8 +272,44 @@ class Resources
                 'categoryId' => $category->id,
             ]);
         }
+
+        self::storeDefaultMarks();
     }
 
+    /**
+     * @return void
+     */
+    public static function storeDefaultMarks()
+    {
+        $labels[] = ['name' => '히트', 'eng_name' => 'hit'];
+        $labels[] = ['name' => '추천', 'eng_name' => 'recommend'];
+        $labels[] = ['name' => '신규', 'eng_name' => 'new'];
+        $labels[] = ['name' => '인기', 'eng_name' => 'popular'];
+        $labels[] = ['name' => '할인', 'eng_name' => 'sale'];
+
+        foreach ($labels as $label) {
+            $newLabel = new Label();
+            $newLabel->name = $label['name'];
+            $newLabel->eng_name = $label['eng_name'];
+
+            $newLabel->save();
+        }
+
+        $badges[] = ['name' => '세일', 'eng_name' => 'sale'];
+        $badges[] = ['name' => '히트', 'eng_name' => 'hit'];
+
+        foreach ($badges as $badge) {
+            $newBadge = new Badge();
+            $newBadge->name = $badge['name'];
+            $newBadge->eng_name = $badge['eng_name'];
+
+            $newBadge->save();
+        }
+    }
+
+    /**
+     * @return void
+     */
     public static function storeDefaultShop()
     {
         $userId = \Auth::user()->getId();
@@ -276,18 +368,30 @@ class Resources
                 'description' => '',
                 'ordering' => 100011
             ],
-            'xero_commerce.product.category' => [
-                'title' => '분류 관리',
-                'display' => true,
-                'description' => '',
-                'ordering' => 100012
-            ],
             'xero_commerce.product.create' => [
                 'title' => '상품 등록',
                 'display' => true,
                 'description' => '',
+                'ordering' => 100012
+            ],
+            'xero_commerce.product.category' => [
+                'title' => '분류 관리',
+                'display' => true,
+                'description' => '',
                 'ordering' => 100013
             ],
+            'xero_commerce.product.label' => [
+                'title' => '라벨 관리',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100014
+            ],
+            'xero_commerce.product.badge' => [
+                'title' => '배지 관리',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100015
+            ]
         ];
     }
 

@@ -5,11 +5,15 @@ namespace Xpressengine\Plugins\XeroCommerce;
 use Faker\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Agreement;
 use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\ShopUser;
@@ -55,13 +59,9 @@ class Dev
     {
         $this->dropTable();
         $this->makeTable();
+        Resources::setConfig();
         $this->setting();
         $this->deleteTagInfo();
-    }
-
-    public function setConfig()
-    {
-        Resources::setConfig();
     }
 
     public function deleteTagInfo()
@@ -132,6 +132,9 @@ class Dev
             $this->makeProductOption($product->id);
 
             ProductSlugService::storeSlug($product, new Request());
+
+            $this->storeProductCategory($product);
+            $this->storeProductLabel($product);
         }
         return Product::all();
     }
@@ -157,6 +160,46 @@ class Dev
             $op->state_deal = ProductOptionItem::DEAL_ON_SALE;
             $op->save();
         }
+    }
+
+    private function storeProductLabel($product)
+    {
+        $labels = Label::pluck('id')->toArray();
+        $labelCount = count($labels);
+
+        for ($i = 0; $i < rand(0, $labelCount); $i++) {
+            $newProductLabel = new ProductLabel();
+
+            $newProductLabel->product_id = $product->id;
+            $newProductLabel->label_id = $labels[rand(0, $labelCount-1)];
+
+            $newProductLabel->save();
+        }
+    }
+
+    private function storeProductCategory($product)
+    {
+        $categoryIds = $this->getXeroCommerceCategoryIds();
+        $categoryCount = count($categoryIds);
+
+        for ($i = 0; $i < rand(1, $categoryCount); $i++) {
+            $newProductCategory = new ProductCategory();
+
+            $newProductCategory->product_id = $product->id;
+            $newProductCategory->category_id = $categoryIds[rand(0, $categoryCount - 1)];
+
+            $newProductCategory->save();
+        }
+    }
+
+    private function getXeroCommerceCategoryIds()
+    {
+        $config = \XeConfig::get(Plugin::getId());
+        $categoryId = $config->get('categoryId');
+
+        $categoryIds = CategoryItem::where('category_id', $categoryId)->pluck('id')->toArray();
+
+        return $categoryIds;
     }
 
     public function makeDeliveryCompany()
@@ -185,9 +228,11 @@ class Dev
         $this->makeAgreement('purchase', '구매 동의');
         $this->makeAgreement('privacy', '개인정보 수집 및 이용동의');
         $this->makeAgreement('thirdParty', '개인정보 제3자 제공/위탁동의');
+
         $this->makeDeliveryCompany();
         $this->makeShop(5);
         $this->makeProduct(10);
+
         $s = new CartHandler();
         $rand1 = rand(1, ProductOptionItem::count());
         $rand2 = rand(1, ProductOptionItem::count());

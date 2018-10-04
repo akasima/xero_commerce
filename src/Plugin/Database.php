@@ -16,9 +16,10 @@ class Database
             $table->string('phone');
             $table->integer('level');
         });
+
         Schema::create('xero_commerce_user_delivery', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id',36);
+            $table->string('user_id', 36);
             $table->integer('seq');
             $table->string('nickname');
             $table->string('name');
@@ -27,12 +28,14 @@ class Database
             $table->string('addr_detail');
             $table->string('msg');
         });
+
         Schema::create('xero_commerce_user_agreement', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id');
             $table->integer('agreement_id');
             $table->timestamps();
         });
+
         Schema::create('xero_commerce_agreement', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type');
@@ -41,6 +44,7 @@ class Database
             $table->text('contents');
             $table->timestamps();
         });
+
         Schema::create('xero_commerce_shop', function (Blueprint $table) {
             $table->increments('id');
             $table->string('shop_name');
@@ -79,6 +83,7 @@ class Database
             $table->integer('min_buy_count')->nullable();
             $table->integer('max_buy_count')->nullable();
             $table->text('description');
+            $table->integer('badge_id')->nullable();
             $table->integer('tax_type');
             $table->integer('state_display');
             $table->integer('state_deal');
@@ -96,7 +101,25 @@ class Database
         Schema::create('xero_commerce_product_category', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id');
-            $table->integer('category_id');
+            $table->integer('category_id')->index();
+        });
+
+        Schema::create('xero_commerce_label', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('eng_name');
+        });
+
+        Schema::create('xero_commerce_badge', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('eng_name');
+        });
+
+        Schema::create('xero_commerce_product_label', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('product_id');
+            $table->integer('label_id')->index();
         });
 
         Schema::create('xero_commerce_product_option_item', function (Blueprint $table) {
@@ -123,10 +146,10 @@ class Database
         });
 
         Schema::create('xero_commerce_order_agreement', function (Blueprint $table) {
-           $table->increments('id');
-           $table->string('order_id');
-           $table->integer('agreement_id');
-           $table->timestamps();
+            $table->increments('id');
+            $table->string('order_id');
+            $table->integer('agreement_id');
+            $table->timestamps();
         });
 
         Schema::create('xero_commerce_cart', function (Blueprint $table) {

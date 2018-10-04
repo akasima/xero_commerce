@@ -8,6 +8,7 @@ use View;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Menu\AbstractModule;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
+use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class XeroCommerceModule extends AbstractModule
@@ -86,20 +87,28 @@ class XeroCommerceModule extends AbstractModule
     {
         $config = XeConfig::get(Plugin::getId());
         $categoryItems = Category::find($config->get('categoryId'))->getProgenitors();
+        $labels = Label::get();
         $plugin = Plugin::class;
 
         return View::make('xero_commerce::views/setting/module/create', [
             'categoryItems' => $categoryItems,
-            'plugin' => $plugin
+            'plugin' => $plugin,
+            'labels' => $labels
         ])->render();
     }
 
     public function storeMenu($instanceId, $menuTypeParams, $itemParams)
     {
-        XeConfig::add(sprintf('%s.%s', Plugin::getId(), $instanceId), [
-            'categoryItemId' => $menuTypeParams['categoryItemId'],
-            'categoryItemDepth' => $menuTypeParams['categoryItemDepth'],
-        ]);
+        $configValue['categoryItemId'] = $menuTypeParams['categoryItemId'];
+        $configValue['categoryItemDepth'] = $menuTypeParams['categoryItemDepth'];
+
+        //menuTypeParams['label'][0]은 null이 들어있음
+        if (isset($menuTypeParams['labels'][1])) {
+            array_shift($menuTypeParams['labels']);
+            $configValue['labels'] = $menuTypeParams['labels'];
+        }
+
+        XeConfig::add(sprintf('%s.%s', Plugin::getId(), $instanceId), $configValue);
 
         return '';
     }
@@ -109,11 +118,20 @@ class XeroCommerceModule extends AbstractModule
         //TODO 수정 기존 데이터 전달 필요
         $config = XeConfig::get(Plugin::getId());
         $categoryItems = Category::find($config->get('categoryId'))->getProgenitors();
+
+        $labels = Label::get();
+        $moduleLabels = XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId))['labels'];
+        if ($moduleLabels === null) {
+            $moduleLabels = [];
+        }
+
         $plugin = Plugin::class;
 
         return View::make('xero_commerce::views/setting/module/edit', [
             'categoryItems' => $categoryItems,
-            'plugin' => $plugin
+            'plugin' => $plugin,
+            'labels' => $labels,
+            'moduleLabels' => $moduleLabels
         ])->render();
     }
 
@@ -123,6 +141,11 @@ class XeroCommerceModule extends AbstractModule
 
         $config['categoryItemId'] = $menuTypeParams['categoryItemId'];
         $config['categoryItemDepth'] = $menuTypeParams['categoryItemDepth'];
+
+        if (isset($menuTypeParams['labels'][1])) {
+            array_shift($menuTypeParams['labels']);
+            $config['labels'] = $menuTypeParams['labels'];
+        }
 
         XeConfig::modify($config);
 

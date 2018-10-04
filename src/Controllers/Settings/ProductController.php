@@ -5,7 +5,10 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 use XePresenter;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroCommerce\Models\Badge;
+use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Services\LabelService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductOptionItemSettingService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSettingService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
@@ -22,11 +25,15 @@ class ProductController extends Controller
     /** @var TagHandler $tagHandler */
     protected $tagHandler;
 
+    /** @var LabelService $labelService */
+    protected $labelService;
+
     public function __construct(TagHandler $tagHandler)
     {
         $this->productSettingService = new ProductSettingService();
         $this->productOptionItemSettingService = new ProductOptionItemSettingService();
         $this->tagHandler = $tagHandler;
+        $this->labelService = new LabelService();
     }
 
     public function index(Request $request)
@@ -44,17 +51,17 @@ class ProductController extends Controller
     public function show(Request $request, $productId)
     {
         $product = $this->productSettingService->getProduct($productId);
-        $options = $product->productOption;
+        $options = $this->productSettingService->getProductOptionArrays($product);
 
         return XePresenter::make('xero_commerce::views.setting.product.show', compact('product', 'options'));
     }
 
     public function create()
     {
-        $displayStates = Product::getDisplayStates();
-        $dealStates = Product::getDealStates();
+        $labels = Label::get();
+        $badges = Badge::get();
 
-        return XePresenter::make('xero_commerce::views.setting.product.create', compact('displayStates', 'dealStates'));
+        return XePresenter::make('xero_commerce::views.setting.product.create', compact('labels', 'badges'));
     }
 
     public function store(Request $request)
@@ -63,6 +70,7 @@ class ProductController extends Controller
         $this->productOptionItemSettingService->defaultOptionStore($request, $productId);
         $this->setTag($productId, $request);
         ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
+        $this->labelService->createProductLabel($productId, $request);
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
@@ -71,10 +79,15 @@ class ProductController extends Controller
     {
         $product = $this->productSettingService->getProduct($productId);
 
-        $displayStates = Product::getDisplayStates();
-        $dealStates = Product::getDealStates();
+        $productLabelIds = [];
+        foreach ($product->labels as $label) {
+            $productLabelIds[] = $label->id;
+        }
 
-        return XePresenter::make('xero_commerce::views.setting.product.edit', compact('product', 'displayStates', 'dealStates'));
+        $labels = Label::get();
+        $badges = Badge::get();
+
+        return XePresenter::make('xero_commerce::views.setting.product.edit', compact('product', 'productLabelIds', 'labels', 'badges'));
     }
 
     public function update(Request $request, $productId)
@@ -82,6 +95,7 @@ class ProductController extends Controller
         $this->productSettingService->update($request, $productId);
         $this->setTag($productId, $request);
         ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
+        $this->labelService->editProductLabel($productId, $request);
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }

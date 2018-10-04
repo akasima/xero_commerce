@@ -3,25 +3,39 @@
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
 use Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\XeroCommerceDefaultSkin;
+use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
+use Xpressengine\Routing\InstanceConfig;
 
 class ProductController extends XeroCommerceBasicController
 {
+    /** @var ProductService $productService */
     protected $productService;
+
+    /** @var InstanceConfig */
+    protected $instanceConfig;
+
+    /** @var string $instanceId */
+    private $instanceId;
 
     public function __construct()
     {
         parent::__construct();
 
         $this->productService = new ProductService();
+
+        $this->instanceConfig = InstanceConfig::instance();
+        $this->instanceId = $this->instanceConfig->getInstanceId();
     }
 
     public function index(Request $request)
     {
-        $products = $this->productService->getProducts($request);
+        $config = \XeConfig::get(sprintf('%s.%s', Plugin::getId(), $this->instanceId));
+        $products = $this->productService->getProducts($request, $config);
 
         return \XePresenter::make('product.index', ['products' => $products]);
     }
