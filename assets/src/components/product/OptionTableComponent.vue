@@ -15,43 +15,22 @@
         </thead>
 
         <tbody>
-            <tr v-for="option in options">
-                <td>{{ option.option_type }}</td>
-                <td>{{ option.name}}</td>
-                <td>{{ option.addition_price }}</td>
-                <td></td>
-                <td>{{ option.stock }}</td>
-                <td>{{ option.alert_stock }}</td>
-                <td>{{ option.state_display }}</td>
-                <td>{{ option.state_deal }}</td>
-                <td>
-                    <button type="button" class="xe-btn xe-btn-positive">수정</button>
-                </td>
-            </tr>
-
-            <edit-row-component></edit-row-component>
+            <row-component v-for="option in options" v-bind:optionData="option"></row-component>
         </tbody>
     </table>
 </template>
 
 <script>
-    import ShowRowComponent from './ShowRowComponent'
-    import EditRowComponent from './EditRowComponent'
+    import RowComponent from './RowComponent'
 
     export default {
         name: "OptionTableComponent",
         components: {
-            ShowRowComponent, EditRowComponent
+            RowComponent
         },
         props: [
             'options'
-        ],
-        methods: {
-
-        },
-        mounted() {
-            console.log(this.options);
-        }
+        ]
     }
 </script>
 

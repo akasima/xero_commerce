@@ -64,7 +64,7 @@
                 </div>
 
                 <div id="product-container" class="panel-body">
-                    <option-table-component :options='{!! $options !!}'></option-table-component>
+                    <option-table-component :options='{{ json_encode($options) }}'></option-table-component>
                 </div>
             </div>
         </div>
