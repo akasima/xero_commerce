@@ -14,6 +14,7 @@ class Database
             $table->string('user_id', 36);
             $table->string('name');
             $table->string('phone');
+            $table->integer('level');
         });
         Schema::create('xero_commerce_user_delivery', function (Blueprint $table) {
             $table->increments('id');
@@ -114,6 +115,7 @@ class Database
 
         Schema::create('xero_commerce_order', function (Blueprint $table) {
             $table->string('id');
+            $table->string('order_no');
             $table->string('user_id', 36);
             $table->smallInteger('code');
             $table->softDeletes();

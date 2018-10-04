@@ -18,6 +18,11 @@ class OrderItem extends SellSet
         return $this->hasMany(OrderItemGroup::class);
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
     /**
      * @return array
      */
@@ -47,6 +52,6 @@ class OrderItem extends SellSet
 
     public function delivery()
     {
-        return $this->belongsTo(OrderDelivery::class);
+        return $this->hasOne(OrderDelivery::class);
     }
 }

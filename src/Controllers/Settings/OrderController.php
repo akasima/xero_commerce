@@ -42,8 +42,19 @@ class OrderController extends Controller
     public function delivery()
     {
         return \XePresenter::make('xero_commerce::views.setting.order.delivery', [
-            'title' => 'xero_commerce'
+            'title' => 'xero_commerce',
+            'orderItems'=> $this->orderService->deliveryOrderItemList()
         ]);
+    }
+
+    public function registerDelivery()
+    {
+
+    }
+
+    public function processDelivery()
+    {
+
     }
 
     public function buyOption()

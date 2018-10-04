@@ -41,14 +41,13 @@ class CartController extends XeroCommerceBasicController
         return $this->cartService->summary($request);
     }
 
-    public function change(Cart $cart)
+    public function change(Cart $cart, Request $request)
     {
-        return view('cart.change', ['cart'=>$cart]);
+        return $this->cartService->change($cart, $request);
     }
 
     public function draw(Cart $cart)
     {
         $this->cartService->draw($cart);
-        return redirect()->route('cart.index');
     }
 }

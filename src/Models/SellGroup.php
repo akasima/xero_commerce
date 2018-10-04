@@ -32,4 +32,13 @@ abstract class SellGroup extends DynamicModel
     {
         return $this->getCount() * $this->sellUnit->getDiscountPrice();
     }
+
+    public function getJsonFormat()
+    {
+        return [
+            'id' => $this->id,
+            'unit' => $this->sellUnit->getJsonFormat(),
+            'count'=> $this->getCount(),
+        ];
+    }
 }

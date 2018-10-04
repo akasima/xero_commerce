@@ -24,7 +24,7 @@
                         </table>
                     </div>
                 </div>
-                <order-delivery-component :default="defaultDelivery" v-model="delivery"></order-delivery-component>
+                <order-delivery-component :user-info="userInfo" v-model="delivery"></order-delivery-component>
                 <div class="card">
                     <div class="card-header">
                         <h4>결제 정보 입력</h4>
@@ -82,12 +82,31 @@
     ],
     computed: {
       defaultDelivery() {
+        if (this.userInfo.user_delivery.length > 0)
+        {
+          var delivery = this.userInfo.user_delivery.find(v=>{return v.seq = 1});
+          return {
+            name: delivery.name,
+            contact: [
+                delivery.phone.slice(0,3),
+                delivery.phone.slice(3,4),
+                delivery.phone.slice(4,4)
+            ],
+            address: delivery.addr,
+            address_detail: delivery.addr_detail,
+            msg: delivery.msg
+          }
+        }
         return {
-          name: (typeof this.user !== 'undefined') ? this.user.display_name : '',
-          contact: ['010', '0000', '0000'],
-          address: '서울 서초구 강남대로 527',
-          address_detail: '14층 1404호',
-          msg: '11층 우편함에 맡겨주세요'
+          name: this.userInfo.name,
+          contact: [
+            this.userInfo.phone.slice(0,3),
+            this.userInfo.phone.slice(3,7),
+            this.userInfo.phone.slice(7,11)
+          ],
+          address: '',
+          address_detail: '',
+          msg: ''
         }
       }
     },
@@ -117,6 +136,9 @@
       fail(error) {
         document.location.href = this.failUrl
       }
+    },
+    mounted () {
+      console.log(this.userInfo)
     }
   }
 </script>

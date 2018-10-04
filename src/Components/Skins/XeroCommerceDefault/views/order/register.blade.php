@@ -8,6 +8,6 @@
         :order-item-list='{!! $orderItems !!}'
         :order-summary='{!! json_encode($summary)  !!}'
         :user='{!! \Illuminate\Support\Facades\Auth::user() !!}'
-        :user-info='{!! \Xpressengine\Plugins\XeroCommerce\Models\UserInfo::by(\Illuminate\Support\Facades\Auth::id()) !!}'
+        :user-info='{!! \Xpressengine\Plugins\XeroCommerce\Models\UserInfo::by(\Illuminate\Support\Facades\Auth::id())->load('userDelivery') !!}'
         order_id="{{$order->id}}"></order-register-component>
 <input type="hidden" id="csrf_token" value="{{csrf_token()}}">

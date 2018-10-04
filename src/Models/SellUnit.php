@@ -31,4 +31,13 @@ abstract class SellUnit extends DynamicModel
     {
         return $this->getOriginalPrice()-$this->getSellPrice();
     }
+
+    public function getJsonFormat()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->getName(),
+            'sell_price' => $this->getSellPrice()
+        ];
+    }
 }

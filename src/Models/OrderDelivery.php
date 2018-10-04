@@ -16,4 +16,17 @@ class OrderDelivery extends DynamicModel
     const STATUS = [
         '준비중', '배송중', '완료', '반송'
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(DeliveryCompany::class);
+    }
+
+    public function setShipNo($ship_no)
+    {
+        $this->ship_no = $ship_no;
+        $this->code = self::PROCESSING;
+        $this->save();
+        return $this;
+    }
 }

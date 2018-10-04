@@ -56,7 +56,6 @@ class OrderController extends XeroCommerceBasicController
 
     public function fail(Order $order)
     {
-        $order = Order::find($order);
         return \XePresenter::make(
             'order.fail',
             [

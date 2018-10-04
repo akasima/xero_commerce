@@ -54,8 +54,23 @@ class OrderService
         });
     }
 
+    public function deliveryOrderItemList()
+    {
+        return $this->orderHandler->getDeliveryOrderItemList();
+    }
+
+    public function orderList()
+    {
+        return $this->orderHandler->getOrderList();
+    }
+
     public function dashBoard()
     {
         return $this->orderHandler->dashboard();
+    }
+
+    PUBLIC function setShipNo(OrderItem $orderItem, Request $request)
+    {
+        return $this->orderHandler->shipNoRegister($orderItem, $request->ship_no);
     }
 }
