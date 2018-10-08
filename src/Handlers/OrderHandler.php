@@ -141,11 +141,11 @@ class OrderHandler extends SellSetHandler
                 ->when(!is_null($condition), function ($query) use($condition) {
                     $query->where($condition);
                 })
-                ->with('orderItems.delivery.company', 'orderItems.order.orderItems.sellGroups.sellSet')->get()->pluck('orderItems')->flatten();
+                ->with('orderItems.delivery.company', 'orderItems.order.orderItems.sellGroups.sellSet')->latest()->get()->pluck('orderItems')->flatten();
         } else {
             $orderItems=$order->orderItems()->when(!is_null($condition), function ($query) use($condition) {
                 $query->where($condition);
-            })->with('delivery.company','order.orderItems.sellGroups.sellSet')->get();
+            })->with('delivery.company','order.orderItems.sellGroups.sellSet')->latest()->get();
         }
         return $orderItems->map(function(OrderItem $orderItem){
             return $orderItem->getJsonFormat();
@@ -217,6 +217,7 @@ class OrderHandler extends SellSetHandler
             ->with('orderItems.delivery', 'payment', 'userInfo')
             ->limit($count)
             ->offset(($page-1)*$count)
+            ->latest()
             ->get();
     }
 

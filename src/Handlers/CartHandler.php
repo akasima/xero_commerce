@@ -24,7 +24,7 @@ class CartHandler extends SellSetHandler
 
     private function getCartQuery()
     {
-        return Cart::where('user_id', Auth::id() ?: User::first()->id);
+        return Cart::where('user_id', Auth::id() ?: User::first()->id)->latest();
     }
 
     public function addCart(SellType $sellType, $cartGroupList)

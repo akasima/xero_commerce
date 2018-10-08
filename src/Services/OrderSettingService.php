@@ -34,12 +34,16 @@ class OrderSettingService
     public function deliveryProcess(Request $request)
     {
         foreach($request->delivery as $delivery)
-        return $this->orderHandler->shipNoRegister(OrderItem::find($delivery['id']),$delivery['no']);
+        {
+            $this->orderHandler->shipNoRegister(OrderItem::find($delivery['id']),$delivery['no']);
+        }
     }
 
     public function deliveryComplete(Request $request)
     {
         foreach($request->delivery as $delivery)
-        return $this->orderHandler->completeDelivery(OrderItem::find($delivery));
+        {
+            $this->orderHandler->completeDelivery(OrderItem::find($delivery));
+        }
     }
 }
