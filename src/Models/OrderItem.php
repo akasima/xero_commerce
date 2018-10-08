@@ -42,6 +42,7 @@ class OrderItem extends SellSet
         return [
             'id' => $this->id,
             'info' => $this->renderInformation(),
+            'name' => $this->sellType->getName(),
             'original_price' => $this->getOriginalPrice(),
             'sell_price' => $this->getSellPrice(),
             'discount_price' => $this->getDiscountPrice(),

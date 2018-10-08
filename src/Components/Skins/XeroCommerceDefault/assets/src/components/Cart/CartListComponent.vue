@@ -21,7 +21,7 @@
                     <input type="checkbox" v-model="checkedList" :value="cart.id" >
                 </td>
                 <td><img :src="cart.src" alt="" width="150px" height="150px"></td>
-                <td>
+                <td style="cursor: pointer;" @click="url('/shopping/'+cart.name)">
                     <span v-for="(info,key) in cart.info" v-html="info"></span>
                 </td>
                 <td>
@@ -204,6 +204,9 @@
       },
       onlyThisCart(cart_id){
         this.$emit('only', cart_id)
+      },
+      url (url) {
+        window.open(url, 'target=_blank')
       }
     },
     mounted () {

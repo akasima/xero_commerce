@@ -18,7 +18,7 @@
                     <p style="color:#aaa">{{item.created_at.substr(0,16)}}</p>
                     <h3>{{item.status}}</h3>
                 </td>
-                <td>
+                <td style="cursor: pointer;" @click="url('/shopping/'+orderitem.name)">
                     <div class="row">
                         <div class="col">
                             <img :src="orderitem.src" alt="" width="120" height="120">
@@ -35,7 +35,7 @@
                     {{orderitem.count}} 개
                 </td>
                 <td></td>
-                <td style="text-align: center;">
+                <td>
                     <p>{{orderitem.status}}</p>
                     <p><button class="xe-btn xe-btn-default">배송교회</button></p>
                     <p><button class="xe-btn xe-btn-default">교환요청</button></p>
@@ -54,7 +54,7 @@
     ],
     methods: {
       url (url) {
-        document.location.href=url
+        window.open(url, 'target=_blank')
       }
     }
   }
