@@ -40,7 +40,7 @@ class Order extends DynamicModel
     public function getStatus()
     {
         if (is_null($this->code)) {
-            $this->code = 0;
+            $this->code = self::TEMP;
         }
         return self::STATUS[$this->code];
     }

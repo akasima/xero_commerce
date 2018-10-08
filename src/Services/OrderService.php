@@ -49,14 +49,7 @@ class OrderService
 
     public function orderItemList(Order $order)
     {
-        return $this->orderHandler->getOrderItemList($order)->map(function(OrderItem $orderItem){
-           return $orderItem->getJsonFormat();
-        });
-    }
-
-    public function deliveryOrderItemList()
-    {
-        return $this->orderHandler->getDeliveryOrderItemList();
+        return $this->orderHandler->getOrderItemList($order);
     }
 
     public function orderList($page, $count, $query)
@@ -69,9 +62,7 @@ class OrderService
 
     public function orderDetail(Order $order)
     {
-        $order->orderItems = $order->orderItems->map(function (OrderItem $orderItem) {
-            return $orderItem->getJsonFormat();
-        });
+        $order->orderItems = $this->orderHandler->getOrderItemList($order);
         $order->status = $order->getStatus();
         $order->load('payment', 'userInfo');
         return $order;
@@ -82,8 +73,10 @@ class OrderService
         return $this->orderHandler->dashboard();
     }
 
-    PUBLIC function setShipNo(OrderItem $orderItem, Request $request)
+    PUBLIC function setShipNo(Request $request)
     {
-        return $this->orderHandler->shipNoRegister($orderItem, $request->ship_no);
+        foreach($request->order_items as $items) {
+            $this->orderHandler->shipNoRegister(OrderItem::find($items['id']), $items['no']);
+        }
     }
 }

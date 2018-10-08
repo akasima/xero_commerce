@@ -30,6 +30,13 @@ class OrderDelivery extends DynamicModel
         return $this;
     }
 
+    public function complete()
+    {
+        $this->status=self::DONE;
+        $this->save();
+        return $this;
+    }
+
     public function getStatus() {
         return self::STATUS[$this->status];
     }

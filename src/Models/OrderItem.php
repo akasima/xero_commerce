@@ -41,6 +41,7 @@ class OrderItem extends SellSet
     {
         return [
             'id' => $this->id,
+            'order_no'=>$this->order->order_no,
             'info' => $this->renderInformation(),
             'name' => $this->sellType->getName(),
             'original_price' => $this->getOriginalPrice(),
@@ -48,7 +49,8 @@ class OrderItem extends SellSet
             'discount_price' => $this->getDiscountPrice(),
             'count' => $this->getCount(),
             'src' => $this->getThumbnailSrc(),
-            'status' => $this->delivery ? $this->delivery->getStatus(): ''
+            'status' => $this->delivery ? $this->delivery->getStatus(): '',
+            'delivery'=>$this->delivery ? : null
         ];
     }
 

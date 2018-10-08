@@ -33,19 +33,19 @@
         <table class="table">
             <tr>
                 <th>받는 사람</th>
-                <td>{{order.order_items[0].delivery.recv_name}}</td>
+                <td>{{delivery.recv_name}}</td>
             </tr>
             <tr>
                 <th>연락처</th>
-                <td>{{order.order_items[0].delivery.recv_phone}}</td>
+                <td>{{delivery.recv_phone}}</td>
             </tr>
             <tr>
                 <th>주소</th>
-                <td>{{order.order_items[0].delivery.recv_addr + order.order_items[0].delivery.recv_addr_detail}}</td>
+                <td>{{delivery.recv_addr + delivery.recv_addr_detail}}</td>
             </tr>
             <tr>
                 <th>배송메세지</th>
-                <td>{{order.order_items[0].delivery.recv_msg}}</td>
+                <td>{{delivery.recv_msg}}</td>
             </tr>
         </table>
     </div>
@@ -61,8 +61,19 @@
     components: {
       OrderTable
     },
+    data () {
+      return {
+        delivery: {
+          recv_name: null,
+          recv_phone: null,
+          recv_addr: null,
+          recv_addr_detail: null,
+          recv_msg:null
+        }
+      }
+    },
     mounted () {
-      console.log(this.order)
+      this.delivery = this.order.orderItems[0].delivery
     }
   }
 </script>

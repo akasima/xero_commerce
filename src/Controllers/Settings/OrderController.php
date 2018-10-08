@@ -4,7 +4,10 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
 use App\Facades\XeFrontend;
 use App\Http\Controllers\Controller;
+use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
+use Xpressengine\Plugins\XeroCommerce\Services\OrderSettingService;
 
 class OrderController extends Controller
 {
@@ -12,7 +15,7 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        $this->orderService = new OrderService();
+        $this->orderService = new OrderSettingService();
     }
 
     public function index()
@@ -52,9 +55,14 @@ class OrderController extends Controller
 
     }
 
-    public function processDelivery()
+    public function processDelivery(Request $request)
     {
+        return $this->orderService->deliveryProcess($request);
+    }
 
+    public function completeDelivery(Request $request)
+    {
+        return $this->orderService->deliveryComplete($request);
     }
 
     public function buyOption()

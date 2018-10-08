@@ -133,6 +133,14 @@ class Resources
                         'uses' => 'OrderController@delivery',
                         'settings_menu' => 'xero_commerce.order.delivery'
                     ]);
+                    Route::post('/delivery',[
+                        'as' => 'xero_commerce::process.order.delivery',
+                        'uses'=>'OrderController@processDelivery'
+                    ]);
+                    Route::post('/delivery/complete', [
+                        'as' => 'xero_commerce::complete.order.delivery',
+                        'uses' => 'OrderController@completeDelivery'
+                    ]);
                 });
 
                 //쇼핑몰 설정

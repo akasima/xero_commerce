@@ -198,7 +198,7 @@ class Database
             $table->increments('id');
             $table->integer('order_item_id');
             $table->smallInteger('status');
-            $table->integer('ship_no');
+            $table->string('ship_no');
             $table->integer('company_id');
             $table->string('recv_name');
             $table->string('recv_phone');

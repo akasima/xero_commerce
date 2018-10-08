@@ -16,6 +16,13 @@ use Xpressengine\User\Models\User;
 
 class OrderHandler extends SellSetHandler
 {
+    public $auth = false;
+
+    public function whereUser()
+    {
+        return ($this->auth) ? new Order() : Order::where('user_id', Auth::id());
+    }
+
     public function register($carts)
     {
         $order = $this->makeOrder();
@@ -127,9 +134,22 @@ class OrderHandler extends SellSetHandler
         return Order::where('user_id', Auth::id() ?: 1)->latest()->first()->orderItems;
     }
 
-    public function getOrderItemList(Order $order)
+    public function getOrderItemList(Order $order, $condition = null)
     {
-        return $order->orderItems;
+        if(is_null($order->id)) {
+            $orderItems = $this->whereUser()
+                ->when(!is_null($condition), function ($query) use($condition) {
+                    $query->where($condition);
+                })
+                ->with('orderItems.delivery.company', 'orderItems.order.orderItems.sellGroups.sellSet')->get()->pluck('orderItems')->flatten();
+        } else {
+            $orderItems=$order->orderItems()->when(!is_null($condition), function ($query) use($condition) {
+                $query->where($condition);
+            })->with('delivery.company','order.orderItems.sellGroups.sellSet')->get();
+        }
+        return $orderItems->map(function(OrderItem $orderItem){
+            return $orderItem->getJsonFormat();
+        });
     }
 
     public function makePayment(Order $order)
@@ -176,9 +196,8 @@ class OrderHandler extends SellSetHandler
 
     public function dashboard()
     {
-        $user_id = Auth::id() ?: User::first()->getId();
-        $count = collect(Order::STATUS)->map(function ($name, $code) use ($user_id) {
-            return Order::where('user_id', $user_id)->where('code', $code)->count();
+        $count = collect(Order::STATUS)->map(function ($name, $code)  {
+            return $this->whereUser()->where('code', $code)->count();
         });
         return collect(Order::STATUS)->combine($count);
         return Order::where('user_id', $user_id)->where('code', '!=', Order::TEMP)->get()->groupBy(function (Order $order) {
@@ -188,27 +207,17 @@ class OrderHandler extends SellSetHandler
         });
     }
 
-    public function getOrderList($page, $count, $condition)
+    public function getOrderList($page, $count, $condition = null)
     {
-        return Order::where('code','!=',Order::TEMP)
-            ->where('user_id', Auth::id()? : User::first()->id)
-            ->where(function ($query) use($condition){
-                foreach($condition as $value) {
-                    $query->where($value[0], $value[1], $value[2]);
-                }
+        return $this->whereUser()
+            ->where('code','!=',Order::TEMP)
+            ->when(!is_null($condition),function ($query) use($condition){
+                $query->where($condition);
             })
             ->with('orderItems.delivery', 'payment', 'userInfo')
             ->limit($count)
             ->offset(($page-1)*$count)
             ->get();
-    }
-
-    public function getDeliveryOrderItemList()
-    {
-        return OrderItem::whereHas('order',function($query){
-            $query->where('code', '!=' ,Order::TEMP)
-                ->where('user_id', Auth::id());
-        })->with('order', 'delivery.company')->get();
     }
 
     public function shipNoRegister(OrderItem $orderItem, $ship_no)
@@ -218,6 +227,14 @@ class OrderHandler extends SellSetHandler
 
         $delivery->setShipNo($ship_no);
 
+        $this->update($order);
+    }
+
+    public function completeDelivery(OrderItem $orderItem)
+    {
+        $delivery = $orderItem->delivery;
+        $order = $orderItem->order;
+        $delivery->complete();
         $this->update($order);
     }
 }
