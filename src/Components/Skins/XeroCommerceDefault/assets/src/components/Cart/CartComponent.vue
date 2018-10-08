@@ -50,12 +50,9 @@
             cart_ids: cart_ids
           }
         }).done((res) => {
-          console.log(res)
-          console.log('sum')
           this.cartSummary = res
           this.disable = false
         }).fail((err) => {
-          console.log(err)
           this.disable = false
         })
       },
@@ -92,12 +89,6 @@
       reload () {
         document.location.reload()
       }
-    },
-    mounted() {
-      console.log(this.cartList)
-      // this.cartSummary.original_price = this.sum(this.cartList, 'original_price');
-      // this.cartSummary.discount_price = this.sum(this.cartList, 'discount_price');
-      // this.cartSummary.sum = this.sum(this.cartList, 'sell_price');
     }
   }
 </script>

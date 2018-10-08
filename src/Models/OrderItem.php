@@ -46,7 +46,8 @@ class OrderItem extends SellSet
             'sell_price' => $this->getSellPrice(),
             'discount_price' => $this->getDiscountPrice(),
             'count' => $this->getCount(),
-            'src' => $this->getThumbnailSrc()
+            'src' => $this->getThumbnailSrc(),
+            'status' => $this->delivery ? $this->delivery->getStatus(): ''
         ];
     }
 

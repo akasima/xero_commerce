@@ -29,7 +29,7 @@
     ],
     watch: {
       checked (el) {
-        console.log(el)
+        this.$emit('input', this.checked)
       }
     },
     data () {

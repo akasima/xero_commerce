@@ -32,10 +32,12 @@
                     <div class="card-content">
                         <table class="table table-bordered">
                             <tr>
-                                <th>간편 결제</th>
-                                <td></td>
                                 <th>일반 결제</th>
-                                <td></td>
+                                <td>
+                                    <b-form-radio-group v-model="payMethod"  >
+                                        <b-form-radio v-for="(method,key) in payMethods" :value="key">{{method}}</b-form-radio>
+                                    </b-form-radio-group>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -59,8 +61,12 @@
                 </div>
             </div>
             <div class="xe-col-lg-4">
-                <order-bill-component :summary="orderSummary" @pay="register"></order-bill-component>
-                <order-agreement-component :agreements="agreements"></order-agreement-component>
+                <order-bill-component :summary="orderSummary"
+                                      :validate="validate"
+                                      :method="payMethod"
+                                      @pay="register"
+                                      ></order-bill-component>
+                <order-agreement-component :agreements="agreements" v-model="agreed"></order-agreement-component>
             </div>
         </div>
     </div>
@@ -78,41 +84,36 @@
       OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent
     },
     props: [
-      'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements'
+      'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods'
     ],
     computed: {
-      defaultDelivery() {
-        if (this.userInfo.user_delivery.length > 0)
-        {
-          var delivery = this.userInfo.user_delivery.find(v=>{return v.seq = 1});
-          return {
-            name: delivery.name,
-            contact: [
-                delivery.phone.slice(0,3),
-                delivery.phone.slice(3,4),
-                delivery.phone.slice(4,4)
-            ],
-            address: delivery.addr,
-            address_detail: delivery.addr_detail,
-            msg: delivery.msg
-          }
-        }
-        return {
-          name: this.userInfo.name,
-          contact: [
-            this.userInfo.phone.slice(0,3),
-            this.userInfo.phone.slice(3,7),
-            this.userInfo.phone.slice(7,11)
-          ],
-          address: '',
-          address_detail: '',
+      validate() {
+        var res = {
+          status: true,
           msg: ''
         }
+        if (this.agreed.length < 3) {
+          res.msg += '3가지 약관에 모두 동의후에 결제가 진행됩니다.\n\r'
+          res.status = false
+        }
+        if (this.delivery === null) {
+          res.msg += '주소가 불분명합니다.\n\r'
+          res.status = false
+        } else {
+          if (this.delivery.addr === '') {
+            res.msg += '주소가 불분명합니다.\n\r'
+            res.status = false
+          }
+        }
+        return res
       }
     },
     data() {
       return {
-        delivery: null
+        delivery: null,
+        payMethod: null,
+        easyMethodList: [],
+        agreed: []
       }
     },
     methods: {
@@ -134,11 +135,12 @@
         document.location.href = this.dashUrl
       },
       fail(error) {
-        document.location.href = this.failUrl
+        console.log(error)
+        //document.location.href = this.failUrl
       }
     },
     mounted () {
-      console.log(this.userInfo)
+      console.log(this.payMethods)
     }
   }
 </script>

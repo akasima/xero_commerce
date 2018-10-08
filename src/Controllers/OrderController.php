@@ -11,6 +11,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\AgreementService;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
+use Xpressengine\XePlugin\XeroPay\PaymentService;
 
 class OrderController extends XeroCommerceBasicController
 {
@@ -28,6 +29,16 @@ class OrderController extends XeroCommerceBasicController
         return \XePresenter::make('order.dash', ['title' => '주문내역', 'dashboard' => $this->orderService->dashBoard()]);
     }
 
+    public function list(Request $request)
+    {
+        return \XePresenter::make('order.list', ['title' => '주문/배송조회', 'list' => $this->listJson( $request )]);
+    }
+
+    public function listJson(Request $request ,$page = 1)
+    {
+        return $this->orderService->orderList($page, $request->count ? : 10, (array) $request->condition);
+    }
+
     public function register(Request $request)
     {
         $order = $this->orderService->order($request);
@@ -40,6 +51,8 @@ class OrderController extends XeroCommerceBasicController
     public function registerAgain(Request $request)
     {
         $order = Order::find($request->order_id);
+        $paymentService = new PaymentService();
+        $paymentService->loadScript();
         return \XePresenter::make(
             'order.register',
             ['title' => 'test',
@@ -50,7 +63,9 @@ class OrderController extends XeroCommerceBasicController
                 ],
                 'order' => $order,
                 'orderItems' => $this->orderService->orderItemList($order),
-                'summary' => $this->orderService->summary($order)]
+                'summary' => $this->orderService->summary($order),
+                'payMethods'=>$paymentService->methodList()
+            ]
         );
     }
 

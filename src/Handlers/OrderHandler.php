@@ -162,6 +162,7 @@ class OrderHandler extends SellSetHandler
             $delivery = new OrderDelivery();
             $delivery->order_item_id = $orderItem->id;
             $delivery->ship_no = '';
+            $delivery->status=OrderDelivery::READY;
             $delivery->company_id = $orderItem->sellType->shop->getDefaultDeliveryCompany()->id;
             $delivery->recv_name = $request->delivery['name'];
             $delivery->recv_phone = $request->delivery['phone'];
@@ -187,11 +188,18 @@ class OrderHandler extends SellSetHandler
         });
     }
 
-    public function getOrderList()
+    public function getOrderList($page, $count, $condition)
     {
         return Order::where('code','!=',Order::TEMP)
             ->where('user_id', Auth::id()? : User::first()->id)
+            ->where(function ($query) use($condition){
+                foreach($condition as $value) {
+                    $query->where($value[0], $value[1], $value[2]);
+                }
+            })
             ->with('orderItems.delivery', 'payment')
+            ->limit($count)
+            ->offset(($page-1)*$count)
             ->get();
     }
 

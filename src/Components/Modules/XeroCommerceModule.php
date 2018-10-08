@@ -52,6 +52,14 @@ class XeroCommerceModule extends AbstractModule
                 'uses' => 'OrderController@index',
                 'as' => 'xero_commerce::order.index'
             ]);
+            Route::get('/order/list', [
+                'uses' => 'OrderController@list',
+                'as' => 'xero_commerce::order.list'
+            ]);
+            Route::post('/order/list/{page}', [
+                'uses' => 'OrderController@listJson',
+                'as' => 'xero_commerce::order.page'
+            ]);
             Route::post('/order/pay/{order}', [
                 'uses'=>'OrderController@pay',
                 'as'=>'xero_commerce::order.pay'

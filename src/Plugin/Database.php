@@ -26,7 +26,7 @@ class Database
             $table->string('phone');
             $table->string('addr');
             $table->string('addr_detail');
-            $table->string('msg');
+            $table->string('msg')->nullable();
         });
 
         Schema::create('xero_commerce_user_agreement', function (Blueprint $table) {
@@ -204,7 +204,7 @@ class Database
             $table->string('recv_phone');
             $table->string('recv_addr');
             $table->string('recv_addr_detail');
-            $table->string('recv_msg');
+            $table->string('recv_msg')->nullable();
             $table->timestamps();
         });
 
