@@ -197,7 +197,7 @@ class OrderHandler extends SellSetHandler
                     $query->where($value[0], $value[1], $value[2]);
                 }
             })
-            ->with('orderItems.delivery', 'payment')
+            ->with('orderItems.delivery', 'payment', 'userInfo')
             ->limit($count)
             ->offset(($page-1)*$count)
             ->get();

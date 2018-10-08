@@ -87,7 +87,7 @@
                             그외 링크
                         </div>
                         <div class="col-lg-4">
-                            <div class="card">
+                            <div class="card" style="cursor:pointer" @click="url('/shopping/order/list')">
                                 <div class="card-header">
                                     <i class="xi-desktop"></i> <br>
                                     주문내역조회
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="card">
+                            <div class="card" style="cursor:pointer"  @click="url('/user')">
                                 <div class="card-header">
                                     <i class="xi-user"></i> <br>
                                     회원정보
@@ -167,6 +167,12 @@
     ],
     data () {
       return {
+      }
+    },
+    methods: {
+      url (url) {
+        document.location.href=url
+        console.log(url)
       }
     }
   }

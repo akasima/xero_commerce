@@ -15,6 +15,7 @@ Vue.component('cart-component', require('./components/Cart/CartComponent').defau
 Vue.component('order-register-component', require('./components/Order/OrderRegisterComponent').default);
 Vue.component('dash-component', require('./components/DashComponent').default);
 Vue.component('order-list-component', require('./components/Order/OrderListComponent').default);
+Vue.component('order-detail-component', require('./components/Order/OrderDetailComponent').default);
 
 var app = new Vue({
   el: '#sub-container'

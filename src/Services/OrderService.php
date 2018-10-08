@@ -62,12 +62,19 @@ class OrderService
     public function orderList($page, $count, $query)
     {
         return $this->orderHandler->getOrderList($page, $count, $query)->map(function(Order $order) {
-            $order->orderItems = $order->orderItems->map(function (OrderItem $orderItem) {
-                return $orderItem->getJsonFormat();
-            });
-            $order->status = $order->getStatus();
-            return $order;
+
+            return $this->orderDetail($order);
         });
+    }
+
+    public function orderDetail(Order $order)
+    {
+        $order->orderItems = $order->orderItems->map(function (OrderItem $orderItem) {
+            return $orderItem->getJsonFormat();
+        });
+        $order->status = $order->getStatus();
+        $order->load('payment', 'userInfo');
+        return $order;
     }
 
     public function dashBoard()

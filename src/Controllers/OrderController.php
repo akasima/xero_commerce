@@ -39,6 +39,11 @@ class OrderController extends XeroCommerceBasicController
         return $this->orderService->orderList($page, $request->count ? : 10, (array) $request->condition);
     }
 
+    public function detail(Order $order)
+    {
+        return \XePresenter::make('order.detail', ['title' => '주문상세', 'order' => $this->orderService->orderDetail($order)]);
+    }
+
     public function register(Request $request)
     {
         $order = $this->orderService->order($request);

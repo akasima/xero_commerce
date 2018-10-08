@@ -44,4 +44,9 @@ class Order extends DynamicModel
         }
         return self::STATUS[$this->code];
     }
+
+    public function userInfo()
+    {
+        return $this->belongsTo(UserInfo::class, 'user_id', 'user_id');
+    }
 }
