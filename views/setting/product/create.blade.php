@@ -7,6 +7,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     <h2>상품 등록</h2>
 @endsection
 
+{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
+
 <form method="post" action="{{ route('xero_commerce::setting.product.store') }}">
     {{ csrf_field() }}
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
@@ -18,10 +20,16 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     <div class="panel-body">
                         <div class="form-group">
                             상품 코드 (비워두면 timestamp)
-                            <input type="text" name="product_code" value="{{ Request::old('product_id') }}">
+                            <input type="text" name="product_code" value="{{ Request::old('product_code') }}">
                         </div>
 
-                        ///////카테고리 추가 필요/////////
+                        <div id="component-container" class="form-group">
+                            카테고리
+                            <category-component :category-items='{{ json_encode($categoryItems) }}'
+                                                get-child-url="{{ route('xero_commerce:setting.product.category.getChild') }}"
+                                                mode="create">
+                            </category-component>
+                        </div>
 
                         <div class="form-group">
                             상품명

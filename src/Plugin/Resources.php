@@ -11,6 +11,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
@@ -80,8 +81,8 @@ class Resources
                     Route::post('/{productId}/remove', ['as' => 'xero_commerce::setting.product.remove',
                         'uses' => 'ProductController@remove']);
 
-                    Route::post('/productOptionItem/store', ['as' => 'xero_commerce:setting.product.option.store',
-                        'uses' => 'ProductController@storeOptionItems']);
+                    Route::get('/category/child', ['as' => 'xero_commerce:setting.product.category.getChild',
+                        'uses' => 'ProductController@getChildCategory']);
                 });
 
                 //분류 관리
@@ -207,6 +208,15 @@ class Resources
             return $instance;
         });
         $app->alias(ProductOptionItemHandler::class, 'xero_commerce.productOptionItemHandler');
+
+        $app->singleton(ProductCategoryHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(ProductCategoryHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(ProductCategoryHandler::class, 'xero_commerce.productCategoryHandler');
 
         $app->singleton(LabelHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(LabelHandler::class);
