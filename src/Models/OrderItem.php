@@ -18,6 +18,11 @@ class OrderItem extends SellSet
         return $this->hasMany(OrderItemGroup::class);
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
     /**
      * @return array
      */
@@ -36,17 +41,21 @@ class OrderItem extends SellSet
     {
         return [
             'id' => $this->id,
+            'order_no'=>$this->order->order_no,
             'info' => $this->renderInformation(),
+            'name' => $this->sellType->getName(),
             'original_price' => $this->getOriginalPrice(),
             'sell_price' => $this->getSellPrice(),
             'discount_price' => $this->getDiscountPrice(),
             'count' => $this->getCount(),
-            'src' => $this->getThumbnailSrc()
+            'src' => $this->getThumbnailSrc(),
+            'status' => $this->delivery ? $this->delivery->getStatus(): '',
+            'delivery'=>$this->delivery ? : null
         ];
     }
 
     public function delivery()
     {
-        return $this->belongsTo(OrderDelivery::class);
+        return $this->hasOne(OrderDelivery::class);
     }
 }

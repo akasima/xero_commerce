@@ -24,7 +24,7 @@ class CartHandler extends SellSetHandler
 
     private function getCartQuery()
     {
-        return Cart::where('user_id', Auth::id() ?: User::first()->id);
+        return Cart::where('user_id', Auth::id() ?: User::first()->id)->latest();
     }
 
     public function addCart(SellType $sellType, $cartGroupList)
@@ -41,8 +41,10 @@ class CartHandler extends SellSetHandler
     public function drawCart($cart_id)
     {
         if (is_iterable($cart_id)) {
+            CartGroup::whereIn('cart_id',$cart_id)->delete();
             return Cart::whereIn('id', $cart_id)->delete();
         }
+        CartGroup::where('cart_id',$cart_id)->delete();
         return Cart::find($cart_id)->delete();
     }
 
@@ -64,5 +66,13 @@ class CartHandler extends SellSetHandler
         $cartGroup->setCount($count);
         $cartGroup->save();
         return $cartGroup;
+    }
+
+    public function changeCartItem(Cart $cart, $cartGroupList)
+    {
+        $cart->sellGroups()->delete();
+        $cartGroupList->each(function (CartGroup $cartGroup) use ($cart) {
+            $cart->addGroup($cartGroup);
+        });
     }
 }

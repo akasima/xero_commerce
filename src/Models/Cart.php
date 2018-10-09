@@ -34,7 +34,14 @@ class Cart extends SellSet
             'sell_price' => $this->getSellPrice(),
             'discount_price' => $this->getDiscountPrice(),
             'count' => $this->getCount(),
-            'src' => $this->getThumbnailSrc()
+            'src' => $this->getThumbnailSrc(),
+            'option_list' => $this->sellType->sellUnits->map(function(sellUnit $sellUnit) {
+                return $sellUnit->getJsonFormat();
+            }),
+            'choose' => $this->sellGroups->map(function(SellGroup $sellGroup) {
+                return $sellGroup->getJsonFormat();
+            }),
+            'name' => $this->sellType->getName()
         ];
     }
 }

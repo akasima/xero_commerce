@@ -28,6 +28,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\User\Models\User;
+use Xpressengine\XePlugin\XeroPay\PaymentHandler;
+use Xpressengine\XePlugin\XeroPay\Test\TestHandler;
 
 class Resources
 {
@@ -132,6 +134,14 @@ class Resources
                         'uses' => 'OrderController@delivery',
                         'settings_menu' => 'xero_commerce.order.delivery'
                     ]);
+                    Route::post('/delivery',[
+                        'as' => 'xero_commerce::process.order.delivery',
+                        'uses'=>'OrderController@processDelivery'
+                    ]);
+                    Route::post('/delivery/complete', [
+                        'as' => 'xero_commerce::complete.order.delivery',
+                        'uses' => 'OrderController@completeDelivery'
+                    ]);
                 });
 
                 //쇼핑몰 설정
@@ -169,6 +179,20 @@ class Resources
                 });
             });
         });
+
+        //결제모듈 설정
+        Route::namespace('Xpressengine\XePlugin\XeroPay')
+            ->prefix('payment')
+            ->group(function () {
+                Route::post('/form', [
+                    'as' => 'xero_pay::formList',
+                    'uses' => 'Controller@formList'
+                ]);
+                Route::post('/callback', [
+                    'as' => 'xero_pay::callback',
+                    'uses' => 'Controller@callback'
+                ]);
+            });
 
         ProductSlugService::setReserved([
             'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug', 'cart', 'order', Plugin::XeroCommercePrefix
@@ -255,9 +279,19 @@ class Resources
         });
         $app->alias(CartHandler::class, 'xero_commerce.cartHandler');
 
+
+        $app->singleton(PaymentHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(TestHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(PaymentHandler::class, 'xero_pay::paymentHandler');
+
         $app->when(ProductController::class)
-        ->needs(SellUnit::class)
-        ->give(ProductOptionItem::class);
+            ->needs(SellUnit::class)
+            ->give(ProductOptionItem::class);
 
         $app->when(ProductController::class)
             ->needs(SellType::class)

@@ -11,15 +11,15 @@
                 </tr>
                 <tr>
                     <th>할인금액</th>
-                    <td>{{Number(summary.discount_price).toLocaleString()}} 원</td>
+                    <td> <i class="xi-minus-min"></i> {{Number(summary.discount_price).toLocaleString()}} 원</td>
                 </tr>
                 <tr>
                     <th>적립금 사용</th>
-                    <td>0 원</td>
+                    <td><i class="xi-minus-min"></i> 0 원</td>
                 </tr>
                 <tr>
                     <th>배송비</th>
-                    <td>{{Number(summary.fare).toLocaleString()}} 원</td>
+                    <td><i class="xi-plus-min"></i> {{Number(summary.fare).toLocaleString()}} 원</td>
                 </tr>
                 <tr>
                     <th>최종 결제금액</th>
@@ -39,14 +39,20 @@
   export default {
     name: "OrderBillComponent",
     props: [
-        'summary', 'payOption'
+        'summary', 'payOption', 'validate', 'method'
     ],
     methods: {
       pay () {
-        this.$emit('pay', {
-          status: true,
-          msg: '완료',
-          info: ''
+        if(!this.validate.status) {
+          alert(this.validate.msg)
+          return false
+        }
+        payment.submit({
+          methods: this.method
+        },res=>{
+          this.$emit('pay', res)
+        }, err => {
+          alert('결제 실패!!' + err)
         })
       }
     }

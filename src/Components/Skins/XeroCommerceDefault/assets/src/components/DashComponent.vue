@@ -41,18 +41,27 @@
                                     <p>
                                         {{dashboard['결제대기']}}
                                     </p>
+                                    <div style="position:absolute; right:-10px; top:25px">
+                                        <i class="xi-angle-right"></i>
+                                    </div>
                                 </div>
                                 <div class="col">
                                     <h3>배송준비중</h3>
                                     <p>
                                         {{dashboard['상품준비']}}
                                     </p>
+                                    <div style="position:absolute; right:-10px; top:25px">
+                                        <i class="xi-angle-right"></i>
+                                    </div>
                                 </div>
                                 <div class="col">
                                     <h3>배송중</h3>
                                     <p>
                                         {{dashboard['배송중']}}
                                     </p>
+                                    <div style="position:absolute; right:-10px; top:25px">
+                                        <i class="xi-angle-right"></i>
+                                    </div>
                                 </div>
                                 <div class="col">
                                     <h3>배송완료</h3>
@@ -72,13 +81,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" id="direct">
                     <div class="row text-center">
                         <div class="col-lg-12">
                             그외 링크
                         </div>
                         <div class="col-lg-4">
-                            <div class="card">
+                            <div class="card" style="cursor:pointer" @click="url('/shopping/order/list')">
                                 <div class="card-header">
                                     <i class="xi-desktop"></i> <br>
                                     주문내역조회
@@ -89,42 +98,57 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="card">
-                                <div class="card-content">
+                            <div class="card" style="cursor:pointer"  @click="url('/user')">
+                                <div class="card-header">
                                     <i class="xi-user"></i> <br>
                                     회원정보
                                 </div>
+                                <div class="card-content">
+                                    회원정보를 조회/수정합니다.
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="card">
-                                <div class="card-content">
+                                <div class="card-header">
                                     <i class="xi-basket"></i> <br>
                                     관심상품
                                 </div>
+                                <div class="card-content">
+                                    내 관심상품 보기
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="card">
-                                <div class="card-content">
+                                <div class="card-header">
                                     <i class="xi-piggy-bank"></i> <br>
                                     적립금 관리
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card">
                                 <div class="card-content">
-                                    <i class="xi-coupon"></i> <br>
-                                    쿠폰 관리
+                                    적립금 보기
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="card">
+                                <div class="card-header">
+                                    <i class="xi-coupon"></i> <br>
+                                    쿠폰 관리
+                                </div>
                                 <div class="card-content">
+                                    쿠폰 확인
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
                                     <i class="xi-border-color"></i> <br>
                                     게시물 관리
+                                </div>
+                                <div class="card-content">
+                                    게시물 확
                                 </div>
                             </div>
                         </div>
@@ -139,10 +163,16 @@
   export default {
     name: "OrderDashComponent",
     props: [
-      'dashboard', 'user'
+      'dashboard', 'user', 'userInfo'
     ],
     data () {
       return {
+      }
+    },
+    methods: {
+      url (url) {
+        document.location.href=url
+        console.log(url)
       }
     }
   }
@@ -171,4 +201,7 @@
     display: table-cell;
     font-size: 20pt
 }
+    #direct .col-lg-4 .card {
+        height:100px
+    }
 </style>

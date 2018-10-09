@@ -1,6 +1,6 @@
 <template>
     <div>
-        <cart-list-component :cart-list="cartList" @checked="summary"></cart-list-component>
+        <cart-list-component :cart-list="cartList" @checked="summary" @change="reload" @only="onlyOrder"></cart-list-component>
         <hr>
         <cart-sum-component :summary="cartSummary"></cart-sum-component>
         <hr>
@@ -11,7 +11,6 @@
             <button class="xe-btn xe-btn-lg xe-btn-block" type="button">쇼핑 계속하기</button>
         </div>
         <form ref="form">
-            <input type="hidden" name="_token">
         </form>
     </div>
 </template>
@@ -51,12 +50,9 @@
             cart_ids: cart_ids
           }
         }).done((res) => {
-          console.log(res)
-          console.log('sum')
           this.cartSummary = res
           this.disable = false
         }).fail((err) => {
-          console.log(err)
           this.disable = false
         })
       },
@@ -72,7 +68,6 @@
           var form = this.$refs.form;
           form.setAttribute('action',res.url)
           form.setAttribute('method','get')
-          $('input[name=_token]').val(document.getElementById('csrf_token').value)
           var order_id = document.createElement('input')
           order_id.setAttribute('type','hidden')
           order_id.setAttribute('name','order_id')
@@ -81,17 +76,19 @@
           form.submit()
         })
       },
+      onlyOrder(order_id)
+      {
+        this.checkedList = [order_id]
+        this.order()
+      },
       sum(array, key){
         return array.map((v) => {
           return v[key]
         }).reduce((a, b) => a + b, 0);
+      },
+      reload () {
+        document.location.reload()
       }
-    },
-    mounted() {
-      console.log(this.cartList)
-      // this.cartSummary.original_price = this.sum(this.cartList, 'original_price');
-      // this.cartSummary.discount_price = this.sum(this.cartList, 'discount_price');
-      // this.cartSummary.sum = this.sum(this.cartList, 'sell_price');
     }
   }
 </script>

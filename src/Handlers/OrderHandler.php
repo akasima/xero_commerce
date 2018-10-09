@@ -11,10 +11,18 @@ use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItemGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\Payment;
+use Xpressengine\Plugins\XeroCommerce\Models\UserDelivery;
 use Xpressengine\User\Models\User;
 
 class OrderHandler extends SellSetHandler
 {
+    public $auth = false;
+
+    public function whereUser()
+    {
+        return ($this->auth) ? new Order() : Order::where('user_id', Auth::id());
+    }
+
     public function register($carts)
     {
         $order = $this->makeOrder();
@@ -29,7 +37,7 @@ class OrderHandler extends SellSetHandler
                 $orderItemGroup->setCount($cartGroup->getCount());
                 $orderItem->sellGroups()->save($orderItemGroup);
             });
-            $cart->order_id=$order->id;
+            $cart->order_id = $order->id;
             $cart->save();
         }
         return $this->update($order);
@@ -112,8 +120,10 @@ class OrderHandler extends SellSetHandler
 
     public function makeOrder()
     {
+        $now = now();
         $order = new Order();
         $order->code = $order::TEMP;
+        $order->order_no = $now->format('YmdHis') . '-' . sprintf("%'.06d", $order->whereDate('created_at', $now->toDateString())->count());
         $order->user_id = Auth::id() ?: 1;
         $order->save();
         return $order;
@@ -124,9 +134,22 @@ class OrderHandler extends SellSetHandler
         return Order::where('user_id', Auth::id() ?: 1)->latest()->first()->orderItems;
     }
 
-    public function getOrderItemList(Order $order)
+    public function getOrderItemList(Order $order, $condition = null)
     {
-        return $order->orderItems;
+        if(is_null($order->id)) {
+            $orderItems = $this->whereUser()
+                ->when(!is_null($condition), function ($query) use($condition) {
+                    $query->where($condition);
+                })
+                ->with('orderItems.delivery.company', 'orderItems.order.orderItems.sellGroups.sellSet')->latest()->get()->pluck('orderItems')->flatten();
+        } else {
+            $orderItems=$order->orderItems()->when(!is_null($condition), function ($query) use($condition) {
+                $query->where($condition);
+            })->with('delivery.company','order.orderItems.sellGroups.sellSet')->latest()->get();
+        }
+        return $orderItems->map(function(OrderItem $orderItem){
+            return $orderItem->getJsonFormat();
+        });
     }
 
     public function makePayment(Order $order)
@@ -146,15 +169,25 @@ class OrderHandler extends SellSetHandler
 
     public function makeDelivery(Order $order, Request $request)
     {
+        if (isset($request->delivery['nickname'])) {
+            $del = $request->delivery;
+            $del['user_id']=Auth::id();
+            $del['seq']=UserDelivery::where('user_id',Auth::id())->count()+1;
+            UserDelivery::updateOrCreate(
+                ['nickname'=>$request->delivery['nickname']],
+                $del
+            );
+        }
         $order->orderItems->each(function (OrderItem $orderItem) use ($request) {
             $delivery = new OrderDelivery();
             $delivery->order_item_id = $orderItem->id;
             $delivery->ship_no = '';
+            $delivery->status=OrderDelivery::READY;
             $delivery->company_id = $orderItem->sellType->shop->getDefaultDeliveryCompany()->id;
             $delivery->recv_name = $request->delivery['name'];
-            $delivery->recv_phone = implode('', $request->delivery['contact']);
-            $delivery->recv_addr = $request->delivery['address'];
-            $delivery->recv_addr_detail = $request->delivery['address_detail'];
+            $delivery->recv_phone = $request->delivery['phone'];
+            $delivery->recv_addr = $request->delivery['addr']? : '';
+            $delivery->recv_addr_detail = $request->delivery['addr_detail'];
             $delivery->recv_msg = $request->delivery['msg'];
             $delivery->save();
         });
@@ -163,11 +196,46 @@ class OrderHandler extends SellSetHandler
 
     public function dashboard()
     {
-        $user_id = Auth::id() ?: User::first()->getId();
-        $count = collect(Order::STATUS)->map(function($name, $code) use($user_id) {return Order::where('user_id', $user_id)->where('code',$code)->count();});
+        $count = collect(Order::STATUS)->map(function ($name, $code)  {
+            return $this->whereUser()->where('code', $code)->count();
+        });
         return collect(Order::STATUS)->combine($count);
-        return Order::where('user_id', $user_id)->where('code','!=',Order::TEMP)->get()->groupBy(function(Order $order){return $order->getStatus();})->map(function ($codes) {
+        return Order::where('user_id', $user_id)->where('code', '!=', Order::TEMP)->get()->groupBy(function (Order $order) {
+            return $order->getStatus();
+        })->map(function ($codes) {
             return $codes->count();
         });
+    }
+
+    public function getOrderList($page, $count, $condition = null)
+    {
+        return $this->whereUser()
+            ->where('code','!=',Order::TEMP)
+            ->when(!is_null($condition),function ($query) use($condition){
+                $query->where($condition);
+            })
+            ->with('orderItems.delivery', 'payment', 'userInfo')
+            ->limit($count)
+            ->offset(($page-1)*$count)
+            ->latest()
+            ->get();
+    }
+
+    public function shipNoRegister(OrderItem $orderItem, $ship_no)
+    {
+        $delivery = $orderItem->delivery;
+        $order = $orderItem->order;
+
+        $delivery->setShipNo($ship_no);
+
+        $this->update($order);
+    }
+
+    public function completeDelivery(OrderItem $orderItem)
+    {
+        $delivery = $orderItem->delivery;
+        $order = $orderItem->order;
+        $delivery->complete();
+        $this->update($order);
     }
 }

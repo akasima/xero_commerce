@@ -49,13 +49,34 @@ class OrderService
 
     public function orderItemList(Order $order)
     {
-        return $this->orderHandler->getOrderItemList($order)->map(function(OrderItem $orderItem){
-           return $orderItem->getJsonFormat();
+        return $this->orderHandler->getOrderItemList($order);
+    }
+
+    public function orderList($page, $count, $query)
+    {
+        return $this->orderHandler->getOrderList($page, $count, $query)->map(function(Order $order) {
+
+            return $this->orderDetail($order);
         });
+    }
+
+    public function orderDetail(Order $order)
+    {
+        $order->orderItems = $this->orderHandler->getOrderItemList($order);
+        $order->status = $order->getStatus();
+        $order->load('payment', 'userInfo');
+        return $order;
     }
 
     public function dashBoard()
     {
         return $this->orderHandler->dashboard();
+    }
+
+    PUBLIC function setShipNo(Request $request)
+    {
+        foreach($request->order_items as $items) {
+            $this->orderHandler->shipNoRegister(OrderItem::find($items['id']), $items['no']);
+        }
     }
 }

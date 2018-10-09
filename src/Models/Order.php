@@ -40,8 +40,13 @@ class Order extends DynamicModel
     public function getStatus()
     {
         if (is_null($this->code)) {
-            $this->code = 0;
+            $this->code = self::TEMP;
         }
         return self::STATUS[$this->code];
+    }
+
+    public function userInfo()
+    {
+        return $this->belongsTo(UserInfo::class, 'user_id', 'user_id');
     }
 }

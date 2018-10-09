@@ -14,6 +14,7 @@ class Database
             $table->string('user_id', 36);
             $table->string('name');
             $table->string('phone');
+            $table->integer('level');
         });
 
         Schema::create('xero_commerce_user_delivery', function (Blueprint $table) {
@@ -25,7 +26,7 @@ class Database
             $table->string('phone');
             $table->string('addr');
             $table->string('addr_detail');
-            $table->string('msg');
+            $table->string('msg')->nullable();
         });
 
         Schema::create('xero_commerce_user_agreement', function (Blueprint $table) {
@@ -137,6 +138,7 @@ class Database
 
         Schema::create('xero_commerce_order', function (Blueprint $table) {
             $table->string('id');
+            $table->string('order_no');
             $table->string('user_id', 36);
             $table->smallInteger('code');
             $table->softDeletes();
@@ -196,13 +198,13 @@ class Database
             $table->increments('id');
             $table->integer('order_item_id');
             $table->smallInteger('status');
-            $table->integer('ship_no');
+            $table->string('ship_no');
             $table->integer('company_id');
             $table->string('recv_name');
             $table->string('recv_phone');
             $table->string('recv_addr');
             $table->string('recv_addr_detail');
-            $table->string('recv_msg');
+            $table->string('recv_msg')->nullable();
             $table->timestamps();
         });
 

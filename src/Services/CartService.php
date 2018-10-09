@@ -71,4 +71,12 @@ class CartService
         return $this->cartHandler->getSummary($this->cartHandler->getCartListByCartIds($ids));
     }
 
+    public function change(Cart $cart, Request $request)
+    {
+        $cartGroupList = collect($request->choose)->map(function ($parm) use($cart) {
+            return $this->cartHandler->makeCartGroup($cart->sellType->sellUnits()->find($parm['unit']['id']), $parm['count']);
+        });
+        return $this->cartHandler->changeCartItem($cart, $cartGroupList);
+    }
+
 }

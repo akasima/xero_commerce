@@ -24,7 +24,7 @@
                         </table>
                     </div>
                 </div>
-                <order-delivery-component :default="defaultDelivery" v-model="delivery"></order-delivery-component>
+                <order-delivery-component :user-info="userInfo" v-model="delivery"></order-delivery-component>
                 <div class="card">
                     <div class="card-header">
                         <h4>결제 정보 입력</h4>
@@ -32,10 +32,12 @@
                     <div class="card-content">
                         <table class="table table-bordered">
                             <tr>
-                                <th>간편 결제</th>
-                                <td></td>
                                 <th>일반 결제</th>
-                                <td></td>
+                                <td>
+                                    <b-form-radio-group v-model="payMethod"  >
+                                        <b-form-radio v-for="(method,key) in payMethods" :value="key">{{method}}</b-form-radio>
+                                    </b-form-radio-group>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -59,8 +61,12 @@
                 </div>
             </div>
             <div class="xe-col-lg-4">
-                <order-bill-component :summary="orderSummary" @pay="register"></order-bill-component>
-                <order-agreement-component :agreements="agreements"></order-agreement-component>
+                <order-bill-component :summary="orderSummary"
+                                      :validate="validate"
+                                      :method="payMethod"
+                                      @pay="register"
+                                      ></order-bill-component>
+                <order-agreement-component :agreements="agreements" v-model="agreed"></order-agreement-component>
             </div>
         </div>
     </div>
@@ -78,22 +84,36 @@
       OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent
     },
     props: [
-      'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements'
+      'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods'
     ],
     computed: {
-      defaultDelivery() {
-        return {
-          name: (typeof this.user !== 'undefined') ? this.user.display_name : '',
-          contact: ['010', '0000', '0000'],
-          address: '서울 서초구 강남대로 527',
-          address_detail: '14층 1404호',
-          msg: '11층 우편함에 맡겨주세요'
+      validate() {
+        var res = {
+          status: true,
+          msg: ''
         }
+        if (this.agreed.length < 3) {
+          res.msg += '3가지 약관에 모두 동의후에 결제가 진행됩니다.\n\r'
+          res.status = false
+        }
+        if (this.delivery === null) {
+          res.msg += '주소가 불분명합니다.\n\r'
+          res.status = false
+        } else {
+          if (this.delivery.addr === '') {
+            res.msg += '주소가 불분명합니다.\n\r'
+            res.status = false
+          }
+        }
+        return res
       }
     },
     data() {
       return {
-        delivery: null
+        delivery: null,
+        payMethod: null,
+        easyMethodList: [],
+        agreed: []
       }
     },
     methods: {
@@ -115,8 +135,12 @@
         document.location.href = this.dashUrl
       },
       fail(error) {
-        document.location.href = this.failUrl
+        console.log(error)
+        //document.location.href = this.failUrl
       }
+    },
+    mounted () {
+      console.log(this.payMethods)
     }
   }
 </script>

@@ -222,6 +222,14 @@ class Dev
         $agree->save();
     }
 
+    public function makeCart()
+    {
+        $s= new CartHandler();
+        $rand = rand(1,ProductOptionItem::count());
+        $cg = $s->makeCartGroup(ProductOptionItem::find($rand), rand(1,5));
+        $s->addCart(ProductOptionItem::find($rand)->product, collect([$cg]));
+    }
+
     public function setting()
     {
         $this->makeAgreement('contacts', '주문자정보 수집 동의');
@@ -233,12 +241,10 @@ class Dev
         $this->makeShop(5);
         $this->makeProduct(10);
 
-        $s = new CartHandler();
-        $rand1 = rand(1, ProductOptionItem::count());
-        $rand2 = rand(1, ProductOptionItem::count());
-        $cg1 = $s->makeCartGroup(ProductOptionItem::find($rand1), $rand2);
-        $cg2 = $s->makeCartGroup(ProductOptionItem::find($rand2), $rand1);
-        $s->addCart(ProductOptionItem::find($rand1)->product, collect([$cg1]));
-        $s->addCart(ProductOptionItem::find($rand2)->product, collect([$cg2]));
+        $cg_count = rand(1,10);
+        while( $cg_count > 0) {
+            $this->makeCart();
+            $cg_count --;
+        }
     }
 }
