@@ -40,4 +40,8 @@ class OrderDelivery extends DynamicModel
     public function getStatus() {
         return self::STATUS[$this->status];
     }
+
+    public function getUrl() {
+        return $this->company->uri.$this->ship_no;
+    }
 }

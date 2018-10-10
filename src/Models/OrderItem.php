@@ -50,7 +50,8 @@ class OrderItem extends SellSet
             'count' => $this->getCount(),
             'src' => $this->getThumbnailSrc(),
             'status' => $this->delivery ? $this->delivery->getStatus(): '',
-            'delivery'=>$this->delivery ? : null
+            'delivery'=>$this->delivery ? : null,
+            'delivery_url' => $this->delivery ?$this->delivery->geturl(): ''
         ];
     }
 

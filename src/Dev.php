@@ -205,8 +205,12 @@ class Dev
     public function makeDeliveryCompany()
     {
         $dc = new DeliveryCompany();
+        $dc->name = 'cj대한통운';
+        $dc->uri = 'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=';
+        $dc->save();
+        $dc = new DeliveryCompany();
         $dc->name = '한진택배';
-        $dc->uri = '#';
+        $dc->uri = 'http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=';
         $dc->save();
         return $dc;
     }

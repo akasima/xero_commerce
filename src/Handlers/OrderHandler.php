@@ -215,10 +215,8 @@ class OrderHandler extends SellSetHandler
                 $query->where($condition);
             })
             ->with('orderItems.delivery', 'payment', 'userInfo')
-            ->limit($count)
-            ->offset(($page-1)*$count)
             ->latest()
-            ->get();
+            ->paginate($count, ['*'], '', $page);
     }
 
     public function shipNoRegister(OrderItem $orderItem, $ship_no)
@@ -236,6 +234,14 @@ class OrderHandler extends SellSetHandler
         $delivery = $orderItem->delivery;
         $order = $orderItem->order;
         $delivery->complete();
+        $this->update($order);
+    }
+
+    public function changeOrderItem(OrderItem $orderItem, $code)
+    {
+        $order = $orderItem->order;
+        $orderItem->code = $code;
+        $orderItem->save();
         $this->update($order);
     }
 }

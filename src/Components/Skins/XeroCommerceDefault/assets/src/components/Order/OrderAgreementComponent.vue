@@ -1,7 +1,7 @@
 <template>
     <div>
         <div role="tablist">
-            <b-card v-for="(agreement, key) in agreements">
+            <b-card v-for="(agreement, key) in agreements" :key="key">
                 <b-card-header role="tab">
                     <b-form-checkbox v-model="checked" :value="agreement">
                     <span @click="toggling(agreement)" :aria-controls="agreement.type" :aria-expanded="opened[agreement.type]"  role="button" >

@@ -12,10 +12,6 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 <form method="post" action="{{ route('xero_commerce::setting.product.store') }}">
     {{ csrf_field() }}
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
-    <div>
-        <div></div>
-        <div></div>
-    </div>
     <div class="row">
         <div class="col-sm-12">
             <div class="panel-group">

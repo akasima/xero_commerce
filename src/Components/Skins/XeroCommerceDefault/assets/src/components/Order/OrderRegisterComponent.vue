@@ -35,7 +35,7 @@
                                 <th>일반 결제</th>
                                 <td>
                                     <b-form-radio-group v-model="payMethod"  >
-                                        <b-form-radio v-for="(method,key) in payMethods" :value="key">{{method}}</b-form-radio>
+                                        <b-form-radio v-for="(method,key) in payMethods" :value="key" :key="key">{{method}}</b-form-radio>
                                     </b-form-radio-group>
                                 </td>
                             </tr>

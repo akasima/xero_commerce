@@ -91,7 +91,7 @@
       return {
         checked:[],
         texted:[],
-        allNo:'',
+        allNo:'370269846894',
         allCheck: false
       }
     },

@@ -31,12 +31,35 @@ class OrderController extends XeroCommerceBasicController
 
     public function list(Request $request)
     {
-        return \XePresenter::make('order.list', ['title' => '주문/배송조회', 'list' => $this->listJson( $request )]);
+        $default = [
+            'date' => [
+            now()->subWeek()->toDateString(),
+            now()->toDateString()
+            ]
+            ,
+            'equal' => [
+                'code' => Order::COMPLETE
+            ],
+            'compare' => [
+
+            ],
+            'inGroup' => [
+
+            ]
+        ];
+        $data =$this->orderService->orderList(1, 5, $default);
+        return \XePresenter::make('order.list',
+            [
+                'title' => '주문/배송조회',
+                'list' => $data['data'],
+                'paginate' => $data['paginate'],
+                'default' => $default
+            ]);
     }
 
-    public function listJson(Request $request ,$page = 1)
+    public function listJson(Request $request, $page = 1)
     {
-        return $this->orderService->orderList($page, $request->count ? : 10, (array) $request->condition);
+        return $this->orderService->orderList($page, $request->count ?: 10, (array)$request->condition);
     }
 
     public function detail(Order $order)
@@ -69,7 +92,7 @@ class OrderController extends XeroCommerceBasicController
                 'order' => $order,
                 'orderItems' => $this->orderService->orderItemList($order),
                 'summary' => $this->orderService->summary($order),
-                'payMethods'=>$paymentService->methodList()
+                'payMethods' => $paymentService->methodList()
             ]
         );
     }

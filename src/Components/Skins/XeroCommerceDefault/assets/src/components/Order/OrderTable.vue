@@ -11,7 +11,12 @@
         </tr>
         </thead>
         <tbody>
-        <template v-for="item in list">
+        <tr v-if="list.length===0">
+            <td style="text-align: center" colspan="6">
+                <i class="xi-error"></i> 조회된 주이 없습니다.
+            </td>
+        </tr>
+        <template v-for="item in list" v-if="list.length>0">
             <tr v-for="(orderitem, key) in item.orderItems">
                 <td style="text-align: center; background:#f1f1f1;cursor:pointer" :rowspan="item.orderItems.length" v-if="key===0" @click="url('/shopping/order/detail/'+item.id)">
                     <p>{{item.order_no}}</p>
@@ -37,12 +42,35 @@
                 <td></td>
                 <td>
                     <p>{{orderitem.status}}</p>
-                    <p><button class="xe-btn xe-btn-default">배송교회</button></p>
+                    <p><button class="xe-btn xe-btn-default" @click="url(orderitem.delivery_url)">배송조회</button></p>
                     <p><button class="xe-btn xe-btn-default">교환요청</button></p>
                 </td>
             </tr>
         </template>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    <div style="width:100%; position:relative">
+                        <div style="position:absolute; left:0; bottom:0">
+                            total : {{currentCount}} / {{paginate.total}}
+                        </div>
+                        <div style="margin:0 auto; width:50%; text-align: center">
+                            <a @click="$emit('page',1)">처음</a>
+                            <a v-if="paginate.current_page-2>0"  @click="$emit('page',paginate.current_page-2)">{{paginate.current_page-2}}</a>
+                            <a v-if="paginate.current_page-1>0"  @click="$emit('page',paginate.current_page-1)">{{paginate.current_page-1}}</a>
+                            <b><a  @click="$emit('page',first_page)">{{paginate.current_page}}</a></b>
+                            <a v-if="paginate.current_page+1<=paginate.last_page"  @click="$emit('page',paginate.current_page+1)">{{paginate.current_page+1}}</a>
+                            <a v-if="paginate.current_page+2<=paginate.last_page"  @click="$emit('page',paginate.current_page+2)">{{paginate.current_page+2}}</a>
+                            <a @click="$emit('page',paginate.last_page)">끝</a>
+                        </div>
+                        <div style="position:absolute; right:0; bottom:0">
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </template>
 
@@ -50,8 +78,22 @@
   export default {
     name: "OrderTable",
     props: [
-        'list'
+        'list', 'paginate'
     ],
+    computed: {
+      currentCount () {
+        var result = 0;
+        if (this.paginate.total <= this.paginate.per_page)
+        {
+          return this.paginate.total
+        } else if (this.paginate.current_page === this.paginate.last_page)
+        {
+          return this.paginate.total % this.paginate.per_page
+        } else {
+          return this.paginate.per_page
+        }
+      }
+    },
     methods: {
       url (url) {
         window.open(url, 'target=_blank')
@@ -61,5 +103,9 @@
 </script>
 
 <style scoped>
+    tfoot a {
+        color:#0f74a8;
+        cursor: pointer;
+    }
 
 </style>

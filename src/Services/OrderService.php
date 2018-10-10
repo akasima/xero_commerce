@@ -54,10 +54,44 @@ class OrderService
 
     public function orderList($page, $count, $query)
     {
-        return $this->orderHandler->getOrderList($page, $count, $query)->map(function(Order $order) {
+        $paginate = $this->orderHandler->getOrderList($page, $count, $this->makeQueryFromArray($query));
+        return [
+            'data'=>$paginate->map(function (Order $order) {
+
+                return $this->orderDetail($order);
+            }),
+            'paginate'=>$paginate
+        ];
+
+        return $this->orderHandler->getOrderList($page, $count, $this->makeQueryFromArray($query))->map(function (Order $order) {
 
             return $this->orderDetail($order);
         });
+    }
+
+    public function makeQueryFromArray($condition)
+    {
+        return function ($query) use($condition) {
+            if (isset($condition['date']) ) {
+                $query->whereDate('created_at','>=',$condition['date'][0])
+                    ->whereDate('created_at','<=',$condition['date'][1]);
+            }
+            if (isset($condition['compare']) ) {
+                foreach($condition['compare'] as $key =>$value){
+                    $query->where($key, $value[0], $value[1]);
+                }
+            }
+            if (isset($condition['equal']) ) {
+                foreach($condition['equal'] as $key =>$value){
+                    $query->where($key, $value);
+                }
+            }
+            if (isset($condition['inGroup']) ) {
+                foreach($condition['inGroup'] as $key =>$value){
+                    $query->whereIn($key, $value);
+                }
+            }
+        };
     }
 
     public function orderDetail(Order $order)
@@ -75,8 +109,28 @@ class OrderService
 
     PUBLIC function setShipNo(Request $request)
     {
-        foreach($request->order_items as $items) {
+        foreach ($request->order_items as $items) {
             $this->orderHandler->shipNoRegister(OrderItem::find($items['id']), $items['no']);
         }
+    }
+
+    public function exchangeOrderItem(OrderItem $orderItem)
+    {
+        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::EXCHANGING);
+    }
+
+    public function refundOrderItem(OrderItem $orderItem)
+    {
+        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDING);
+    }
+
+    public function endExchangeOrderItem(OrderItem $orderItem)
+    {
+        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::EXCHANGED);
+    }
+
+    public function endRefundOrderItem(OrderItem $orderItem)
+    {
+        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDED);
     }
 }
