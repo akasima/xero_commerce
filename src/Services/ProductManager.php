@@ -23,6 +23,9 @@ class ProductManager
     /** @var ProductCategoryService $productCategoryService */
     protected $productCategoryService;
 
+    /**
+     * ProductManager constructor.
+     */
     public function __construct()
     {
         $this->productSettingService = new ProductSettingService();
@@ -32,6 +35,13 @@ class ProductManager
         $this->labelService = new LabelService();
     }
 
+    /**
+     * @param Request $request request
+     *
+     * @return int
+     *
+     * @throws \Exception
+     */
     public function store(Request $request)
     {
         try {
@@ -54,6 +64,14 @@ class ProductManager
         return $productId;
     }
 
+    /**
+     * @param Request $request   request
+     * @param int     $productId productId
+     *
+     * @throws \Exception
+     *
+     * @return void
+     */
     public function update(Request $request, $productId)
     {
         try {
@@ -73,6 +91,13 @@ class ProductManager
         XeDB::commit();
     }
 
+    /**
+     * @param int $productId productId
+     *
+     * @throws \Exception
+     *
+     * @return void
+     */
     public function remove($productId)
     {
         try {
@@ -90,6 +115,12 @@ class ProductManager
         XeDB::commit();
     }
 
+    /**
+     * @param int     $productId productId
+     * @param Request $request   request
+     *
+     * @return void
+     */
     private function setTag($productId, Request $request)
     {
         if ($request->has('_tags') === true) {
@@ -97,6 +128,11 @@ class ProductManager
         }
     }
 
+    /**
+     * @param int $productId productId
+     *
+     * @return void
+     */
     private function unSetTag($productId)
     {
         $tags = \XeTag::fetchByTaggable($productId);

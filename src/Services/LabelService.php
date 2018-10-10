@@ -32,7 +32,11 @@ class LabelService
 
     public function createProductLabel($productId, Request $request)
     {
-        $labels = $request->get('labels');
+        $labels = $request->get('labels', '');
+
+        if ($labels === '') {
+            return;
+        }
 
         $this->handler->storeProductLabel($productId, $labels);
     }
