@@ -8,33 +8,22 @@ use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Badge;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
-use Xpressengine\Plugins\XeroCommerce\Services\LabelService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
-use Xpressengine\Plugins\XeroCommerce\Services\ProductOptionItemSettingService;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductManager;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSettingService;
-use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
-use Xpressengine\Tag\TagHandler;
 
 class ProductController extends Controller
 {
+    /** @var ProductManager $productManager */
+    protected $productManager;
+
     /** @var ProductSettingService $productSettingService */
     protected $productSettingService;
 
-    /** @var ProductOptionItemSettingService $productOptionItemSettingService */
-    protected $productOptionItemSettingService;
-
-    /** @var TagHandler $tagHandler */
-    protected $tagHandler;
-
-    /** @var LabelService $labelService */
-    protected $labelService;
-
-    public function __construct(TagHandler $tagHandler)
+    public function __construct()
     {
+        $this->productManager = new ProductManager();
         $this->productSettingService = new ProductSettingService();
-        $this->productOptionItemSettingService = new ProductOptionItemSettingService();
-        $this->tagHandler = $tagHandler;
-        $this->labelService = new LabelService();
     }
 
     public function index(Request $request)
@@ -68,14 +57,9 @@ class ProductController extends Controller
             compact('labels', 'badges', 'categoryItems'));
     }
 
-    public function store(Request $request, ProductCategoryService $productCategoryService)
+    public function store(Request $request)
     {
-        $productId = $this->productSettingService->store($request);
-        $this->productOptionItemSettingService->defaultOptionStore($request, $productId);
-        $this->setTag($productId, $request);
-        ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
-        $this->labelService->createProductLabel($productId, $request);
-        $productCategoryService->createProductCategory($productId, $request);
+        $productId = $this->productManager->store($request);
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
@@ -97,19 +81,14 @@ class ProductController extends Controller
 
     public function update(Request $request, $productId)
     {
-        $this->productSettingService->update($request, $productId);
-        $this->setTag($productId, $request);
-        ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
-        $this->labelService->editProductLabel($productId, $request);
+        $this->productManager->update($request, $productId);
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
 
     public function remove(Request $request, $productId)
     {
-        $this->productSettingService->remove($productId);
-        $this->productOptionItemSettingService->removeProductOptionItems($productId);
-        $this->unSetTag($productId);
+        $this->productManager->remove($productId);
 
         return redirect()->route('xero_commerce::setting.product.index');
     }
@@ -121,18 +100,5 @@ class ProductController extends Controller
         $childCategory = $categoryService->getChildCategory($parentId);
 
         return XePresenter::makeApi(['type' => 'success', 'categories' => $childCategory]);
-    }
-
-    private function setTag($productId, Request $request)
-    {
-        if ($request->has('_tags') === true) {
-            $this->tagHandler->set($productId, $request->get('_tags'), 'xero_commerce');
-        }
-    }
-
-    private function unSetTag($productId)
-    {
-        $tags = \XeTag::fetchByTaggable($productId);
-        \XeTag::detach($productId, $tags);
     }
 }

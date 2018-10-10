@@ -37,7 +37,7 @@ class LabelService
         $this->handler->storeProductLabel($productId, $labels);
     }
 
-    public function editProductLabel($productId, Request $request)
+    public function updateProductLabel($productId, Request $request)
     {
         $labels = $request->get('labels');
 

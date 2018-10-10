@@ -17,4 +17,9 @@ class ProductCategoryHandler
             $productCategory->save();
         }
     }
+
+    public function remove($productId)
+    {
+        ProductCategory::where('product_id', $productId)->delete();
+    }
 }
