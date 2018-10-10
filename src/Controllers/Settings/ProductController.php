@@ -9,6 +9,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Badge;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Services\LabelService;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductOptionItemSettingService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSettingService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
@@ -56,21 +57,25 @@ class ProductController extends Controller
         return XePresenter::make('xero_commerce::views.setting.product.show', compact('product', 'options'));
     }
 
-    public function create()
+    public function create(ProductCategoryService $productCategoryService)
     {
         $labels = Label::get();
         $badges = Badge::get();
 
-        return XePresenter::make('xero_commerce::views.setting.product.create', compact('labels', 'badges'));
+        $categoryItems = $productCategoryService->getCategoryItems();
+
+        return XePresenter::make('xero_commerce::views.setting.product.create',
+            compact('labels', 'badges', 'categoryItems'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, ProductCategoryService $productCategoryService)
     {
         $productId = $this->productSettingService->store($request);
         $this->productOptionItemSettingService->defaultOptionStore($request, $productId);
         $this->setTag($productId, $request);
         ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
         $this->labelService->createProductLabel($productId, $request);
+        $productCategoryService->createProductCategory($productId, $request);
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
@@ -107,6 +112,15 @@ class ProductController extends Controller
         $this->unSetTag($productId);
 
         return redirect()->route('xero_commerce::setting.product.index');
+    }
+
+    public function getChildCategory(Request $request, ProductCategoryService $categoryService)
+    {
+        $parentId = $request->get('parentId');
+
+        $childCategory = $categoryService->getChildCategory($parentId);
+
+        return XePresenter::makeApi(['type' => 'success', 'categories' => $childCategory]);
     }
 
     private function setTag($productId, Request $request)

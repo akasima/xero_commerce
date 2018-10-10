@@ -6,6 +6,7 @@ use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
+use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;

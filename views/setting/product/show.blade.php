@@ -13,7 +13,7 @@
     <a href="{{ route('xero_commerce::setting.product.index') }}" class="xe-btn">목록</a>
 </div>
 
-<div class="row">
+<div id="component-container" class="row">
     <div class="col-sm-12">
         <div class="panel-group">
             <div class="panel">
@@ -63,7 +63,7 @@
                     옵션
                 </div>
 
-                <div id="product-container" class="panel-body">
+                <div class="panel-body">
                     <option-table-component :options='{{ json_encode($options) }}'></option-table-component>
                 </div>
             </div>
