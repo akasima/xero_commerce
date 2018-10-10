@@ -10,8 +10,8 @@
                 </div>
             </div>
             <div class="xe-col-lg-3">
-                <input type="date" class="form-control">
-                <input type="date" class="form-control">
+                <input type="date" v-model="date[0]" class="form-control">
+                <input type="date" v-model="date[1]" class="form-control">
             </div>
             <div class="xe-col-lg-3">
                 <select class="form-control">
@@ -25,7 +25,7 @@
         <div class="xe-row">
             <div class="xe-col">
                 <order-table
-                :list="list"></order-table>
+                :list="tableList"></order-table>
             </div>
         </div>
     </div>
@@ -40,7 +40,39 @@
     },
     props: [
       'list'
-    ]
+    ],
+    data () {
+      return {
+        tableList: [],
+        page: 1,
+        count: 10,
+        date: [
+            '2018-05-01',
+            new Date().toISOString().substr(0,10)
+        ],
+        status: null
+      }
+    },
+    methods: {
+        load () {
+          $.ajax({
+            url:d,
+            data:{
+              date: d,
+              status: d,
+              page: this.page,
+              count: this.count
+            },
+          }).done(()=>{
+
+          }).fail(()=>{
+
+          })
+        }
+    },
+    mounted () {
+      this.tableList = this.list
+    }
   }
 </script>
 
