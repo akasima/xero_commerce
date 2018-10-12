@@ -57,12 +57,12 @@ class OrderController extends Controller
 
     public function processDelivery(Request $request)
     {
-        return $this->orderService->deliveryProcess($request);
+        $this->orderService->deliveryProcess($request);
     }
 
     public function completeDelivery(Request $request)
     {
-        return $this->orderService->deliveryComplete($request);
+        $this->orderService->deliveryComplete($request);
     }
 
     public function buyOption()
@@ -73,5 +73,27 @@ class OrderController extends Controller
     public function buyList()
     {
 
+    }
+
+    public function afterservice()
+    {
+        return \XePresenter::make('xero_commerce::views.setting.order.as', [
+            'list'=>$this->orderService->afterserviceList()
+        ]);
+    }
+
+    public function afterserviceEnd($type, OrderItem $orderItem)
+    {
+
+        if($type =='교환')$this->orderService->endExchangeOrderItem($orderItem);
+        if($type =='환불')$this->orderService->endRefundOrderItem($orderItem);
+        if( get_class($orderItem->sellType) =='Xpressengine\Plugins\XeroCommerce\Models\Product' )
+        {
+            return route('xero_commerce::setting.product.show', [
+                'productId' => $orderItem->sellType->id
+            ]);
+        } else {
+            return route('xero_commerce::setting.product.index');
+        }
     }
 }

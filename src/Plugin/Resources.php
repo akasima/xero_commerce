@@ -142,6 +142,17 @@ class Resources
                         'as' => 'xero_commerce::complete.order.delivery',
                         'uses' => 'OrderController@completeDelivery'
                     ]);
+
+                    Route::get('/as', [
+                        'as' => 'xero_commerce::setting.order.as',
+                        'uses' => 'OrderController@afterservice',
+                        'settings_menu' => 'xero_commerce.order.as'
+                    ]);
+
+                    Route::get('/as/finish/{type}/{orderItem}', [
+                        'as' => 'xero_commerce::setting.order.as.finish',
+                        'uses' => 'OrderController@afterserviceEnd'
+                    ]);
                 });
 
                 //쇼핑몰 설정
@@ -462,6 +473,12 @@ class Resources
                 'display' => true,
                 'description' => '',
                 'ordering' => 100022
+            ],
+            'xero_commerce.order.as' => [
+                'title' => '교환/환불 처리',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100023
             ],
         ];
     }

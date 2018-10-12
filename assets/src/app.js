@@ -6,6 +6,7 @@ Vue.component('category-component', require('./components/category/CategoryCompo
 Vue.component('create-category-component', require('./components/category/CreateCategoryComponent').default);
 Vue.component('category-select-component', require('./components/category/CategorySelectComponent').default);
 Vue.component('delivery-component', require('./components/order/DeliveryComponent').default);
+Vue.component('after-service-component', require('./components/order/AfterServiceComponent').default);
 
 var app = new Vue({
     el: '#component-container'

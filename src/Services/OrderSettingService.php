@@ -46,4 +46,24 @@ class OrderSettingService
             $this->orderHandler->completeDelivery(OrderItem::find($delivery));
         }
     }
+
+    public function afterserviceList()
+    {
+        return $this->orderHandler->getAfterserviceList();
+    }
+
+    public function setOrderItemStatus(OrderItem $orderItem, $code)
+    {
+        return $this->orderHandler->changeOrderItem($orderItem, $code);
+    }
+
+    public function endExchangeOrderItem(OrderItem $orderItem)
+    {
+        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::EXCHANGED);
+    }
+
+    public function endRefundOrderItem(OrderItem $orderItem)
+    {
+        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDED);
+    }
 }

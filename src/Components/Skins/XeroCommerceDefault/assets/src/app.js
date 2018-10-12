@@ -16,6 +16,7 @@ Vue.component('order-register-component', require('./components/Order/OrderRegis
 Vue.component('dash-component', require('./components/DashComponent').default);
 Vue.component('order-list-component', require('./components/Order/OrderListComponent').default);
 Vue.component('order-detail-component', require('./components/Order/OrderDetailComponent').default);
+Vue.component('order-after-service-component', require('./components/Order/OrderAfterServiceComponent').default);
 
 var app = new Vue({
   el: '#sub-container'

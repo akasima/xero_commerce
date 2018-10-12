@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\CartGroup;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderAfterservice;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderDelivery;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
@@ -243,5 +244,27 @@ class OrderHandler extends SellSetHandler
         $orderItem->code = $code;
         $orderItem->save();
         $this->update($order);
+    }
+
+    public function makeOrderAfterservice($type, OrderItem $orderItem, Request $request)
+    {
+        $oa = new OrderAfterservice();
+        $oa->order_item_id=$orderItem->id;
+        $oa->type=$type;
+        $oa->reason=$request->reason;
+        $oa->delivery_company_id = $request->delivery;
+        $oa->ship_no=$request->ship_no;
+        $oa->received=false;
+        $oa->complete=false;
+        $oa->save();
+    }
+
+    public function getAfterserviceList()
+    {
+        $orders = $this->whereUser()->pluck('id');
+        $orderItems = OrderItem::whereIn('order_id',$orders)->has('afterService')->with('afterService')->get();
+        return $orderItems->map(function(OrderItem $orderItem){
+            return $orderItem->getJsonFormat();
+        });
     }
 }

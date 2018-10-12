@@ -49,4 +49,9 @@ class Order extends DynamicModel
     {
         return $this->belongsTo(UserInfo::class, 'user_id', 'user_id');
     }
+
+    public function orderGroup()
+    {
+        return $this->hasManyThrough(OrderItemGroup::class,OrderItem::class);
+    }
 }

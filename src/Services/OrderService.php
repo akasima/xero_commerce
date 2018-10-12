@@ -6,6 +6,7 @@ use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderAfterservice;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 
 class OrderService
@@ -114,23 +115,15 @@ class OrderService
         }
     }
 
-    public function exchangeOrderItem(OrderItem $orderItem)
+    public function exchangeOrderItem(OrderItem $orderItem, Request $request)
     {
+        $this->orderHandler->makeOrderAfterservice('교환', $orderItem, $request);
         return $this->orderHandler->changeOrderItem($orderItem, OrderItem::EXCHANGING);
     }
 
-    public function refundOrderItem(OrderItem $orderItem)
+    public function refundOrderItem(OrderItem $orderItem, Request $request)
     {
+        $this->orderHandler->makeOrderAfterservice('환불', $orderItem, $request);
         return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDING);
-    }
-
-    public function endExchangeOrderItem(OrderItem $orderItem)
-    {
-        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::EXCHANGED);
-    }
-
-    public function endRefundOrderItem(OrderItem $orderItem)
-    {
-        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDED);
     }
 }

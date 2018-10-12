@@ -13,7 +13,7 @@
         <tbody>
         <tr v-if="list.length===0">
             <td style="text-align: center" colspan="6">
-                <i class="xi-error"></i> 조회된 주이 없습니다.
+                <i class="xi-error"></i> 조회된 주문이 없습니다.
             </td>
         </tr>
         <template v-for="item in list" v-if="list.length>0">
@@ -43,7 +43,7 @@
                 <td>
                     <p>{{orderitem.status}}</p>
                     <p><button class="xe-btn xe-btn-default" @click="url(orderitem.delivery_url)">배송조회</button></p>
-                    <p><button class="xe-btn xe-btn-default">교환요청</button></p>
+                    <p><a @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">교환</a> / <a @click="url(asUrl+'/refund/'+item.id+'/'+orderitem.id)">환불</a></p>
                 </td>
             </tr>
         </template>
@@ -53,7 +53,7 @@
                 <td colspan="6">
                     <div style="width:100%; position:relative">
                         <div style="position:absolute; left:0; bottom:0">
-                            total : {{currentCount}} / {{paginate.total}}
+                            total : {{currentCount}} / {{paginate.total}} ({{paginate.from}} ~ {{paginate.to}})
                         </div>
                         <div style="margin:0 auto; width:50%; text-align: center">
                             <a @click="$emit('page',1)">처음</a>
@@ -78,11 +78,10 @@
   export default {
     name: "OrderTable",
     props: [
-        'list', 'paginate'
+        'list', 'paginate', 'asUrl'
     ],
     computed: {
       currentCount () {
-        var result = 0;
         if (this.paginate.total <= this.paginate.per_page)
         {
           return this.paginate.total
@@ -96,7 +95,7 @@
     },
     methods: {
       url (url) {
-        window.open(url, 'target=_blank')
+        window.open(url, 'target=_blank'+new Date().getTime())
       }
     }
   }

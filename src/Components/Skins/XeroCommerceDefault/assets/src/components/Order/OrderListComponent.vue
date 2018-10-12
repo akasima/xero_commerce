@@ -28,6 +28,7 @@
                         :list="tableList"
                         :paginate="tablePaginate"
                         @page="pagination"
+                        :as-url="asUrl"
                 ></order-table>
             </div>
         </div>
@@ -44,7 +45,7 @@
       OrderTable
     },
     props: [
-      'list', 'loadUrl', 'statusList', 'token', 'default', 'paginate'
+      'list', 'loadUrl', 'statusList', 'token', 'default', 'paginate', 'asUrl'
     ],
     data() {
       return {

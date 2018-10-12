@@ -41,6 +41,7 @@ class OrderItem extends SellSet
     {
         return [
             'id' => $this->id,
+            'user'=>$this->order->userInfo,
             'order_no'=>$this->order->order_no,
             'info' => $this->renderInformation(),
             'name' => $this->sellType->getName(),
@@ -51,12 +52,18 @@ class OrderItem extends SellSet
             'src' => $this->getThumbnailSrc(),
             'status' => $this->delivery ? $this->delivery->getStatus(): '',
             'delivery'=>$this->delivery ? : null,
-            'delivery_url' => $this->delivery ?$this->delivery->geturl(): ''
+            'delivery_url' => $this->delivery ?$this->delivery->geturl(): '',
+            'as'=>$this->afterService
         ];
     }
 
     public function delivery()
     {
         return $this->hasOne(OrderDelivery::class);
+    }
+
+    public function afterService()
+    {
+        return $this->hasOne(OrderAfterservice::class);
     }
 }

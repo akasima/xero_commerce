@@ -208,6 +208,17 @@ class Database
             $table->timestamps();
         });
 
+        Schema::create('xero_commerce_order_afterservice', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('type');
+            $table->integer('order_item_id');
+            $table->text('reason');
+            $table->integer('delivery_company_id');
+            $table->string('ship_no');
+            $table->string('received');
+            $table->boolean('complete');
+        });
+
         Schema::create('xero_commerce_delivery_company', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');

@@ -34,9 +34,7 @@
                             <tr>
                                 <th>일반 결제</th>
                                 <td>
-                                    <b-form-radio-group v-model="payMethod"  >
-                                        <b-form-radio v-for="(method,key) in payMethods" :value="key" :key="key">{{method}}</b-form-radio>
-                                    </b-form-radio-group>
+                                    <pay-component :pay-methods="payMethods"></pay-component>
                                 </td>
                             </tr>
                         </table>
@@ -77,11 +75,12 @@
   import OrderDeliveryComponent from './OrderDeliveryComponent'
   import OrderBillComponent from './OrderBillComponent'
   import OrderAgreementComponent from './OrderAgreementComponent'
+  import PayComponent from './PayComponent'
 
   export default {
     name: "OrderRegisterComponent",
     components: {
-      OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent
+      OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent, PayComponent
     },
     props: [
       'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods'
@@ -102,6 +101,10 @@
         } else {
           if (this.delivery.addr === '') {
             res.msg += '주소가 불분명합니다.\n\r'
+            res.status = false
+          }
+          if (this.delivery.addr_detail === '') {
+            res.msg += '상세주소를 적어주세요.\n\r'
             res.status = false
           }
         }

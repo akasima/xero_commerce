@@ -6,7 +6,9 @@ use App\Facades\XeFrontend;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
+use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\AgreementService;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
@@ -121,8 +123,33 @@ class OrderController extends XeroCommerceBasicController
         return $this->orderService->pay($order, $request);
     }
 
-    public function afterService()
+    public function afterService($as,Order $order, OrderItem $orderItem)
     {
-        return \XePresenter::make('order.as', ['title' => '주문내역']);
+        $paymentService = new PaymentService();
+        $paymentService->loadScript();
+        switch ($as){
+            case 'change':
+                $type = '교환';
+                break;
+            case 'refund':
+                $type = '환불';
+                break;
+            default :
+                throwException(\HttpUrlException::class);
+        }
+        return \XePresenter::make('order.as',
+            [
+                'type'=>$type,
+                'order'=>$order,
+                'item'=>$orderItem->getJsonFormat(),
+                'company'=>DeliveryCompany::get(),
+                'payMethods' => $paymentService->methodList()
+            ]);
+    }
+
+    public function asRegister($type, OrderItem $orderItem, Request $request)
+    {
+        if($type =='교환')$this->orderService->exchangeOrderItem($orderItem, $request);
+        if($type =='환불')$this->orderService->refundOrderItem($orderItem, $request);
     }
 }
