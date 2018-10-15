@@ -84,7 +84,9 @@ class OrderService
             }
             if (isset($condition['equal']) ) {
                 foreach($condition['equal'] as $key =>$value){
-                    $query->where($key, $value);
+                    if($key!='code' || $value!='all') {
+                        $query->where($key, $value);
+                    }
                 }
             }
             if (isset($condition['inGroup']) ) {

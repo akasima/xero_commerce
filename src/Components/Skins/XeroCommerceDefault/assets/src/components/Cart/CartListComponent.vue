@@ -33,6 +33,34 @@
                 <td>
                     {{cart.count}} 개 <br>
                     <button type="button" class="xe-btn xe-btn-default" @click="changeModal(cart)">변경</button>
+                    <div class="modal" :id="'cartChangeModal'+cart.id">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2>주문 추가/변경</h2>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <img :src="cart.src" alt="" width="100" height="100">
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <h3>{{cart.name}}</h3>
+                                            <h3>{{cart.sell_price.toLocaleString()}} 원</h3>
+                                        </div>
+                                    </div>
+                                    <option-select-component
+                                            v-model="cart.choose"
+                                            :already-choose="cart.choose"
+                                            :options="cart.option_list"></option-select-component>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="xe-btn xe-btn-black" @click="edit(cart)">저장하고 계속</button>
+                                    <button class="xe-btn xe-btn-danger" data-dismiss="xe-modal">저장하지않고 닫기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
                 <td>
                     선불
@@ -47,79 +75,15 @@
         </table>
         <button class="xe-btn">선택상품 삭제</button>
         <button class="xe-btn">선택상품 찜</button>
-        <div class="xe-modal" id="cartChangeModal">
-            <div class="xe-modal-dialog">
-                <div class="xe-modal-content">
-                    <div class="xe-modal-header">
-                        <h2>주문 추가/변경</h2>
-                    </div>
-                    <div class="xe-modal-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <img :src="selectedCart.src" alt="" width="100" height="100">
-                            </div>
-                            <div class="col-sm-9">
-                                <h3>{{selectedCart.name}}</h3>
-                                <h3>{{selectedCart.sell_price.toLocaleString()}} 원</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table">
-                                    <tr>
-                                        <th>배송방법</th>
-                                        <td>택배</td>
-                                    </tr>
-                                    <tr>
-                                        <th>배송비</th>
-                                        <td>택배</td>
-                                    </tr>
-                                    <tr>
-                                        <th>배송비 결제</th>
-                                        <td>택배</td>
-                                    </tr>
-                                    <tr>
-                                        <th>옵션</th>
-                                        <td>
-                                            <select v-model="selectOption" style="width:100%">
-                                                <option :value="null">선택</option>
-                                                <option v-for="option in selectedCart.option_list" :value="option">{{option.name}} ({{Number(option.sell_price).toLocaleString()}} )</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="row" v-for="(selectedOption, key) in selectedCart.choose">
-                                    <div class="col-sm-5 col-sm-offset-1">
-                                        선택: {{selectedOption.unit.name}} ({{selectedOption.unit.sell_price.toLocaleString()}})
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <input type="number" v-model="selectedOption.count"> 개
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <i class="xi-close" @click="dropOption(key)"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 text-right">
-                                총상품금액
-                                <h2>{{totalChoosePrice.toLocaleString()}} 원 </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="xe-modal-footer">
-                        <button class="xe-btn xe-btn-black" @click="edit">저장하고 계속</button>
-                        <button class="xe-btn xe-btn-danger" data-dismiss="xe-modal">저장하지않고 닫기</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
+    import OptionSelectComponent from '../OptionSelectComponent'
   export default {
+    components: {
+      OptionSelectComponent
+    },
     props: [
       'cartList'
     ],
@@ -171,19 +135,17 @@
     },
     methods: {
       changeModal (cart) {
-        this.selectedCart = null
-        this.selectedCart = JSON.parse(JSON.stringify(cart))
-        $('#cartChangeModal').xeModal()
+        $('#cartChangeModal'+cart.id).xeModal()
       },
       sum(array){
         return array.map((v) => {
           return v.unit.sell_price * v.count
         }).reduce((a, b) => a + b, 0);
       },
-      edit(){
+      edit(cart){
         $.ajax({
-          url: '/shopping/cart/change/' + this.selectedCart.id,
-          data: this.selectedCart
+          url: '/shopping/cart/change/' + cart.id,
+          data: cart
         }).done(()=>{
           this.$emit('change')
         }).fail(()=>{

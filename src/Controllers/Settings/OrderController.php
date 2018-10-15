@@ -82,6 +82,11 @@ class OrderController extends Controller
         ]);
     }
 
+    public function afterserviceReceive(OrderItem $orderItem)
+    {
+        return $this->orderService->receiveOrderItem($orderItem);
+    }
+
     public function afterserviceEnd($type, OrderItem $orderItem)
     {
 

@@ -40,7 +40,7 @@ class OrderController extends XeroCommerceBasicController
             ]
             ,
             'equal' => [
-                'code' => Order::COMPLETE
+                'code' => 'all'
             ],
             'compare' => [
 

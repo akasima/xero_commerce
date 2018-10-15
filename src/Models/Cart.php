@@ -18,6 +18,7 @@ class Cart extends SellSet
     {
         $row=[];
         $row []= $this->renderSpanBr($this->sellType->getName());
+        $row []= $this->renderSpanBr($this->sellType->getInfo());
         $this->sellGroups->each(function(SellGroup $group) use(&$row){
             $row []= $this->renderSpanBr($group->sellUnit->getName() . ' / ' . $group->getCount() . '개', "color: grey");
         });

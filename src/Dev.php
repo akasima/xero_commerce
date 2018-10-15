@@ -119,6 +119,7 @@ class Dev
             $product->shop_id = rand(1, Shop::count());
             $product->product_code = $this->faker->numerify('###########');
             $product->name = $this->faker->word;
+            $product->sub_name = $this->faker->text(20);
             $product->original_price = $this->faker->numberBetween(1, 50) * 1000;
             $product->sell_price = $product->original_price - ($product->original_price * rand(0, 10) / 100);
             $product->discount_percentage = round(

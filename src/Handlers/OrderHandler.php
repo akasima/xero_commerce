@@ -259,6 +259,20 @@ class OrderHandler extends SellSetHandler
         $oa->save();
     }
 
+    public function receiveOrderAfterservice(OrderItem $orderItem)
+    {
+        $oa = $orderItem->afterService;
+        $oa->received= true;
+        $oa->save();
+    }
+
+    public function endOrderAfterService(OrderItem $orderItem)
+    {
+        $oa = $orderItem->afterService;
+        $oa->complete= true;
+        $oa->save();
+    }
+
     public function getAfterserviceList()
     {
         $orders = $this->whereUser()->pluck('id');

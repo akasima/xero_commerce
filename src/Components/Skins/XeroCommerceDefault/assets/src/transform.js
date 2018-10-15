@@ -4,7 +4,7 @@ module.exports = function (css) {
       .replace(/.navbar > .container/g, '.navbar > .container-unuse')
       .replace(/body/g,'body-unuse')
       .replace(/.container/g, '.container-unuse')
-      .replace(/::after/g,'::notAfter')
+      .replace(/::after/g,'::notAfter') + '.fade {opacity: 1;transition: opacity 0.15s linear;}'
 
   return transformed
 }

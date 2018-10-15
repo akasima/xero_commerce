@@ -77,6 +77,7 @@ class Database
             $table->integer('shop_id');
             $table->integer('product_code');
             $table->string('name');
+            $table->string('sub_name');
             $table->integer('original_price');
             $table->integer('sell_price');
             $table->double('discount_percentage');
@@ -215,7 +216,7 @@ class Database
             $table->text('reason');
             $table->integer('delivery_company_id');
             $table->string('ship_no');
-            $table->string('received');
+            $table->boolean('received');
             $table->boolean('complete');
         });
 

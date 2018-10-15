@@ -37,6 +37,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
 
                         <div class="form-group">
+                            간략 소개
+                            <input type="text" name="sub_name" value="{{ Request::old('sub_name') }}">
+                        </div>
+
+                        <div class="form-group">
                             실제 가격
                             <input type="text" name="original_price" value="{{ Request::old('original_price') }}">
                         </div>

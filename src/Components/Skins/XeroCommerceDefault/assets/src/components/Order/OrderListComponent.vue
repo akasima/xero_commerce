@@ -15,6 +15,7 @@
             </div>
             <div class="xe-col-lg-3">
                 <select class="form-control" v-model="status">
+                    <option value="all">전부</option>
                     <option v-for="(name, value) in statusList" :value="value">{{name}}</option>
                 </select>
             </div>

@@ -57,13 +57,20 @@ class OrderSettingService
         return $this->orderHandler->changeOrderItem($orderItem, $code);
     }
 
+    public function receiveOrderItem(OrderItem $orderItem)
+    {
+        return $this->orderHandler->receiveOrderAfterservice($orderItem);
+    }
+
     public function endExchangeOrderItem(OrderItem $orderItem)
     {
+        $this->orderHandler->endOrderAfterService($orderItem);
         return $this->orderHandler->changeOrderItem($orderItem, OrderItem::EXCHANGED);
     }
 
     public function endRefundOrderItem(OrderItem $orderItem)
     {
+        $this->orderHandler->endOrderAfterService($orderItem);
         return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDED);
     }
 }

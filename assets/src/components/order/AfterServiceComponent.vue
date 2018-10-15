@@ -15,33 +15,37 @@
                     <th>상세정보</th>
                     <th>고객정보</th>
                     <th>사유</th>
+                    <th>처리현황</th>
                     <th>입력완료</th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in list">
-                        <td>
-                            {{item.order_no}}
-                        </td>
-                        <td>
-                            {{item.as.type}}
-                        </td>
-                        <td>
-                            <span v-for="html in item.info" v-html="html"></span>
-                        </td>
-                        <td>
-                            {{item.user.name}} 님 <br>
-                            <span>({{item.user.phone}})</span>
-                        </td>
-                        <td>
-                            {{item.as.reason}}
-                        </td>
-                        <td>
-                            <button class="btn btn-default" @click="execute(item.id,item.as.type)">완료</button>
-                            <button class="btn btn-default">보류</button>
-                            <button class="btn btn-default">취소</button>
-                        </td>
-                    </tr>
+                <tr v-for="item in list">
+                    <td>
+                        {{item.order_no}}
+                    </td>
+                    <td>
+                        {{item.as.type}}
+                    </td>
+                    <td>
+                        <span v-for="html in item.info" v-html="html"></span>
+                    </td>
+                    <td>
+                        {{item.user.name}} 님 <br>
+                        <span>({{item.user.phone}})</span>
+                    </td>
+                    <td>
+                        {{item.as.reason}}
+                    </td>
+                    <td>
+                        제품수령: {{(item.as.received)?'':'미'}}수령 <br>
+                        처리완료: {{(item.as.complete)?'처리완료':'처리중'}}
+                    </td>
+                    <td>
+                        <button class="btn btn-default" @click="receive(item.id)">반송품수령</button>
+                        <button class="btn btn-default" @click="execute(item.id,item.as.type)">처리완료</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -57,25 +61,34 @@
   export default {
     name: "AfterServiceComponent",
     props: [
-        'list', 'finishUrl'
+      'list', 'finishUrl', 'receiveUrl'
     ],
     methods: {
-      execute (id, type) {
+      execute(id, type) {
         $.ajax({
           url: this.finishUrl + '/' + type + '/' + id
-        }).done(url=>{
+        }).done(url => {
           var inven = confirm('재고를 수정할까요?')
           if (inven) {
-            document.location.href=url
-          }else{
+            document.location.href = url
+          } else {
             document.location.reload()
           }
+        }).fail((err) => {
+          console.log(err)
+        })
+      },
+      receive(id) {
+        $.ajax({
+          url: this.receiveUrl + '/' +id
+        }).done(()=>{
+          document.location.reload()
         }).fail((err)=>{
           console.log(err)
         })
       }
     },
-    mounted () {
+    mounted() {
       console.log(this.list)
     }
   }

@@ -153,6 +153,11 @@ class Resources
                         'as' => 'xero_commerce::setting.order.as.finish',
                         'uses' => 'OrderController@afterserviceEnd'
                     ]);
+
+                    Route::get('/as/receive/{orderItem}', [
+                        'as' => 'xero_commerce::setting.order.as.receive',
+                        'uses' => 'OrderController@afterserviceReceive'
+                    ]);
                 });
 
                 //쇼핑몰 설정
@@ -315,7 +320,7 @@ class Resources
     public static function setConfig()
     {
         \XeEditor::setInstance(Plugin::getId(), CkEditor::getId());
-        \XeEditor::setConfig(Plugin::getId(), ['uploadActive' => false]);
+        \XeEditor::setConfig(Plugin::getId(), ['uploadActive' => true]);
 
         $category = \XeCategory::create([
             'name' => '상품 분류'
