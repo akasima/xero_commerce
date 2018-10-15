@@ -64,4 +64,15 @@ class ProductCategoryService
 
         $this->handler->store($productId, $categoryItems);
     }
+
+    public function removeProductCategory($productId)
+    {
+        $this->handler->remove($productId);
+    }
+
+    public function updateProductCategory($productId, Request $request)
+    {
+        $this->removeProductCategory($productId);
+        $this->createProductCategory($productId, $request);
+    }
 }
