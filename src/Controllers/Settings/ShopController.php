@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 use XePresenter;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Services\ShopService;
 use Xpressengine\Plugins\XeroCommerce\Services\ShopUserService;
@@ -43,8 +44,10 @@ class ShopController extends Controller
     public function create()
     {
         $shopTypes = Shop::getShopTypes();
+        $deliveryCompanys = DeliveryCompany::all();
+        $deliveryCompanyOptions=$deliveryCompanys->pluck('id')->combine($deliveryCompanys->pluck('name'));
 
-        return XePresenter::make('xero_commerce::views.setting.shop.create', compact('shopTypes'));
+        return XePresenter::make('xero_commerce::views.setting.shop.create', compact('shopTypes', 'deliveryCompanyOptions'));
     }
 
     /**
@@ -83,8 +86,21 @@ class ShopController extends Controller
     {
         $shop = $this->shopService->getShop($shopId);
         $shopTypes = Shop::getShopTypes();
+        $deliveryCompanys = DeliveryCompany::all();
+        $default = $shop->getDefaultDeliveryCompany();
+        $deliveryCompanyOptions=$deliveryCompanys->map(function($companys) use($default){
+            $array = [
+                'text'=>$companys->name,
+                'value'=>$companys->id,
+            ];
+            if($companys->id===$default->id){
+                $array['selected'] = true;
+            }
+            return $array;
+        });
 
-        return XePresenter::make('xero_commerce::views.setting.shop.edit', compact('shop', 'shopTypes'));
+
+        return XePresenter::make('xero_commerce::views.setting.shop.edit', compact('shop', 'shopTypes', 'deliveryCompanyOptions'));
     }
 
     /**

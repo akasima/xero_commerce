@@ -17,6 +17,8 @@ class ShopHandler
 
         $newShop->fill($args);
 
+        $newShop->deliveryCompanys()->attach($args['delivery_company'], ['delivery_fare'=>$args['delivery_fare'], 'up_to_free'=>0, 'is_default'=>1]);
+
         $newShop->save();
 
         return $newShop;
@@ -69,6 +71,9 @@ class ShopHandler
                 $shop->{$key} = $value;
             }
         }
+
+        $shop->deliveryCompanys()->detach($shop->deliveryCompanys->pluck('id'));
+        $shop->deliveryCompanys()->attach($args['delivery_company'], ['delivery_fare'=>$args['delivery_fare'], 'up_to_free'=>0, 'is_default'=>1]);
 
         $shop->save();
     }

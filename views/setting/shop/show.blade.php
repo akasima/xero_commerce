@@ -8,8 +8,16 @@
             <div class="panel">
                 <div class="panel-body">
                     <div class="form-group">
-                        입점몰 이름
+                        <h4>입점몰 이름</h4>
                         {{ $shop->shop_name }}
+                    </div>
+                    <div>
+                        <h4>배송 정보</h4>
+                        {!! $shop->delivery_info !!}
+                    </div>
+                    <div>
+                        <h4>반품/교환 정보</h4>
+                        {!! $shop->as_info !!}
                     </div>
                 </div>
             </div>
