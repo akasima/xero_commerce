@@ -87,7 +87,7 @@
 </div>
 @endif
 
-<div class="container">
+<div class="container" style="margin-top:20px">
     <div id="sub-container">
         {!! $content !!}
     </div>

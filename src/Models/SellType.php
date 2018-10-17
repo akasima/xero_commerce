@@ -64,6 +64,8 @@ abstract class SellType extends DynamicModel
 
     abstract function sellUnits();
 
+    abstract function getSlug();
+
     /**
      * @return callable
      */
