@@ -25,7 +25,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 'label'=>'입점몰 영어 이름',
                                 'name'=>'shop_eng_name',
                                 'description'=>'입점몰 영어표기명입니다',
-                                'value'=>Request::old('shop_end_name')
+                                'value'=>Request::old('shop_eng_name')
                                 ])}}
 
 

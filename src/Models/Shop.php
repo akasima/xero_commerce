@@ -29,6 +29,7 @@ class Shop extends DynamicModel
     public static function getShopTypes()
     {
         return [
+            self::TYPE_BASIC_SHOP => '기본',
             self::TYPE_STORE => '단체',
             self::TYPE_INDIVIDUAL => '개인'
         ];

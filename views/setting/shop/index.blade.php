@@ -4,18 +4,17 @@
 
 <form method="get" action="{{ route('xero_commerce::setting.config.shop.index') }}">
     <div class="row">
-        <div class="col-sm-12">
-            <div class="panel-group">
-                <div class="panel">
-                    <div class="panel-body">
-                        <dl>
-                            <dt>이름</dt>
-                            <dd><input type="text" name="shop_name"></dd>
-                        </dl>
-                    </div>
-                    <button type="submit" class="xe-btn">검색</button>
-                </div>
+        <div class="col-sm-3">
+
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="이름" name="shop_name">
+                <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">검색</button>
+                          </span>
             </div>
+        </div>
+        <div>
+            <a href="{{ route('xero_commerce::setting.config.shop.create') }}" class="xe-btn">새로 등록</a>
         </div>
     </div>
 </form>
@@ -23,16 +22,32 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="panel-group">
-            <a href="{{ route('xero_commerce::setting.config.shop.create') }}" class="xe-btn">등록</a>
             <div class="panel">
                 <div class="panel-body">
-                    @foreach ($shops as $shop)
-                        <li>
-                            <div>
-                                <a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_name }}</span></a>
-                            </div>
-                        </li>
-                    @endforeach
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>로고</th>
+                            <th>한글명</th>
+                            <th>영문명</th>
+                            <th>형태</th>
+                            <th>판매상태</th>
+                            <th>등록일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($shops as $shop)
+                            <tr>
+                                <td></td>
+                                <td><a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_name }}</span></a></td>
+                                <td><a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_eng_name }}</span></a></td>
+                                <td>{{ $shop->getShopTypes()[$shop->shop_type] }}</td>
+                                <td></td>
+                                <td>{{$shop->created_at->toDateString()}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
