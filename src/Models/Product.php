@@ -100,7 +100,7 @@ class Product extends SellType
     public function getFare()
     {
         // TODO: Implement getFare() method.
-        return 0;
+        return $this->getDelivery()->pivot->delivery_fare;
     }
 
     /**
@@ -108,12 +108,12 @@ class Product extends SellType
      */
     public function getShop()
     {
-        return $this->belongsTo(Shop::class);
+        return $this->shop;
     }
 
     public function getThumbnailSrc()
     {
-        return 'https://www.xpressengine.io/plugins/official_homepage/assets/theme/img/feature_02.jpg';
+        return $this->getImages()->first();
     }
 
     /**
@@ -197,17 +197,6 @@ class Product extends SellType
     public function badge()
     {
         return $this->hasOne(Badge::class, 'id', 'badge_id');
-    }
-
-    function getImages()
-    {
-        // TODO: Implement getImages() method.
-        $images =[];
-        $images[]='https://www.xpressengine.com/files/thumbnails/504/944/022/350x1500.ratio.jpg?20150302213620';
-        for($i=0; $i<rand(1,12); $i++){
-            $images[]=$this->getThumbnailSrc();
-        }
-        return $images;
     }
 
     function getContents()

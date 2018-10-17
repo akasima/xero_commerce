@@ -2,10 +2,13 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
+use App\Facades\XeMedia;
+use App\Facades\XeStorage;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
+use Xpressengine\Plugins\XeroCommerce\Models\Image;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
@@ -114,12 +117,27 @@ class ProductHandler
         $newProduct = new Product();
 
         $newProduct->fill($args);
-
+        $info = array_combine($args['infoKeys'],$args['infoValues']);
+        $newProduct->detail_info = json_encode($info);
         $newProduct->save();
+
+        foreach($args['images'] as $image)
+        {
+            if($image!=null)$this->saveImage($image, $newProduct);
+        }
 
         \Event::dispatch(new NewProductRegisterEvent($newProduct));
 
         return $newProduct->id;
+    }
+
+    public function saveImage($imageParm, $newProduct)
+    {
+        $file = XeStorage::upload($imageParm, 'product');
+        $imageFile = XeMedia::make($file);
+        $image = new Image();
+        $image->url = $imageFile->url();
+        return $newProduct->images()->save($image);
     }
 
     public function update(Product $product, $args)
@@ -129,6 +147,23 @@ class ProductHandler
             if (array_key_exists($name, $attributes) === true) {
                 $product->{$name} = $value;
             }
+        }
+        $info = array_combine(key_exists('infoKeys',$args) ? $args['infoKeys']: [], key_exists('infoValues',$args) ? $args['infoValues']: []);
+        $product->detail_info = json_encode($info);
+        $nonEditImage = key_exists('nonEditImage',$args) ? $args['nonEditImage'] : [];
+        $editImages = $product->images()->whereNotIn('id', $nonEditImage)->get();
+        $editImages->each(function(Image $originImage, $key) use ($args, $product){
+            if($args['editImages'][$key] !=null){
+                $editImage = $this->saveImage($args['editImages'][$key], $product);
+                $originImage->url = $editImage->url;
+                $originImage->save();
+                $editImage->delete();
+            }
+        });
+
+        foreach($args['addImages'] as $image)
+        {
+            if($image!=null)$this->saveImage($image, $product);
         }
 
         $product->save();

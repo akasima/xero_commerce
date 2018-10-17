@@ -64,9 +64,11 @@ class ProductController extends Controller
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
 
-    public function edit(Request $request, $productId)
+    public function edit(Request $request, $productId, ProductCategoryService $productCategoryService)
     {
         $product = $this->productSettingService->getProduct($productId);
+        $categoryItems = $productCategoryService->getCategoryItems();
+
 
         $productLabelIds = [];
         foreach ($product->labels as $label) {
@@ -76,7 +78,7 @@ class ProductController extends Controller
         $labels = Label::get();
         $badges = Badge::get();
 
-        return XePresenter::make('xero_commerce::views.setting.product.edit', compact('product', 'productLabelIds', 'labels', 'badges'));
+        return XePresenter::make('xero_commerce::views.setting.product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems'));
     }
 
     public function update(Request $request, $productId)

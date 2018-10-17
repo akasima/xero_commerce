@@ -53,6 +53,8 @@ class Database
             $table->string('background_path')->nullable();
             $table->integer('shop_type');
             $table->integer('state_approval');
+            $table->text('delivery_info');
+            $table->text('as_info');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -84,12 +86,19 @@ class Database
             $table->integer('min_buy_count')->nullable();
             $table->integer('max_buy_count')->nullable();
             $table->text('description');
+            $table->text('detail_info');
             $table->integer('badge_id')->nullable();
             $table->integer('tax_type');
             $table->integer('state_display');
             $table->integer('state_deal');
             $table->softDeletes();
             $table->timestamps();
+        });
+
+        Schema::create('xero_commerce_images', function (Blueprint $table) {
+           $table->increments('id');
+           $table->string('url');
+           $table->morphs('imagable');
         });
 
         Schema::create('xero_commerce_product_slug', function (Blueprint $table) {
@@ -156,6 +165,7 @@ class Database
         Schema::create('xero_commerce_cart', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 36);
+            $table->smallInteger('delivery_pay');
             $table->morphs('type');
             $table->string('order_id')->nullable();
             $table->timestamps();
@@ -179,6 +189,7 @@ class Database
         Schema::create('xero_commerce_order_item', function (Blueprint $table) {
             $table->increments('id');
             $table->string('order_id');
+            $table->smallInteger('delivery_pay');
             $table->integer('delivery_id');
             $table->morphs('type');
             $table->integer('original_price');

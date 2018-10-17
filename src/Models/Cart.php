@@ -34,6 +34,7 @@ class Cart extends SellSet
             'original_price' => $this->getOriginalPrice(),
             'sell_price' => $this->getSellPrice(),
             'discount_price' => $this->getDiscountPrice(),
+            'fare' => $this->getFare(),
             'count' => $this->getCount(),
             'src' => $this->getThumbnailSrc(),
             'option_list' => $this->sellType->sellUnits->map(function(sellUnit $sellUnit) {
@@ -42,7 +43,9 @@ class Cart extends SellSet
             'choose' => $this->sellGroups->map(function(SellGroup $sellGroup) {
                 return $sellGroup->getJsonFormat();
             }),
-            'name' => $this->sellType->getName()
+            'name' => $this->sellType->getName(),
+            'delivery'=>$this->sellType->getDelivery(),
+            'pay'=>$this->getDeliveryPay()
         ];
     }
 }

@@ -30,6 +30,7 @@ class OrderHandler extends SellSetHandler
         foreach ($carts as $cart) {
             $orderItem = new OrderItem();
             $orderItem->order_id = $order->id;
+            $orderItem->delivery_pay = $cart->delivery_pay;
             $cart->sellType->orderItems()->save($orderItem);
             $orderItem->save();
             $cart->sellGroups->each(function (CartGroup $cartGroup) use (&$orderItem) {

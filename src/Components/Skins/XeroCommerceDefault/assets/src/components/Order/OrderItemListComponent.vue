@@ -29,7 +29,8 @@
                 {{orderItem.count}} 개 <br>
             </td>
             <td>
-                선불
+                {{orderItem.delivery_pay}} <br>
+                {{orderItem.fare.toLocaleString()}}
             </td>
             <td>
                 <b>{{orderItem.sell_price.toLocaleString()}} 원</b> <br>

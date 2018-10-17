@@ -6,6 +6,10 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 abstract class SellSet extends DynamicModel
 {
+    const DELIVERY=[
+        '선불'=>1,
+        '착불'=>2
+    ];
     abstract public function sellGroups();
 
     public function sellType()
@@ -22,6 +26,11 @@ abstract class SellSet extends DynamicModel
     {
         $method = $this->sellType->getCountMethod();
         return $method($this->sellGroups);
+    }
+
+    function getDeliveryPay()
+    {
+        return array_search($this->delivery_pay,self::DELIVERY);
     }
 
     function getOriginalPrice()
@@ -48,6 +57,7 @@ abstract class SellSet extends DynamicModel
 
     public function getFare()
     {
+        if($this->getDeliveryPay()=='착불') return 0;
         return $this->sellType->getFare();
     }
 

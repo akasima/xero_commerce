@@ -2,7 +2,7 @@
     <div>
         <h2>상품내역</h2>
         <order-table
-        :list="[order]"></order-table>
+            :list="[order]"></order-table>
         <h2>결제금액정보</h2>
         <table class="table">
             <tr>
@@ -53,34 +53,41 @@
 
 <script>
     import OrderTable from './OrderTable'
-  export default {
-    name: "OrderDetailComponent",
-    props:[
-        'order'
-    ],
-    components: {
-      OrderTable
-    },
-    data () {
-      return {
-        delivery: {
-          recv_name: null,
-          recv_phone: null,
-          recv_addr: null,
-          recv_addr_detail: null,
-          recv_msg:null
+
+    export default {
+        name: "OrderDetailComponent",
+        props: [
+            'order'
+        ],
+        components: {
+            OrderTable
+        },
+        data() {
+            return {
+                delivery: {
+                    recv_name: null,
+                    recv_phone: null,
+                    recv_addr: null,
+                    recv_addr_detail: null,
+                    recv_msg: null
+                },
+                paginate: {
+                    current_page:1,
+                    last_page:1,
+                    first_page:1,
+                    total:1
+                }
+            }
+        },
+        mounted() {
+            this.delivery = this.order.orderItems[0].delivery
         }
-      }
-    },
-    mounted () {
-      this.delivery = this.order.orderItems[0].delivery
     }
-  }
 </script>
 
 <style scoped>
-.table th {
-    background:#f1f1f1;
-    width:200px;
-}
+    .table th {
+        background: #f1f1f1;
+        width: 200px;
+    }
 </style>

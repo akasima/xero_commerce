@@ -37,7 +37,8 @@ abstract class SellUnit extends DynamicModel
         return [
             'id' => $this->id,
             'name' => $this->getName(),
-            'sell_price' => $this->getSellPrice()
+            'sell_price' => $this->getSellPrice(),
+            'add_price' => $this->addition_price
         ];
     }
 }

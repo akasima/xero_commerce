@@ -35,7 +35,7 @@
                     <button type="button" class="xe-btn xe-btn-default" @click="changeModal(cart)">변경</button>
                     <div class="modal" :id="'cartChangeModal'+cart.id">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content" style="padding:20px">
                                 <div class="modal-header">
                                     <h2>주문 추가/변경</h2>
                                 </div>
@@ -52,7 +52,11 @@
                                     <option-select-component
                                             v-model="cart.choose"
                                             :already-choose="cart.choose"
-                                            :options="cart.option_list"></option-select-component>
+                                            :options="cart.option_list">
+                                        <delivery-select-component
+                                            :delivery="cart.delivery"
+                                        v-model="cart.pay"></delivery-select-component>
+                                    </option-select-component>
                                 </div>
                                 <div class="modal-footer">
                                     <button class="xe-btn xe-btn-black" @click="edit(cart)">저장하고 계속</button>
@@ -63,7 +67,8 @@
                     </div>
                 </td>
                 <td>
-                    선불
+                    {{cart.pay}} <br>
+                    {{cart.fare.toLocaleString()}}
                 </td>
                 <td>
                     <b>{{cart.sell_price.toLocaleString()}} 원</b> <br>
@@ -80,9 +85,10 @@
 
 <script>
     import OptionSelectComponent from '../OptionSelectComponent'
+    import DeliverySelectComponent from '../DeliverySelectComponent'
   export default {
     components: {
-      OptionSelectComponent
+      OptionSelectComponent, DeliverySelectComponent
     },
     props: [
       'cartList'
@@ -100,47 +106,18 @@
         }else{
           this.checkedList = [];
         }
-      },
-      selectOption (el) {
-        var exist = this.selectedCart.choose.find(v=>{return v.unit.id === el.id})
-        if (exist) {
-          exist.count ++
-        }else {
-          this.selectedCart.choose.push({
-            id: null,
-            unit: el,
-            count: 1
-          })
-        }
       }
     },
     name: "CartListComponent",
-    computed: {
-      totalChoosePrice () {
-        return this.sum(this.selectedCart.choose)
-      }
-    },
     data () {
       return {
         checkedList: [],
-        allCheck: false,
-        selectedCart: {
-          src: '',
-          sell_price: 0,
-          info: '',
-          choose: []
-        },
-        selectOption: null
+        allCheck: false
       }
     },
     methods: {
       changeModal (cart) {
         $('#cartChangeModal'+cart.id).xeModal()
-      },
-      sum(array){
-        return array.map((v) => {
-          return v.unit.sell_price * v.count
-        }).reduce((a, b) => a + b, 0);
       },
       edit(cart){
         $.ajax({
@@ -161,18 +138,16 @@
           console.log('fail')
         })
       },
-      dropOption(key){
-        this.selectedCart.choose.splice(key, 1)
-      },
       onlyThisCart(cart_id){
         this.$emit('only', cart_id)
       },
       url (url) {
-        window.open(url, 'target=_blank')
+        window.open(url, 'target=_blank'+new Date().toTimeString())
       }
     },
     mounted () {
       this.allCheck = true
+        console.log(this.cartList)
     }
   }
 </script>

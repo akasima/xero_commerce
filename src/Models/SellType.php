@@ -28,20 +28,37 @@ abstract class SellType extends DynamicModel
         return $this->morphMany(OrderItem::class, 'type');
     }
 
+    public function images()
+    {
+        return $this->morphMany(Image::class,'imagable');
+    }
+
     public function getJsonFormat()
     {
         return [
+            'id'=>$this->id,
             'mainImage'=>$this->getThumbnailSrc(),
             'images'=>$this->getImages(),
             'contents'=>$this->getContents(),
             'data'=>$this,
+            'shop'=>$this->getShop(),
             'options' => $this->sellUnits->map(function(SellUnit $sellUnit){
                 return $sellUnit->getJsonFormat();
             }),
+            'delivery'=>$this->getDelivery()
         ];
     }
 
-    abstract function getImages();
+    public function getDelivery()
+    {
+        return $this->getShop()->getDefaultDeliveryCompany();
+    }
+
+    function getImages()
+    {
+        if($this->images->count()===0) return collect([asset('/assets/core/common/img/default_image_1200x800.jpg')]);
+        return $this->images->pluck('url');
+    }
 
     abstract function getContents();
 

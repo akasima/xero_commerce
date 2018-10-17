@@ -86,6 +86,11 @@ class XeroCommerceModule extends AbstractModule
                 'as' => 'xero_commerce::order.as.register'
             ]);
 
+            Route::post('/product/cart/{product}', [
+                'uses' => 'ProductController@cartAdd',
+                'as' => 'xero_commerce::product.cart'
+            ]);
+
             Route::get('/test/{product}', 'CartController@test');
 
             Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);

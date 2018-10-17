@@ -5,8 +5,10 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
 use Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\XeroCommerceDefaultSkin;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
+use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Routing\InstanceConfig;
@@ -54,9 +56,9 @@ class ProductController extends XeroCommerceBasicController
         return \XePresenter::make('product.show', ['product' => $product]);
     }
 
-    public function cartAdd(Request $request)
+    public function cartAdd(Request $request, Product $product)
     {
         $cartService = new CartService();
-        $cartService->addList($this->productService->make($request));
+        return $cartService->addList($request, $product);
     }
 }
