@@ -153,11 +153,16 @@ class ProductHandler
         $nonEditImage = key_exists('nonEditImage',$args) ? $args['nonEditImage'] : [];
         $editImages = $product->images()->whereNotIn('id', $nonEditImage)->get();
         $editImages->each(function(Image $originImage, $key) use ($args, $product){
-            if($args['editImages'][$key] !=null){
-                $editImage = $this->saveImage($args['editImages'][$key], $product);
-                $originImage->url = $editImage->url;
-                $originImage->save();
-                $editImage->delete();
+            if(count($args['editImages'])>0){
+                dd($args['editImages']);
+                if($args['editImages'][$key] !=null){
+                    $editImage = $this->saveImage($args['editImages'][$key], $product);
+                    $originImage->url = $editImage->url;
+                    $originImage->save();
+                    $editImage->delete();
+                }
+            }else{
+                $originImage->delete();
             }
         });
 

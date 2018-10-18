@@ -26,16 +26,31 @@
             <a href="{{ route('xero_commerce::setting.product.create') }}" class="xe-btn">등록</a>
             <div class="panel">
                 <div class="panel-body">
-                    @foreach ($products as $product)
-                        <li>
-                            <a href="{{ route('xero_commerce::setting.product.show', ['productId' => $product->id]) }}">
-                                <div>
-                                    <span>{{ $product->name }}</span>
-                                    <span>{{ $product->price }}</span>
-                                </div>
-                            </a>
-                        </li>
-                    @endforeach
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>썸네일</th>
+                            <th>상품명</th>
+                            <th>상품설명</th>
+                            <th>재고</th>
+                            <th>판매가</th>
+                            <th>등록일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($products as $product)
+                            <tr>
+
+                                <td><img src="{{$product->getThumbnailSrc()}}" alt="" style="width:80px; height:60px;"></td>
+                                <td><a href="{{ route('xero_commerce::setting.product.show', ['productId' => $product->id]) }}"><span>{{ $product->name }}</span></a></td>
+                                <td>{{$product->sub_name}}</td>
+                                <td>{{ $product->getStock() }}</td>
+                                <td>{{number_format($product->sell_price)}}</td>
+                                <td>{{$product->created_at->toDateString()}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

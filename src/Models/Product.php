@@ -204,4 +204,9 @@ class Product extends SellType
         // TODO: Implement getContents() method.
         return '';
     }
+
+    public function getStock()
+    {
+        return $this->sellUnits()->sum('stock');
+    }
 }

@@ -1,5 +1,4 @@
 <div class="row">
-
     @foreach ($products as $key=>$product)
         @if($key%3 === 0)
             </div>
@@ -8,7 +7,7 @@
         <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}">
         <div class="col-lg-4" style="margin-bottom:20px">
             <div>
-                <img src="{{$product->getThumbnailSrc()}}" alt="" style="width:100%">
+                <img src="{{$product->getThumbnailSrc()}}" alt="" style="width:100%;height:240px;">
             </div>
             <div>
                 @foreach($product->labels as $label)

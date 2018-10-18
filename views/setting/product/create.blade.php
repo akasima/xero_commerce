@@ -118,49 +118,59 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         </div>
         <div class="col-lg-12">
             <div class="panel">
+                @php
+                function formatArray ($array){
+                    return collect($array)->map(function($item,$key){
+                            return [
+                            'text'=>$item,
+                            'value'=>$key];
+                            });
+                }
+                @endphp
                 <div class="panel-body">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                {{uio('formSelect', [
-                                'label'=>'과세 유형',
-                                'name'=>'tax_type',
-                                'options'=>Product::getTaxTypes()
-                                ])}}
-                            </div>
-                            <div class="col-lg-4">
-                                {{uio('formSelect', [
-                                'label'=>'출력 여부',
-                                'name'=>'state_display',
-                                'options'=>Product::getDisplayStates()
-                                ])}}
-                            </div>
-                            <div class="col-lg-4">
-                                {{uio('formSelect', [
-                                'label'=>'거래 여부',
-                                'name'=>'tax_type',
-                                'options'=>Product::getDealStates()
-                                ])}}
-                            </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            {{uio('formSelect', [
+                            'label'=>'과세 유형',
+                            'name'=>'tax_type',
+                            'options'=>formatArray(Product::getTaxTypes())
+                            ])}}
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>라벨</label>
-                                    @foreach ($labels as $label)
-                                        <input type="checkbox" name="labels[]" value="{{ $label->id }}">{{ $label->name }}
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>뱃지</label>
-                                @foreach ($badges as $badge)
-                                    <input type="radio" name="badge_id" value="{{ $badge->id }}">{{ $badge->name }}
+                        <div class="col-lg-4">
+                            {{uio('formSelect', [
+                            'label'=>'출력 여부',
+                            'name'=>'state_display',
+                            'options'=>formatArray(Product::getDisplayStates())
+                            ])}}
+                        </div>
+                        <div class="col-lg-4">
+                            {{uio('formSelect', [
+                            'label'=>'거래 여부',
+                            'name'=>'state_deal',
+                            'options'=>formatArray(Product::getDealStates())
+                            ])}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>라벨</label>
+                                @foreach ($labels as $label)
+                                    <input type="checkbox" name="labels[]" value="{{ $label->id }}">{{ $label->name }}
                                 @endforeach
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <label>뱃지</label>
+                            @foreach ($badges as $badge)
+                                <input type="radio" name="badge_id" value="{{ $badge->id }}">{{ $badge->name }}
+                            @endforeach
+                        </div>
+                    </div>
 
                     <div class="form-group">
-                        <label>상품 정보 추가 <i class="xi-plus" style="cursor:pointer" onclick="addProductInfo()"></i></label>
+                        <label>상품 정보 추가 <i class="xi-plus" style="cursor:pointer"
+                                           onclick="addProductInfo()"></i></label>
                         <table class="table" id="productInfoTable">
                             <thead>
                             <tr>
@@ -234,4 +244,5 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
             'tags' => []
         ]) !!}
     </div>
+    <button type="submit" class="xe-btn xe-btn-success">등록</button>
 </form>

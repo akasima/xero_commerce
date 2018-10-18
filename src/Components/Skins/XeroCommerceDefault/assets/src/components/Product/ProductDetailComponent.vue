@@ -7,7 +7,7 @@
                         <img :src="mainImg" style="width:100%; height:300px">
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" v-if="product.images.length >1">
                     <div class="col" style="overflow-x:scroll;height:60px; width:100%">
                         <img v-for="image in product.images" :src="image" style="width:50px; height:40px"
                              @click="changeMainImage(image)">
@@ -61,7 +61,7 @@
                                         </th>
                                         <td>
                                             {{val}}
-                                        </td>
+                                        </td>r
                                     </template>
                                 </tr>
                             </table>

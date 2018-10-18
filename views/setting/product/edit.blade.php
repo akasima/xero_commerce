@@ -116,27 +116,36 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         </div>
         <div class="col-lg-12">
             <div class="panel">
+                @php
+                    function formatArray ($array){
+                        return collect($array)->map(function($item,$key){
+                                return [
+                                'text'=>$item,
+                                'value'=>$key];
+                                });
+                    }
+                @endphp
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-4">
                             {{uio('formSelect', [
                             'label'=>'과세 유형',
                             'name'=>'tax_type',
-                            'options'=>Product::getTaxTypes()
+                            'options'=>formatArray(Product::getTaxTypes())
                             ])}}
                         </div>
                         <div class="col-lg-4">
                             {{uio('formSelect', [
                             'label'=>'출력 여부',
                             'name'=>'state_display',
-                            'options'=>Product::getDisplayStates()
+                            'options'=>formatArray(Product::getDisplayStates())
                             ])}}
                         </div>
                         <div class="col-lg-4">
                             {{uio('formSelect', [
                             'label'=>'거래 여부',
                             'name'=>'tax_type',
-                            'options'=>Product::getDealStates()
+                            'options'=>formatArray(Product::getDealStates())
                             ])}}
                         </div>
                     </div>
@@ -207,7 +216,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                         <b style="color:blue; cursor:pointer" href="#" onclick="editImages.edit({{$i}})">수정</b>
                                         <div class="form-group">
                                             <label>사진업로드 #{{$i}}</label> <br>
-                                            <img src="{{$product->images->get($i-1)->url}}" alt="">
+                                            <img src="{{$product->images->get($i-1)->url}}" alt="" width="300px" height="240px">
                                             <input type="hidden" name="nonEditImage[]" value="{{$product->images->get($i-1)->id}}">
                                         </div>
                                     </div>
@@ -230,6 +239,10 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                     ]) }}
                                 @endif
                             </div>
+                            @if($i%3 === 0)
+                            </div>
+                            <div class="row">
+                            @endif
                         @endfor
                         <script>
                             var editImages={

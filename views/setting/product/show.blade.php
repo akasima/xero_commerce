@@ -18,41 +18,40 @@
         <div class="panel-group">
             <div class="panel">
                 <div class="panel-body">
-                    <div class="form-group">
-                        상품 코드
-                        {{ $product->product_code }}
-                    </div>
-
-                    ///////분류 카테고리로 변환 필요/////////
-
-                    <div class="form-group">
-                        상품명
-                        {{ $product->name }}
-                    </div>
-
-                    <div class="form-group">
-                        가격
-                        {{ $product->price }}
-                    </div>
-
-                    <div class="form-group">
-                        <input type="checkbox" checked disabled> 제한없음 <p></p>
-                        최소 구매 수량
-                        {{ $product->min_buy_count }}
-
-                        최대 구매 수량
-                        {{ $product->max_buy_count }}
-                    </div>
-
-                    <div class="form-group">
-                        과세 유형
-                        {{ $product->getTaxTypeName() }}
-                    </div>
-
-                    <div class="form-group">
-                        설명
-                        {!! $product->description !!}
-                    </div>
+                    <table class="table">
+                        <tr>
+                            <th>상품코드</th>
+                            <td>{{ $product->product_code }}</td>
+                            <th>정상가격</th>
+                            <td>{{ number_format($product->original_price ) }}</td>
+                            <th>초기 재고</th>
+                            <td>{{ number_format($product->stock ) }}</td>
+                        </tr>
+                        <tr>
+                            <th>상품명</th>
+                            <td>{{ $product->name }}</td>
+                            <th>판매가격</th>
+                            <td>{{ number_format($product->sell_price)  }}</td>
+                            <th>품절 알림 재고</th>
+                            <td>{{ number_format($product->alert_stock ) }}</td>
+                        </tr>
+                        <tr>
+                            <th>url명</th>
+                            <td>{{ $product->getSlug() }}</td>
+                            <th>할인율</th>
+                            <td>{{$product->discount_percentage}} %</td>
+                            <th>최소 구매 수량</th>
+                            <td>{{ number_format($product->min_buy_count ) }}</td>
+                        </tr>
+                        <tr>
+                            <th>간략소개</th>
+                            <td>{{$product->sub_name}}</td>
+                            <th></th>
+                            <td></td>
+                            <th>최대 구매 수량</th>
+                            <td>{{ number_format($product->max_buy_count ) }}</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -60,11 +59,56 @@
         <div class="panel-group">
             <div class="panel">
                 <div class="panel-heading">
-                    옵션
+                    <h3>상품정보</h3>
+                </div>
+
+                <div class="panel-body">
+                    <table class="table detail_info">
+                        <tr>
+                            @php
+                            $i =0;
+                            @endphp
+                        @foreach((array)json_decode($product->detail_info) as $key => $val)
+                            <th>
+                                {{$key}}
+                            </th>
+                            <td>
+                                {{$val}}
+                            </td>
+                            @if($i%2==1)
+                            </tr>
+                            <tr>
+                            @endif
+                            @php
+                            $i++;
+                            @endphp
+                        @endforeach
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-group">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>옵션</h3>
                 </div>
 
                 <div class="panel-body">
                     <option-table-component :options='{{ json_encode($options) }}'></option-table-component>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-group">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>상품설명</h3>
+                </div>
+
+                <div class="panel-body">
+                    {!! $product->description !!}
                 </div>
             </div>
         </div>
@@ -76,3 +120,9 @@
         </div>
     </div>
 </div>
+<style>
+    .detail_info th{
+        background: #ddd;
+        width:200px
+    }
+</style>
