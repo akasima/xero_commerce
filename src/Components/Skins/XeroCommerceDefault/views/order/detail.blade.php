@@ -1,2 +1,0 @@
-{{ XeFrontend::js(asset(\Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\XeroCommerceDefaultSkin::asset('js/index.js')))->appendTo('body')->load() }}
-<order-detail-component :order='{!! $order !!}'></order-detail-component>

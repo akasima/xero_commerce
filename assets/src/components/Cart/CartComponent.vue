@@ -1,6 +1,11 @@
 <template>
     <div>
-        <cart-list-component :cart-list="cartList" @checked="summary" @change="reload"
+        <cart-list-component :cart-list="cartList"
+                             :cart-change-url="cartChangeUrl"
+                             :cart-draw-url="cartDrawUrl"
+                             :cart-draw-list-url="cartDrawListUrl"
+                             @checked="summary"
+                             @change="reload"
                              @only="onlyOrder"></cart-list-component>
         <hr>
         <cart-sum-component :summary="cartSummary"></cart-sum-component>
@@ -26,7 +31,7 @@
             CartListComponent, CartSumComponent
         },
         props: [
-            'cartList', 'summaryUrl', 'orderUrl'
+            'cartList', 'summaryUrl', 'orderUrl', 'cartChangeUrl', 'cartDrawUrl', 'cartDrawListUrl'
         ],
         data() {
             return {

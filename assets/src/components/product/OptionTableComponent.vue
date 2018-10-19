@@ -15,7 +15,7 @@
         </thead>
 
         <tbody>
-            <row-component v-for="option in options" v-bind:optionData="option"></row-component>
+            <row-component v-for="(option,key) in options" v-bind:optionData="option" :key="key"></row-component>
         </tbody>
     </table>
 </template>

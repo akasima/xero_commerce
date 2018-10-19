@@ -159,8 +159,8 @@
 </template>
 
 <script>
-    import OptionSelectComponent from '../OptionSelectComponent'
-    import DeliverySelectComponent from '../DeliverySelectComponent'
+    import OptionSelectComponent from '../../../../../../../../assets/src/components/OptionSelectComponent'
+    import DeliverySelectComponent from '../../../../../../../../assets/src/components/DeliverySelectComponent'
 
     export default {
         name: "ProductDetailComponent",

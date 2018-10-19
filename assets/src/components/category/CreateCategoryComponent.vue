@@ -3,11 +3,14 @@
         <category-select-component v-for="(categoryItems, index) in this.allCategory"
                                    v-on:selectParent="getChild"
                                    :category-items="categoryItems"
-                                   :index="index">
+                                   :index="index"
+                                   :key="index">
         </category-select-component>
 
         <button v-on:click="addCreateComponent" type="button" class="xe-btn" v-if="this.isVisibleAddButton">추가</button>
-        <button v-on:click="removeCreateComponent" type="button" class="xe-btn xe-btn-danger" v-if="this.isVisibleRemoveButton">삭제</button>
+        <button v-on:click="removeCreateComponent" type="button" class="xe-btn xe-btn-danger"
+                v-if="this.isVisibleRemoveButton">삭제
+        </button>
     </div>
 </template>
 
@@ -19,11 +22,11 @@
         ],
         data() {
             return {
-                allCategory : [],
-                isVisibleAddButton : false,
-                isVisibleRemoveButton : false,
-                selectItemIds : [],
-                availableItemId : null,
+                allCategory: [],
+                isVisibleAddButton: false,
+                isVisibleRemoveButton: false,
+                selectItemIds: [],
+                availableItemId: null,
             }
         },
         mounted() {
@@ -32,10 +35,10 @@
             this.setRemoveButtonVisible(false);
         },
         methods: {
-            getChild : function (parentId, index) {
+            getChild: function (parentId, index) {
                 var _this = this;
 
-                _this.allCategory.splice(index+1);
+                _this.allCategory.splice(index + 1);
                 _this.calcAvailableItemId(parentId, index);
                 _this.$emit('selectCategoryItem', this.componentIndex, this.availableItemId);
 
@@ -44,10 +47,10 @@
                 }
 
                 $.ajax({
-                    url : this.getChildUrl,
+                    url: this.getChildUrl,
                     type: 'get',
                     dataType: 'json',
-                    data: {'parentId' : parentId},
+                    data: {'parentId': parentId},
                     success: function (data) {
                         var childCategories = data.categories;
 
@@ -64,7 +67,7 @@
                     if (selectIndex === 0) {
                         this.availableItemId = null;
                     } else {
-                        this.availableItemId = this.selectItemIds[selectIndex -1];
+                        this.availableItemId = this.selectItemIds[selectIndex - 1];
                     }
                 } else {
                     this.selectItemIds.push(selectItemId);

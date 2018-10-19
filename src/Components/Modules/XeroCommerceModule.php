@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Components\Modules;
 
+use Illuminate\Support\Facades\Log;
 use Route;
 use XeConfig;
 use View;
@@ -20,98 +21,21 @@ class XeroCommerceModule extends AbstractModule
             'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
             'middleware' => ['web']
         ], function () {
-            Route::get('/cart', [
-                'uses' => 'CartController@index',
-                'as' => 'xero_commerce::cart.index'
-            ]);
-            Route::get('/cart/draw/{cart}', [
-                'uses' => 'CartController@draw',
-                'as' => 'xero_commerce::cart.draw'
-            ]);
-            Route::get('/cart/draw-list', [
-                'uses' => 'CartController@drawList',
-                'as' => 'xero_commerce::cart.drawList'
-            ]);
-            Route::get('/cart/change/{cart}', [
-                'uses' => 'CartController@change',
-                'as' => 'xero_commerce::cart.change'
-            ]);
-            Route::get('/cart/list', [
-                'uses' => 'CartController@list',
-                'as' => 'xero_commerce::cart.list'
-            ]);
-            Route::get('/cart/summary', [
-                'uses' => 'CartController@summary',
-                'as' => 'xero_commerce::cart.summary'
-            ]);
-            Route::post('/order', [
-                'uses' => 'OrderController@register',
-                'as' => 'xero_commerce::order.register'
-            ]);
-            Route::get('/order/register', [
-                'uses' => 'OrderController@registerAgain',
-                'as' => 'xero_commerce::order.register.again'
-            ])->middleware(['auth',AgreementMiddleware::class]);
-            Route::get('/order', [
-                'uses' => 'OrderController@index',
-                'as' => 'xero_commerce::order.index'
-            ])->middleware(['auth',AgreementMiddleware::class]);
-            Route::get('/order/detail/{order}', [
-                'uses' => 'OrderController@detail',
-                'as' => 'xero_commerce::order.detail'
-            ]);
-            Route::get('/order/list', [
-                'uses' => 'OrderController@list',
-                'as' => 'xero_commerce::order.list'
-            ]);
-            Route::post('/order/list/{page}', [
-                'uses' => 'OrderController@listJson',
-                'as' => 'xero_commerce::order.page'
-            ]);
-            Route::post('/order/pay/{order}', [
-                'uses'=>'OrderController@pay',
-                'as'=>'xero_commerce::order.pay'
-            ]);
-            Route::post('/order/success/{order}', [
-                'uses'=>'OrderController@success',
-                'as'=>'xero_commerce::order.success'
-            ]);
-            Route::get('/order/fail/{order}', [
-                'uses' => 'OrderController@fail',
-                'as' => 'xero_commerce::order.fail'
-            ]);
-            Route::get('/order/service/{as}/{order}/{orderItem}', [
-                'uses' => 'OrderController@afterService',
-                'as' => 'xero_commerce::order.as'
-            ]);
 
-            Route::post('/order/service/{type}/{orderItem}', [
-                'uses' => 'OrderController@asRegister',
-                'as' => 'xero_commerce::order.as.register'
-            ]);
+
 
             Route::post('/product/cart/{product}', [
                 'uses' => 'ProductController@cartAdd',
                 'as' => 'xero_commerce::product.cart'
             ]);
 
-            Route::get('/test/{product}', 'CartController@test');
-
             Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
-
-            Route::get('/agreement/contacts', [
-                'uses' => 'AgreementController@contacts',
-                'as' => 'xero_commerce::agreement.contacts'
-            ]);
-            Route::post('/agreement/contacts', [
-                'uses' => 'AgreementController@saveContacts',
-                'as' => 'xero_commerce::agreement.contacts.save'
-            ]);
         });
 
         Route::instance(XeroCommerceModule::getId(), function () {
             Route::get('/', ['as' => 'xero_commerce::product.index', 'uses' => 'ProductController@index']);
         }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
+        Log::info('module');
     }
 
     public function createMenuForm()

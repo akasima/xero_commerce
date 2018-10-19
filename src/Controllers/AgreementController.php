@@ -5,16 +5,17 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
 
 use App\Facades\XePresenter;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\UserInfo;
 use Xpressengine\Plugins\XeroCommerce\Services\AgreementService;
 
-class AgreementController extends XeroCommerceBasicController
+class AgreementController extends Controller
 {
     public function contacts(Request $request)
     {
-        return XePresenter::make('order.agreement', [
+        return XePresenter::make('xero_commerce::views.order.agreement', [
             'agreement' => AgreementService::get('contacts')
         ]);
     }

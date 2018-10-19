@@ -15,20 +15,19 @@ use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\XePlugin\XeroPay\PaymentService;
 
-class OrderController extends XeroCommerceBasicController
+class OrderController extends Controller
 {
     public $orderService;
 
     public function __construct()
     {
-        parent::__construct();
 
         $this->orderService = new OrderService();
     }
 
     public function index()
     {
-        return \XePresenter::make('order.dash', ['title' => '주문내역', 'dashboard' => $this->orderService->dashBoard()]);
+        return \XePresenter::make('xero_commerce::views.order.dash', ['title' => '주문내역', 'dashboard' => $this->orderService->dashBoard()]);
     }
 
     public function list(Request $request)
@@ -50,7 +49,7 @@ class OrderController extends XeroCommerceBasicController
             ]
         ];
         $data =$this->orderService->orderList(1, 5, $default);
-        return \XePresenter::make('order.list',
+        return \XePresenter::make('xero_commerce::views.order.list',
             [
                 'title' => '주문/배송조회',
                 'list' => $data['data'],
@@ -66,7 +65,7 @@ class OrderController extends XeroCommerceBasicController
 
     public function detail(Order $order)
     {
-        return \XePresenter::make('order.detail', ['title' => '주문상세', 'order' => $this->orderService->orderDetail($order)]);
+        return \XePresenter::make('xero_commerce::views.order.detail', ['title' => '주문상세', 'order' => $this->orderService->orderDetail($order)]);
     }
 
     public function register(Request $request)
@@ -84,7 +83,7 @@ class OrderController extends XeroCommerceBasicController
         $paymentService = new PaymentService();
         $paymentService->loadScript();
         return \XePresenter::make(
-            'order.register',
+            'xero_commerce::views.order.register',
             ['title' => 'test',
                 'agreements' => [
                     'purchase' => AgreementService::get('purchase'),
@@ -102,7 +101,7 @@ class OrderController extends XeroCommerceBasicController
     public function fail(Order $order)
     {
         return \XePresenter::make(
-            'order.fail',
+            'xero_commerce::views.order.fail',
             [
                 'title' => 'fail',
                 'order' => $order
@@ -137,7 +136,7 @@ class OrderController extends XeroCommerceBasicController
             default :
                 throwException(\HttpUrlException::class);
         }
-        return \XePresenter::make('order.as',
+        return \XePresenter::make('xero_commerce::views.order.as',
             [
                 'type'=>$type,
                 'order'=>$order,

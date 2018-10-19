@@ -90,7 +90,7 @@
             OptionSelectComponent, DeliverySelectComponent
         },
         props: [
-            'cartList'
+            'cartList', 'cartChangeUrl', 'cartDrawUrl', 'cartDrawListUrl'
         ],
         watch: {
             cartList() {
@@ -124,7 +124,7 @@
             },
             edit(cart) {
                 $.ajax({
-                    url: '/shopping/cart/change/' + cart.id,
+                    url: this.cartChangeUrl + '/' + cart.id,
                     data: cart
                 }).done(() => {
                     this.$emit('change')
@@ -134,7 +134,7 @@
             },
             draw(cart_id) {
                 $.ajax({
-                    url: '/shopping/cart/draw/' + cart_id
+                    url: this.cartDrawUrl + '/' + cart_id
                 }).done(() => {
                     this.$emit('change')
                 }).fail(() => {
@@ -143,7 +143,7 @@
             },
             drawList() {
                 $.ajax({
-                    url: '/shopping/cart/draw-list',
+                    url: this.cartDrawListUrl,
                     data: {
                         cart_id:this.checkedList
                     }

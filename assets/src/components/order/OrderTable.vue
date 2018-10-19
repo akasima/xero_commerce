@@ -19,7 +19,7 @@
         <template v-for="item in list" v-if="list.length>0">
             <tr v-for="(orderitem, key) in item.orderItems">
                 <td style="text-align: center; background:#f1f1f1;cursor:pointer" :rowspan="item.orderItems.length"
-                    v-if="key===0" @click="url('/shopping/order/detail/'+item.id)">
+                    v-if="key===0" @click="url(detailUrl+'/'+item.id)">
                     <p>{{item.order_no}}</p>
                     <p style="color:#aaa">{{item.created_at.substr(0,16)}}</p>
                     <h3>{{item.status}}</h3>
@@ -87,7 +87,7 @@
     export default {
         name: "OrderTable",
         props: [
-            'list', 'paginate', 'asUrl'
+            'list', 'paginate', 'asUrl', 'detailUrl'
         ],
         computed: {
             currentCount() {

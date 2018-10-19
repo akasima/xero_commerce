@@ -87,7 +87,7 @@
                             그외 링크
                         </div>
                         <div class="col-lg-4">
-                            <div class="card" style="cursor:pointer" @click="url('/shopping/order/list')">
+                            <div class="card" style="cursor:pointer" @click="url(listUrl)">
                                 <div class="card-header">
                                     <i class="xi-desktop"></i> <br>
                                     주문내역조회
@@ -163,7 +163,7 @@
   export default {
     name: "OrderDashComponent",
     props: [
-      'dashboard', 'user', 'userInfo'
+      'dashboard', 'user', 'userInfo', 'listUrl'
     ],
     data () {
       return {

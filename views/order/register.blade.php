@@ -1,6 +1,7 @@
-{{ XeFrontend::js(asset(\Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\XeroCommerceDefaultSkin::asset('js/index.js')))->appendTo('body')->load() }}
+{{ XeFrontend::js(asset(\Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 <h2>주문 및 결제</h2>
-<order-register-component
+<div id="component-container">
+    <order-register-component
         :agreements='{{json_encode($agreements)}}'
         dash-url="{{route('xero_commerce::order.index')}}"
         success-url="{{route('xero_commerce::order.success',['order' => $order->id])}}"
@@ -11,5 +12,6 @@
         :user-info='{!! \Xpressengine\Plugins\XeroCommerce\Models\UserInfo::by(\Illuminate\Support\Facades\Auth::id())->load('userDelivery') !!}'
         order_id="{{$order->id}}"
         :pay-methods='{{ json_encode($payMethods)  }} '
-></order-register-component>
-<input type="hidden" id="csrf_token" value="{{csrf_token()}}">
+    ></order-register-component>
+    <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
+</div>
