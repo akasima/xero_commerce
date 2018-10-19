@@ -28,6 +28,10 @@ class XeroCommerceModule extends AbstractModule
                 'uses' => 'CartController@draw',
                 'as' => 'xero_commerce::cart.draw'
             ]);
+            Route::get('/cart/draw-list', [
+                'uses' => 'CartController@drawList',
+                'as' => 'xero_commerce::cart.drawList'
+            ]);
             Route::get('/cart/change/{cart}', [
                 'uses' => 'CartController@change',
                 'as' => 'xero_commerce::cart.change'

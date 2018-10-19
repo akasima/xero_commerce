@@ -78,5 +78,6 @@ class CartHandler extends SellSetHandler
             $cart->addGroup($cartGroup);
         });
         $cart->save();
+        if($cart->getCount()==0)$cart->delete();
     }
 }

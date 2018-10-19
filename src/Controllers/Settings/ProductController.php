@@ -3,6 +3,8 @@
 namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use XePresenter;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
@@ -64,6 +66,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        $this->customValidate($request);
         $productId = $this->productManager->store($request);
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
@@ -88,6 +91,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $productId)
     {
+        $this->customValidate($request);
         $this->productManager->update($request, $productId);
 
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
@@ -107,5 +111,37 @@ class ProductController extends Controller
         $childCategory = $categoryService->getChildCategory($parentId);
 
         return XePresenter::makeApi(['type' => 'success', 'categories' => $childCategory]);
+    }
+
+    public function customValidate(Request $request)
+    {
+        Validator::make($request->all(),[
+            'name'=>[
+                'required',
+                Rule::unique('xero_commerce_products')->ignore($request->name,'name'),
+                'max:255'
+            ],
+            'newSlug'=>[
+                'required',
+                Rule::unique('xero_commerce_product_slug','slug')->ignore($request->newSlug,'slug')
+            ],
+            'sub_name'=>'required',
+            'original_price'=>'required',
+            'sell_price'=>'required',
+            'labels'=>'required',
+            'badge_id'=>'required',
+            'description'=>'required',
+            'stock'=>'required'
+        ],[
+            'name.required'=>'이름 필드는 필수입니다.',
+            'newSlug.required'=>'Url명 필드는 필수입니다.',
+            'sub_name.required'=>'간략 소개는 필수입니다.',
+            'original_price.required'=>'정상 가격은 필수입니다.',
+            'sell_price.required'=>'정상 가격은 필수입니다.',
+            'labels.required'=>'라벨 필드는 적어도 하나가 필요합니다.',
+            'badge_id.required'=>'뱃지는 필수입니다.',
+            'description.required'=>'상품소개는 필수입니다.',
+            'stock.required'=>'기초재고는 필수입니다.'
+        ])->validate();
     }
 }

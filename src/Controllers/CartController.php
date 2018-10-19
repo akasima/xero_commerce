@@ -50,4 +50,9 @@ class CartController extends XeroCommerceBasicController
     {
         $this->cartService->draw($cart);
     }
+
+    public function drawList(Request $request)
+    {
+        $this->cartService->drawList($request->get('cart_id'));
+    }
 }

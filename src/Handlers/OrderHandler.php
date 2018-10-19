@@ -172,7 +172,8 @@ class OrderHandler extends SellSetHandler
 
     public function idUpdate(Order $order)
     {
-        $order->order
+        $order->user_id = Auth::id();
+        $this->update($order);
     }
 
     public function makeDelivery(Order $order, Request $request)

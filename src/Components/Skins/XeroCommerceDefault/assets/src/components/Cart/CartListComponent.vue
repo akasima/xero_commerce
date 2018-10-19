@@ -18,12 +18,10 @@
             <tbody>
             <tr v-for="cart in cartList">
                 <td>
-                    <input type="checkbox" v-model="checkedList" :value="cart.id" >
+                    <input type="checkbox" v-model="checkedList" :value="cart.id">
                 </td>
                 <td><img :src="cart.src" alt="" width="150px" height="150px"></td>
-                <td style="cursor: pointer;" @click="url('/shopping/'+cart.name)">
-                    <span v-for="(info,key) in cart.info" v-html="info"></span>
-                </td>
+                <span v-for="(info,key) in cart.info" v-html="info"></span>
                 <td>
                     {{cart.original_price.toLocaleString()}}
                 </td>
@@ -50,12 +48,12 @@
                                         </div>
                                     </div>
                                     <option-select-component
-                                            v-model="cart.choose"
-                                            :already-choose="cart.choose"
-                                            :options="cart.option_list">
+                                        v-model="cart.choose"
+                                        :already-choose="cart.choose"
+                                        :options="cart.option_list">
                                         <delivery-select-component
                                             :delivery="cart.delivery"
-                                        v-model="cart.pay"></delivery-select-component>
+                                            v-model="cart.pay"></delivery-select-component>
                                     </option-select-component>
                                 </div>
                                 <div class="modal-footer">
@@ -78,7 +76,7 @@
             </tr>
             </tbody>
         </table>
-        <button class="xe-btn">선택상품 삭제</button>
+        <button class="xe-btn" @click="drawList">선택상품 삭제</button>
         <button class="xe-btn">선택상품 찜</button>
     </div>
 </template>
@@ -86,70 +84,86 @@
 <script>
     import OptionSelectComponent from '../OptionSelectComponent'
     import DeliverySelectComponent from '../DeliverySelectComponent'
-  export default {
-    components: {
-      OptionSelectComponent, DeliverySelectComponent
-    },
-    props: [
-      'cartList'
-    ],
-    watch: {
-      cartList () {
-        this.checkedList = this.cartList.map((v)=>{return v.id});
-      },
-      checkedList (el) {
-        this.$emit('checked', el);
-      },
-      allCheck (el) {
-        if(el){
-          this.checkedList = this.cartList.map((v)=>{return v.id});
-        }else{
-          this.checkedList = [];
+
+    export default {
+        components: {
+            OptionSelectComponent, DeliverySelectComponent
+        },
+        props: [
+            'cartList'
+        ],
+        watch: {
+            cartList() {
+                this.checkedList = this.cartList.map((v) => {
+                    return v.id
+                });
+            },
+            checkedList(el) {
+                this.$emit('checked', el);
+            },
+            allCheck(el) {
+                if (el) {
+                    this.checkedList = this.cartList.map((v) => {
+                        return v.id
+                    });
+                } else {
+                    this.checkedList = [];
+                }
+            }
+        },
+        name: "CartListComponent",
+        data() {
+            return {
+                checkedList: [],
+                allCheck: false
+            }
+        },
+        methods: {
+            changeModal(cart) {
+                $('#cartChangeModal' + cart.id).xeModal()
+            },
+            edit(cart) {
+                $.ajax({
+                    url: '/shopping/cart/change/' + cart.id,
+                    data: cart
+                }).done(() => {
+                    this.$emit('change')
+                }).fail(() => {
+                    console.log('fail')
+                })
+            },
+            draw(cart_id) {
+                $.ajax({
+                    url: '/shopping/cart/draw/' + cart_id
+                }).done(() => {
+                    this.$emit('change')
+                }).fail(() => {
+                    console.log('fail')
+                })
+            },
+            drawList() {
+                $.ajax({
+                    url: '/shopping/cart/draw-list',
+                    data: {
+                        cart_id:this.checkedList
+                    }
+                }).done(() => {
+                    this.$emit('change')
+                }).fail(() => {
+                    console.log('fail')
+                })
+            },
+            onlyThisCart(cart_id) {
+                this.$emit('only', cart_id)
+            },
+            url(url) {
+                window.open(url, 'target=_blank' + new Date().toTimeString())
+            }
+        },
+        mounted() {
+            this.allCheck = true
         }
-      }
-    },
-    name: "CartListComponent",
-    data () {
-      return {
-        checkedList: [],
-        allCheck: false
-      }
-    },
-    methods: {
-      changeModal (cart) {
-        $('#cartChangeModal'+cart.id).xeModal()
-      },
-      edit(cart){
-        $.ajax({
-          url: '/shopping/cart/change/' + cart.id,
-          data: cart
-        }).done(()=>{
-          this.$emit('change')
-        }).fail(()=>{
-          console.log('fail')
-        })
-      },
-      draw(cart_id){
-        $.ajax({
-          url: '/shopping/cart/draw/' + cart_id
-        }).done(()=>{
-          this.$emit('change')
-        }).fail(()=>{
-          console.log('fail')
-        })
-      },
-      onlyThisCart(cart_id){
-        this.$emit('only', cart_id)
-      },
-      url (url) {
-        window.open(url, 'target=_blank'+new Date().toTimeString())
-      }
-    },
-    mounted () {
-      this.allCheck = true
-        console.log(this.cartList)
     }
-  }
 </script>
 
 <style scoped>

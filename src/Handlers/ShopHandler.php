@@ -74,7 +74,7 @@ class ShopHandler
             }
         }
 
-        $shop->deliveryCompanys()->sync($args['delivery_company'], ['delivery_fare'=>$args['delivery_fare'], 'up_to_free'=>0, 'is_default'=>1]);
+        $shop->deliveryCompanys()->sync([$args['delivery_company'] => ['delivery_fare'=>$args['delivery_fare'], 'up_to_free'=>0, 'is_default'=>1]]);
         $shop->users()->sync($args['user_id']);
 
         $shop->save();

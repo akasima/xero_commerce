@@ -2,6 +2,8 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use XePresenter;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
@@ -56,6 +58,8 @@ class ShopController extends Controller
      */
     public function store(Request $request)
     {
+        $this->customValidate($request);
+
         $newShop = $this->shopService->create($request);
 
         return redirect()->route('xero_commerce::setting.config.shop.show', ['shopId' => $newShop->id]);
@@ -109,6 +113,7 @@ class ShopController extends Controller
      */
     public function update(Request $request, $shopId)
     {
+        $this->customValidate($request);
         $this->shopService->update($request, $shopId);
 
         return redirect()->route('xero_commerce::setting.config.shop.index');
@@ -131,5 +136,29 @@ class ShopController extends Controller
         }
 
         return $redirect;
+    }
+
+    public function customValidate(Request $request)
+    {
+        Validator::make($request->all(),[
+            'shop_name'=>[
+                'required',
+                Rule::unique('xero_commerce_shop')->ignore($request->shop_name,'shop_name'),
+                'max:255'
+            ],
+            'shop_eng_name'=>[
+                'required',
+                Rule::unique('xero_commerce_shop')->ignore($request->shop_eng_name,'shop_eng_name')
+            ],
+            'user_id'=>'required',
+            'delivery_info'=>'required',
+            'as_info'=>'required'
+        ],[
+            'shop_name.required'=>'이름 필드는 필수입니다.',
+            'shop_eng_name.required'=>'영어 이름 필드는 필수입니다.',
+            'user_id.required'=>'관리자 아이디는 적어도 하나가 필요합니다.',
+            'delivery_info.required'=>'배송정보는 필수입니다.',
+            'as_info'=>'반품/교환정보는 필수입니다.'
+        ])->validate();
     }
 }
