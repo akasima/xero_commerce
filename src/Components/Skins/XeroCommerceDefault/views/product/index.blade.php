@@ -1,4 +1,9 @@
 <div class="row">
+    @if(count($products)===0)
+        <div style="text-align:center">
+            상품이 존재하지 않습니다.
+        </div>
+    @endif
     @foreach ($products as $key=>$product)
         @if($key%3 === 0)
             </div>

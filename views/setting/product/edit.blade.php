@@ -86,12 +86,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
             <div class="panel">
                 <div class="panel-body">
 
-                    {{uio('formText', [
-                    'label'=>'초기 재고',
-                    'name'=>'stock',
-                    'description'=>'현재 재고량을 표기합니다.',
-                    'value'=>$product->stock
-                    ])}}
+                    <label>초기재고</label>
+                    {{$product->getStock()}}
+                    <input type="hidden" name="stock" value="{{$product->getStock()}}">
                     {{uio('formText', [
                     'label'=>'품절 알림 재고',
                     'name'=>'alert_stock',

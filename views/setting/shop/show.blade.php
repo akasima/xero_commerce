@@ -39,7 +39,11 @@
                             <th>입점몰 형태</th>
                             <td>{{ $shop->getShopTypes()[$shop->shop_type] }}</td>
                             <th>관리자ID</th>
-                            <td>{{ $shop->user_id}}</td>
+                            <td>
+                                @foreach($shop->users as $user)
+                                    {{$user->display_name}} ({{$user->email}}) <br>
+                                @endforeach
+                            </td>
                         </tr>
                     </table>
                     <div>

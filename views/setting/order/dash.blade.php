@@ -57,35 +57,61 @@
 </div>
 <div class="xe-row">
     <div class="xe-col-lg-12">
-        <table class="xe-table xe-table-striped" id="orderList">
-            <thead>
-                <tr>
-                    <th rowspan="3"><input type="checkbox"></th>
-                    <th colspan="2" rowspan="2">주문번호</th>
-                    <th>주문자</th>
-                    <th>주문자전화</th>
-                    <th>받는분</th>
-                    <th rowspan="3">주문합계 <br> 선불배송비포함</th>
-                    <th rowspan="3">입금합계</th>
-                    <th rowspan="3">주문취소</th>
-                    <th rowspan="3">쿠폰</th>
-                    <th rowspan="3">미수금</th>
-                    <th rowspan="3">보기</th>
-                </tr>
-                <tr>
-                    <th>회원ID</th>
-                    <th>주문상품수</th>
-                    <th>누적주문수</th>
-                </tr>
-                <tr>
-                    <th>주문상태</th>
-                    <th>결제수단</th>
-                    <th>운송장번호</th>
-                    <th>배송회사</th>
-                    <th>배송일시</th>
-                </tr>
-            </thead>
-        </table>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="xe-table xe-table-bordered" id="orderList">
+                    <thead>
+                    <tr>
+                        <th rowspan="3"><input type="checkbox"></th>
+                        <th colspan="2" rowspan="2">주문번호</th>
+                        <th>주문자</th>
+                        <th>주문자전화</th>
+                        <th>받는분</th>
+                        <th rowspan="3">주문합계 <br> 선불배송비포함</th>
+                        <th rowspan="3">입금합계</th>
+                        <th rowspan="3">주문취소</th>
+                    </tr>
+                    <tr>
+                        <th>회원ID</th>
+                        <th>주문상품수</th>
+                        <th>누적주문수</th>
+                    </tr>
+                    <tr>
+                        <th>주문상태</th>
+                        <th>결제수단</th>
+                        <th>운송장번호</th>
+                        <th>배송회사</th>
+                        <th>배송일시</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($list as $item)
+                        <tr>
+                            <td rowspan="3"><input type="checkbox"></td>
+                            <td colspan="2" rowspan="2">{{$item->order_no}}</td>
+                            <td>{{$item->userInfo->name}}</td>
+                            <td>{{$item->userInfo->phone}}</td>
+                            <td>{{$item->orderItems[0]->delivery->recv_name}}</td>
+                            <td rowspan="3">{{$item->orderItems->sum(function($item){return $item->getSellPrice()+$item->getFare();})}}</td>
+                            <td rowspan="3">{{$item->payment->price}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{\Xpressengine\User\Models\User::find($item->user_id)->email}}</td>
+                            <td>{{$item->orderItems->sum(function($item){return $item->getCount();})}}</td>
+                            <td>{{$item->where('user_id',$item->user_id)->count()}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{$item->getStatus()}}</td>
+                            <td>{{$item->payment->getMethod()}}</td>
+                            <td>{{$item->orderItems[0]->delivery->ship_no}}</td>
+                            <td>{{$item->orderItems[0]->delivery->company->name}}</td>
+                            <td></td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     {{--<div class="xe-col-lg-4">--}}
         {{--1:1문의--}}
@@ -100,7 +126,8 @@
 <style>
     #orderList thead tr th {
         text-align: center;
-        padding:8px 5px
+        padding:8px 5px;
+        background: #ddd
     }
 </style>
 <script>
@@ -109,14 +136,8 @@
         return (date.getMonth()+1) + '/' + date.getDate();
       }
       var ctx=document.getElementById('orderStat');
-      var day = new Date();
-      var days = [];
-      var count = [];
-      for(var i = 0; i<7; i++) {
-        days.push(format(day));
-        day.setDate(day.getDate()-1);
-        count.push(Math.floor(Math.random()*10));
-      }
+      var days = {!! json_encode($week['days']) !!};
+      var count = {!! json_encode($week['count']) !!};
       var chart = new Chart(ctx, {
         type: 'bar',
         data: {

@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\DynamicModel;
+use Xpressengine\User\Models\User;
 
 class Shop extends DynamicModel
 {
@@ -61,5 +62,10 @@ class Shop extends DynamicModel
     public function getDefaultDeliveryCompany()
     {
         return $this->deliveryCompanys()->where('is_default', 1)->first();
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class,'xero_commerce_shop_user');
     }
 }

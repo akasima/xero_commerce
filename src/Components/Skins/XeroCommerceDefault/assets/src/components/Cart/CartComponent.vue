@@ -1,6 +1,7 @@
 <template>
     <div>
-        <cart-list-component :cart-list="cartList" @checked="summary" @change="reload" @only="onlyOrder"></cart-list-component>
+        <cart-list-component :cart-list="cartList" @checked="summary" @change="reload"
+                             @only="onlyOrder"></cart-list-component>
         <hr>
         <cart-sum-component :summary="cartSummary"></cart-sum-component>
         <hr>
@@ -8,7 +9,7 @@
             <button class="xe-btn xe-btn-black xe-btn-lg xe-btn-block" @click="order" :disabled="disable">구매하기</button>
         </div>
         <div style="text-align: center" class="xe-col-lg-2">
-            <button class="xe-btn xe-btn-lg xe-btn-block" type="button">쇼핑 계속하기</button>
+            <button class="xe-btn xe-btn-lg xe-btn-block" type="button" @click="back">쇼핑 계속하기</button>
         </div>
         <form ref="form">
         </form>
@@ -16,81 +17,102 @@
 </template>
 
 <script>
-  import CartListComponent from './CartListComponent'
-  import CartSumComponent from './CartSumComponent'
+    import CartListComponent from './CartListComponent'
+    import CartSumComponent from './CartSumComponent'
 
-  export default {
-    name: "CartComponent",
-    components: {
-      CartListComponent, CartSumComponent
-    },
-    props: [
-      'cartList', 'summaryUrl', 'orderUrl'
-    ],
-    data() {
-      return {
-        cartSummary: {
-          original_price: 0,
-          discount_price: 0,
-          fare: 0,
-          sum: 0,
-          millage: 0
+    export default {
+        name: "CartComponent",
+        components: {
+            CartListComponent, CartSumComponent
         },
-        checkedList: [],
-        disable: true
-      }
-    },
-    methods: {
-      summary(cart_ids) {
-        this.disable = true
-        this.checkedList = cart_ids
-        $.ajax({
-          url: this.summaryUrl,
-          data: {
-            cart_ids: cart_ids
-          }
-        }).done((res) => {
-          this.cartSummary = res
-          this.disable = false
-        }).fail((err) => {
-          this.disable = false
-        })
-      },
-      order() {
-        $.ajax({
-          url: this.orderUrl,
-          data: {
-            cart_id: this.checkedList,
-            _token: document.getElementById('csrf_token').value
-          },
-          method: 'post'
-        }).done((res) => {
-          var form = this.$refs.form;
-          form.setAttribute('action',res.url)
-          form.setAttribute('method','get')
-          var order_id = document.createElement('input')
-          order_id.setAttribute('type','hidden')
-          order_id.setAttribute('name','order_id')
-          order_id.setAttribute('value',res.order_id)
-          form.appendChild(order_id)
-          form.submit()
-        })
-      },
-      onlyOrder(order_id)
-      {
-        this.checkedList = [order_id]
-        this.order()
-      },
-      sum(array, key){
-        return array.map((v) => {
-          return v[key]
-        }).reduce((a, b) => a + b, 0);
-      },
-      reload () {
-        document.location.reload()
-      }
+        props: [
+            'cartList', 'summaryUrl', 'orderUrl'
+        ],
+        data() {
+            return {
+                cartSummary: {
+                    original_price: 0,
+                    discount_price: 0,
+                    fare: 0,
+                    sum: 0,
+                    millage: 0
+                },
+                checkedList: [],
+                disable: true
+            }
+        },
+        methods: {
+            summary(cart_ids) {
+                this.disable = true
+                this.checkedList = cart_ids
+                $.ajax({
+                    url: this.summaryUrl,
+                    data: {
+                        cart_ids: cart_ids
+                    }
+                }).done((res) => {
+                    this.cartSummary = res
+                    this.disable = false
+                }).fail((err) => {
+                    this.disable = false
+                })
+            },
+            order() {
+                var validate = this.validate()
+                if(!validate.status){
+                    alert(validate.msg)
+                    return
+                }
+                $.ajax({
+                    url: this.orderUrl,
+                    data: {
+                        cart_id: this.checkedList,
+                        _token: document.getElementById('csrf_token').value
+                    },
+                    method: 'post'
+                }).done((res) => {
+                    var form = this.$refs.form;
+                    form.setAttribute('action', res.url)
+                    form.setAttribute('method', 'get')
+                    var order_id = document.createElement('input')
+                    order_id.setAttribute('type', 'hidden')
+                    order_id.setAttribute('name', 'order_id')
+                    order_id.setAttribute('value', res.order_id)
+                    form.appendChild(order_id)
+                    form.submit()
+                })
+            },
+            onlyOrder(order_id) {
+                this.checkedList = [order_id]
+                this.order()
+            },
+            sum(array, key) {
+                return array.map((v) => {
+                    return v[key]
+                }).reduce((a, b) => a + b, 0);
+            },
+            reload() {
+                document.location.reload()
+            },
+            validate() {
+                var validate = {
+                    status: true,
+                    msg: ''
+                }
+                if(this.cartList.filter((v)=>{return this.checkedList.indexOf(v.id) !== -1;}).map(v=>{return v.count;}).reduce((a,b)=>a+b,0)===0){
+                    validate.status=false
+                    validate.msg+= '구매하는 상품이 없거나 개수가 없니다.'
+                }
+                return validate
+            },
+            back () {
+                window.history.back()
+            }
+        },
+        mounted () {
+            console.log(this.cartList)
+        }
     }
-  }
 </script>
 
 <style scoped>

@@ -4,6 +4,7 @@
 <?php
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 ?>
+{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 <form method="post" action="{{ route('xero_commerce::setting.config.shop.store') }}">
     {{ csrf_field() }}
     <div class="row">
@@ -28,24 +29,26 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 'value'=>Request::old('shop_eng_name')
                                 ])}}
 
-
-                                {{uio('formSelect', [
-                                'label'=>'입점몰 형태',
-                                'name'=>'shop_type',
-                                'description'=>'입점몰 사업 형태를 결정합니다',
-                                'options'=>$shopTypes
-                                ])}}
+                                <div class="form-group">
+                                    <label>입점몰 형태</label>
+                                    <select name="shop_type" class="form-control">
+                                        @foreach($shopTypes as $key=>$value)
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
                             </div>
                             <div class="col-lg-6">
 
-
-                                {{uio('formSelect', [
-                                'label'=>'배송회사',
-                                'name'=>'delivery_company',
-                                'description'=>'배송을 담당할 회사를 선택해주세요',
-                                'options'=>$deliveryCompanyOptions,
-                                ])}}
+                                <div class="form-group">
+                                    <label>배송 회사</label>
+                                    <select name="delivery_company" class="form-control">
+                                        @foreach($deliveryCompanys as $company)
+                                            <option value="{{$company->id}}">{{$company->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 {{uio('formText', [
                                 'label'=>'배송비',
                                 'name'=>'delivery_fare',
@@ -53,12 +56,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 'value'=>Request::old('delivery_fare')
                                 ])}}
 
-                                {{uio('formText', [
-                                'label'=>'관리자ID',
-                                'name'=>'user_id',
-                                'description'=>'입점몰을 관리할 관리자계정ID입니다',
-                                'value'=>Request::old('user_id')
-                                ])}}
+                                <div id="component-container">
+                                    <user-search-component label="관리자ID" name="user_id" url="{{route('xero_commerce::setting.search.user',['keyword'=>''])}}"></user-search-component>
+                                </div>
                             </div>
                             <div class="col-lg-12">
                                 <label for="xeContentEditorDeliveryInfo">배송정보</label>

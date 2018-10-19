@@ -61,7 +61,7 @@
                                         </th>
                                         <td>
                                             {{val}}
-                                        </td>r
+                                        </td>
                                     </template>
                                 </tr>
                             </table>
@@ -208,14 +208,20 @@
             cartPage() {
                 this.addCart(res => {
                     var conf = confirm('장바구니에 담았습니다. 장바구니로 갈까요?')
-                    if(conf){
-                        document.location.href=this.cartPageUrl
+                    if (conf) {
+                        document.location.href = this.cartPageUrl
                     }
                 }, err => {
                     console.log(err)
                 })
             },
             addCart(success, fail) {
+                console.log()
+                var val= this.validate()
+                if(! val.status){
+                    alert(val.msg)
+                    return
+                }
                 $.ajax({
                     url: this.cartUrl + '/' + this.product.id,
                     data: {
@@ -230,25 +236,42 @@
                     fail(err)
                 })
             },
-            detail ()
-            {
-                var a=JSON.parse(this.product.data.detail_info)
+            detail() {
+                var a = JSON.parse(this.product.data.detail_info)
                 var keys = Object.keys(a)
                 var unit = {
                     '상품정보': this.product.data.product_code
                 }
                 var result = []
-                $.each(a,(k,v)=>{
-                    unit[k]=v
-                    if(!(keys.indexOf(k) %2) || keys.indexOf(k)+1===keys.length){
+                $.each(a, (k, v) => {
+                    unit[k] = v
+                    if (!(keys.indexOf(k) % 2) || keys.indexOf(k) + 1 === keys.length) {
                         result.push(JSON.parse(JSON.stringify(unit)));
                         unit = {}
                     }
                 })
                 return result
+            },
+            validate() {
+                var validate =
+                {
+                    status: true,
+                    msg: ''
+                }
+
+                if(this.choose.length === 0){
+                    validate.status = false,
+                        validate.msg+='선택한 상품이 없습니다.'
+                }
+                if(Number(this.choose.map(v=>{return Number(v.count)}).reduce((a,b)=>a+b,0))<1)
+                {
+                    validate.status = false,
+                        validate.msg+='선택한 상품의 갯수가 없습니다.'
+                }
+                return validate
             }
         },
-        mounted () {
+        mounted() {
             console.log(this.product)
         }
     }

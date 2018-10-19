@@ -24,8 +24,8 @@
                             <td>{{ $product->product_code }}</td>
                             <th>정상가격</th>
                             <td>{{ number_format($product->original_price ) }}</td>
-                            <th>초기 재고</th>
-                            <td>{{ number_format($product->stock ) }}</td>
+                            <th>현 재고</th>
+                            <td>{{ number_format($product->getStock() ) }}</td>
                         </tr>
                         <tr>
                             <th>상품명</th>

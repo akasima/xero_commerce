@@ -29,7 +29,7 @@ class OrderItem extends SellSet
     public function renderInformation()
     {
         $row=[];
-        $row []= '<a target="_blank'.now()->toTimeString().'" href="'.route('xero_commerce::product.show',['strSlug'=>$this->sellType->getName()]).'">' . $this->renderSpanBr($this->sellType->getName()). '</a>';
+        $row []= '<a target="_blank'.now()->toTimeString().'" href="'.route('xero_commerce::product.show',['strSlug'=>$this->sellType->getSlug()]).'">' . $this->renderSpanBr($this->sellType->getName()). '</a>';
         $this->sellGroups->each(function(SellGroup $group) use(&$row){
             $row []= $this->renderSpanBr($group->sellUnit->getName() . ' / ' . $group->getCount() . '개', "color: grey");
         });

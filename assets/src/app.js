@@ -7,6 +7,7 @@ Vue.component('create-category-component', require('./components/category/Create
 Vue.component('category-select-component', require('./components/category/CategorySelectComponent').default);
 Vue.component('delivery-component', require('./components/order/DeliveryComponent').default);
 Vue.component('after-service-component', require('./components/order/AfterServiceComponent').default);
+Vue.component('user-search-component', require('./components/UserSearchComponent').default);
 
 var app = new Vue({
     el: '#component-container'
