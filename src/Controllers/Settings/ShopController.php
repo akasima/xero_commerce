@@ -45,9 +45,8 @@ class ShopController extends Controller
     {
         $shopTypes = Shop::getShopTypes();
         $deliveryCompanys = DeliveryCompany::all();
-        $deliveryCompanyOptions=$deliveryCompanys->pluck('id')->combine($deliveryCompanys->pluck('name'));
 
-        return XePresenter::make('xero_commerce::views.setting.shop.create', compact('shopTypes', 'deliveryCompanyOptions'));
+        return XePresenter::make('xero_commerce::views.setting.shop.create', compact('shopTypes', 'deliveryCompanys'));
     }
 
     /**
@@ -58,7 +57,6 @@ class ShopController extends Controller
     public function store(Request $request)
     {
         $newShop = $this->shopService->create($request);
-        $newShopUser = $this->shopUserService->create($request, $newShop->id);
 
         return redirect()->route('xero_commerce::setting.config.shop.show', ['shopId' => $newShop->id]);
     }

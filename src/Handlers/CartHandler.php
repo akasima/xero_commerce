@@ -24,13 +24,13 @@ class CartHandler extends SellSetHandler
 
     private function getCartQuery()
     {
-        return Cart::where('user_id', Auth::id() ?: User::first()->id)->latest();
+        return Cart::where('user_id', Auth::id() ?: \request()->ip())->latest();
     }
 
     public function addCart(SellType $sellType, $cartGroupList, $delivery)
     {
         $cart = new Cart();
-        $cart->user_id = Auth::id() ?: User::first()->id;
+        $cart->user_id = Auth::id() ?: \request()->ip();
         $cart->delivery_pay = Cart::DELIVERY[$delivery];
         $sellType->carts()->save($cart);
         $cart->save();

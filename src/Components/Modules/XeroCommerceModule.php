@@ -47,11 +47,11 @@ class XeroCommerceModule extends AbstractModule
             Route::get('/order/register', [
                 'uses' => 'OrderController@registerAgain',
                 'as' => 'xero_commerce::order.register.again'
-            ])->middleware(AgreementMiddleware::class);
+            ])->middleware(['auth',AgreementMiddleware::class]);
             Route::get('/order', [
                 'uses' => 'OrderController@index',
                 'as' => 'xero_commerce::order.index'
-            ]);
+            ])->middleware(['auth',AgreementMiddleware::class]);
             Route::get('/order/detail/{order}', [
                 'uses' => 'OrderController@detail',
                 'as' => 'xero_commerce::order.detail'

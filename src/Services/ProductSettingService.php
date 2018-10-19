@@ -89,9 +89,6 @@ class ProductSettingService
             unset($productArgs['max_buy_count']);
         }
 
-        //TODO 스토어 임시 하드코딩
-        $productArgs['shop_id'] = Shop::where('shop_type', Shop::TYPE_BASIC_SHOP)->first()['id'];
-
         $newProductId = $this->productHandler->store($productArgs);
 
         return $newProductId;

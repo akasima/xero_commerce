@@ -14,6 +14,19 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 <form method="post" action="{{ route('xero_commerce::setting.product.store') }}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
+    <div class="form-group">
+        @if(count($shops)>1)
+        <label>입점몰</label>
+        <select name="shop_id" class="form-control">
+            @foreach($shops as $shop)
+                <option value="{{$shop->id}}">{{$shop->shop_name}}</option>
+            @endforeach
+        </select>
+        @else
+            <h4>{{$shops[0]->shop_name}}</h4>
+            <input type="hidden" name="shop_id" value="{{$shops[0]->id}}">
+        @endif
+    </div>
     <div class="row">
         <div class="col-lg-4">
             <div class="panel">

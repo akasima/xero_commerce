@@ -192,6 +192,11 @@ class Resources
                         'uses' => 'ShopController@edit']);
                     Route::post('/shop/update/{shopId}', ['as' => 'xero_commerce::setting.config.shop.update',
                         'uses' => 'ShopController@update']);
+
+                    Route::get('/user/{keyword}',[
+                        'uses'=>'UserController@search',
+                        'as'=>'xero_commerce::setting.search.user'
+                    ]);
                 });
             });
         });

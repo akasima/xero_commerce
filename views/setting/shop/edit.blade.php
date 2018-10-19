@@ -6,7 +6,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 @section('page_title')
     <h2>입점몰 수정</h2>
 @endsection
-
+{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 <form method="post" action="{{ route('xero_commerce::setting.config.shop.update', ['shopId' => $shop->id]) }}">
     {{ csrf_field() }}
     <div class="row">
@@ -57,12 +57,10 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 'value'=>$shop->getDefaultDeliveryCompany()->pivot->delivery_fare
                                 ])}}
 
-                                {{uio('formText', [
-                                'label'=>'관리자ID',
-                                'name'=>'user_id',
-                                'description'=>'입점몰을 관리할 관리자계정ID입니다',
-                                'value'=>$shop->user_id
-                                ])}}
+
+                                <div id="component-container">
+                                    <user-search-component label="관리자ID" name="user_id" url="{{route('xero_commerce::setting.search.user',['keyword'=>''])}}" :value="{{json_encode($shop->users)}}"></user-search-component>
+                                </div>
                             </div>
                             <div class="col-lg-12">
                                 <label for="xeContentEditorDeliveryInfo">배송정보</label>

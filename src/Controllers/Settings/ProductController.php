@@ -2,12 +2,14 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
+use Illuminate\Support\Facades\Auth;
 use XePresenter;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Badge;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductManager;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSettingService;
@@ -50,11 +52,14 @@ class ProductController extends Controller
     {
         $labels = Label::get();
         $badges = Badge::get();
+        $shops = Shop::whereHas('users',function($query){
+            $query->where('user.id',Auth::id());
+        })->get();
 
         $categoryItems = $productCategoryService->getCategoryItems();
 
         return XePresenter::make('xero_commerce::views.setting.product.create',
-            compact('labels', 'badges', 'categoryItems'));
+            compact('labels', 'badges', 'categoryItems','shops'));
     }
 
     public function store(Request $request)

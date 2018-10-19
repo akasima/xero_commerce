@@ -28,7 +28,9 @@ class OrderController extends Controller
         XeFrontend::js('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js')->load();
         return \XePresenter::make('xero_commerce::views.setting.order.dash', [
             'title' => 'xero_commerce',
-            'dash' => $this->orderService->dashBoard()
+            'dash' => $this->orderService->dashBoard(),
+            'week' => $this->orderService->weekBoard(),
+            'list' => $this->orderService->list()
         ]);
     }
 

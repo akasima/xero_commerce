@@ -24,6 +24,16 @@ class OrderSettingService
         return $this->orderHandler->dashboard();
     }
 
+    public function weekBoard()
+    {
+        return $this->orderHandler->dailyBoard();
+    }
+
+    public function list()
+    {
+        return $this->orderHandler->getOrderList(1,10);
+    }
+
     public function deliveryOrderItemList()
     {
         return $this->orderHandler->getOrderItemList(new Order(), function($query){

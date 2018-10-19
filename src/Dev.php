@@ -246,13 +246,13 @@ class Dev
         $this->makeAgreement('thirdParty', '개인정보 제3자 제공/위탁동의');
 
         $this->makeDeliveryCompany();
-        $this->makeShop(5);
-        $this->makeProduct(10);
-
-        $cg_count = rand(1,10);
-        while( $cg_count > 0) {
-            $this->makeCart();
-            $cg_count --;
-        }
+//        $this->makeShop(5);
+//        $this->makeProduct(10);
+//
+//        $cg_count = rand(1,10);
+//        while( $cg_count > 0) {
+//            $this->makeCart();
+//            $cg_count --;
+//        }
     }
 }

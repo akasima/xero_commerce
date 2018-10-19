@@ -3,6 +3,7 @@
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\CartGroup;
@@ -126,7 +127,7 @@ class OrderHandler extends SellSetHandler
         $order = new Order();
         $order->code = $order::TEMP;
         $order->order_no = $now->format('YmdHis') . '-' . sprintf("%'.06d", $order->whereDate('created_at', $now->toDateString())->count());
-        $order->user_id = Auth::id() ?: 1;
+        $order->user_id = Auth::id()?:request()->ip();
         $order->save();
         return $order;
     }
@@ -169,6 +170,11 @@ class OrderHandler extends SellSetHandler
         return $this->update($order);
     }
 
+    public function idUpdate(Order $order)
+    {
+        $order->order
+    }
+
     public function makeDelivery(Order $order, Request $request)
     {
         if (isset($request->delivery['nickname'])) {
@@ -207,6 +213,21 @@ class OrderHandler extends SellSetHandler
         })->map(function ($codes) {
             return $codes->count();
         });
+    }
+
+    public function dailyBoard()
+    {
+        $days = [];
+        for($i=0; $i<7; $i++){
+            $days[]=now()->subDays($i)->toDateString();
+        }
+        $counts = collect($days)->map(function($item){
+           return $this->whereUser()->whereDate('created_at',$item)->count();
+        })->all();
+        return [
+            'days'=>$days,
+            'count'=>$counts
+        ];
     }
 
     public function getOrderList($page, $count, $condition = null)
