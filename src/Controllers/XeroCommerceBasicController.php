@@ -9,6 +9,7 @@ class XeroCommerceBasicController extends Controller
 {
     public function __construct()
     {
+        //TODO 스킨 변경 가능 여부 확인
         \XePresenter::setSkinTargetId(XeroCommerceModule::getId());
     }
 }
