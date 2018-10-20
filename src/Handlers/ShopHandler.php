@@ -19,9 +19,9 @@ class ShopHandler
 
         $newShop->save();
 
-        $newShop->deliveryCompanys()->attach($args['delivery_company'], ['delivery_fare'=>$args['delivery_fare'], 'up_to_free'=>0, 'is_default'=>1]);
-
-        $newShop->users()->attach($args['user_id']);
+        //TODO install 할 때 에러 확인
+//        $newShop->deliveryCompanys()->attach($args['delivery_company'], ['delivery_fare'=>$args['delivery_fare'], 'up_to_free'=>0, 'is_default'=>1]);
+//        $newShop->users()->attach($args['user_id']);
 
         return $newShop;
     }
