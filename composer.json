@@ -43,6 +43,11 @@
                     "description": "The skin supported by Xero_commerce plugin.",
                     "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\XeroCommerceDefault\\XeroCommerceDefaultSkin"
                 },
+                "module/xero_commerce@xero_commerce_main_module/skin/xero_commerce@xero_commerce_main_default": {
+                    "name": "XeroCommerce Main Default Skin",
+                    "description": "The skin supported by Xero_commerce plugin.",
+                    "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\XeroCommerceMain\\XeroCommerceMainSkin"
+                },
                 "uiobject/xero_commerce@tag": {
                     "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\UIObjects\\Tag\\TagUIObject",
                     "name": "Tag",

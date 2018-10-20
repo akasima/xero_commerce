@@ -34,36 +34,22 @@
 
             @include($theme::view('gnb'))
 
-            @if(auth()->check())
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->getDisplayName() }} <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ route('user.profile', ['user'=> auth()->id()]) }}">Profile</a></li>
-                            <li><a href="{{ route('user.settings') }}">My Settings</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{{ route('logout') }}">logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            @else
-            <div class="navbar-form navbar-right">
-                <form action="{{ route('login') }}" method="POST">
-                    {{ csrf_field() }}
-                    <div class="form-group">
-                        <input type="text" placeholder="Email" class="form-control" name="email">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" placeholder="Password" class="form-control" name="password">
-                    </div>
-                    <button type="submit" class="btn btn-success">Sign in</button>
-                </form>
-            </div>
-            @endif
             <div class="navbar-form navbar-right">
                 <ul class="navbar-nav navbar-expand">
-                    <li><a href="{{route('xero_commerce::order.index')}}">주문내역</a></li>
-                    <li><a href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
+                    @if(auth()->check())
+                        <a href="{{ route('logout') }}">로그아웃</a>
+                        <li role="separator" class="divider"></li>
+                        <a href="{{ route('user.settings') }}">마이페이지</a>
+                        <li role="separator" class="divider"></li>
+                    @else
+                        <a href="{{ route('login') }}">로그인</a>
+                        <li role="separator" class="divider"></li>
+                    @endif
+
+                    <a href="{{route('xero_commerce::order.index')}}">주문내역</a>
+                    <li role="separator" class="divider"></li>
+                    <a href="{{route('xero_commerce::cart.index')}}">장바구니</a>
+                    <li role="separator" class="divider"></li>
                 </ul>
             </div>
         </div><!--/.navbar-collapse -->
