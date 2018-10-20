@@ -36,10 +36,6 @@ class Plugin extends AbstractPlugin
      */
     public function activate($installedVersion = null)
     {
-        if (Resources::isUsedXeroCommercePrefix() === true) {
-            throw new XeroCommercePrefixUsedException;
-        }
-
         Resources::storeDefaultShop();
     }
 
@@ -50,6 +46,10 @@ class Plugin extends AbstractPlugin
      */
     public function install()
     {
+        if (Resources::isUsedXeroCommercePrefix() === true) {
+            throw new XeroCommercePrefixUsedException;
+        }
+
         Database::create();
         Resources::setConfig();
         Resources::createDefaultMainPage();

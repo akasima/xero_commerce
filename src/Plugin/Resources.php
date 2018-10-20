@@ -70,6 +70,8 @@ class Resources
 
     public static function createDefaultMainPage()
     {
+        //TODO 모듈이 있는지 확인해서 등록 안하는 옵션 추가 필요
+
         self::setCanUseXeroCommercePrefixRoute();
         $defaultMenu = self::createDefaultMenu();
         self::createDefaultMainModule($defaultMenu);
