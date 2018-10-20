@@ -14,6 +14,7 @@ class XeroCommerceModule extends AbstractModule
 {
     public static function boot()
     {
+        //TODO 위치 확인(plugin level)
         Route::group([
             'prefix' => Plugin::XeroCommercePrefix,
             'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
