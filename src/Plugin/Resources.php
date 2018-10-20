@@ -84,6 +84,8 @@ class Resources
         $menuDescription = 'XeroCommerce 메뉴 입니다.';
 
         //TODO 테마 자동 설정 필요
+        \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default', []);
+        \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default.0', []);
         $desktopTheme = 'theme/xero_commerce@xero_commerce_theme_default.0';
         $mobileTheme = 'theme/xero_commerce@xero_commerce_theme_default.0';
 
