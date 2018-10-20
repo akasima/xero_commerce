@@ -4,7 +4,10 @@ namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
 use App\Facades\XeInterception;
 use XeRegister;
+use XeDB;
+use XeMenu;
 use Route;
+use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
@@ -18,7 +21,6 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
 use Xpressengine\Plugins\XeroCommerce\Models\Badge;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
-use Xpressengine\Plugins\XeroCommerce\Models\Mark;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\Plugins\XeroCommerce\Models\SellType;
@@ -37,12 +39,21 @@ class Resources
     /**
      * @return void
      */
-    public static function setXeroCommercePrefixRoute()
+    public static function setCanNotUseXeroCommercePrefixRoute()
     {
         config(['xe.routing' => array_merge(
             config('xe.routing'),
             ['xero_commerce' => Plugin::XeroCommercePrefix]
         )]);
+    }
+
+    public static function setCanUseXeroCommercePrefixRoute()
+    {
+        $routing = config('xe.routing');
+
+        array_forget($routing, 'xero_commerce');
+
+        config(['xe.routing' => $routing]);
     }
 
     /**
@@ -57,16 +68,115 @@ class Resources
         }
     }
 
+    public static function createDefaultMainPage()
+    {
+        self::setCanUseXeroCommercePrefixRoute();
+        $defaultMenu = self::createDefaultMenu();
+        self::createDefaultMainModule($defaultMenu);
+        self::setCanNotUseXeroCommercePrefixRoute();
+    }
+
+    protected static function createDefaultMenu()
+    {
+        $menuTitle = 'XeroCommerce';
+        $menuDescription = 'XeroCommerce 메뉴 입니다.';
+
+        //TODO 테마 자동 설정 필요
+        $desktopTheme = 'theme/xero_commerce@xero_commerce_theme_default.0';
+        $mobileTheme = 'theme/xero_commerce@xero_commerce_theme_default.0';
+
+        XeDB::beginTransaction();
+
+        try {
+            $menu = XeMenu::createMenu([
+                'title' => $menuTitle,
+                'description' => $menuDescription,
+                'site_key' => \XeSite::getCurrentSiteKey(),
+            ]);
+
+            XeMenu::setMenuTheme($menu, $desktopTheme, $mobileTheme);
+
+            app('xe.permission')->register($menu->getKey(), XeMenu::getDefaultGrant());
+        } catch (\Exception $e) {
+            XeDB::rollback();
+
+            throw $e;
+        }
+
+        XeDB::commit();
+
+        return $menu;
+    }
+
+    protected static function createDefaultMainModule($defaultMenu)
+    {
+        $inputs['parent'] = $defaultMenu['id'];
+        $inputs['siteKey'] = $defaultMenu['siteKey'];
+        $inputs['itemTitle'] = 'title';
+        $inputs['itemUrl'] = Plugin::XeroCommercePrefix;
+        $inputs['itemDescription'] = 'description';
+        $inputs['itemTarget'] = '_self';
+        $inputs['selectedType'] = 'xero_commerce@xero_commerce_main_module';
+        $inputs['itemOrdering'] = 0;
+        $inputs['itemActivated'] = 1;
+
+        $itemInputKeys = [
+            'itemId',
+            'parent',
+            'itemTitle',
+            'itemUrl',
+            'itemDescription',
+            'itemTarget',
+            'selectedType',
+            'itemOrdering',
+            'itemActivated',
+            'basicImage',
+            'hoverImage',
+            'selectedImage',
+        ];
+
+        $itemInput = array_only($inputs, $itemInputKeys);
+        $menuTypeInput = array_except($inputs, $itemInputKeys);
+
+        XeDB::beginTransaction();
+
+        try {
+            $desktopTheme = null;
+            $mobileTheme = null;
+
+            $itemInput['parent'] = $itemInput['parent'] === $defaultMenu->getKey() ? null : $itemInput['parent'];
+            $item = XeMenu::createItem($defaultMenu, [
+                'title' => $itemInput['itemTitle'],
+                'url' => trim($itemInput['itemUrl'], " \t\n\r\0\x0B/"),
+                'description' => $itemInput['itemDescription'],
+                'target' => $itemInput['itemTarget'],
+                'type' => $itemInput['selectedType'],
+                'ordering' => $itemInput['itemOrdering'],
+                'activated' => isset($itemInput['itemActivated']) ? $itemInput['itemActivated'] : 0,
+                'parent_id' => $itemInput['parent']
+            ], $menuTypeInput);
+
+            XeMenu::setMenuItemTheme($item, $desktopTheme, $mobileTheme);
+            app('xe.permission')->register(XeMenu::permKeyString($item), new Grant, $defaultMenu->site_key);
+        } catch (\Exception $e) {
+            XeDB::rollback();
+
+            throw $e;
+        }
+
+        XeDB::commit();
+    }
+
     /**
      * @return void
      */
     public static function registerRoute()
     {
         Route::group([
-            'namespace'=>'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
-            'prefix'=>'xero-commerce',
+            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
+            'prefix' => 'xero-commerce',
             'middleware' => ['web']
-        ],function(){
+        ], function () {
             Route::get('/cart', [
                 'uses' => 'CartController@index',
                 'as' => 'xero_commerce::cart.index'
@@ -93,11 +203,10 @@ class Resources
             ]);
 
 
-
             Route::get('/order', [
                 'uses' => 'OrderController@index',
                 'as' => 'xero_commerce::order.index'
-            ])->middleware(['auth',AgreementMiddleware::class]);
+            ])->middleware(['auth', AgreementMiddleware::class]);
             Route::post('/order', [
                 'uses' => 'OrderController@register',
                 'as' => 'xero_commerce::order.register'
@@ -105,7 +214,7 @@ class Resources
             Route::get('/order/register', [
                 'uses' => 'OrderController@registerAgain',
                 'as' => 'xero_commerce::order.register.again'
-            ])->middleware(['auth',AgreementMiddleware::class]);
+            ])->middleware(['auth', AgreementMiddleware::class]);
             Route::get('/order/detail/{order}', [
                 'uses' => 'OrderController@detail',
                 'as' => 'xero_commerce::order.detail'
@@ -119,12 +228,12 @@ class Resources
                 'as' => 'xero_commerce::order.page'
             ]);
             Route::post('/order/pay/{order}', [
-                'uses'=>'OrderController@pay',
-                'as'=>'xero_commerce::order.pay'
+                'uses' => 'OrderController@pay',
+                'as' => 'xero_commerce::order.pay'
             ]);
             Route::post('/order/success/{order}', [
-                'uses'=>'OrderController@success',
-                'as'=>'xero_commerce::order.success'
+                'uses' => 'OrderController@success',
+                'as' => 'xero_commerce::order.success'
             ]);
             Route::get('/order/fail/{order}', [
                 'uses' => 'OrderController@fail',
@@ -223,9 +332,9 @@ class Resources
                         'uses' => 'OrderController@delivery',
                         'settings_menu' => 'xero_commerce.order.delivery'
                     ]);
-                    Route::post('/delivery',[
+                    Route::post('/delivery', [
                         'as' => 'xero_commerce::process.order.delivery',
-                        'uses'=>'OrderController@processDelivery'
+                        'uses' => 'OrderController@processDelivery'
                     ]);
                     Route::post('/delivery/complete', [
                         'as' => 'xero_commerce::complete.order.delivery',
@@ -282,9 +391,9 @@ class Resources
                     Route::post('/shop/update/{shopId}', ['as' => 'xero_commerce::setting.config.shop.update',
                         'uses' => 'ShopController@update']);
 
-                    Route::get('/user/{keyword}',[
-                        'uses'=>'UserController@search',
-                        'as'=>'xero_commerce::setting.search.user'
+                    Route::get('/user/{keyword}', [
+                        'uses' => 'UserController@search',
+                        'as' => 'xero_commerce::setting.search.user'
                     ]);
                 });
             });

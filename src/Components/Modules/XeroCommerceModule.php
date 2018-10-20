@@ -2,13 +2,11 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Components\Modules;
 
-use Illuminate\Support\Facades\Log;
 use Route;
 use XeConfig;
 use View;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Menu\AbstractModule;
-use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 
@@ -21,9 +19,6 @@ class XeroCommerceModule extends AbstractModule
             'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
             'middleware' => ['web']
         ], function () {
-
-
-
             Route::post('/product/cart/{product}', [
                 'uses' => 'ProductController@cartAdd',
                 'as' => 'xero_commerce::product.cart'
@@ -35,7 +30,6 @@ class XeroCommerceModule extends AbstractModule
         Route::instance(XeroCommerceModule::getId(), function () {
             Route::get('/', ['as' => 'xero_commerce::product.index', 'uses' => 'ProductController@index']);
         }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);
-        Log::info('module');
     }
 
     public function createMenuForm()

@@ -21,7 +21,7 @@ class Plugin extends AbstractPlugin
     public function boot()
     {
         Resources::bindClasses();
-        Resources::setXeroCommercePrefixRoute();
+        Resources::setCanNotUseXeroCommercePrefixRoute();
         Resources::registerRoute();
         Resources::registerSettingMenu();
         EventManager::listenEvents();
@@ -52,6 +52,7 @@ class Plugin extends AbstractPlugin
     {
         Database::create();
         Resources::setConfig();
+        Resources::createDefaultMainPage();
     }
 
     /**
