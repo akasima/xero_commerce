@@ -3,10 +3,19 @@
 namespace Xpressengine\Plugins\XeroCommerce\Components\Modules;
 
 use Route;
+use XeConfig;
 use Xpressengine\Menu\AbstractModule;
+use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class XeroCommerceMainModule extends AbstractModule
 {
+    protected $moduleListConfigKey;
+
+    public function __construct()
+    {
+        $this->moduleListConfigKey = sprintf('%s.%s', Plugin::getId(), 'mainModuleList');
+    }
+
     public static function boot()
     {
         Route::instance(XeroCommerceMainModule::getId(), function () {
@@ -21,6 +30,19 @@ class XeroCommerceMainModule extends AbstractModule
 
     public function storeMenu($instanceId, $menuTypeParams, $itemParams)
     {
+        $moduleListConfig = XeConfig::get($this->moduleListConfigKey);
+        if ($moduleListConfig == null) {
+            $moduleListConfig = XeConfig::add($this->moduleListConfigKey, []);
+        }
+
+        $moduleList = $moduleListConfig->get('moduleList', []);
+
+        array_push($moduleList, $instanceId);
+
+        $moduleListConfig->set('moduleList', $moduleList);
+
+        XeConfig::modify($moduleListConfig);
+
         return '';
     }
 
@@ -41,6 +63,21 @@ class XeroCommerceMainModule extends AbstractModule
 
     public function deleteMenu($instanceId)
     {
+        $moduleListConfig = XeConfig::get($this->moduleListConfigKey);
+        if ($moduleListConfig == null) {
+            return '';
+        }
+
+        $moduleList = $moduleListConfig->get('moduleList', []);
+
+        if (($key = array_search($instanceId, $moduleList)) !== false) {
+            unset($moduleList[$key]);
+        }
+
+        $moduleListConfig->set('moduleList', $moduleList);
+
+        XeConfig::modify($moduleListConfig);
+
         return '';
     }
 
