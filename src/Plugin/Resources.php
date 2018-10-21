@@ -73,8 +73,11 @@ class Resources
         //TODO 모듈이 있는지 확인해서 등록 안하는 옵션 추가 필요
 
         self::setCanUseXeroCommercePrefixRoute();
+
         $defaultMenu = self::createDefaultMenu();
-        self::createDefaultMainModule($defaultMenu);
+        $mainModuleId = self::createDefaultMainModule($defaultMenu);
+        self::storeConfigData('mainModuleId', $mainModuleId);
+
         self::setCanNotUseXeroCommercePrefixRoute();
     }
 
@@ -169,6 +172,8 @@ class Resources
         }
 
         XeDB::commit();
+
+        return $item->id;
     }
 
     /**
@@ -533,14 +538,26 @@ class Resources
             'name' => '상품 분류'
         ]);
 
-        $config = \XeConfig::get(Plugin::getId());
-        if ($config === null) {
-            \XeConfig::add(Plugin::getId(), [
-                'categoryId' => $category->id,
-            ]);
-        }
+        self::storeConfigData('categoryId', $category->id);
 
         self::storeDefaultMarks();
+    }
+
+    /**
+     * @param string $configKey   configKey
+     * @param string $configValue configValue
+     *
+     * @return void
+     */
+    public static function storeConfigData($configKey, $configValue)
+    {
+        $config = \XeConfig::get(Plugin::getId());
+        if ($config === null) {
+            \XeConfig::add(Plugin::getId(), [$configKey => $configValue]);
+        } else {
+            $config->set($configKey, $configValue);
+            \XeConfig::modify($config);
+        }
     }
 
     /**
