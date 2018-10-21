@@ -77,26 +77,8 @@ class Resources
         $defaultMenu = self::createDefaultMenu();
         $mainModuleId = self::createDefaultMainModule($defaultMenu);
         self::storeConfigData('mainModuleId', $mainModuleId);
-        self::storeMainModuleListConfig($mainModuleId);
 
         self::setCanNotUseXeroCommercePrefixRoute();
-    }
-
-    private static function storeMainModuleListConfig($mainModuleId)
-    {
-        $moduleListConfigKey = sprintf('%s.%s', Plugin::getId(), 'mainModuleList');
-        $moduleListConfig = \XeConfig::get($moduleListConfigKey);
-        if ($moduleListConfig == null) {
-            $moduleListConfig = \XeConfig::add($moduleListConfigKey, []);
-        }
-
-        $moduleList = $moduleListConfig->get('moduleList', []);
-
-        array_push($moduleList, $mainModuleId);
-
-        $moduleListConfig->set('moduleList', $moduleList);
-
-        \XeConfig::modify($moduleListConfig);
     }
 
     protected static function createDefaultMenu()
