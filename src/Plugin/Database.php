@@ -91,6 +91,7 @@ class Database
             $table->integer('tax_type');
             $table->integer('state_display');
             $table->integer('state_deal');
+            $table->integer('shop_delivery_id');
             $table->softDeletes();
             $table->timestamps();
         });

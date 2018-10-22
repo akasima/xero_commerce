@@ -2,6 +2,8 @@
     <h2>입점몰 정보</h2>
 @endsection
 
+{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
+
 <div class="row">
     <div class="col-sm-12">
         <div class="panel-group">
@@ -26,18 +28,16 @@
                         <tr>
                             <th>입점몰 이름</th>
                             <td>{{ $shop->shop_name }}</td>
-                            <th>배송회사</th>
-                            <td>{{ $shop->getDefaultDeliveryCompany()->name }}</td>
                         </tr>
                         <tr>
                             <th>입점몰 영어 이름</th>
                             <td>{{ $shop->shop_eng_name }}</td>
-                            <th>배송비</th>
-                            <td>{{ number_format($shop->getDefaultDeliveryCompany()->pivot->delivery_fare) }}</td>
                         </tr>
                         <tr>
                             <th>입점몰 형태</th>
                             <td>{{ $shop->getShopTypes()[$shop->shop_type] }}</td>
+                        </tr>
+                        <tr>
                             <th>관리자ID</th>
                             <td>
                                 @foreach($shop->users as $user)
@@ -46,6 +46,22 @@
                             </td>
                         </tr>
                     </table>
+                    <div>
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h4>배송사 정보</h4>
+                            </div>
+                            <div class="panel-body" id="component-container">
+                                <shop-delivery-component
+                                    :list="{{json_encode($deliveryCompanys)}}"
+                                    :delivery="{{json_encode($shop->deliveryCompanys)}}"
+                                    load-url="{{route('xero_commerce::setting.config.shop.delivery', ['shop'=>$shop->id])}}"
+                                    add-url="{{route('xero_commerce::setting.config.shop.add.delivery', ['shop'=>$shop->id])}}"
+                                    remove-url="{{route('xero_commerce::setting.config.shop.remove.delivery', ['shop'=>$shop->id])}}"></shop-delivery-component>
+                                <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <div class="panel">
                             <div class="panel-heading">

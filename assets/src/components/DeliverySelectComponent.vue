@@ -2,11 +2,11 @@
     <table class="table">
         <tr>
             <th>배송방법</th>
-            <td>{{delivery.name}}</td>
+            <td>{{delivery.company.name}}</td>
         </tr>
         <tr>
             <th>배송비</th>
-            <td>{{Number(delivery.pivot.delivery_fare).toLocaleString()}} </td>
+            <td>{{Number(delivery.delivery_fare).toLocaleString()}} </td>
         </tr>
         <tr>
             <th>배송비 결제</th>
@@ -40,6 +40,7 @@
         mounted () {
             this.pay = this.value
             this.$emit('input', this.pay)
+            console.log(this.delivery)
         }
     }
 </script>

@@ -404,6 +404,21 @@ class Resources
                         'uses' => 'UserController@search',
                         'as' => 'xero_commerce::setting.search.user'
                     ]);
+
+                    Route::get('/shop/delivery/{shop}',[
+                        'as' => 'xero_commerce::setting.config.shop.delivery',
+                        'uses'=> 'ShopController@getDeliverys'
+                    ]);
+
+                    Route::post('/shop/delivery/add/{shop}',[
+                        'as' => 'xero_commerce::setting.config.shop.add.delivery',
+                        'uses'=> 'ShopController@addDeliverys'
+                    ]);
+
+                    Route::post('/shop/delivery/remove/{shop}',[
+                        'as' => 'xero_commerce::setting.config.shop.remove.delivery',
+                        'uses'=> 'ShopController@removeDeliverys'
+                    ]);
                 });
             });
         });
@@ -589,6 +604,22 @@ class Resources
 
             $newBadge->save();
         }
+    }
+
+    /**
+     * @return void
+     */
+    public static function storeDefaultDeliveryComapny()
+    {
+        $dc = new DeliveryCompany();
+        $dc->name = 'cj대한통운';
+        $dc->uri = 'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=';
+        $dc->save();
+        $dc = new DeliveryCompany();
+        $dc->name = '한진택배';
+        $dc->uri = 'http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=';
+        $dc->save();
+        return $dc;
     }
 
     /**

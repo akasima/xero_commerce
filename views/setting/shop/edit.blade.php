@@ -43,21 +43,6 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             </div>
                             <div class="col-lg-6">
 
-
-                                {{uio('formSelect', [
-                                'label'=>'배송회사',
-                                'name'=>'delivery_company',
-                                'description'=>'배송을 담당할 회사를 선택해주세요',
-                                'options'=>$deliveryCompanyOptions,
-                                ])}}
-                                {{uio('formText', [
-                                'label'=>'배송비',
-                                'name'=>'delivery_fare',
-                                'description'=>'배송시 청구할 배송비입니다.',
-                                'value'=>$shop->getDefaultDeliveryCompany()->pivot->delivery_fare
-                                ])}}
-
-
                                 <div id="component-container">
                                     <user-search-component label="관리자ID" name="user_id" url="{{route('xero_commerce::setting.search.user',['keyword'=>''])}}" :value="{{json_encode($shop->users)}}"></user-search-component>
                                 </div>

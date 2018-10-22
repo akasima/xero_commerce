@@ -126,7 +126,8 @@ class ProductController extends Controller
             'sell_price' => 'required',
             'badge_id' => 'required',
             'description' => 'required',
-            'stock' => 'required'
+            'stock' => 'required',
+            'shop_delivery_id' => 'required'
         ], [
             'name.required' => '이름 필드는 필수입니다.',
             'sub_name.required' => '간략 소개는 필수입니다.',
@@ -134,7 +135,8 @@ class ProductController extends Controller
             'sell_price.required' => '정상 가격은 필수입니다.',
             'badge_id.required' => '뱃지는 필수입니다.',
             'description.required' => '상품소개는 필수입니다.',
-            'stock.required' => '기초재고는 필수입니다.'
+            'stock.required' => '기초재고는 필수입니다.',
+            'shop_delivery_id.required' => '배송사선택은 필수입니다.'
         ])->validate();
     }
 }

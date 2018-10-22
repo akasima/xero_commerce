@@ -41,21 +41,6 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             </div>
                             <div class="col-lg-6">
 
-                                <div class="form-group">
-                                    <label>배송 회사</label>
-                                    <select name="delivery_company" class="form-control">
-                                        @foreach($deliveryCompanys as $company)
-                                            <option value="{{$company->id}}">{{$company->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                {{uio('formText', [
-                                'label'=>'배송비',
-                                'name'=>'delivery_fare',
-                                'description'=>'배송시 청구할 배송비입니다.',
-                                'value'=>Request::old('delivery_fare')
-                                ])}}
-
                                 <div id="component-container">
                                     <user-search-component label="관리자ID" name="user_id" url="{{route('xero_commerce::setting.search.user',['keyword'=>''])}}"></user-search-component>
                                 </div>
