@@ -266,6 +266,15 @@ class Resources
                 'uses' => 'AgreementController@saveContacts',
                 'as' => 'xero_commerce::agreement.contacts.save'
             ]);
+            Route::post('/agreement/order/{order}', [
+                'uses' => 'AgreementController@saveOrderAgree',
+                'as' => 'xero_commerce::agreement.order.save'
+            ]);
+
+            Route::get('/no-delivery',[
+                'as' => 'xero_commerce::no-delivery',
+                'uses'=> 'DeliveryController@index'
+            ]);
         });
 
         Route::settings('xero_commerce', function () {

@@ -192,7 +192,7 @@ class OrderHandler extends SellSetHandler
             $delivery->order_item_id = $orderItem->id;
             $delivery->ship_no = '';
             $delivery->status=OrderDelivery::READY;
-            $delivery->company_id = $orderItem->sellType->shop->getDefaultDeliveryCompany()->id;
+            $delivery->company_id = $orderItem->sellType->getDelivery()->company->id;
             $delivery->recv_name = $request->delivery['name'];
             $delivery->recv_phone = $request->delivery['phone'];
             $delivery->recv_addr = $request->delivery['addr']? : '';

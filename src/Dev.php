@@ -209,6 +209,21 @@ class Dev
     public function makeDeliveryCompany()
     {
         $dc = new DeliveryCompany();
+        $dc->name = '직접수령';
+        $dc->type = DeliveryCompany::TAKE;
+        $dc->uri = 'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=';
+        $dc->save();
+        $dc = new DeliveryCompany();
+        $dc->type = DeliveryCompany::QUICK;
+        $dc->name = '퀵서비스';
+        $dc->uri = 'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=';
+        $dc->save();
+        $dc = new DeliveryCompany();
+        $dc->type = DeliveryCompany::SELF;
+        $dc->name = '자체배송';
+        $dc->uri = 'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=';
+        $dc->save();
+        $dc = new DeliveryCompany();
         $dc->name = 'cj대한통운';
         $dc->uri = 'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=';
         $dc->save();

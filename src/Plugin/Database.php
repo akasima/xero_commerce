@@ -234,6 +234,7 @@ class Database
 
         Schema::create('xero_commerce_delivery_company', function (Blueprint $table) {
             $table->increments('id');
+            $table->smallInteger('type')->default(0);
             $table->string('name');
             $table->string('uri');
             $table->softDeletes();
