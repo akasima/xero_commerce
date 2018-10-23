@@ -1,3 +1,5 @@
+{{ uio('widgetbox', ['id' => \Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-top', 'link'=>'편집하기']) }}
+
 <div class="row">
     @if(count($products)===0)
         <div style="text-align:center">
@@ -28,6 +30,9 @@
         </a>
     @endforeach
 </div>
+
+{{ uio('widgetbox', ['id' => \Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-bottom', 'link'=>'편집하기']) }}
+
 <style>
     a {
         color: black;

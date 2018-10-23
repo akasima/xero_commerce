@@ -43,7 +43,7 @@ class Resources
     {
         config(['xe.routing' => array_merge(
             config('xe.routing'),
-            ['xero_commerce' => Plugin::XeroCommercePrefix]
+            ['xero_commerce' => Plugin::XERO_COMMERCE_URL_PREFIX]
         )]);
     }
 
@@ -61,7 +61,7 @@ class Resources
      */
     public static function isUsedXeroCommercePrefix()
     {
-        if (InstanceRoute::where('url', Plugin::XeroCommercePrefix)->count() > 0) {
+        if (InstanceRoute::where('url', Plugin::XERO_COMMERCE_URL_PREFIX)->count() > 0) {
             return true;
         } else {
             return false;
@@ -75,8 +75,8 @@ class Resources
         self::setCanUseXeroCommercePrefixRoute();
 
         $defaultMenu = self::createDefaultMenu();
-        $mainModuleId = self::createDefaultMainModule($defaultMenu);
-        self::storeConfigData('mainModuleId', $mainModuleId);
+        $mainPageId = self::createDefaultMainModule($defaultMenu);
+        self::storeConfigData('mainPageId', $mainPageId);
 
         self::setCanNotUseXeroCommercePrefixRoute();
     }
@@ -119,11 +119,11 @@ class Resources
     {
         $inputs['parent'] = $defaultMenu['id'];
         $inputs['siteKey'] = $defaultMenu['siteKey'];
-        $inputs['itemTitle'] = 'title';
-        $inputs['itemUrl'] = Plugin::XeroCommercePrefix;
-        $inputs['itemDescription'] = 'description';
+        $inputs['itemTitle'] = 'MainPage';
+        $inputs['itemUrl'] = Plugin::XERO_COMMERCE_URL_PREFIX;
+        $inputs['itemDescription'] = '메인 페이지에 출력될 위젯을 설정할 수 있습니다.';
         $inputs['itemTarget'] = '_self';
-        $inputs['selectedType'] = 'xero_commerce@xero_commerce_main_module';
+        $inputs['selectedType'] = 'widgetpage@widgetpage';
         $inputs['itemOrdering'] = 0;
         $inputs['itemActivated'] = 1;
 
@@ -182,6 +182,14 @@ class Resources
     public static function registerRoute()
     {
         Route::group([
+            'prefix' => Plugin::XERO_COMMERCE_URL_PREFIX,
+            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
+            'middleware' => ['web']
+        ], function () {
+            Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
+        });
+
+        Route::group([
             'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
             'prefix' => 'xero-commerce',
             'middleware' => ['web']
@@ -210,7 +218,10 @@ class Resources
                 'uses' => 'CartController@summary',
                 'as' => 'xero_commerce::cart.summary'
             ]);
-
+            Route::post('/product/cart/{product}', [
+                'uses' => 'ProductController@cartAdd',
+                'as' => 'xero_commerce::product.cart'
+            ]);
 
             Route::get('/order', [
                 'uses' => 'OrderController@index',
@@ -275,9 +286,9 @@ class Resources
                 'as' => 'xero_commerce::agreement.order.cancel'
             ]);
 
-            Route::get('/no-delivery',[
+            Route::get('/no-delivery', [
                 'as' => 'xero_commerce::no-delivery',
-                'uses'=> 'DeliveryController@index'
+                'uses' => 'DeliveryController@index'
             ]);
         });
 
@@ -419,25 +430,26 @@ class Resources
                         'as' => 'xero_commerce::setting.search.user'
                     ]);
 
-                    Route::get('/shop/delivery/{shop}',[
+                    Route::get('/shop/delivery/{shop}', [
                         'as' => 'xero_commerce::setting.config.shop.delivery',
-                        'uses'=> 'ShopController@getDeliverys'
+                        'uses' => 'ShopController@getDeliverys'
                     ]);
 
-                    Route::post('/shop/delivery/add/{shop}',[
+                    Route::post('/shop/delivery/add/{shop}', [
                         'as' => 'xero_commerce::setting.config.shop.add.delivery',
-                        'uses'=> 'ShopController@addDeliverys'
+                        'uses' => 'ShopController@addDeliverys'
                     ]);
 
-                    Route::post('/shop/delivery/remove/{shop}',[
+                    Route::post('/shop/delivery/remove/{shop}', [
                         'as' => 'xero_commerce::setting.config.shop.remove.delivery',
-                        'uses'=> 'ShopController@removeDeliverys'
+                        'uses' => 'ShopController@removeDeliverys'
                     ]);
                 });
             });
         });
         ProductSlugService::setReserved([
-            'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug', 'cart', 'order', Plugin::XeroCommercePrefix
+            'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug',
+            'cart', 'order', Plugin::XERO_COMMERCE_URL_PREFIX
         ]);
     }
 

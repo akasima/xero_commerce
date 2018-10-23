@@ -21,6 +21,18 @@ class LabelHandler
         Label::where('id', $id)->delete();
     }
 
+    public function getLabel($id)
+    {
+        $label = Label::where('id', $id)->first();
+
+        return $label;
+    }
+
+    public function getLabels()
+    {
+        return Label::get();
+    }
+
     public function storeProductLabel($productId, array $labelIds)
     {
         foreach ($labelIds as $labelId) {
