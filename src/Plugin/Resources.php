@@ -655,11 +655,9 @@ class Resources
             'name' => '상품 분류'
         ]);
 
-        $i = 1;
-
-        for($i=1; $i<=3; $i++){
+        for ($i = 1; $i <= 3; $i++) {
             $categoryItem = self::storeCagegoryItem($category, $i);
-            self::storeProduct(2,$categoryItem->id);
+            self::storeProduct(2, $categoryItem->id);
         }
 
         self::storeConfigData('categoryId', $category->id);
@@ -668,7 +666,7 @@ class Resources
     }
 
     /**
-     * @param string $configKey configKey
+     * @param string $configKey   configKey
      * @param string $configValue configValue
      *
      * @return void
@@ -736,10 +734,12 @@ class Resources
         $dc->name = 'cj대한통운';
         $dc->uri = 'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=';
         $dc->save();
+
         $dc = new DeliveryCompany();
         $dc->name = '한진택배';
         $dc->uri = 'http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=';
         $dc->save();
+
         return $dc;
     }
 
@@ -757,6 +757,7 @@ class Resources
 
             $storeHandler = new ShopHandler();
             $store = $storeHandler->store($args);
+
             $store->deliveryCompanys()->attach(DeliveryCompany::pluck('id'));
         }
     }
@@ -764,6 +765,7 @@ class Resources
     public static function storeProduct($count, $category_id)
     {
         $faker = Factory::create('ko_kr');
+
         for ($i = 0; $i < $count; $i++) {
             $product = new Product();
             $product->shop_id = rand(1, Shop::count());
@@ -772,7 +774,7 @@ class Resources
                 '상품정보' => '추후 반영',
                 '제조사' => '협의중'
             ]);
-            $product->name = '지금부터 봄까지 입는 데일리 인기신상 ITEM'.($i+1);
+            $product->name = '지금부터 봄까지 입는 데일리 인기신상 ITEM' . ($i + 1);
             $product->sub_name = '간단한 상품설명';
             $product->original_price = $faker->numberBetween(1, 50) * 1000;
             $product->sell_price = $product->original_price - ($product->original_price * rand(0, 10) / 100);
@@ -785,9 +787,11 @@ class Resources
             $product->state_deal = Product::DEAL_ON_SALE;
             $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
             $product->save();
+
             self::storeProductOption($product->id);
 
             ProductSlugService::storeSlug($product, new Request());
+
             $newProductCategory = new ProductCategory();
 
             $newProductCategory->product_id = $product->id;
@@ -798,11 +802,11 @@ class Resources
             $labels = Label::pluck('id')->toArray();
             $labelCount = count($labels);
 
-            for ($i = 0; $i < rand(0, $labelCount); $i++) {
+            for ($j = 0; $j < rand(0, $labelCount); $j++) {
                 $newProductLabel = new ProductLabel();
 
                 $newProductLabel->product_id = $product->id;
-                $newProductLabel->label_id = $labels[rand(0, $labelCount-1)];
+                $newProductLabel->label_id = $labels[rand(0, $labelCount - 1)];
 
                 $newProductLabel->save();
             }
