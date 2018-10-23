@@ -2,7 +2,9 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
+use App\Facades\XeCategory;
 use App\Facades\XeInterception;
+use App\Facades\XeLang;
 use XeRegister;
 use XeDB;
 use XeMenu;
@@ -639,6 +641,14 @@ class Resources
             'name' => '상품 분류'
         ]);
 
+        $i = 1;
+
+        while($i<=3)
+        {
+            self::storeCagegoryItem($category, $i);
+            $i++;
+        }
+
         self::storeConfigData('categoryId', $category->id);
 
         self::storeDefaultMarks();
@@ -659,6 +669,18 @@ class Resources
             $config->set($configKey, $configValue);
             \XeConfig::modify($config);
         }
+    }
+
+    public static function storeCagegoryItem($category, $index)
+    {
+        $lang = ['ko'=>'카테고리'.$index, 'en'=>'Category'.$index];
+        $word = Plugin::XERO_COMMERCE_PREFIX.'::'.app('xe.keygen')->generate();
+        $description = Plugin::XERO_COMMERCE_PREFIX.'::'.app('xe.keygen')->generate();
+        foreach($lang as $locale=>$value) {
+            XeLang::save($word, $locale, $value, false);
+            XeLang::save($description, $locale, $value, false);
+        }
+        XeCategory::createItem($category,['word'=>$word, 'description'=>$description]);
     }
 
     /**
