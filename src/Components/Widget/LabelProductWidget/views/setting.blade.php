@@ -15,7 +15,7 @@
 
 <div class="form-group">
     <label>출력할 카테고리 ID 설정</label>
-    <input class="form-control" type="text" name="category_item_id" value="{{ array_get($args, 'category_id') }}">
+    <input class="form-control" type="text" name="category_item_id" value="{{ array_get($args, 'category_item_id') }}">
 </div>
 
 <div class="form-group">
