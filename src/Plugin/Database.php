@@ -91,6 +91,7 @@ class Database
             $table->integer('tax_type');
             $table->integer('state_display');
             $table->integer('state_deal');
+            $table->integer('shop_delivery_id');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -233,6 +234,7 @@ class Database
 
         Schema::create('xero_commerce_delivery_company', function (Blueprint $table) {
             $table->increments('id');
+            $table->smallInteger('type')->default(0);
             $table->string('name');
             $table->string('uri');
             $table->softDeletes();

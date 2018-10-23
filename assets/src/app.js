@@ -25,6 +25,7 @@ Vue.component('order-list-component', require('./components/Order/OrderListCompo
 Vue.component('order-detail-component', require('./components/Order/OrderDetailComponent').default);
 Vue.component('order-after-service-component', require('./components/Order/OrderAfterServiceComponent').default);
 Vue.component('dash-component', require('./components/DashComponent').default);
+Vue.component('shop-delivery-component', require('./components/setting/shop/DeliveryComponent').default);
 
 var app = new Vue({
     el: '#component-container'

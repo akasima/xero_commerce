@@ -64,7 +64,7 @@
                                       :method="payMethod"
                                       @pay="register"
                                       ></order-bill-component>
-                <order-agreement-component :agreements="agreements" v-model="agreed"></order-agreement-component>
+                <order-agreement-component :agreements="agreements" v-model="agreed" :agree-url="agreeUrl"></order-agreement-component>
             </div>
         </div>
     </div>
@@ -83,7 +83,7 @@
       OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent, PayComponent
     },
     props: [
-      'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods'
+      'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods', 'agreeUrl'
     ],
     computed: {
       validate() {

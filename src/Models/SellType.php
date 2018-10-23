@@ -33,6 +33,11 @@ abstract class SellType extends DynamicModel
         return $this->morphMany(Image::class,'imagable');
     }
 
+    public function delivery()
+    {
+        return $this->belongsTo(ShopDelivery::class, 'shop_delivery_id');
+    }
+
     public function getJsonFormat()
     {
         return [
@@ -51,7 +56,7 @@ abstract class SellType extends DynamicModel
 
     public function getDelivery()
     {
-        return $this->getShop()->getDefaultDeliveryCompany();
+        return $this->delivery->load('company');
     }
 
     function getImages()

@@ -16,7 +16,7 @@ class AgreementService
     static function check($type)
     {
         return UserAgreement::where('user_id', Auth::id())
-            ->whereHas('agreement', function ($query) use($type) {
+            ->whereHas('agreement', function ($query) use ($type) {
                 $query
                     ->where('type', $type)
                     ->latest('version');
@@ -34,10 +34,15 @@ class AgreementService
 
     static function orderAgree(Order $order, $agree_id)
     {
-        $order_agreement = new OrderAgreement();
-        $order_agreement->order_id = $order->id;
-        $order_agreement->agreement_id = $agree_id;
-        $order_agreement->save();
+        OrderAgreement::updateOrCreate(
+            [
+                'order_id' => $order->id,
+                'agreement_id' => $agree_id
+            ],
+            [
+                'updated_at' => now()
+            ]
+        );
     }
 
     static function get($type)

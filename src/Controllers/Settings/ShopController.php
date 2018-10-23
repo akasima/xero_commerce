@@ -46,7 +46,6 @@ class ShopController extends Controller
     public function create()
     {
         $shopTypes = Shop::getShopTypes();
-        $deliveryCompanys = DeliveryCompany::all();
 
         return XePresenter::make('xero_commerce::views.setting.shop.create', compact('shopTypes', 'deliveryCompanys'));
     }
@@ -74,8 +73,9 @@ class ShopController extends Controller
     public function show(Request $request, $shopId)
     {
         $shop = $this->shopService->getShop($shopId);
+        $deliveryCompanys = DeliveryCompany::all();
 
-        return XePresenter::make('xero_commerce::views.setting.shop.show', compact('shop'));
+        return XePresenter::make('xero_commerce::views.setting.shop.show', compact('shop', 'deliveryCompanys'));
     }
 
     /**
@@ -90,19 +90,9 @@ class ShopController extends Controller
         $shopTypes = Shop::getShopTypes();
         $deliveryCompanys = DeliveryCompany::all();
         $default = $shop->getDefaultDeliveryCompany();
-        $deliveryCompanyOptions=$deliveryCompanys->map(function($companys) use($default){
-            $array = [
-                'text'=>$companys->name,
-                'value'=>$companys->id,
-            ];
-            if($companys->id===$default->id){
-                $array['selected'] = true;
-            }
-            return $array;
-        });
 
 
-        return XePresenter::make('xero_commerce::views.setting.shop.edit', compact('shop', 'shopTypes', 'deliveryCompanyOptions'));
+        return XePresenter::make('xero_commerce::views.setting.shop.edit', compact('shop', 'shopTypes'));
     }
 
     /**
@@ -160,5 +150,20 @@ class ShopController extends Controller
             'delivery_info.required'=>'배송정보는 필수입니다.',
             'as_info'=>'반품/교환정보는 필수입니다.'
         ])->validate();
+    }
+
+    public function getDeliverys(Shop $shop)
+    {
+        return $shop->deliveryCompanys;
+    }
+
+    public function addDeliverys(Request $request, Shop $shop)
+    {
+        $this->shopService->addDelivery($request, $shop);
+    }
+
+    public function removeDeliverys(Request $request, Shop $shop)
+    {
+        $this->shopService->removeDelivery($request, $shop);
     }
 }

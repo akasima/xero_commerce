@@ -22,7 +22,7 @@ class Shop extends DynamicModel
 
     protected $table = 'xero_commerce_shop';
 
-    protected $fillable = ['shop_name', 'shop_eng_name', 'logo_path', 'background_path', 'shop_type', 'state_approval'];
+    protected $fillable = ['shop_name', 'shop_eng_name', 'logo_path', 'background_path', 'shop_type', 'state_approval','delivery_info', 'as_info'];
 
     /**
      * @return array
@@ -55,7 +55,7 @@ class Shop extends DynamicModel
             'xero_commerce_shop_delivery'
         )
             ->withPivot(
-                ['delivery_fare', 'up_to_free']
+                ['id','delivery_fare', 'up_to_free']
             );
     }
 

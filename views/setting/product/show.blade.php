@@ -46,8 +46,8 @@
                         <tr>
                             <th>간략소개</th>
                             <td>{{$product->sub_name}}</td>
-                            <th></th>
-                            <td></td>
+                            <th>배송사</th>
+                            <td>{{$product->delivery->company->name}} ({{number_format($product->delivery->delivery_fare)}})</td>
                             <th>최대 구매 수량</th>
                             <td>{{ number_format($product->max_buy_count ) }}</td>
                         </tr>

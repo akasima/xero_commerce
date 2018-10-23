@@ -94,6 +94,36 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     'description'=>'실제 가격, 판매 가격할인율과 근사하게 표기하고싶은 숫자를 직접 적습니다. 비워두면 실제 계산값을 소숫점 두자리까지 저장합니다.',
                     'value'=>Request::old('discount_percentage')
                     ])}}
+
+                    <div class="form-group">
+                        <label>배송사</label>
+                        <select name="shop_delivery_id" class="form-control">
+                            @php
+                            $deliverys = $shops[0]->deliveryCompanys;
+                            @endphp
+                            <option value="">선택</option>
+                            @foreach($deliverys as $delivery)
+                            <option value="{{$delivery->pivot->id}}">{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <script>
+                        $(function(){
+                            $("[name=shop_id]").change(function(){
+                                $("[name=shop_delivery_id]").val("");
+                                $("[name=shop_delivery_id] option").not(':selected').remove();
+                                $.ajax({
+                                    url: '{{route('xero_commerce::setting.config.shop.delivery',['shop'=>''])}}/'+$("[name=shop_id]").val(),
+                                }).done(res=>{
+                                    $.each(res,(k,v)=>{
+                                        $("[name=shop_delivery_id]").append('<option value="'+v.pivot.id+'">'+v.name+'('+Number(v.pivot.delivery_fare).toLocaleString()+')</option>');
+                                    })
+                                }).fail(res=>{
+
+                                })
+                            })
+                        })
+                    </script>
                 </div>
             </div>
         </div>
