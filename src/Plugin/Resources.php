@@ -651,18 +651,15 @@ class Resources
         \XeEditor::setInstance(Plugin::getId(), CkEditor::getId());
         \XeEditor::setConfig(Plugin::getId(), ['uploadActive' => true]);
 
-        self::storeDefaultDeliveryCompany();
-
         $category = \XeCategory::create([
             'name' => '상품 분류'
         ]);
 
         $i = 1;
 
-        while ($i <= 3) {
+        for($i=1; $i<=3; $i++){
             $categoryItem = self::storeCagegoryItem($category, $i);
             self::storeProduct(2,$categoryItem->id);
-            $i++;
         }
 
         self::storeConfigData('categoryId', $category->id);
