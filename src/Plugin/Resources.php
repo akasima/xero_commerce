@@ -7,6 +7,7 @@ use XeRegister;
 use XeDB;
 use XeMenu;
 use Route;
+use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
@@ -68,15 +69,16 @@ class Resources
         }
     }
 
-    public static function createDefaultMainPage()
+    public static function defaultSitemapSetting()
     {
         //TODO 모듈이 있는지 확인해서 등록 안하는 옵션 추가 필요
 
         self::setCanUseXeroCommercePrefixRoute();
 
         $defaultMenu = self::createDefaultMenu();
-        $mainPageId = self::createDefaultMainModule($defaultMenu);
+        $mainPageId = self::createDefaultMainPage($defaultMenu);
         self::storeConfigData('mainPageId', $mainPageId);
+        self::createDefaultCategoryModule($defaultMenu);
 
         self::setCanNotUseXeroCommercePrefixRoute();
     }
@@ -115,8 +117,9 @@ class Resources
         return $menu;
     }
 
-    protected static function createDefaultMainModule($defaultMenu)
+    protected static function createDefaultMainPage($defaultMenu)
     {
+        //TODO 리펙토링
         $inputs['parent'] = $defaultMenu['id'];
         $inputs['siteKey'] = $defaultMenu['siteKey'];
         $inputs['itemTitle'] = 'MainPage';
@@ -174,6 +177,78 @@ class Resources
         XeDB::commit();
 
         return $item->id;
+    }
+
+    protected static function createDefaultCategoryModule($defaultMenu)
+    {
+        $config = \XeConfig::get(Plugin::getId());
+        $categoryId = $config->get('categoryId', '');
+
+        if ($categoryId === '') {
+            return;
+        }
+
+        $itemInputKeys = [
+            'itemId',
+            'parent',
+            'itemTitle',
+            'itemUrl',
+            'itemDescription',
+            'itemTarget',
+            'selectedType',
+            'itemOrdering',
+            'itemActivated',
+            'basicImage',
+            'hoverImage',
+            'selectedImage',
+        ];
+
+        $initCategories = CategoryItem::where('category_id', $categoryId)->get();
+        foreach ($initCategories as $idx => $category) {
+            $inputs = [];
+            $inputs['parent'] = $defaultMenu['id'];
+            $inputs['siteKey'] = $defaultMenu['siteKey'];
+            $inputs['itemTitle'] = xe_trans($category['word']);
+            $inputs['itemUrl'] = 'category' . ($idx + 1);
+            $inputs['itemDescription'] = '기본 상품 페이지입니다.';
+            $inputs['itemTarget'] = '_self';
+            $inputs['selectedType'] = 'xero_commerce@xero_commerce_module';
+            $inputs['itemOrdering'] = 0;
+            $inputs['itemActivated'] = 1;
+            $inputs['categoryItemId'] = $category['id'];
+            $inputs['categoryItemDepth'] = 1;
+
+            $itemInput = array_only($inputs, $itemInputKeys);
+            $menuTypeInput = array_except($inputs, $itemInputKeys);
+
+            XeDB::beginTransaction();
+
+            try {
+                $desktopTheme = null;
+                $mobileTheme = null;
+
+                $itemInput['parent'] = $itemInput['parent'] === $defaultMenu->getKey() ? null : $itemInput['parent'];
+                $item = XeMenu::createItem($defaultMenu, [
+                    'title' => $itemInput['itemTitle'],
+                    'url' => trim($itemInput['itemUrl'], " \t\n\r\0\x0B/"),
+                    'description' => $itemInput['itemDescription'],
+                    'target' => $itemInput['itemTarget'],
+                    'type' => $itemInput['selectedType'],
+                    'ordering' => $itemInput['itemOrdering'],
+                    'activated' => isset($itemInput['itemActivated']) ? $itemInput['itemActivated'] : 0,
+                    'parent_id' => $itemInput['parent']
+                ], $menuTypeInput);
+
+                XeMenu::setMenuItemTheme($item, $desktopTheme, $mobileTheme);
+                app('xe.permission')->register(XeMenu::permKeyString($item), new Grant, $defaultMenu->site_key);
+            } catch (\Exception $e) {
+                XeDB::rollback();
+
+                throw $e;
+            }
+
+            XeDB::commit();
+        }
     }
 
     /**

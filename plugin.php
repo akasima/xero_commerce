@@ -56,7 +56,7 @@ class Plugin extends AbstractPlugin
 
         Database::create();
         Resources::setConfig();
-        Resources::createDefaultMainPage();
+        Resources::defaultSitemapSetting();
     }
 
     /**
