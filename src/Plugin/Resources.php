@@ -281,6 +281,7 @@ class Resources
             ]);
         });
 
+
         Route::settings('xero_commerce', function () {
             Route::group([
                 'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers\\Settings'
@@ -435,21 +436,6 @@ class Resources
                 });
             });
         });
-
-        //결제모듈 설정
-        Route::namespace('Xpressengine\XePlugin\XeroPay')
-            ->prefix('payment')
-            ->group(function () {
-                Route::post('/form', [
-                    'as' => 'xero_pay::formList',
-                    'uses' => 'Controller@formList'
-                ]);
-                Route::post('/callback', [
-                    'as' => 'xero_pay::callback',
-                    'uses' => 'Controller@callback'
-                ]);
-            });
-
         ProductSlugService::setReserved([
             'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug', 'cart', 'order', Plugin::XeroCommercePrefix
         ]);

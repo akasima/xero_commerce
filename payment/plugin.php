@@ -6,6 +6,11 @@ use Xpressengine\Plugin\AbstractPlugin;
 
 class Plugin extends AbstractPlugin
 {
+    public static function getId()
+    {
+        return \Xpressengine\Plugins\XeroCommerce\Plugin::getId().'/'.parent::getId();
+    }
+
     /**
      * 이 메소드는 활성화(activate) 된 플러그인이 부트될 때 항상 실행됩니다.
      *
@@ -16,21 +21,13 @@ class Plugin extends AbstractPlugin
         // implement code
 
         $this->route();
+
     }
 
     protected function route()
     {
         // implement code
-
-        Route::fixed(
-            $this->getId(),
-            function () {
-                Route::get('/', [
-                    'as' => 'xero_pay::index','uses' => 'Xpressengine\XePlugin\XeroPay\Controller@index'
-                ]);
-            }
-        );
-
+        Resources::registerRoute();
     }
 
     /**

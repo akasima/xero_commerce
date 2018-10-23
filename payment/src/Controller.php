@@ -1,6 +1,7 @@
 <?php
 namespace Xpressengine\XePlugin\XeroPay;
 
+use App\Facades\XeConfig;
 use XeFrontend;
 use XePresenter;
 use App\Http\Controllers\Controller as BaseController;
@@ -24,9 +25,19 @@ class Controller extends BaseController
 
         // load css file
         XeFrontend::css(Plugin::asset('assets/style.css'))->load();
-
         // output
-        return XePresenter::make('xero_pay::views.index', ['title' => $title]);
+        return XePresenter::make('xero_commerce::payment.views.index', ['title' => $title, 'pg'=>$this->service->getPg() ,'config'=>XeConfig::getOrNew('xero_pay')]);
+    }
+
+    public function setConfig(Request $request)
+    {
+        $pgconfig=[];
+        foreach($this->service->getPg() as $id=>$class)
+        {
+            $pgconfig[$id]=$this->getInputs($request,$id);
+        }
+        XeConfig::set('xero_pay',['uses'=>$request->get('pg'), 'pg'=>$pgconfig]);
+        return redirect()->route('xero_pay::index');
     }
 
     public function callback(Request $request)
@@ -41,6 +52,19 @@ class Controller extends BaseController
 
     public function setting()
     {
+        return 'hi';
+    }
 
+    private function getInputs(Request $request, $componentId)
+    {
+        $inputs = [];
+        foreach ($request->except(['_token', 'pg']) as $key => $val) {
+            if (starts_with($key, $componentId . '_')) {
+                $key = preg_replace('#^(' . $componentId . '_)#', '', $key);
+                $inputs[$key] = $val;
+            }
+        }
+
+        return $inputs;
     }
 }

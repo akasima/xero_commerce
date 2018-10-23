@@ -23,6 +23,8 @@ class Plugin extends AbstractPlugin
         Resources::bindClasses();
         Resources::setCanNotUseXeroCommercePrefixRoute();
         Resources::registerRoute();
+        \Xpressengine\XePlugin\XeroPay\Resources::registerRoute();
+        \Xpressengine\XePlugin\XeroPay\Resources::registerMenu();
         Resources::registerSettingMenu();
         EventManager::listenEvents();
     }

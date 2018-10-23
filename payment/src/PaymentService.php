@@ -19,6 +19,11 @@ class PaymentService
         $this->handler = app('xero_pay::paymentHandler');
     }
 
+    public function getPg()
+    {
+        return app('xe.pluginRegister')->get('xero_pay');
+    }
+
     public function loadScript()
     {
         $this->handler->prepare();

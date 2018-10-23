@@ -23,8 +23,8 @@ class TestHandler implements PaymentHandler
     public function prepare()
     {
         XeFrontend::js([
-            \Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/payment.js'),
-            \Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/test.js')
+            Plugin::asset('assets/payment.js'),
+            Plugin::asset('assets/test.js')
         ])->appendTo('body')->load();
     }
 
