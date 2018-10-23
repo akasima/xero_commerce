@@ -81,6 +81,7 @@ class Resources
         $mainPageId = self::createDefaultMainPage($defaultMenu);
         self::storeConfigData('mainPageId', $mainPageId);
         self::createDefaultCategoryModule($defaultMenu);
+        self::setDefaultThemeConfig($defaultMenu);
 
         self::setCanNotUseXeroCommercePrefixRoute();
     }
@@ -251,6 +252,14 @@ class Resources
 
             XeDB::commit();
         }
+    }
+
+    public static function setDefaultThemeConfig($defaultMenu)
+    {
+        $config['logo_title'] = 'XeroCommerce';
+        $config['gnb'] = $defaultMenu['id'];
+
+        app('xe.theme')->setThemeConfig('theme/xero_commerce@xero_commerce_theme_default.0', $config);
     }
 
     /**
