@@ -13,6 +13,7 @@
         order_id="{{$order->id}}"
         :pay-methods='{{ json_encode($payMethods)  }} '
         agree-url="{{route('xero_commerce::agreement.order.save',['order'=>$order->id])}}"
+        denied-url="{{route('xero_commerce::agreement.order.cancel',['order'=>$order->id])}}"
     ></order-register-component>
     <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
 </div>

@@ -36,4 +36,9 @@ class AgreementController extends Controller
     {
         AgreementService::orderAgree($order, $request->get('id'));
     }
+
+    public function cancelOrderAgree(Request $request, Order $order)
+    {
+        AgreementService::orderDenied($order, $request->get('id'));
+    }
 }

@@ -27,7 +27,7 @@
     export default {
         name: "OrderAgreementComponent",
         props: [
-            'agreements', 'agreeUrl'
+            'agreements', 'agreeUrl', 'deniedUrl'
         ],
         watch: {
             checked(el, oldEl) {
@@ -74,8 +74,14 @@
                 })
             },
             remove (agreement) {
-                console.log(agreement)
-                console.log('rem...')
+                $.ajax({
+                    url: this.deniedUrl,
+                    method: 'post',
+                    data: {
+                        id: agreement.id,
+                        _token: document.getElementById('csrf_token').value
+                    }
+                })
             }
         }
     }

@@ -160,6 +160,7 @@ class Database
             $table->increments('id');
             $table->string('order_id');
             $table->integer('agreement_id');
+            $table->softDeletes();
             $table->timestamps();
         });
 

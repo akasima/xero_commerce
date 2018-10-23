@@ -270,6 +270,10 @@ class Resources
                 'uses' => 'AgreementController@saveOrderAgree',
                 'as' => 'xero_commerce::agreement.order.save'
             ]);
+            Route::post('/agreement/cancel/order/{order}', [
+                'uses' => 'AgreementController@cancelOrderAgree',
+                'as' => 'xero_commerce::agreement.order.cancel'
+            ]);
 
             Route::get('/no-delivery',[
                 'as' => 'xero_commerce::no-delivery',

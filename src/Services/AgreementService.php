@@ -51,4 +51,9 @@ class AgreementService
             ->latest('version')
             ->first();
     }
+
+    static function orderDenied(Order $order, $agree_id)
+    {
+        OrderAgreement::where('order_id',$order->id)->where('agreement_id',$agree_id)->delete();
+    }
 }
