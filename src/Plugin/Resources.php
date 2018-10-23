@@ -43,7 +43,7 @@ class Resources
     {
         config(['xe.routing' => array_merge(
             config('xe.routing'),
-            ['xero_commerce' => Plugin::XeroCommercePrefix]
+            ['xero_commerce' => Plugin::XERO_COMMERCE_URL_PREFIX]
         )]);
     }
 
@@ -61,7 +61,7 @@ class Resources
      */
     public static function isUsedXeroCommercePrefix()
     {
-        if (InstanceRoute::where('url', Plugin::XeroCommercePrefix)->count() > 0) {
+        if (InstanceRoute::where('url', Plugin::XERO_COMMERCE_URL_PREFIX)->count() > 0) {
             return true;
         } else {
             return false;
@@ -75,8 +75,8 @@ class Resources
         self::setCanUseXeroCommercePrefixRoute();
 
         $defaultMenu = self::createDefaultMenu();
-        $mainModuleId = self::createDefaultMainModule($defaultMenu);
-        self::storeConfigData('mainModuleId', $mainModuleId);
+        $mainPageId = self::createDefaultMainModule($defaultMenu);
+        self::storeConfigData('mainPageId', $mainPageId);
 
         self::setCanNotUseXeroCommercePrefixRoute();
     }
@@ -119,11 +119,11 @@ class Resources
     {
         $inputs['parent'] = $defaultMenu['id'];
         $inputs['siteKey'] = $defaultMenu['siteKey'];
-        $inputs['itemTitle'] = 'title';
-        $inputs['itemUrl'] = Plugin::XeroCommercePrefix;
-        $inputs['itemDescription'] = 'description';
+        $inputs['itemTitle'] = 'MainPage';
+        $inputs['itemUrl'] = Plugin::XERO_COMMERCE_URL_PREFIX;
+        $inputs['itemDescription'] = '메인 페이지에 출력될 위젯을 설정할 수 있습니다.';
         $inputs['itemTarget'] = '_self';
-        $inputs['selectedType'] = 'xero_commerce@xero_commerce_main_module';
+        $inputs['selectedType'] = 'widgetpage@widgetpage';
         $inputs['itemOrdering'] = 0;
         $inputs['itemActivated'] = 1;
 
@@ -210,7 +210,6 @@ class Resources
                 'uses' => 'CartController@summary',
                 'as' => 'xero_commerce::cart.summary'
             ]);
-
 
             Route::get('/order', [
                 'uses' => 'OrderController@index',
@@ -423,7 +422,8 @@ class Resources
             });
 
         ProductSlugService::setReserved([
-            'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug', 'cart', 'order', Plugin::XeroCommercePrefix
+            'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug',
+            'cart', 'order', Plugin::XERO_COMMERCE_URL_PREFIX
         ]);
     }
 

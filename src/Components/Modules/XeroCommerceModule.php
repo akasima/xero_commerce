@@ -12,11 +12,18 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class XeroCommerceModule extends AbstractModule
 {
+    protected $moduleListConfigKey;
+
+    public function __construct()
+    {
+        $this->moduleListConfigKey = sprintf('%s.%s', Plugin::getId(), 'mainModuleList');
+    }
+
     public static function boot()
     {
         //TODO 위치 확인(plugin level)
         Route::group([
-            'prefix' => Plugin::XeroCommercePrefix,
+            'prefix' => Plugin::XERO_COMMERCE_URL_PREFIX,
             'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
             'middleware' => ['web']
         ], function () {
@@ -59,6 +66,14 @@ class XeroCommerceModule extends AbstractModule
         }
 
         XeConfig::add(sprintf('%s.%s', Plugin::getId(), $instanceId), $configValue);
+
+        $this->storeModuleListConfig($instanceId);
+
+        app('xe.widgetbox')->create(['id' => Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-top',
+            'title' => 'main module widget', 'content' => '']);
+
+        app('xe.widgetbox')->create(['id' => Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-bottom',
+            'title' => 'main module widget', 'content' => '']);
 
         return '';
     }
@@ -111,11 +126,50 @@ class XeroCommerceModule extends AbstractModule
     {
         XeConfig::remove(XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId)));
 
+        $this->removeModuleListConfig($instanceId);
+
+        app('xe.widgetbox')->delete(Plugin::XERO_COMMERCE_PREFIX . '-' .  $instanceId . '-top');
+        app('xe.widgetbox')->delete(Plugin::XERO_COMMERCE_PREFIX . '-' .  $instanceId . '-bottom');
+
         return '';
     }
 
     public function getTypeItem($id)
     {
         return '';
+    }
+
+    private function storeModuleListConfig($instanceId)
+    {
+        $moduleListConfig = XeConfig::get($this->moduleListConfigKey);
+        if ($moduleListConfig == null) {
+            $moduleListConfig = XeConfig::add($this->moduleListConfigKey, []);
+        }
+
+        $moduleList = $moduleListConfig->get('moduleList', []);
+
+        array_push($moduleList, $instanceId);
+
+        $moduleListConfig->set('moduleList', $moduleList);
+
+        XeConfig::modify($moduleListConfig);
+    }
+
+    private function removeModuleListConfig($instanceId)
+    {
+        $moduleListConfig = XeConfig::get($this->moduleListConfigKey);
+        if ($moduleListConfig == null) {
+            return '';
+        }
+
+        $moduleList = $moduleListConfig->get('moduleList', []);
+
+        if (($key = array_search($instanceId, $moduleList)) !== false) {
+            unset($moduleList[$key]);
+        }
+
+        $moduleListConfig->set('moduleList', $moduleList);
+
+        XeConfig::modify($moduleListConfig);
     }
 }

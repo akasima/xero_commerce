@@ -23,11 +23,6 @@
         "xpressengine": {
             "title": "xero_commerce",
             "component": {
-                "module/xero_commerce@xero_commerce_main_module": {
-                    "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Modules\\XeroCommerceMainModule",
-                    "name": "XeroCommerce Main Module",
-                    "description": "xero_commerce main module"
-                },
                 "module/xero_commerce@xero_commerce_module": {
                     "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Modules\\XeroCommerceModule",
                     "name": "XeroCommerce Module",
@@ -43,15 +38,20 @@
                     "description": "The skin supported by Xero_commerce plugin.",
                     "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\XeroCommerceDefault\\XeroCommerceDefaultSkin"
                 },
-                "module/xero_commerce@xero_commerce_main_module/skin/xero_commerce@xero_commerce_main_default": {
-                    "name": "XeroCommerce Main Default Skin",
-                    "description": "The skin supported by Xero_commerce plugin.",
-                    "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\XeroCommerceMain\\XeroCommerceMainSkin"
-                },
                 "uiobject/xero_commerce@tag": {
                     "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\UIObjects\\Tag\\TagUIObject",
                     "name": "Tag",
                     "description": "xero_commerce product Tag"
+                },
+                "widget/xero_commerce@label_product_widget": {
+                    "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\LabelProductWidget\\LabelProductWidget",
+                    "name": "XeroCommerce 라벨 상품 분류 위젯",
+                    "description": "XeroCommerce 라벨 상품 분류 위젯"
+                },
+                "widget/xero_commerce@label_product_widget/skin/xero_commerce@label_widget_common_skin": {
+                    "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\LabelProductWidget\\Skins\\Common\\CommonSkin",
+                    "name": "XeroCommerce 라벨 상품 분류 위젯 기본 스킨",
+                    "description": "XeroCommerce 라벨 상품 분류 위젯 기본 스킨"
                 }
             }
         }
