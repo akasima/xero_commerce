@@ -5,11 +5,13 @@ namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 use App\Facades\XeCategory;
 use App\Facades\XeInterception;
 use App\Facades\XeLang;
+use Faker\Factory;
 use XeRegister;
 use XeDB;
 use XeMenu;
 use Route;
 use Xpressengine\Category\Models\CategoryItem;
+use Xpressengine\Http\Request;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
@@ -23,8 +25,11 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
 use Xpressengine\Plugins\XeroCommerce\Models\Badge;
+use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\Plugins\XeroCommerce\Models\SellType;
 use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
@@ -646,15 +651,17 @@ class Resources
         \XeEditor::setInstance(Plugin::getId(), CkEditor::getId());
         \XeEditor::setConfig(Plugin::getId(), ['uploadActive' => true]);
 
+        self::storeDefaultDeliveryCompany();
+
         $category = \XeCategory::create([
             'name' => '상품 분류'
         ]);
 
         $i = 1;
 
-        while($i<=3)
-        {
-            self::storeCagegoryItem($category, $i);
+        while ($i <= 3) {
+            $categoryItem = self::storeCagegoryItem($category, $i);
+            self::storeProduct(2,$categoryItem->id);
             $i++;
         }
 
@@ -664,7 +671,7 @@ class Resources
     }
 
     /**
-     * @param string $configKey   configKey
+     * @param string $configKey configKey
      * @param string $configValue configValue
      *
      * @return void
@@ -682,14 +689,14 @@ class Resources
 
     public static function storeCagegoryItem($category, $index)
     {
-        $lang = ['ko'=>'카테고리'.$index, 'en'=>'Category'.$index];
-        $word = Plugin::XERO_COMMERCE_PREFIX.'::'.app('xe.keygen')->generate();
-        $description = Plugin::XERO_COMMERCE_PREFIX.'::'.app('xe.keygen')->generate();
-        foreach($lang as $locale=>$value) {
+        $lang = ['ko' => '카테고리' . $index, 'en' => 'Category' . $index];
+        $word = Plugin::XERO_COMMERCE_PREFIX . '::' . app('xe.keygen')->generate();
+        $description = Plugin::XERO_COMMERCE_PREFIX . '::' . app('xe.keygen')->generate();
+        foreach ($lang as $locale => $value) {
             XeLang::save($word, $locale, $value, false);
             XeLang::save($description, $locale, $value, false);
         }
-        XeCategory::createItem($category,['word'=>$word, 'description'=>$description]);
+        return XeCategory::createItem($category, ['word' => $word, 'description' => $description]);
     }
 
     /**
@@ -726,7 +733,7 @@ class Resources
     /**
      * @return void
      */
-    public static function storeDefaultDeliveryComapny()
+    public static function storeDefaultDeliveryCompany()
     {
         $dc = new DeliveryCompany();
         $dc->name = 'cj대한통운';
@@ -752,7 +759,80 @@ class Resources
             $args['shop_name'] = Shop::BASIC_SHOP_NAME;
 
             $storeHandler = new ShopHandler();
-            $storeHandler->store($args);
+            $store = $storeHandler->store($args);
+            $store->deliveryCompanys()->attach(DeliveryCompany::pluck('id'));
+        }
+    }
+
+    public static function storeProduct($count, $category_id)
+    {
+        $faker = Factory::create('ko_kr');
+        for ($i = 0; $i < $count; $i++) {
+            $product = new Product();
+            $product->shop_id = rand(1, Shop::count());
+            $product->product_code = $faker->numerify('###########');
+            $product->detail_info = json_encode([
+                '상품정보' => '추후 반영',
+                '제조사' => '협의중'
+            ]);
+            $product->name = '지금부터 봄까지 입는 데일리 인기신상 ITEM'.($i+1);
+            $product->sub_name = '간단한 상품설명';
+            $product->original_price = $faker->numberBetween(1, 50) * 1000;
+            $product->sell_price = $product->original_price - ($product->original_price * rand(0, 10) / 100);
+            $product->discount_percentage = round(
+                (($product->original_price - $product->sell_price) * 100 / $product->original_price)
+            );
+            $product->description = '상품설명페이지';
+            $product->tax_type = rand(Product::TAX_TYPE_TAX, Product::TAX_TYPE_FREE);
+            $product->state_display = Product::DISPLAY_VISIBLE;
+            $product->state_deal = Product::DEAL_ON_SALE;
+            $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
+            $product->save();
+            self::storeProductOption($product->id);
+
+            ProductSlugService::storeSlug($product, new Request());
+            $newProductCategory = new ProductCategory();
+
+            $newProductCategory->product_id = $product->id;
+            $newProductCategory->category_id = $category_id;
+
+            $newProductCategory->save();
+
+            $labels = Label::pluck('id')->toArray();
+            $labelCount = count($labels);
+
+            for ($i = 0; $i < rand(0, $labelCount); $i++) {
+                $newProductLabel = new ProductLabel();
+
+                $newProductLabel->product_id = $product->id;
+                $newProductLabel->label_id = $labels[rand(0, $labelCount-1)];
+
+                $newProductLabel->save();
+            }
+        }
+    }
+
+    public static function storeProductOption($product_id)
+    {
+        $faker = Factory::create('ko_kr');
+        for ($i = 0; $i < rand(1, 4); $i++) {
+            $op = new ProductOptionItem();
+            $op->product_id = $product_id;
+
+            if ($i == 0) {
+                $op->option_type = ProductOptionItem::TYPE_DEFAULT_OPTION;
+                $op->addition_price = 0;
+            } else {
+                $op->option_type = rand(ProductOptionItem::TYPE_OPTION_ITEM, ProductOptionItem::TYPE_ADDITION_ITEM);
+                $op->addition_price = $faker->numberBetween(0, 10) * 500;
+            }
+
+            $op->name = '옵션' . ($i + 1);
+            $op->stock = 10;
+            $op->alert_stock = 1;
+            $op->state_display = ProductOptionItem::DISPLAY_VISIBLE;
+            $op->state_deal = ProductOptionItem::DEAL_ON_SALE;
+            $op->save();
         }
     }
 

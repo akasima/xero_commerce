@@ -40,7 +40,6 @@ class Plugin extends AbstractPlugin
      */
     public function activate($installedVersion = null)
     {
-        Resources::storeDefaultShop();
     }
 
     /**
@@ -55,6 +54,8 @@ class Plugin extends AbstractPlugin
         }
 
         Database::create();
+        Resources::storeDefaultDeliveryCompany();
+        Resources::storeDefaultShop();
         Resources::setConfig();
         Resources::defaultSitemapSetting();
     }

@@ -38,6 +38,7 @@ class ProductController extends XeroCommerceBasicController
     {
         $moduleInstanceId = $this->instanceId;
         $config = \XeConfig::get(sprintf('%s.%s', Plugin::getId(), $this->instanceId));
+        dd($config);
         $products = $this->productService->getProducts($request, $config);
 
         return \XePresenter::make('product.index', ['products' => $products, 'instanceId' => $moduleInstanceId]);
