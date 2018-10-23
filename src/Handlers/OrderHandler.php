@@ -25,6 +25,15 @@ class OrderHandler extends SellSetHandler
         return ($this->auth) ? new Order() : Order::where('user_id', Auth::id());
     }
 
+    public function getOrderableOrder($id)
+    {
+        if (!$order = $this->whereUser()->where('code',Order::TEMP)->find($id) ){
+            abort(500, '잘못된 주문 요청입니다.');
+        }
+        return $order;
+
+    }
+
     public function register($carts)
     {
         $order = $this->makeOrder();

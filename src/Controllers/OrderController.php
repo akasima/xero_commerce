@@ -79,7 +79,7 @@ class OrderController extends Controller
 
     public function registerAgain(Request $request)
     {
-        $order = Order::find($request->order_id);
+        $order = $this->orderService->getOrderableOrder($request->order_id);
         $paymentService = new PaymentService();
         $paymentService->loadScript();
         return \XePresenter::make(

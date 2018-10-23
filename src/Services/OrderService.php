@@ -129,4 +129,9 @@ class OrderService
         $this->orderHandler->makeOrderAfterservice('환불', $orderItem, $request);
         return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDING);
     }
+
+    public function getOrderableOrder($order_id)
+    {
+        return $this->orderHandler->getOrderableOrder($order_id);
+    }
 }
