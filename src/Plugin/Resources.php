@@ -182,6 +182,14 @@ class Resources
     public static function registerRoute()
     {
         Route::group([
+            'prefix' => Plugin::XERO_COMMERCE_URL_PREFIX,
+            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
+            'middleware' => ['web']
+        ], function () {
+            Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
+        });
+
+        Route::group([
             'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
             'prefix' => 'xero-commerce',
             'middleware' => ['web']
@@ -209,6 +217,10 @@ class Resources
             Route::get('/cart/summary', [
                 'uses' => 'CartController@summary',
                 'as' => 'xero_commerce::cart.summary'
+            ]);
+            Route::post('/product/cart/{product}', [
+                'uses' => 'ProductController@cartAdd',
+                'as' => 'xero_commerce::product.cart'
             ]);
 
             Route::get('/order', [
@@ -270,9 +282,9 @@ class Resources
                 'as' => 'xero_commerce::agreement.order.save'
             ]);
 
-            Route::get('/no-delivery',[
+            Route::get('/no-delivery', [
                 'as' => 'xero_commerce::no-delivery',
-                'uses'=> 'DeliveryController@index'
+                'uses' => 'DeliveryController@index'
             ]);
         });
 
@@ -413,19 +425,19 @@ class Resources
                         'as' => 'xero_commerce::setting.search.user'
                     ]);
 
-                    Route::get('/shop/delivery/{shop}',[
+                    Route::get('/shop/delivery/{shop}', [
                         'as' => 'xero_commerce::setting.config.shop.delivery',
-                        'uses'=> 'ShopController@getDeliverys'
+                        'uses' => 'ShopController@getDeliverys'
                     ]);
 
-                    Route::post('/shop/delivery/add/{shop}',[
+                    Route::post('/shop/delivery/add/{shop}', [
                         'as' => 'xero_commerce::setting.config.shop.add.delivery',
-                        'uses'=> 'ShopController@addDeliverys'
+                        'uses' => 'ShopController@addDeliverys'
                     ]);
 
-                    Route::post('/shop/delivery/remove/{shop}',[
+                    Route::post('/shop/delivery/remove/{shop}', [
                         'as' => 'xero_commerce::setting.config.shop.remove.delivery',
-                        'uses'=> 'ShopController@removeDeliverys'
+                        'uses' => 'ShopController@removeDeliverys'
                     ]);
                 });
             });

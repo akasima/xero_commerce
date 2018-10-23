@@ -21,20 +21,6 @@ class XeroCommerceModule extends AbstractModule
 
     public static function boot()
     {
-        //TODO 위치 확인(plugin level)
-        Route::group([
-            'prefix' => Plugin::XERO_COMMERCE_URL_PREFIX,
-            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
-            'middleware' => ['web']
-        ], function () {
-            Route::post('/product/cart/{product}', [
-                'uses' => 'ProductController@cartAdd',
-                'as' => 'xero_commerce::product.cart'
-            ]);
-
-            Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
-        });
-
         Route::instance(XeroCommerceModule::getId(), function () {
             Route::get('/', ['as' => 'xero_commerce::product.index', 'uses' => 'ProductController@index']);
         }, ['namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers']);

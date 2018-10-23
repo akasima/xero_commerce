@@ -62,6 +62,7 @@ class Dev
         Resources::setConfig();
         $this->setting();
         $this->deleteTagInfo();
+        $this->makeShop(1);
     }
 
     public function deleteTagInfo()
