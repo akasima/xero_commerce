@@ -119,11 +119,13 @@ class ProductHandler
         $newProduct->fill($args);
         $info = array_combine($args['infoKeys'], $args['infoValues']);
         $newProduct->detail_info = json_encode($info);
-        if (is_null($args['discount_percentage'])) $newProduct->discount_percentage = floor(($args['original_price'] - $args['sell_price']) * 10000 / $args['original_price']) / 100;
+
         $newProduct->save();
 
         foreach ($args['images'] as $image) {
-            if ($image != null) $this->saveImage($image, $newProduct);
+            if ($image != null) {
+                $this->saveImage($image, $newProduct);
+            }
         }
 
         \Event::dispatch(new NewProductRegisterEvent($newProduct));

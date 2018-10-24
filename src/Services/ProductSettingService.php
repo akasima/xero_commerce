@@ -92,6 +92,10 @@ class ProductSettingService
             unset($productArgs['max_buy_count']);
         }
 
+        if (is_null($productArgs['discount_percentage'])) {
+            $productArgs['discount_percentage'] = floor(($productArgs['original_price'] - $productArgs['sell_price']) * 10000/ $productArgs['original_price']) / 100;
+        }
+
         $newProductId = $this->productHandler->store($productArgs);
 
         return $newProductId;

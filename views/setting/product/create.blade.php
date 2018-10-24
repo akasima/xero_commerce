@@ -57,7 +57,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     {{uio('formText', [
                     'label'=>'url명',
                     'name'=>'newSlug',
-                    'description'=>'상품 링크 Url로 등록되는 이름입니다.',
+                    'description'=>'상품 링크 Url로 등록되는 이름입니다.(비워두면 자동으로 설정 됩니다.)',
                     'value'=>Request::old('newSlug')
                     ])}}
 
@@ -205,6 +205,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
                         <div class="col-lg-6">
                             <label>뱃지</label>
+                            <input type="radio" name="badge_id" value="" checked>사용 안함
                             @foreach ($badges as $badge)
                                 <input type="radio" name="badge_id" value="{{ $badge->id }}">{{ $badge->name }}
                             @endforeach

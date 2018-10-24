@@ -77,7 +77,6 @@ class ProductController extends Controller
         $product = $this->productSettingService->getProduct($productId);
         $categoryItems = $productCategoryService->getCategoryItems();
 
-
         $productLabelIds = [];
         foreach ($product->labels as $label) {
             $productLabelIds[] = $label->id;
@@ -124,7 +123,6 @@ class ProductController extends Controller
             'sub_name' => 'required',
             'original_price' => 'required',
             'sell_price' => 'required',
-            'badge_id' => 'required',
             'description' => 'required',
             'stock' => 'required',
             'shop_delivery_id' => 'required'
@@ -133,7 +131,6 @@ class ProductController extends Controller
             'sub_name.required' => '간략 소개는 필수입니다.',
             'original_price.required' => '정상 가격은 필수입니다.',
             'sell_price.required' => '정상 가격은 필수입니다.',
-            'badge_id.required' => '뱃지는 필수입니다.',
             'description.required' => '상품소개는 필수입니다.',
             'stock.required' => '기초재고는 필수입니다.',
             'shop_delivery_id.required' => '배송사선택은 필수입니다.'
