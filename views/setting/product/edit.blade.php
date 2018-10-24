@@ -42,7 +42,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     {{uio('formText', [
                     'label'=>'url명',
                     'name'=>'newSlug',
-                    'description'=>'상품 링크 Url로 등록되는 이름입니다.',
+                    'description'=>'상품 링크 Url로 등록되는 이름입니다.(비워두면 자동으로 설정 됩니다.)',
                     'value'=>$product->getSlug()
                     ])}}
 
@@ -86,7 +86,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             @php
                                 $deliverys = $product->shop->deliveryCompanys;
                             @endphp
-                            <option value="">선</option>
+                            <option value="">선택</option>
                             @foreach($deliverys as $delivery)
                                 <option @if($product->delivery_id==$delivery->pivot->id) selected @endif value="{{$delivery->pivot->id}}">{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
                             @endforeach
@@ -187,6 +187,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
                         <div class="col-lg-6">
                             <label>뱃지</label>
+                            <input type="radio" name="badge_id" value="" @if ($product->badge_id == '') checked @endif>사용 안함
                             @foreach ($badges as $badge)
                                 <input type="radio" name="badge_id" value="{{ $badge->id }}" @if ($product->badge_id == $badge->id) checked @endif>{{ $badge->name }}
                             @endforeach

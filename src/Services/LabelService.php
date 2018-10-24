@@ -43,7 +43,11 @@ class LabelService
 
     public function updateProductLabel($productId, Request $request)
     {
-        $labels = $request->get('labels');
+        $labels = $request->get('labels', '');
+
+        if ($labels === '') {
+            return;
+        }
 
         $this->handler->destroyProductLabel($productId);
         $this->handler->storeProductLabel($productId, $labels);
