@@ -55,6 +55,10 @@ class Plugin extends AbstractPlugin
 
         Database::create();
         Resources::storeDefaultDeliveryCompany();
+        Resources::storeAgreement('contacts', '주문자정보 수집 동의');
+        Resources::storeAgreement('purchase', '구매 동의');
+        Resources::storeAgreement('privacy', '개인정보 수집 및 이용동의');
+        Resources::storeAgreement('thirdParty', '개인정보 제3자 제공/위탁동의');
         Resources::storeDefaultShop();
         Resources::setConfig();
         Resources::defaultSitemapSetting();

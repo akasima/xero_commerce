@@ -24,8 +24,10 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
+use Xpressengine\Plugins\XeroCommerce\Models\Agreement;
 use Xpressengine\Plugins\XeroCommerce\Models\Badge;
 use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Image;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
@@ -762,6 +764,17 @@ class Resources
         }
     }
 
+    public static function storeAgreement($type, $name)
+    {
+        $contents = '약관 샘플';
+        $agree = new Agreement();
+        $agree->type = $type;
+        $agree->name = $name;
+        $agree->version = '1.0.0';
+        $agree->contents = $contents;
+        $agree->save();
+    }
+
     public static function storeProduct($count, $category_id)
     {
         $faker = Factory::create('ko_kr');
@@ -771,8 +784,8 @@ class Resources
             $product->shop_id = rand(1, Shop::count());
             $product->product_code = $faker->numerify('###########');
             $product->detail_info = json_encode([
-                '상품정보' => '추후 반영',
-                '제조사' => '협의중'
+                '상품정보' => '샘플 상품',
+                '비고' => '수정해서 사용'
             ]);
             $product->name = '지금부터 봄까지 입는 데일리 인기신상 ITEM' . ($i + 1);
             $product->sub_name = '간단한 상품설명';
@@ -787,6 +800,10 @@ class Resources
             $product->state_deal = Product::DEAL_ON_SALE;
             $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
             $product->save();
+
+            $image = new Image();
+            $image->url = Plugin::asset('assets/sample/tmp_tablist.jpg');
+            $product->images()->save($image);
 
             self::storeProductOption($product->id);
 
