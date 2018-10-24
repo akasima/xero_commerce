@@ -13,7 +13,7 @@
                     <th>할인금액</th>
                     <td> <i class="xi-minus-min"></i> {{Number(summary.discount_price).toLocaleString()}} 원</td>
                 </tr>
-                <tr>
+                <tr v-if="discountOption">
                     <th>적립금 사용</th>
                     <td><i class="xi-minus-min"></i> 0 원</td>
                 </tr>
@@ -39,7 +39,7 @@
   export default {
     name: "OrderBillComponent",
     props: [
-        'summary', 'payOption', 'validate', 'method'
+        'summary', 'payOption', 'validate', 'method', 'discountOption'
     ],
     methods: {
       pay () {

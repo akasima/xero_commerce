@@ -1,5 +1,4 @@
 {{ XeFrontend::js(asset(\Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
-<div class="title">{{ $title }}</div>
 <div id="component-container">
 
     <dash-component
