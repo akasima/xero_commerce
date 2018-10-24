@@ -448,7 +448,10 @@ class Resources
                 });
 
                 //주문 관리
-                Route::group(['prefix' => 'order'], function () {
+                Route::group([
+                    'prefix' => 'order',
+                    'middleware' => ['admin']
+                ], function () {
                     Route::get('/', [
                         'as' => 'xero_commerce::setting.order.index',
                         'uses' => 'OrderController@dash',
@@ -540,6 +543,7 @@ class Resources
                 });
             });
         });
+
         ProductSlugService::setReserved([
             'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug',
             'cart', 'order', Plugin::XERO_COMMERCE_URL_PREFIX
