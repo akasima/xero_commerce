@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
+use App\Facades\XeMedia;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 abstract class SellType extends DynamicModel
@@ -28,7 +29,7 @@ abstract class SellType extends DynamicModel
 
     public function images()
     {
-        return $this->morphMany(Image::class, 'imagable');
+        return $this->morphToMany(\Xpressengine\Media\Models\Image::class,'imagable','xero_commerce_images');
     }
 
     public function delivery()
@@ -60,7 +61,9 @@ abstract class SellType extends DynamicModel
     function getImages()
     {
         if ($this->images->count() === 0) return collect([asset('/assets/core/common/img/default_image_1200x800.jpg')]);
-        return $this->images->pluck('url');
+        return $this->images->map(function($item){
+            return XeMedia::images()->getThumbnail($item,'widen','S')->url();
+        });
     }
 
     abstract function getContents();

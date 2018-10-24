@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
+use App\Facades\XeMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\DynamicModel;
 use Xpressengine\Tag\Tag;
@@ -113,7 +114,7 @@ class Product extends SellType
 
     public function getThumbnailSrc()
     {
-        return $this->getImages()->first();
+        return XeMedia::images()->getThumbnail($this->images->first(),'widen','M')->url();
     }
 
     /**

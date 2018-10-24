@@ -7,8 +7,8 @@ use App\Facades\XeStorage;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Http\Request;
+use Xpressengine\Media\Models\Image;
 use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
-use Xpressengine\Plugins\XeroCommerce\Models\Image;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
@@ -133,13 +133,13 @@ class ProductHandler
         return $newProduct->id;
     }
 
-    public function saveImage($imageParm, $newProduct)
+    public function saveImage($imageParm, Product $newProduct)
     {
         $file = XeStorage::upload($imageParm, 'product');
         $imageFile = XeMedia::make($file);
-        $image = new Image();
-        $image->url = $imageFile->url();
-        return $newProduct->images()->save($image);
+        XeMedia::createThumbnails($imageFile, 'widen');
+        $newProduct->images()->attach($imageFile->id);
+        return $imageFile;
     }
 
     public function update(Product $product, $args)
@@ -158,9 +158,7 @@ class ProductHandler
             if (count($args['editImages']) > 0) {
                 if ($args['editImages'][$key] != null) {
                     $editImage = $this->saveImage($args['editImages'][$key], $product);
-                    $originImage->url = $editImage->url;
-                    $originImage->save();
-                    $editImage->delete();
+                    $product->images()->updateExistingPivot($originImage->id ,['image_id'=>$editImage->id]);
                 }
             } else {
                 $originImage->delete();

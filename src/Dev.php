@@ -59,7 +59,6 @@ class Dev
     {
         $this->dropTable();
         $this->makeTable();
-        Resources::setConfig();
         $this->setting();
         $this->deleteTagInfo();
         $this->makeShop(1);
@@ -200,6 +199,7 @@ class Dev
     private function getXeroCommerceCategoryIds()
     {
         $config = \XeConfig::get(Plugin::getId());
+
         $categoryId = $config->get('categoryId');
 
         $categoryIds = CategoryItem::where('category_id', $categoryId)->pluck('id')->toArray();
