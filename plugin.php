@@ -3,8 +3,10 @@
 namespace Xpressengine\Plugins\XeroCommerce;
 
 use Route;
+use Xpressengine\Log\LogHandler;
 use Xpressengine\Plugin\AbstractPlugin;
 use Xpressengine\Plugins\XeroCommerce\Exceptions\XeroCommercePrefixUsedException;
+use Xpressengine\Plugins\XeroCommerce\Logger\XeroCommerceLogger;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
 use Xpressengine\Plugins\XeroCommerce\Plugin\EventManager;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
@@ -22,6 +24,7 @@ class Plugin extends AbstractPlugin
      */
     public function boot()
     {
+        self::registerXeroCommerceLogger();
         Resources::bindClasses();
         Resources::setCanNotUseXeroCommercePrefixRoute();
         Resources::registerRoute();
@@ -29,6 +32,14 @@ class Plugin extends AbstractPlugin
         \Xpressengine\XePlugin\XeroPay\Resources::registerMenu();
         Resources::registerSettingMenu();
         EventManager::listenEvents();
+    }
+
+    /**
+     * @return void
+     */
+    private function registerXeroCommerceLogger()
+    {
+        app('xe.register')->push(LogHandler::PLUGIN_LOGGER_KEY, XeroCommerceLogger::ID, XeroCommerceLogger::class);
     }
 
     /**
