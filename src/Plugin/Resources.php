@@ -795,7 +795,6 @@ class Resources
                 (($product->original_price - $product->sell_price) * 100 / $product->original_price)
             );
             $product->description = '상품설명페이지';
-            $product->as_info = '';
             $product->tax_type = rand(Product::TAX_TYPE_TAX, Product::TAX_TYPE_FREE);
             $product->state_display = Product::DISPLAY_VISIBLE;
             $product->state_deal = Product::DEAL_ON_SALE;
