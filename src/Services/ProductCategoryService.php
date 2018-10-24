@@ -10,7 +10,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class ProductCategoryService
 {
-    /** @var ProductCategoryHandler $handler  */
+    /** @var ProductCategoryHandler $handler */
     protected $handler;
 
     /**
@@ -58,7 +58,7 @@ class ProductCategoryService
             return;
         }
 
-        $newCategory = substr($newCategory, 0, strlen($newCategory)-1);
+        $newCategory = substr($newCategory, 0, strlen($newCategory) - 1);
 
         $categoryItems = explode(',', $newCategory);
 

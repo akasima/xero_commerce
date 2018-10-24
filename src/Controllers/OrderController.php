@@ -34,8 +34,8 @@ class OrderController extends Controller
     {
         $default = [
             'date' => [
-            now()->subWeek()->toDateString(),
-            now()->toDateString()
+                now()->subWeek()->toDateString(),
+                now()->toDateString()
             ]
             ,
             'equal' => [
@@ -48,7 +48,7 @@ class OrderController extends Controller
 
             ]
         ];
-        $data =$this->orderService->orderList(1, 5, $default);
+        $data = $this->orderService->orderList(1, 5, $default);
         return \XePresenter::make('xero_commerce::views.order.list',
             [
                 'title' => '주문/배송조회',
@@ -122,33 +122,33 @@ class OrderController extends Controller
         return $this->orderService->pay($order, $request);
     }
 
-    public function afterService($as,Order $order, OrderItem $orderItem)
+    public function afterService($as, Order $order, OrderItem $orderItem)
     {
         $paymentService = new PaymentService();
         $paymentService->loadScript();
-        switch ($as){
+        switch ($as) {
             case 'change':
                 $type = '교환';
                 break;
             case 'refund':
                 $type = '환불';
                 break;
-            default :
+            default:
                 throwException(\HttpUrlException::class);
         }
         return \XePresenter::make('xero_commerce::views.order.as',
             [
-                'type'=>$type,
-                'order'=>$order,
-                'item'=>$orderItem->getJsonFormat(),
-                'company'=>DeliveryCompany::get(),
+                'type' => $type,
+                'order' => $order,
+                'item' => $orderItem->getJsonFormat(),
+                'company' => DeliveryCompany::get(),
                 'payMethods' => $paymentService->methodList()
             ]);
     }
 
     public function asRegister($type, OrderItem $orderItem, Request $request)
     {
-        if($type =='교환')$this->orderService->exchangeOrderItem($orderItem, $request);
-        if($type =='환불')$this->orderService->refundOrderItem($orderItem, $request);
+        if ($type == '교환') $this->orderService->exchangeOrderItem($orderItem, $request);
+        if ($type == '환불') $this->orderService->refundOrderItem($orderItem, $request);
     }
 }

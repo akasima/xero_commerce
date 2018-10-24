@@ -27,7 +27,7 @@ class OrderHandler extends SellSetHandler
 
     public function getOrderableOrder($id)
     {
-        if (!$order = $this->whereUser()->where('code',Order::TEMP)->find($id) ){
+        if (!$order = $this->whereUser()->where('code', Order::TEMP)->find($id)) {
             abort(500, '잘못된 주문 요청입니다.');
         }
         return $order;
@@ -136,7 +136,7 @@ class OrderHandler extends SellSetHandler
         $order = new Order();
         $order->code = $order::TEMP;
         $order->order_no = $now->format('YmdHis') . '-' . sprintf("%'.06d", $order->whereDate('created_at', $now->toDateString())->count());
-        $order->user_id = Auth::id()?:request()->ip();
+        $order->user_id = Auth::id() ?: request()->ip();
         $order->save();
         return $order;
     }
@@ -148,18 +148,18 @@ class OrderHandler extends SellSetHandler
 
     public function getOrderItemList(Order $order, $condition = null)
     {
-        if(is_null($order->id)) {
+        if (is_null($order->id)) {
             $orderItems = $this->whereUser()
-                ->when(!is_null($condition), function ($query) use($condition) {
+                ->when(!is_null($condition), function ($query) use ($condition) {
                     $query->where($condition);
                 })
                 ->with('orderItems.delivery.company', 'orderItems.order.orderItems.sellGroups.sellSet')->latest()->get()->pluck('orderItems')->flatten();
         } else {
-            $orderItems=$order->orderItems()->when(!is_null($condition), function ($query) use($condition) {
+            $orderItems = $order->orderItems()->when(!is_null($condition), function ($query) use ($condition) {
                 $query->where($condition);
-            })->with('delivery.company','order.orderItems.sellGroups.sellSet')->latest()->get();
+            })->with('delivery.company', 'order.orderItems.sellGroups.sellSet')->latest()->get();
         }
-        return $orderItems->map(function(OrderItem $orderItem){
+        return $orderItems->map(function (OrderItem $orderItem) {
             return $orderItem->getJsonFormat();
         });
     }
@@ -189,10 +189,10 @@ class OrderHandler extends SellSetHandler
     {
         if (isset($request->delivery['nickname'])) {
             $del = $request->delivery;
-            $del['user_id']=Auth::id();
-            $del['seq']=UserDelivery::where('user_id',Auth::id())->count()+1;
+            $del['user_id'] = Auth::id();
+            $del['seq'] = UserDelivery::where('user_id', Auth::id())->count() + 1;
             UserDelivery::updateOrCreate(
-                ['nickname'=>$request->delivery['nickname']],
+                ['nickname' => $request->delivery['nickname']],
                 $del
             );
         }
@@ -200,11 +200,11 @@ class OrderHandler extends SellSetHandler
             $delivery = new OrderDelivery();
             $delivery->order_item_id = $orderItem->id;
             $delivery->ship_no = '';
-            $delivery->status=OrderDelivery::READY;
+            $delivery->status = OrderDelivery::READY;
             $delivery->company_id = $orderItem->sellType->getDelivery()->company->id;
             $delivery->recv_name = $request->delivery['name'];
             $delivery->recv_phone = $request->delivery['phone'];
-            $delivery->recv_addr = $request->delivery['addr']? : '';
+            $delivery->recv_addr = $request->delivery['addr'] ?: '';
             $delivery->recv_addr_detail = $request->delivery['addr_detail'];
             $delivery->recv_msg = $request->delivery['msg'];
             $delivery->save();
@@ -214,7 +214,7 @@ class OrderHandler extends SellSetHandler
 
     public function dashboard()
     {
-        $count = collect(Order::STATUS)->map(function ($name, $code)  {
+        $count = collect(Order::STATUS)->map(function ($name, $code) {
             return $this->whereUser()->where('code', $code)->count();
         });
         return collect(Order::STATUS)->combine($count);
@@ -228,23 +228,23 @@ class OrderHandler extends SellSetHandler
     public function dailyBoard()
     {
         $days = [];
-        for($i=0; $i<7; $i++){
-            $days[]=now()->subDays($i)->toDateString();
+        for ($i = 0; $i < 7; $i++) {
+            $days[] = now()->subDays($i)->toDateString();
         }
-        $counts = collect($days)->map(function($item){
-           return $this->whereUser()->whereDate('created_at',$item)->count();
+        $counts = collect($days)->map(function ($item) {
+            return $this->whereUser()->whereDate('created_at', $item)->count();
         })->all();
         return [
-            'days'=>$days,
-            'count'=>$counts
+            'days' => $days,
+            'count' => $counts
         ];
     }
 
     public function getOrderList($page, $count, $condition = null)
     {
         return $this->whereUser()
-            ->where('code','!=',Order::TEMP)
-            ->when(!is_null($condition),function ($query) use($condition){
+            ->where('code', '!=', Order::TEMP)
+            ->when(!is_null($condition), function ($query) use ($condition) {
                 $query->where($condition);
             })
             ->with('orderItems.delivery', 'payment', 'userInfo')
@@ -281,35 +281,35 @@ class OrderHandler extends SellSetHandler
     public function makeOrderAfterservice($type, OrderItem $orderItem, Request $request)
     {
         $oa = new OrderAfterservice();
-        $oa->order_item_id=$orderItem->id;
-        $oa->type=$type;
-        $oa->reason=$request->reason;
+        $oa->order_item_id = $orderItem->id;
+        $oa->type = $type;
+        $oa->reason = $request->reason;
         $oa->delivery_company_id = $request->delivery;
-        $oa->ship_no=$request->ship_no;
-        $oa->received=false;
-        $oa->complete=false;
+        $oa->ship_no = $request->ship_no;
+        $oa->received = false;
+        $oa->complete = false;
         $oa->save();
     }
 
     public function receiveOrderAfterservice(OrderItem $orderItem)
     {
         $oa = $orderItem->afterService;
-        $oa->received= true;
+        $oa->received = true;
         $oa->save();
     }
 
     public function endOrderAfterService(OrderItem $orderItem)
     {
         $oa = $orderItem->afterService;
-        $oa->complete= true;
+        $oa->complete = true;
         $oa->save();
     }
 
     public function getAfterserviceList()
     {
         $orders = $this->whereUser()->pluck('id');
-        $orderItems = OrderItem::whereIn('order_id',$orders)->has('afterService')->with('afterService')->get();
-        return $orderItems->map(function(OrderItem $orderItem){
+        $orderItems = OrderItem::whereIn('order_id', $orders)->has('afterService')->with('afterService')->get();
+        return $orderItems->map(function (OrderItem $orderItem) {
             return $orderItem->getJsonFormat();
         });
     }

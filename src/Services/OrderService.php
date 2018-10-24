@@ -58,11 +58,11 @@ class OrderService
     {
         $paginate = $this->orderHandler->getOrderList($page, $count, $this->makeQueryFromArray($query));
         return [
-            'data'=>$paginate->map(function (Order $order) {
+            'data' => $paginate->map(function (Order $order) {
 
                 return $this->orderDetail($order);
             }),
-            'paginate'=>$paginate
+            'paginate' => $paginate
         ];
 
         return $this->orderHandler->getOrderList($page, $count, $this->makeQueryFromArray($query))->map(function (Order $order) {
@@ -73,25 +73,25 @@ class OrderService
 
     public function makeQueryFromArray($condition)
     {
-        return function ($query) use($condition) {
-            if (isset($condition['date']) ) {
-                $query->whereDate('created_at','>=',$condition['date'][0])
-                    ->whereDate('created_at','<=',$condition['date'][1]);
+        return function ($query) use ($condition) {
+            if (isset($condition['date'])) {
+                $query->whereDate('created_at', '>=', $condition['date'][0])
+                    ->whereDate('created_at', '<=', $condition['date'][1]);
             }
-            if (isset($condition['compare']) ) {
-                foreach($condition['compare'] as $key =>$value){
+            if (isset($condition['compare'])) {
+                foreach ($condition['compare'] as $key => $value) {
                     $query->where($key, $value[0], $value[1]);
                 }
             }
-            if (isset($condition['equal']) ) {
-                foreach($condition['equal'] as $key =>$value){
-                    if($key!='code' || $value!='all') {
+            if (isset($condition['equal'])) {
+                foreach ($condition['equal'] as $key => $value) {
+                    if ($key != 'code' || $value != 'all') {
                         $query->where($key, $value);
                     }
                 }
             }
-            if (isset($condition['inGroup']) ) {
-                foreach($condition['inGroup'] as $key =>$value){
+            if (isset($condition['inGroup'])) {
+                foreach ($condition['inGroup'] as $key => $value) {
                     $query->whereIn($key, $value);
                 }
             }

@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 class OrderItem extends SellSet
 {
-    protected $table='xero_commerce_order_item';
+    protected $table = 'xero_commerce_order_item';
 
     const EXCHANGING = 1;
     const EXCHANGED = 2;
@@ -28,12 +27,12 @@ class OrderItem extends SellSet
      */
     public function renderInformation()
     {
-        $row=[];
-        $row []= '<a target="_blank'.now()->toTimeString().'" href="'.route('xero_commerce::product.show',['strSlug'=>$this->sellType->getSlug()]).'">' . $this->renderSpanBr($this->sellType->getName()). '</a>';
-        $this->sellGroups->each(function(SellGroup $group) use(&$row){
-            $row []= $this->renderSpanBr($group->sellUnit->getName() . ' / ' . $group->getCount() . '개', "color: grey");
+        $row = [];
+        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->sellType->getSlug()]) . '">' . $this->renderSpanBr($this->sellType->getName()) . '</a>';
+        $this->sellGroups->each(function (SellGroup $group) use (&$row) {
+            $row [] = $this->renderSpanBr($group->sellUnit->getName() . ' / ' . $group->getCount() . '개', "color: grey");
         });
-        $row []= $this->renderSpanBr($this->sellType->shop->shop_name);
+        $row [] = $this->renderSpanBr($this->sellType->shop->shop_name);
         return $row;
     }
 
@@ -41,8 +40,8 @@ class OrderItem extends SellSet
     {
         return [
             'id' => $this->id,
-            'user'=>$this->order->userInfo,
-            'order_no'=>$this->order->order_no,
+            'user' => $this->order->userInfo,
+            'order_no' => $this->order->order_no,
             'info' => $this->renderInformation(),
             'name' => $this->sellType->getName(),
             'original_price' => $this->getOriginalPrice(),
@@ -50,12 +49,12 @@ class OrderItem extends SellSet
             'discount_price' => $this->getDiscountPrice(),
             'count' => $this->getCount(),
             'src' => $this->getThumbnailSrc(),
-            'status' => $this->delivery ? $this->delivery->getStatus(): '',
-            'delivery'=>$this->delivery ? : null,
-            'delivery_url' => $this->delivery ?$this->delivery->geturl(): '',
+            'status' => $this->delivery ? $this->delivery->getStatus() : '',
+            'delivery' => $this->delivery ?: null,
+            'delivery_url' => $this->delivery ? $this->delivery->geturl() : '',
             'fare' => $this->getFare(),
-            'delivery_pay'=>$this->getDeliveryPay(),
-            'as'=>$this->afterService
+            'delivery_pay' => $this->getDeliveryPay(),
+            'as' => $this->afterService
         ];
     }
 

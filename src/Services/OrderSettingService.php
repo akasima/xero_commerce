@@ -31,28 +31,26 @@ class OrderSettingService
 
     public function list()
     {
-        return $this->orderHandler->getOrderList(1,10);
+        return $this->orderHandler->getOrderList(1, 10);
     }
 
     public function deliveryOrderItemList()
     {
-        return $this->orderHandler->getOrderItemList(new Order(), function($query){
-            $query->where('code','!=', Order::TEMP);
+        return $this->orderHandler->getOrderItemList(new Order(), function ($query) {
+            $query->where('code', '!=', Order::TEMP);
         });
     }
 
     public function deliveryProcess(Request $request)
     {
-        foreach($request->delivery as $delivery)
-        {
-            $this->orderHandler->shipNoRegister(OrderItem::find($delivery['id']),$delivery['no']);
+        foreach ($request->delivery as $delivery) {
+            $this->orderHandler->shipNoRegister(OrderItem::find($delivery['id']), $delivery['no']);
         }
     }
 
     public function deliveryComplete(Request $request)
     {
-        foreach($request->delivery as $delivery)
-        {
+        foreach ($request->delivery as $delivery) {
             $this->orderHandler->completeDelivery(OrderItem::find($delivery));
         }
     }

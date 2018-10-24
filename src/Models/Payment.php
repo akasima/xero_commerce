@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    protected $table='xero_commerce_payment';
+    protected $table = 'xero_commerce_payment';
 
     const ORDERED = 1;
     const PAID = 2;
@@ -19,7 +19,7 @@ class Payment extends Model
 
     public function getMethod()
     {
-        if(is_null($this->method) || $this->method =='') return '없음';
+        if (is_null($this->method) || $this->method == '') return '없음';
         return self::METHOD[$this->method];
     }
 }

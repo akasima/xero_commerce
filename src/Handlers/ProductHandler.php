@@ -117,14 +117,13 @@ class ProductHandler
         $newProduct = new Product();
 
         $newProduct->fill($args);
-        $info = array_combine($args['infoKeys'],$args['infoValues']);
+        $info = array_combine($args['infoKeys'], $args['infoValues']);
         $newProduct->detail_info = json_encode($info);
-        if(is_null($args['discount_percentage']))$newProduct->discount_percentage=floor(($args['original_price']-$args['sell_price'])*10000/$args['original_price'])/100;
+        if (is_null($args['discount_percentage'])) $newProduct->discount_percentage = floor(($args['original_price'] - $args['sell_price']) * 10000 / $args['original_price']) / 100;
         $newProduct->save();
 
-        foreach($args['images'] as $image)
-        {
-            if($image!=null)$this->saveImage($image, $newProduct);
+        foreach ($args['images'] as $image) {
+            if ($image != null) $this->saveImage($image, $newProduct);
         }
 
         \Event::dispatch(new NewProductRegisterEvent($newProduct));
@@ -149,27 +148,25 @@ class ProductHandler
                 $product->{$name} = $value;
             }
         }
-        $info = array_combine(key_exists('infoKeys',$args) ? $args['infoKeys']: [], key_exists('infoValues',$args) ? $args['infoValues']: []);
+        $info = array_combine(key_exists('infoKeys', $args) ? $args['infoKeys'] : [], key_exists('infoValues', $args) ? $args['infoValues'] : []);
         $product->detail_info = json_encode($info);
-        $nonEditImage = key_exists('nonEditImage',$args) ? $args['nonEditImage'] : [];
+        $nonEditImage = key_exists('nonEditImage', $args) ? $args['nonEditImage'] : [];
         $editImages = $product->images()->whereNotIn('id', $nonEditImage)->get();
-        $editImages->each(function(Image $originImage, $key) use ($args, $product){
-            if(count($args['editImages'])>0){
-                dd($args['editImages']);
-                if($args['editImages'][$key] !=null){
+        $editImages->each(function (Image $originImage, $key) use ($args, $product) {
+            if (count($args['editImages']) > 0) {
+                if ($args['editImages'][$key] != null) {
                     $editImage = $this->saveImage($args['editImages'][$key], $product);
                     $originImage->url = $editImage->url;
                     $originImage->save();
                     $editImage->delete();
                 }
-            }else{
+            } else {
                 $originImage->delete();
             }
         });
 
-        foreach($args['addImages'] as $image)
-        {
-            if($image!=null)$this->saveImage($image, $product);
+        foreach ($args['addImages'] as $image) {
+            if ($image != null) $this->saveImage($image, $product);
         }
 
         $product->save();

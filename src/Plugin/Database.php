@@ -97,9 +97,9 @@ class Database
         });
 
         Schema::create('xero_commerce_images', function (Blueprint $table) {
-           $table->increments('id');
-           $table->string('url');
-           $table->morphs('imagable');
+            $table->increments('id');
+            $table->string('url');
+            $table->morphs('imagable');
         });
 
         Schema::create('xero_commerce_product_slug', function (Blueprint $table) {

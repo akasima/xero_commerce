@@ -24,7 +24,7 @@ class Order extends DynamicModel
     const REFUNDED = 10;
 
     const STATUS = [
-        '임시', '결제대기', '상품준비', '배송중', '배송완료','취소중', '취소완료', '교환중', '교환완료', '환불중', '환불완료'
+        '임시', '결제대기', '상품준비', '배송중', '배송완료', '취소중', '취소완료', '교환중', '교환완료', '환불중', '환불완료'
     ];
 
     public function orderItems()
@@ -52,6 +52,6 @@ class Order extends DynamicModel
 
     public function orderGroup()
     {
-        return $this->hasManyThrough(OrderItemGroup::class,OrderItem::class);
+        return $this->hasManyThrough(OrderItemGroup::class, OrderItem::class);
     }
 }

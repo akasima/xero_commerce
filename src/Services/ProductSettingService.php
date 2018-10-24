@@ -23,6 +23,7 @@ class ProductSettingService
 
     /**
      * @param  integer $productId productId
+     *
      * @return \Xpressengine\Plugins\XeroCommerce\Models\Product
      */
     public function getProduct($productId)
@@ -61,6 +62,7 @@ class ProductSettingService
 
     /**
      * @param Request $request request
+     *
      * @return Product
      */
     public function getProducts(Request $request)
@@ -74,6 +76,7 @@ class ProductSettingService
 
     /**
      * @param Request $request request
+     *
      * @return int
      */
     public function store(Request $request)

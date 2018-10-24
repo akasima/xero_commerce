@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Xpressengine\Plugins\XeroCommerce\Models;
-
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 
@@ -30,7 +28,7 @@ abstract class SellType extends DynamicModel
 
     public function images()
     {
-        return $this->morphMany(Image::class,'imagable');
+        return $this->morphMany(Image::class, 'imagable');
     }
 
     public function delivery()
@@ -41,16 +39,16 @@ abstract class SellType extends DynamicModel
     public function getJsonFormat()
     {
         return [
-            'id'=>$this->id,
-            'mainImage'=>$this->getThumbnailSrc(),
-            'images'=>$this->getImages(),
-            'contents'=>$this->getContents(),
-            'data'=>$this,
-            'shop'=>$this->getShop(),
-            'options' => $this->sellUnits->map(function(SellUnit $sellUnit){
+            'id' => $this->id,
+            'mainImage' => $this->getThumbnailSrc(),
+            'images' => $this->getImages(),
+            'contents' => $this->getContents(),
+            'data' => $this,
+            'shop' => $this->getShop(),
+            'options' => $this->sellUnits->map(function (SellUnit $sellUnit) {
                 return $sellUnit->getJsonFormat();
             }),
-            'delivery'=>$this->getDelivery()
+            'delivery' => $this->getDelivery()
         ];
     }
 
@@ -61,7 +59,7 @@ abstract class SellType extends DynamicModel
 
     function getImages()
     {
-        if($this->images->count()===0) return collect([asset('/assets/core/common/img/default_image_1200x800.jpg')]);
+        if ($this->images->count() === 0) return collect([asset('/assets/core/common/img/default_image_1200x800.jpg')]);
         return $this->images->pluck('url');
     }
 

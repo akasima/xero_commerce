@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
@@ -29,7 +28,7 @@ abstract class SellUnit extends DynamicModel
 
     public function getDiscountPrice()
     {
-        return $this->getOriginalPrice()-$this->getSellPrice();
+        return $this->getOriginalPrice() - $this->getSellPrice();
     }
 
     public function getJsonFormat()

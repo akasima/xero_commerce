@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
@@ -38,7 +37,7 @@ abstract class SellGroup extends DynamicModel
         return [
             'id' => $this->id,
             'unit' => $this->sellUnit->getJsonFormat(),
-            'count'=> $this->getCount(),
+            'count' => $this->getCount(),
         ];
     }
 }

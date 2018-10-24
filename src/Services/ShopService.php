@@ -113,15 +113,15 @@ class ShopService
         return true;
     }
 
-    public function addDelivery (Request $request, Shop $shop)
+    public function addDelivery(Request $request, Shop $shop)
     {
-        $args= $request->all();
+        $args = $request->all();
         $this->handler->addDelivery($args, $shop);
     }
 
     public function removeDelivery(Request $request, Shop $shop)
     {
-        $args= $request->all();
+        $args = $request->all();
         $this->handler->removeDelivery($args, $shop);
     }
 }

@@ -7,6 +7,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 class OrderAfterservice extends DynamicModel
 {
     protected $table = 'xero_commerce_order_afterservice';
+
     public $timestamps=false;
 
     public function orderItem()
@@ -18,5 +19,4 @@ class OrderAfterservice extends DynamicModel
     {
         return $this->belongsTo(DeliveryCompany::class);
     }
-
 }

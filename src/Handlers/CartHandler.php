@@ -43,10 +43,10 @@ class CartHandler extends SellSetHandler
     public function drawCart($cart_id)
     {
         if (is_iterable($cart_id)) {
-            CartGroup::whereIn('cart_id',$cart_id)->delete();
+            CartGroup::whereIn('cart_id', $cart_id)->delete();
             return Cart::whereIn('id', $cart_id)->delete();
         }
-        CartGroup::where('cart_id',$cart_id)->delete();
+        CartGroup::where('cart_id', $cart_id)->delete();
         return Cart::find($cart_id)->delete();
     }
 
@@ -78,6 +78,6 @@ class CartHandler extends SellSetHandler
             $cart->addGroup($cartGroup);
         });
         $cart->save();
-        if($cart->getCount()==0)$cart->delete();
+        if ($cart->getCount() == 0) $cart->delete();
     }
 }

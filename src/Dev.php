@@ -92,8 +92,8 @@ class Dev
             }
             $shop->shop_type = $shopType;
             $shop->state_approval = $this->faker->numberBetween(Shop::APPROVAL_WAITING, Shop::APPROVAL_REJECT);
-            $shop->delivery_info=$this->faker->text(200);
-            $shop->as_info=$this->faker->text(200);
+            $shop->delivery_info = $this->faker->text(200);
+            $shop->as_info = $this->faker->text(200);
             $shop->save();
 
             $shopUser = new ShopUser();
@@ -121,7 +121,7 @@ class Dev
             $product = new Product();
             $product->shop_id = rand(1, Shop::count());
             $product->product_code = $this->faker->numerify('###########');
-            $product->detail_info=json_encode([]);
+            $product->detail_info = json_encode([]);
             $product->name = $this->faker->word;
             $product->sub_name = $this->faker->text(20);
             $product->original_price = $this->faker->numberBetween(1, 50) * 1000;
@@ -176,7 +176,7 @@ class Dev
             $newProductLabel = new ProductLabel();
 
             $newProductLabel->product_id = $product->id;
-            $newProductLabel->label_id = $labels[rand(0, $labelCount-1)];
+            $newProductLabel->label_id = $labels[rand(0, $labelCount - 1)];
 
             $newProductLabel->save();
         }
@@ -248,10 +248,10 @@ class Dev
 
     public function makeCart()
     {
-        $s= new CartHandler();
-        $rand = rand(1,ProductOptionItem::count());
-        $cg = $s->makeCartGroup(ProductOptionItem::find($rand), rand(1,5));
-        $s->addCart(ProductOptionItem::find($rand)->product, collect([$cg]),'선불');
+        $s = new CartHandler();
+        $rand = rand(1, ProductOptionItem::count());
+        $cg = $s->makeCartGroup(ProductOptionItem::find($rand), rand(1, 5));
+        $s->addCart(ProductOptionItem::find($rand)->product, collect([$cg]), '선불');
     }
 
     public function setting()

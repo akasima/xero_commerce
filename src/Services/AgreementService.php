@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Xpressengine\Plugins\XeroCommerce\Services;
-
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -54,6 +52,6 @@ class AgreementService
 
     static function orderDenied(Order $order, $agree_id)
     {
-        OrderAgreement::where('order_id',$order->id)->where('agreement_id',$agree_id)->delete();
+        OrderAgreement::where('order_id', $order->id)->where('agreement_id', $agree_id)->delete();
     }
 }

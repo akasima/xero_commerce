@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Xpressengine\Plugins\XeroCommerce\Models;
-
 
 use App\Facades\XeConfig;
 use Xpressengine\Database\Eloquent\DynamicModel;
@@ -10,6 +8,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 class UserInfo extends DynamicModel
 {
     protected $table = 'xero_commerce_user';
+
     public $timestamps = false;
 
     static function by($user_id)

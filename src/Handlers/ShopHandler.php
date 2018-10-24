@@ -100,15 +100,15 @@ class ShopHandler
 
     public function addDelivery(array $args, Shop $shop)
     {
-        if($shop->deliveryCompanys()->wherePivot('id',$args['pivot']['id'])->exists()){
-            $shop->deliveryCompanys()->wherePivot('id',$args['pivot']['id'])->updateExistingPivot($args['id'],['delivery_fare'=>$args['pivot']['delivery_fare'], 'up_to_free'=>0, 'is_default'=>0]);
-        }else{
-            $shop->deliveryCompanys()->attach($args['id'],['delivery_fare'=>$args['pivot']['delivery_fare'], 'up_to_free'=>0, 'is_default'=>0]);
+        if ($shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->exists()) {
+            $shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->updateExistingPivot($args['id'], ['delivery_fare' => $args['pivot']['delivery_fare'], 'up_to_free' => 0, 'is_default' => 0]);
+        } else {
+            $shop->deliveryCompanys()->attach($args['id'], ['delivery_fare' => $args['pivot']['delivery_fare'], 'up_to_free' => 0, 'is_default' => 0]);
         }
     }
 
     public function removeDelivery(array $args, Shop $shop)
     {
-        $shop->deliveryCompanys()->wherePivot('id',$args['pivot']['id'])->detach();
+        $shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->detach();
     }
 }

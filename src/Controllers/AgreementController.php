@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
-
 
 use App\Facades\XePresenter;
 use App\Http\Controllers\Controller;
