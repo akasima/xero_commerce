@@ -108,6 +108,12 @@
         this.complete()
       },
       submit () {
+          this.texted=[]
+          $.each(this.checked,(k,v)=>{
+              console.log(this.checked)
+              console.log(v)
+              this.texted[v] = this.allNo
+          })
         if(this.validate()){
           $.ajax({
             url:'/settings/xero_commerce/order/delivery',
