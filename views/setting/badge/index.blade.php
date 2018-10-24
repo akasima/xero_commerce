@@ -13,7 +13,6 @@
                             <tr>
                                 <th>배지 이름</th>
                                 <th>배지 영어 이름</th>
-                                <th>이미지</th>
                                 <th>관리</th>
                             </tr>
                             </thead>
@@ -23,7 +22,6 @@
                                 <tr>
                                     <td>{{ $badge->name }}</td>
                                     <td>{{ $badge->eng_name }}</td>
-                                    <td></td>
                                     <td>
                                         <a href="{{ route('xero_commerce::setting.badge.edit', ['id' => $badge->id]) }}" class="xe-btn">수정</a>
                                         <form method="post" action="{{ route('xero_commerce::setting.badge.remove', ['id' => $badge->id]) }}">
@@ -39,7 +37,6 @@
                                 <tr>
                                     <td><input name="name" value="{{ Request::old('name') }}"> </td>
                                     <td><input name="eng_name" value="{{ Request::old('eng_name') }}"></td>
-                                    <td></td>
                                     <td><button type="submit" class="xe-btn xe-btn-positive">추가</button></td>
                                 </tr>
                             </form>
