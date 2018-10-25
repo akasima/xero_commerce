@@ -348,16 +348,8 @@ class Resources
     public static function registerRoute()
     {
         Route::group([
+            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
             'prefix' => Plugin::XERO_COMMERCE_URL_PREFIX,
-            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
-            'middleware' => ['web']
-        ], function () {
-            Route::get('/{strSlug}', ['as' => 'xero_commerce::product.show', 'uses' => 'ProductController@show']);
-        });
-
-        Route::group([
-            'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
-            'prefix' => 'xero-commerce',
             'middleware' => ['web']
         ], function () {
             Route::get('/cart', [
@@ -455,6 +447,11 @@ class Resources
             Route::get('/no-delivery', [
                 'as' => 'xero_commerce::no-delivery',
                 'uses' => 'DeliveryController@index'
+            ]);
+
+            Route::get('/{strSlug}', [
+                'as' => 'xero_commerce::product.show',
+                'uses' => 'ProductController@show'
             ]);
         });
 
