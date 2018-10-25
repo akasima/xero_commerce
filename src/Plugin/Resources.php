@@ -89,6 +89,7 @@ class Resources
         self::storeConfigData('mainPageId', $mainPageId);
         self::createDefaultCategoryModule($defaultMenu);
         self::setDefaultThemeConfig($defaultMenu);
+        self::createXeroStoreDirectLink();
 
         self::setCanNotUseXeroCommercePrefixRoute();
     }
@@ -267,6 +268,69 @@ class Resources
         $config['gnb'] = $defaultMenu['id'];
 
         app('xe.theme')->setThemeConfig('theme/xero_commerce@xero_commerce_theme_default.0', $config);
+    }
+
+    protected static function createXeroStoreDirectLink()
+    {
+        $menuId = \XeConfig::get('site.default')['defaultMenu'];
+        $defaultMenu = XeMenu::menus()->find($menuId);
+
+        //TODO 리펙토링
+        $inputs['parent'] = $menuId;
+        $inputs['siteKey'] = $defaultMenu['siteKey'];
+        $inputs['itemTitle'] = 'XeroCommerce';
+        $inputs['itemUrl'] = Plugin::XERO_COMMERCE_URL_PREFIX;
+        $inputs['itemDescription'] = '메인 페이지에 추가된 쇼핑몰 링크입니다.';
+        $inputs['itemTarget'] = '_self';
+        $inputs['selectedType'] = 'xpressengine@directLink';
+        $inputs['itemOrdering'] = 0;
+        $inputs['itemActivated'] = 1;
+
+        $itemInputKeys = [
+            'itemId',
+            'parent',
+            'itemTitle',
+            'itemUrl',
+            'itemDescription',
+            'itemTarget',
+            'selectedType',
+            'itemOrdering',
+            'itemActivated',
+            'basicImage',
+            'hoverImage',
+            'selectedImage',
+        ];
+
+        $itemInput = array_only($inputs, $itemInputKeys);
+        $menuTypeInput = array_except($inputs, $itemInputKeys);
+
+        XeDB::beginTransaction();
+
+        try {
+            $desktopTheme = null;
+            $mobileTheme = null;
+
+            $itemInput['parent'] = $itemInput['parent'] === $defaultMenu->getKey() ? null : $itemInput['parent'];
+            $item = XeMenu::createItem($defaultMenu, [
+                'title' => $itemInput['itemTitle'],
+                'url' => trim($itemInput['itemUrl'], " \t\n\r\0\x0B/"),
+                'description' => $itemInput['itemDescription'],
+                'target' => $itemInput['itemTarget'],
+                'type' => $itemInput['selectedType'],
+                'ordering' => $itemInput['itemOrdering'],
+                'activated' => isset($itemInput['itemActivated']) ? $itemInput['itemActivated'] : 0,
+                'parent_id' => $itemInput['parent']
+            ], $menuTypeInput);
+
+            XeMenu::setMenuItemTheme($item, $desktopTheme, $mobileTheme);
+            app('xe.permission')->register(XeMenu::permKeyString($item), new Grant, $defaultMenu->site_key);
+        } catch (\Exception $e) {
+            XeDB::rollback();
+
+            throw $e;
+        }
+
+        XeDB::commit();
     }
 
     /**
