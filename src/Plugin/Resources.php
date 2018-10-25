@@ -133,7 +133,7 @@ class Resources
         //TODO 리펙토링
         $inputs['parent'] = $defaultMenu['id'];
         $inputs['siteKey'] = $defaultMenu['siteKey'];
-        $inputs['itemTitle'] = 'MainPage';
+        $inputs['itemTitle'] = self::getTranslationKey('MainPage');
         $inputs['itemUrl'] = Plugin::XERO_COMMERCE_URL_PREFIX;
         $inputs['itemDescription'] = '메인 페이지에 출력될 위젯을 설정할 수 있습니다.';
         $inputs['itemTarget'] = '_self';
@@ -219,7 +219,7 @@ class Resources
             $inputs = [];
             $inputs['parent'] = $defaultMenu['id'];
             $inputs['siteKey'] = $defaultMenu['siteKey'];
-            $inputs['itemTitle'] = xe_trans($category['word']);
+            $inputs['itemTitle'] = self::getTranslationKey(xe_trans($category['word']));
             $inputs['itemUrl'] = 'category' . ($idx + 1);
             $inputs['itemDescription'] = '기본 상품 페이지입니다.';
             $inputs['itemTarget'] = '_self';
@@ -270,6 +270,15 @@ class Resources
         app('xe.theme')->setThemeConfig('theme/xero_commerce@xero_commerce_theme_default.0', $config);
     }
 
+    private static function getTranslationKey($title)
+    {
+        $key = Plugin::XERO_COMMERCE_PREFIX . '::' . app('xe.keygen')->generate();
+
+        XeLang::save($key, 'ko', $title, false);
+
+        return $key;
+    }
+
     protected static function createXeroStoreDirectLink()
     {
         $menuId = \XeConfig::get('site.default')['defaultMenu'];
@@ -278,7 +287,7 @@ class Resources
         //TODO 리펙토링
         $inputs['parent'] = $menuId;
         $inputs['siteKey'] = $defaultMenu['siteKey'];
-        $inputs['itemTitle'] = 'XeroCommerce';
+        $inputs['itemTitle'] = self::getTranslationKey('XeroCommerce');
         $inputs['itemUrl'] = Plugin::XERO_COMMERCE_URL_PREFIX;
         $inputs['itemDescription'] = '메인 페이지에 추가된 쇼핑몰 링크입니다.';
         $inputs['itemTarget'] = '_self';
@@ -736,7 +745,7 @@ class Resources
     }
 
     /**
-     * @param string $configKey configKey
+     * @param string $configKey   configKey
      * @param string $configValue configValue
      *
      * @return void
