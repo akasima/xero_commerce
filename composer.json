@@ -53,6 +53,16 @@
           "name": "XeroCommerce 라벨 상품 분류 위젯 기본 스킨",
           "description": "XeroCommerce 라벨 상품 분류 위젯 기본 스킨"
         },
+        "widget/xero_commerce@event_widget": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\EventWidget\\EventWidget",
+          "name": "XeroCommerce 이벤트 위젯",
+          "description": "XeroCommerce 이벤트 위젯"
+        },
+        "widget/xero_commerce@event_widget/skin/xero_commerce@event_widget_common_skin": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\EventWidget\\Skins\\Common\\CommonSkin",
+          "name": "XeroCommerce 이벤트 위젯 기본 스킨",
+          "description": "XeroCommerce 이벤트 위젯 기본 스킨"
+        },
         "xero_pay/xero_pay@test": {
           "class": "Xpressengine\\XePlugin\\XeroPay\\Test\\Test",
           "name": "Test",
