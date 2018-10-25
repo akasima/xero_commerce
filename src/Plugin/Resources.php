@@ -672,7 +672,7 @@ class Resources
     }
 
     /**
-     * @param string $configKey   configKey
+     * @param string $configKey configKey
      * @param string $configValue configValue
      *
      * @return void
@@ -734,19 +734,28 @@ class Resources
     /**
      * @return void
      */
-    public static function storeDefaultDeliveryCompany()
+    public static function storeDefaultDeliveryCompany($name, $uri, $type)
     {
         $dc = new DeliveryCompany();
-        $dc->name = 'cj대한통운';
-        $dc->uri = 'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=';
+        $dc->name = $name;
+        $dc->uri = $uri;
+        $dc->type = $type;
         $dc->save();
+    }
 
-        $dc = new DeliveryCompany();
-        $dc->name = '한진택배';
-        $dc->uri = 'http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=';
-        $dc->save();
-
-        return $dc;
+    public static function storeDefaultDeliveryCompanySet()
+    {
+        $deliery_list = [
+            'cj대한통운' =>
+                ['https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=',
+                    DeliveryCompany::LOGIS],
+            '한진택배' =>
+                ['http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=',
+                    DeliveryCompany::LOGIS],
+        ];
+        foreach ($deliery_list as $name => $option) {
+            self::storeDefaultDeliveryCompany($name, $option[0], $option[1]);
+        }
     }
 
     /**

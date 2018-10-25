@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="row">
-                <div class="col-lg-12 text-center text-white bg-dark">
+                <div class="col-lg-12 text-center text-white bg-dark" style="padding-top:20px">
                     {{user.display_name}}님의 <br>
                     회원등급
                     <div class="circle text-dark">
                         <p>VIP</p>
                     </div>
                 </div>
-                <div class="col-lg-12 card">
+                <div class="col-lg-12 card" v-if="discountOption">
                     <div class="card-header">
                         <h3>적립금</h3>
                     </div>
@@ -17,7 +17,7 @@
                         원
                     </div>
                 </div>
-                <div class="col-lg-12 card">
+                <div class="col-lg-12 card" v-if="discountOption">
                     <div class="card-header">
                         <h3>쿠폰</h3>
                     </div>
@@ -81,13 +81,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12" id="direct">
+                <div class="col-lg-12" id="direct" style="margin-top:20px">
                     <div class="row text-center">
-                        <div class="col-lg-12">
-                            그외 링크
-                        </div>
                         <div class="col-lg-4">
-                            <div class="card" style="cursor:pointer" @click="url(listUrl)">
+                            <div class="card" style="cursor:pointer; " @click="url(listUrl)">
                                 <div class="card-header">
                                     <i class="xi-desktop"></i> <br>
                                     주문내역조회
@@ -119,7 +116,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" v-if="discountOption">
                             <div class="card">
                                 <div class="card-header">
                                     <i class="xi-piggy-bank"></i> <br>
@@ -130,7 +127,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" v-if="discountOption">
                             <div class="card">
                                 <div class="card-header">
                                     <i class="xi-coupon"></i> <br>
@@ -141,14 +138,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" v-if="discountOption">
                             <div class="card">
                                 <div class="card-header">
                                     <i class="xi-border-color"></i> <br>
                                     게시물 관리
                                 </div>
                                 <div class="card-content">
-                                    게시물 확
+                                    게시물 확인
                                 </div>
                             </div>
                         </div>
@@ -167,6 +164,7 @@
     ],
     data () {
       return {
+          discountOption: false
       }
     },
     methods: {
@@ -201,7 +199,10 @@
     display: table-cell;
     font-size: 20pt
 }
-    #direct .col-lg-4 .card {
-        height:100px
+    #direct .card {
+        height:250px;
+    }
+    #direct .card .card-content {
+        padding-top:90px;
     }
 </style>

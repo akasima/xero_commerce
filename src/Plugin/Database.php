@@ -77,7 +77,7 @@ class Database
         Schema::create('xero_commerce_products', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('shop_id');
-            $table->integer('product_code');
+            $table->string('product_code',32);
             $table->string('name');
             $table->string('sub_name');
             $table->integer('original_price');

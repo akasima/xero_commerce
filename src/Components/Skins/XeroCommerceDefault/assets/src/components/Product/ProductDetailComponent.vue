@@ -48,7 +48,6 @@
         <hr>
         <div class="row">
             <div class="col">
-                <h2>상품상세정보</h2>
                 <div>
                     <b-tabs>
                         <b-tab title="상품정보" active>
@@ -68,83 +67,86 @@
                             <div v-html="product.data.description">
                             </div>
                         </b-tab>
-                        <b-tab title="구매평">
-                            <b-list-group style="margin-top:10px">
-                                <b-list-group-item href="#" class="flex-column align-items-start">
-                                    <div class="row">
-                                        <div class="col-1">
-                                            <img :src="mainImg" alt="" style="width:70px;height:70px">
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">List group item heading</h5>
-                                                <small>3 days ago</small>
-                                            </div>
-                                            <p class="mb-1">
-                                                Donec id elit non mi porta gravida at eget metus. Maecenas
-                                                sed diam eget risus varius blandit.
-                                            </p>
-                                            <small>Donec id elit non mi porta.</small>
-                                        </div>
-                                    </div>
-                                </b-list-group-item>
-                                <b-list-group-item href="#" class="flex-column align-items-start">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">List group item heading</h5>
-                                        <small class="text-muted">3 days ago</small>
-                                    </div>
-                                    <p class="mb-1">
-                                        Donec id elit non mi porta gravida at eget metus. Maecenas
-                                        sed diam eget risus varius blandit.
-                                    </p>
-                                    <small class="text-muted">Donec id elit non mi porta.</small>
-                                </b-list-group-item>
-                                <b-list-group-item href="#" disabled class="flex-column align-items-start">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">Disabled List group item</h5>
-                                        <small class="text-muted">3 days ago</small>
-                                    </div>
-                                    <p class="mb-1">
-                                        Donec id elit non mi porta gravida at eget metus. Maecenas
-                                        sed diam eget risus varius blandit.
-                                    </p>
-                                    <small class="text-muted">Donec id elit non mi porta.</small>
-                                </b-list-group-item>
-                            </b-list-group>
-                        </b-tab>
-                        <b-tab title="Q&A">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>번호</th>
-                                    <th>제목</th>
-                                    <th>작성자</th>
-                                    <th>작성일</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>??</td>
-                                    <td>hero</td>
-                                    <td>{{new Date()}}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">dafdfdsafdf <br>dsafdfd</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>??</td>
-                                    <td>hero</td>
-                                    <td>{{new Date()}}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">dafdfdsafdf</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </b-tab>
+                        <!--<b-tab title="구매평">-->
+                        <!--<h4>구매평</h4>-->
+                            <!--<b-list-group style="margin-top:10px">-->
+                                <!--<b-list-group-item href="#" class="flex-column align-items-start">-->
+                                    <!--<div class="row">-->
+                                        <!--<div class="col-1">-->
+                                            <!--<img :src="mainImg" alt="" style="width:70px;height:70px">-->
+                                        <!--</div>-->
+                                        <!--<div class="col">-->
+                                            <!--<div class="d-flex w-100 justify-content-between">-->
+                                                <!--<h5 class="mb-1">List group item heading</h5>-->
+                                                <!--<small>3 days ago</small>-->
+                                            <!--</div>-->
+                                            <!--<p class="mb-1">-->
+                                                <!--Donec id elit non mi porta gravida at eget metus. Maecenas-->
+                                                <!--sed diam eget risus varius blandit.-->
+                                            <!--</p>-->
+                                            <!--<small>Donec id elit non mi porta.</small>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</b-list-group-item>-->
+                                <!--<b-list-group-item href="#" class="flex-column align-items-start">-->
+                                    <!--<div class="d-flex w-100 justify-content-between">-->
+                                        <!--<h5 class="mb-1">List group item heading</h5>-->
+                                        <!--<small class="text-muted">3 days ago</small>-->
+                                    <!--</div>-->
+                                    <!--<p class="mb-1">-->
+                                        <!--Donec id elit non mi porta gravida at eget metus. Maecenas-->
+                                        <!--sed diam eget risus varius blandit.-->
+                                    <!--</p>-->
+                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+                                <!--</b-list-group-item>-->
+                                <!--<b-list-group-item href="#" disabled class="flex-column align-items-start">-->
+                                    <!--<div class="d-flex w-100 justify-content-between">-->
+                                        <!--<h5 class="mb-1">Disabled List group item</h5>-->
+                                        <!--<small class="text-muted">3 days ago</small>-->
+                                    <!--</div>-->
+                                    <!--<p class="mb-1">-->
+                                        <!--Donec id elit non mi porta gravida at eget metus. Maecenas-->
+                                        <!--sed diam eget risus varius blandit.-->
+                                    <!--</p>-->
+                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+                                <!--</b-list-group-item>-->
+                            <!--</b-list-group>-->
+                        <!--</b-tab>-->
+                        <!--<b-tab title="Q&A">-->
+                        <!--<h4>Q%A</h4>-->
+                            <!--<table class="table">-->
+                                <!--<thead>-->
+                                <!--<tr>-->
+                                    <!--<th>번호</th>-->
+                                    <!--<th>제목</th>-->
+                                    <!--<th>작성자</th>-->
+                                    <!--<th>작성일</th>-->
+                                <!--</tr>-->
+                                <!--</thead>-->
+                                <!--<tbody>-->
+                                <!--<tr>-->
+                                    <!--<td>1</td>-->
+                                    <!--<td>??</td>-->
+                                    <!--<td>hero</td>-->
+                                    <!--<td>{{new Date()}}</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td colspan="4">dafdfdsafdf <br>dsafdfd</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>1</td>-->
+                                    <!--<td>??</td>-->
+                                    <!--<td>hero</td>-->
+                                    <!--<td>{{new Date()}}</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td colspan="4">dafdfdsafdf</td>-->
+                                <!--</tr>-->
+                                <!--</tbody>-->
+                            <!--</table>-->
+                        <!--</b-tab>-->
                         <b-tab title="반품정보">
+                            <h4>반품정보</h4>
                             <div v-html="product.shop.as_info">
 
                             </div>
