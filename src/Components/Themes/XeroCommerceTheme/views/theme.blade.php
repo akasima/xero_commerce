@@ -28,7 +28,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url()->to(null) }}">{{ $config->get('logo_title', 'Xpressengine') }}</a>
+            <a class="navbar-brand" href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">{{ $config->get('logo_title', 'Xpressengine') }}</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
 
