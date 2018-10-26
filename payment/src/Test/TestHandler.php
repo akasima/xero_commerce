@@ -45,4 +45,9 @@ class TestHandler implements PaymentHandler
     {
         return new TestResponse();
     }
+
+    public function callBack(Request $request)
+    {
+        // TODO: Implement callBack() method.
+    }
 }

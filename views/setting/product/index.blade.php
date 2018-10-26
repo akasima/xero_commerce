@@ -19,7 +19,7 @@
         </div>
     </div>
 </form>
-
+{{json_encode(config('xe.media.thumbnail'))}}
 <div class="row">
     <div class="col-sm-12">
         <div class="panel-group">

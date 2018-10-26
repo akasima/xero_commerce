@@ -11,7 +11,7 @@
                 </tr>
                 <tr>
                     <th>할인금액</th>
-                    <td> <i class="xi-minus-min"></i> {{Number(summary.discount_price).toLocaleString()}} 원</td>
+                    <td><i class="xi-minus-min"></i> {{Number(summary.discount_price).toLocaleString()}} 원</td>
                 </tr>
                 <tr v-if="discountOption">
                     <th>적립금 사용</th>
@@ -27,7 +27,8 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button type="button" class="xe-btn xe-btn-lg xe-btn-black xe-btn-block" @click="pay">결제하기</button>
+                        <button type="button" class="xe-btn xe-btn-lg xe-btn-black xe-btn-block" @click="pay">결제하기
+                        </button>
                     </td>
                 </tr>
             </table>
@@ -36,42 +37,46 @@
 </template>
 
 <script>
-  export default {
-    name: "OrderBillComponent",
-    props: [
-        'summary', 'payOption', 'validate', 'method', 'discountOption'
-    ],
-    methods: {
-      pay () {
-        if(!this.validate.status) {
-          alert(this.validate.msg)
-          return false
+    export default {
+        name: "OrderBillComponent",
+        props: [
+            'summary', 'payOption', 'validate', 'method', 'discountOption', 'orderId'
+        ],
+        methods: {
+            pay() {
+                if (!this.validate.status) {
+                    alert(this.validate.msg)
+                    return false
+                }
+                payment.submit({
+                    method: this.method,
+                    order_id: this.orderId
+                }, res => {
+                    this.$emit('pay', res)
+                }, err => {
+                    alert('결제 실패!!' + err)
+                })
+            }
         }
-        payment.submit({
-          methods: this.method
-        },res=>{
-          this.$emit('pay', res)
-        }, err => {
-          alert('결제 실패!!' + err)
-        })
-      }
     }
-  }
 </script>
 
 <style scoped>
     .card-content {
         padding: 10px;
     }
+
     .card-content tr {
         border-bottom: 1px #eee solid;
     }
+
     .card-content th, .card-content td {
         text-align: right;
-        font-size:13pt;
+        font-size: 13pt;
     }
+
     .card-content th {
-        width:30%;
+        width: 30%;
         text-align: left;
     }
 </style>

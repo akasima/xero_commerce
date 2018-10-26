@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Xpressengine\XePlugin\XeroPay\Test;
-
 
 use Xpressengine\XePlugin\XeroPay\PaymentGate;
 

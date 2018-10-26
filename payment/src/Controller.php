@@ -55,6 +55,11 @@ class Controller extends BaseController
         return 'hi';
     }
 
+    public function close()
+    {
+        return '<script language="javascript" type="text/javascript" src="https://stgstdpay.inicis.com/stdjs/INIStdPay_close.js" charset="UTF-8"></script>';
+    }
+
     private function getInputs(Request $request, $componentId)
     {
         $inputs = [];

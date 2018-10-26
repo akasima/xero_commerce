@@ -62,6 +62,7 @@
                 <order-bill-component :summary="orderSummary"
                                       :validate="validate"
                                       :method="payMethod"
+                                      :order-id="order_id"
                                       @pay="register"
                                       :discount-option="discountOption"
                 ></order-bill-component>

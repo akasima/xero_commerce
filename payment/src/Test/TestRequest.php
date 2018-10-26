@@ -8,16 +8,9 @@ use Xpressengine\XePlugin\XeroPay\AbstractPaymentRequest;
 class TestRequest extends AbstractPaymentRequest
 {
 
-    public $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
-
     public function getMethod()
     {
-        return Test::$methods[$this->request->methods];
+        return Test::$methods[$this->request->get('method')];
     }
 
     public function getPrice()

@@ -57,6 +57,16 @@
           "class": "Xpressengine\\XePlugin\\XeroPay\\Test\\Test",
           "name": "Test",
           "descroption": "xero_pay Test"
+        },
+        "xero_pay/xero_pay@inicis": {
+          "class": "Xpressengine\\XePlugin\\XeroPay\\Inicis\\Inicis",
+          "name": "이니시스",
+          "descroption": "xero_pay 이니시스 모듈"
+        },
+        "xero_pay/xero_pay@lg": {
+          "class": "Xpressengine\\XePlugin\\XeroPay\\LG\\LG",
+          "name": "LG X페이",
+          "descroption": "xero_pay LG U+ X페이 모듈"
         }
       }
     }

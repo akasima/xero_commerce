@@ -31,6 +31,7 @@ const payment = {
     }).done(res => {
       var form = document.createElement('form')
       form.setAttribute('id','xero_pay')
+      form.setAttribute('method','post')
       for (var key in res) {
         var input = document.createElement('input')
         input.setAttribute('type', 'hidden')

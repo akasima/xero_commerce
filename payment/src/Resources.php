@@ -30,6 +30,10 @@ class Resources
                     'as' => 'xero_pay::index',
                     'uses' => 'Controller@index'
                 ]);
+                Route::get('/close', [
+                    'as' => 'xero_pay::close',
+                    'uses' => 'Controller@close'
+                ]);
             });
 //
         Route::settings('xero_pay', function () {

@@ -47,6 +47,11 @@ class PaymentService
         return $this->handler->execute($request);
     }
 
+    public function callback(Request $request)
+    {
+        return $this->handler->callback();
+    }
+
     public function methodList()
     {
         return $this->handler->getMethodList();
