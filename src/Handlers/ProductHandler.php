@@ -4,7 +4,6 @@ namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use App\Facades\XeMedia;
 use App\Facades\XeStorage;
-use Illuminate\Support\Facades\Log;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Http\Request;
@@ -125,7 +124,6 @@ class ProductHandler
 
         foreach ($args['images'] as $image) {
             if ($image != null) {
-                Log::info('save Image...');
                 $this->saveImage($image, $newProduct);
             }
         }
