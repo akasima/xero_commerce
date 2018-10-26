@@ -29,10 +29,10 @@ class LabelProductWidget extends AbstractWidget
         $labelId = $widgetConfig['label_id'];
         $label = $this->labelHandler->getLabel($labelId);
 
-        if (is_array($widgetConfig['category_item_id']['item']) === true) {
-            $categoryIds = $widgetConfig['category_item_id']['item'];
+        if (is_array($widgetConfig['category_item_id']) === true) {
+            $categoryIds = $widgetConfig['category_item_id'];
         } else {
-            $categoryIds = [$widgetConfig['category_item_id']['item']];
+            $categoryIds = explode(',', $widgetConfig['category_item_id']);
         }
         $categories = CategoryItem::whereIn('id', $categoryIds)->get();
 

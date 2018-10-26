@@ -103,7 +103,11 @@ class Resources
         $id = $widgetboxPrefix.$mainWidgetboxPageId;
 
         $categoryId = \XeConfig::get(Plugin::getId())->get('categoryId', '');
-        $initCategories = CategoryItem::where('category_id', $categoryId)->pluck('id');
+        $initCategories = CategoryItem::where('category_id', $categoryId)->pluck('id')->toArray();
+
+        if (empty($initCategories) == false) {
+            $initCategories = implode(',', $initCategories);
+        }
 
         $eventWidget['left_product_id'] = '1';
         $eventWidget['center_up_product_id'] = '1';
