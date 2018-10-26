@@ -49,7 +49,7 @@ class PaymentService
 
     public function callback(Request $request)
     {
-        return $this->handler->callback();
+        return $this->handler->callback($request);
     }
 
     public function methodList()

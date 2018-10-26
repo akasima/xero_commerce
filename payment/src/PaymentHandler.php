@@ -26,6 +26,4 @@ interface PaymentHandler
      * @return PaymentResponse
      */
     public function execute(Request $request);
-
-    public function callBack(Request $request);
 }

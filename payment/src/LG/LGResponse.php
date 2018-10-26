@@ -16,22 +16,22 @@ class LGResponse extends AbstractPaymentResponse
 
     public function success()
     {
-        // TODO: Implement success() method.
+        return $this->request->get('LGD_RESPCODE') ==='0000';
     }
 
     public function msg()
     {
-        // TODO: Implement msg() method.
+        return $this->request->get('LGD_RESPMSG');
     }
 
     public function getUniqueNo()
     {
-        // TODO: Implement getUniqueNo() method.
+        return $this->request->get('LGD_PAYKEY');
     }
 
     public function getDateTime()
     {
-        // TODO: Implement getDateTime() method.
+        return $this->request->get('LGD_PAYDATE');
     }
 
     public function getInfo()

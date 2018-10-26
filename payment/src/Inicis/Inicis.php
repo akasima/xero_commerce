@@ -14,4 +14,9 @@ class Inicis extends PaymentGate
         'mid' => 'mid',
         'signKey' => 'signKey',
     ];
+
+    public static function url()
+    {
+        // TODO: Implement url() method.
+    }
 }

@@ -22,4 +22,9 @@ class Test extends PaymentGate
     {
         self::$handler = new TestHandler();
     }
+
+    public static function url()
+    {
+        // TODO: Implement url() method.
+    }
 }

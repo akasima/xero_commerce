@@ -22,7 +22,7 @@ class Resources
                     'as' => 'xero_pay::formList',
                     'uses' => 'Controller@formList'
                 ]);
-                Route::post('/callback', [
+                Route::match(['get','post'],'/callback', [
                     'as' => 'xero_pay::callback',
                     'uses' => 'Controller@callback'
                 ]);

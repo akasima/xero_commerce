@@ -22,4 +22,6 @@ abstract class PaymentGate implements ComponentInterface
     {
         return static::$configItems;
     }
+
+    abstract public static function url();
 }

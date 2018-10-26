@@ -53,9 +53,4 @@ class InicisHandler implements PaymentHandler
     {
         return new InicisResponse($request);
     }
-
-    public function callBack(Request $request)
-    {
-
-    }
 }
