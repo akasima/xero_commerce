@@ -85,13 +85,52 @@ class Resources
         self::setCanUseXeroCommercePrefixRoute();
 
         $defaultMenu = self::createDefaultMenu();
-        $mainPageId = self::createDefaultMainPage($defaultMenu);
-        self::storeConfigData('mainPageId', $mainPageId);
+        $mainWidgetboxPageId = self::createDefaultMainWidgetboxPage($defaultMenu);
+        self::storeConfigData('mainPageId', $mainWidgetboxPageId);
         self::createDefaultCategoryModule($defaultMenu);
         self::setDefaultThemeConfig($defaultMenu);
         self::createXeroStoreDirectLink();
+        self::settingWidget($mainWidgetboxPageId);
 
         self::setCanNotUseXeroCommercePrefixRoute();
+    }
+
+    protected static function settingWidget($mainWidgetboxPageId)
+    {
+        $widgetboxHandler = app('xe.widgetbox');
+
+        $widgetboxPrefix = 'widgetpage-';
+        $id = $widgetboxPrefix.$mainWidgetboxPageId;
+
+        $categoryId = \XeConfig::get(Plugin::getId())->get('categoryId', '');
+        $initCategories = CategoryItem::where('category_id', $categoryId)->pluck('id');
+
+        $eventWidget['left_product_id'] = '1';
+        $eventWidget['center_up_product_id'] = '1';
+        $eventWidget['center_down_product_id'] = '1';
+        $eventWidget['right_product_id'] = '1';
+        $eventWidget['@attributes'] = [
+            'id' => 'widget/xero_commerce@event_widget',
+            'title' => 'Event',
+            'skin-id' => 'widget/xero_commerce@event_widget/skin/xero_commerce@event_widget_common_skin'
+        ];
+
+        $labelWidget['label_id'] = '1';
+        $labelWidget['category_item_id'] = $initCategories;
+        $labelWidget['product_id'] = '1';
+        $labelWidget['@attributes'] = [
+            'id' => 'widget/xero_commerce@label_product_widget',
+            'title' => 'Label',
+            'skin-id' => 'widget/xero_commerce@label_product_widget/skin/xero_commerce@label_widget_common_skin'
+        ];
+
+        $initValue['grid'] = ['md' => '12'];
+        $initValue['rows'] = [];
+        $initValue['widgets'] = [$eventWidget, $labelWidget];
+
+        $value[] = $initValue;
+
+        $widgetboxHandler->update($id, ['content' => [$value]]);
     }
 
     protected static function createDefaultMenu()
@@ -128,7 +167,7 @@ class Resources
         return $menu;
     }
 
-    protected static function createDefaultMainPage($defaultMenu)
+    protected static function createDefaultMainWidgetboxPage($defaultMenu)
     {
         //TODO 리펙토링
         $inputs['parent'] = $defaultMenu['id'];
