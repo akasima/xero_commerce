@@ -135,7 +135,7 @@ class ProductHandler
 
     public function saveImage($imageParm, $newProduct)
     {
-        $file = XeStorage::upload($imageParm, 'product');
+        $file = XeStorage::upload($imageParm, 'public/xero_commerce/product');
         $imageFile = XeMedia::make($file);
         $image = new Image();
         $image->url = $imageFile->url();
