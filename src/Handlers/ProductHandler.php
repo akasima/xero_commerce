@@ -188,7 +188,7 @@ class ProductHandler
         $this->storeRevision($product);
     }
 
-    public function storeRevision($product)
+    private function storeRevision($product)
     {
         $revisionNo = 0;
         $lastRevision = ProductRevision::where('id', $product->id)->max('revision_no');

@@ -75,6 +75,7 @@ class Database
         });
 
         self::createProductTables();
+        self::createProductOptionTables();
 
         Schema::create('xero_commerce_images', function (Blueprint $table) {
             $table->increments('id');
@@ -111,20 +112,6 @@ class Database
             $table->increments('id');
             $table->integer('product_id');
             $table->integer('label_id')->index();
-        });
-
-        Schema::create('xero_commerce_product_option_item', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('product_id')->index();
-            $table->integer('option_type');
-            $table->string('name');
-            $table->integer('addition_price');
-            $table->integer('stock');
-            $table->integer('alert_stock')->nullable();
-            $table->integer('state_display');
-            $table->integer('state_deal');
-            $table->softDeletes();
-            $table->timestamps();
         });
 
         Schema::create('xero_commerce_order', function (Blueprint $table) {
@@ -250,11 +237,6 @@ class Database
         });
     }
 
-    public static function testRevision()
-    {
-        self::createProductTables();
-    }
-
     /**
      * @return void
      */
@@ -285,7 +267,7 @@ class Database
             $table->timestamp('revision_created_at');
             $table->timestamp('revision_updated_at');
 
-            $table->index('revision_id');
+            $table->index('id');
         });
     }
 
@@ -312,6 +294,49 @@ class Database
         $table->integer('state_display');
         $table->integer('state_deal');
         $table->integer('shop_delivery_id');
+
+        return $table;
+    }
+
+    private static function createProductOptionTables()
+    {
+        Schema::create('xero_commerce_product_option_item', function (Blueprint $table) {
+            $table->increments('id');
+            $table = self::setProductOptionTableColumns($table);
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+        Schema::create('xero_commerce_product_option_item_revision', function (Blueprint $table) {
+            $table->increments('revision_id');
+            $table->integer('revision_no')->default(0);
+            $table->integer('id');
+
+            $table = self::setProductOptionTableColumns($table);
+
+            //수정 전 option의 timestamp
+            $table->timestamp('origin_deleted_at')->nullable();
+            $table->timestamp('origin_created_at');
+            $table->timestamp('origin_updated_at');
+            //수정 내역의 timestamp
+            $table->timestamp('revision_deleted_at')->nullable();
+            $table->timestamp('revision_created_at');
+            $table->timestamp('revision_updated_at');
+
+            $table->index('id');
+        });
+    }
+
+    private static function setProductOptionTableColumns($table)
+    {
+        $table->integer('product_id')->index();
+        $table->integer('option_type');
+        $table->string('name');
+        $table->integer('addition_price');
+        $table->integer('stock');
+        $table->integer('alert_stock')->nullable();
+        $table->integer('state_display');
+        $table->integer('state_deal');
 
         return $table;
     }

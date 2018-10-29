@@ -25,8 +25,6 @@ class ProductOptionItem extends SellUnit
     protected $fillable = ['product_id', 'option_type', 'name', 'addition_price', 'stock', 'alert_stock',
         'state_display', 'state_deal'];
 
-    public $timestamps = false;
-
     /**
      * @return array
      */
