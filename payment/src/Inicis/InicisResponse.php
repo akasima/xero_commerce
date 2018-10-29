@@ -9,25 +9,28 @@
 namespace Xpressengine\XePlugin\XeroPay\Inicis;
 
 
+use App\Facades\XeConfig;
 use Xpressengine\Http\Request;
 use Xpressengine\XePlugin\XeroPay\AbstractPaymentResponse;
+use Xpressengine\XePlugin\XeroPay\Inicis\Libs\INIStdPayUtil;
+use Xpressengine\XePlugin\XeroPay\PayCurl;
 
 class InicisResponse extends AbstractPaymentResponse
 {
 
     public function success()
     {
-        // TODO: Implement success() method.
+        return $this->request->get('resultCode')=='0000';
     }
 
     public function msg()
     {
-        // TODO: Implement msg() method.
+        return $this->request->get('resultMsg');
     }
 
     public function getUniqueNo()
     {
-        // TODO: Implement getUniqueNo() method.
+        return $this->request->get('authToken');
     }
 
     public function getDateTime()

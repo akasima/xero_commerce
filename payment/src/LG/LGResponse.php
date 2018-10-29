@@ -10,6 +10,7 @@ namespace Xpressengine\XePlugin\XeroPay\LG;
 
 
 use Xpressengine\XePlugin\XeroPay\AbstractPaymentResponse;
+use Xpressengine\XePlugin\XeroPay\PayCurl;
 
 class LGResponse extends AbstractPaymentResponse
 {

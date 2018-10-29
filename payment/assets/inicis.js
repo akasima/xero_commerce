@@ -6,6 +6,21 @@ const inicis = {
       // INIStdPay.boolInitDone = true
       $('#inicisModalDiv').css('opacity',1);
     },500)
+    $(INIStdPay.$iframe[0]).on("load", () => {
+      var iframe = INIStdPay.$iframe[0].contentWindow || INIStdPay.$iframe[0].contentDocument;
+      $(iframe.document).on("complete", () => {
+        success(
+          {
+            status: true
+          }
+        )
+      })
+      $(iframe.document).on("fail", err => {
+        console.log(err.msg)
+        fail(err.msg)
+        parent.closeIframe()
+      })
+    })
   }
 }
 $(function(){

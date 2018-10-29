@@ -13,25 +13,21 @@ use App\Facades\XeConfig;
 use Xpressengine\Http\Request;
 use Xpressengine\XePlugin\XeroPay\AbstractPaymentRequest;
 use Xpressengine\XePlugin\XeroPay\Inicis\Libs\INIStdPayUtil;
+use Xpressengine\XePlugin\XeroPay\Models\Payment;
 
 class InicisRequest extends AbstractPaymentRequest
 {
     private $util;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, Payment $payment)
     {
         $this->util = new INIStdPayUtil();
-        parent::__construct($request);
+        parent::__construct($request, $payment);
     }
 
     public function getMethod()
     {
         return Inicis::$methods[$this->getRequest('method')];
-    }
-
-    public function getPrice()
-    {
-        // TODO: Implement getPrice() method.
     }
 
     public function encrypt()
@@ -45,8 +41,8 @@ class InicisRequest extends AbstractPaymentRequest
             'version'=>Inicis::VERSION,
             'mid'=>XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@inicis.mid'),
             'goodname'=>'test',
-            'oid'=>'123',
-            'price'=>'5000',
+            'oid'=>$this->payment->id,
+            'price'=>$this->payment->price,
             'currency'=>'WON',
             'buyername'=>'홍길동',
             'buyertel'=>'01000000000',
@@ -56,7 +52,7 @@ class InicisRequest extends AbstractPaymentRequest
             'closeUrl'=>route('xero_pay::close'),
             'mKey'=>$this->util->makeHash(XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@inicis.signKey'),'sha256'),
             'gopaymethod'=>'',
-            'acceptmethod'=>'HPP(1):no_receipt:va_receipt:vbanknoreg(0):below1000',
+            'acceptmethod'=>'HPP(1):no_receipt:va_receipt:vbanknoreg(0):below1000:SKIN(ORIGINAL):FONT(ORIGINAL):popreturn',
             'cardcode'=>'',
             'payViewType'=>''
         ];
@@ -72,10 +68,5 @@ class InicisRequest extends AbstractPaymentRequest
             $parseArray[]=$key.'='.$val;
         }
         return hash('sha256',implode('&', $parseArray));
-    }
-
-    public function url()
-    {
-        // TODO: Implement url() method.
     }
 }

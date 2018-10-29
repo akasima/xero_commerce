@@ -7,6 +7,9 @@ class Inicis extends PaymentGate
 {
     const VERSION='1.0';
 
+
+    static $handler = InicisHandler::class;
+
     static $methods = [
         '무통장입금', '신용카드'
     ];
@@ -17,6 +20,6 @@ class Inicis extends PaymentGate
 
     public static function url()
     {
-        // TODO: Implement url() method.
+        return '';
     }
 }

@@ -9,33 +9,55 @@
 namespace Xpressengine\XePlugin\XeroPay\Inicis;
 
 
-use Xpressengine\XePlugin\XeroPay\AbstractPaymentResponse;
+use Illuminate\Contracts\Support\Jsonable;
+use Xpressengine\XePlugin\XeroPay\PaymentResponse;
 
-class InicisResult extends AbstractPaymentResponse
+class InicisResult implements PaymentResponse, Jsonable
 {
+    private $arr;
+    public function __construct($arr)
+    {
+        $this->arr= $arr;
+    }
 
     public function success()
     {
-        // TODO: Implement success() method.
+        return $this->arr->resultCode=='0000';
     }
 
     public function msg()
     {
-        // TODO: Implement msg() method.
+        return $this->arr->resultMsg;
     }
 
     public function getUniqueNo()
     {
-        // TODO: Implement getUniqueNo() method.
+        return $this->arr->tid;
     }
 
     public function getDateTime()
     {
-        // TODO: Implement getDateTime() method.
+        return $this->arr->applDate.$this->arr->applTime;
     }
 
     public function getInfo()
     {
-        // TODO: Implement getInfo() method.
+        return $this->arr;
+    }
+
+    /**
+     * Convert the object to its JSON representation.
+     *
+     * @param  int $options
+     * @return string
+     */
+    public function toJson($options = 0)
+    {
+        return json_encode($this->getInfo());
+    }
+
+    public function fail()
+    {
+        return !$this->success();
     }
 }

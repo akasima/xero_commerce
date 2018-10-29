@@ -9,8 +9,12 @@
 namespace Xpressengine\XePlugin\XeroPay\Inicis;
 
 
+use App\Facades\XeConfig;
 use App\Facades\XeFrontend;
 use Xpressengine\Http\Request;
+use Xpressengine\XePlugin\XeroPay\Inicis\Libs\INIStdPayUtil;
+use Xpressengine\XePlugin\XeroPay\Models\Payment;
+use Xpressengine\XePlugin\XeroPay\PayCurl;
 use Xpressengine\XePlugin\XeroPay\PaymentHandler;
 use Xpressengine\XePlugin\XeroPay\PaymentRequest;
 use Xpressengine\XePlugin\XeroPay\PaymentResponse;
@@ -18,6 +22,12 @@ use Xpressengine\XePlugin\XeroPay\Plugin;
 
 class InicisHandler implements PaymentHandler
 {
+    private $util;
+
+    public function __construct()
+    {
+        $this->util = new INIStdPayUtil();
+    }
 
     /**
      * @return array
@@ -40,17 +50,37 @@ class InicisHandler implements PaymentHandler
      * @param Request $request
      * @return PaymentRequest
      */
-    public function makePaymentRequest(Request $request)
+    public function makePaymentRequest(Request $request, Payment $payment)
     {
-        return new InicisRequest($request);
+        return new InicisRequest($request, $payment);
     }
 
     /**
      * @param Request $request
-     * @return PaymentResponse
+     * @return PaymentResponse;
      */
-    public function execute(Request $request)
+    public function getResponse(Request $request)
     {
         return new InicisResponse($request);
+    }
+
+    /**
+     * @param Request $request
+     * @param array $form
+     * @return PaymentResponse
+     */
+    public function getResult(Request $request)
+    {
+        $payment = Payment::find($request->get('orderNumber'));
+        $form = [
+            'mid'=>XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@inicis.mid'),
+            'authToken'=>$request->get('authToken'),
+            'price'=>$payment->price,
+            'timestamp'=>$this->util->getTimestamp(),
+            'format'=>'JSON'
+        ];
+        $form['signature']=$this->util->makeSignature(array_only($form,['authToken','timestamp']));
+        $data = PayCurl::post($request->get('authUrl'), [], $form);
+        return new InicisResult($data);
     }
 }

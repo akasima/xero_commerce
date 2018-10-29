@@ -36,6 +36,7 @@ class Dev
     public function makeTable()
     {
         Database::create();
+        \Xpressengine\XePlugin\XeroPay\Resources::makeDataTable();
     }
 
     public function dropTable()
@@ -48,6 +49,13 @@ class Dev
         }
 
         $tables = DB::select('SHOW TABLES LIKE "xe_xero_commerce_%"');
+        foreach ($tables as $table) {
+            $table_name = str_replace('xe_', '', head($table));
+            Schema::dropIfExists($table_name);
+            dump($table_name);
+        }
+
+        $tables = DB::select('SHOW TABLES LIKE "xe_xero_pay_%"');
         foreach ($tables as $table) {
             $table_name = str_replace('xe_', '', head($table));
             Schema::dropIfExists($table_name);

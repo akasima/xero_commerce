@@ -641,7 +641,7 @@ class Resources
 
 
         $app->singleton(PaymentHandler::class, function ($app) {
-            $proxyHandler = XeInterception::proxy(LGHandler::class);
+            $proxyHandler = XeInterception::proxy(InicisHandler::class);
 
             $instance = new $proxyHandler();
 

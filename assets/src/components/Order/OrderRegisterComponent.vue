@@ -65,6 +65,8 @@
                                       :order-id="order_id"
                                       @pay="register"
                                       :discount-option="discountOption"
+                                      :user-info="userInfo"
+                                      :user="user"
                 ></order-bill-component>
                 <order-agreement-component :agreements="agreements" v-model="agreed" :agree-url="agreeUrl"
                                            :denied-url="deniedUrl"></order-agreement-component>

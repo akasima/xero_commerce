@@ -5,6 +5,7 @@ namespace Xpressengine\XePlugin\XeroPay;
 
 
 use Xpressengine\Http\Request;
+use Xpressengine\XePlugin\XeroPay\Models\Payment;
 
 interface PaymentHandler
 {
@@ -19,11 +20,18 @@ interface PaymentHandler
      * @param Request $request
      * @return PaymentRequest
      */
-    public function makePaymentRequest(Request $request);
+    public function makePaymentRequest(Request $request, Payment $payment);
 
     /**
      * @param Request $request
-     * @return PaymentResponse
+     * @return PaymentResponse;
      */
-    public function execute(Request $request);
+    public function getResponse(Request $request);
+
+    /**
+     * @param Request $request
+     * @param array $form
+     * @return mixed
+     */
+    public function getResult(Request $request);
 }

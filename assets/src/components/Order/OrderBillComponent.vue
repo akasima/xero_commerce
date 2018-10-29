@@ -40,7 +40,7 @@
     export default {
         name: "OrderBillComponent",
         props: [
-            'summary', 'payOption', 'validate', 'method', 'discountOption', 'orderId'
+            'summary', 'payOption', 'validate', 'method', 'discountOption', 'orderId', 'user', 'userInfo'
         ],
         methods: {
             pay() {
@@ -50,7 +50,14 @@
                 }
                 payment.submit({
                     method: this.method,
-                    order_id: this.orderId
+                    target_id: this.orderId,
+                    price: this.summary.sum,
+                    user: {
+                        email: this.user.email,
+                        phone: this.userInfo.phone,
+                        name: this.userInfo.name
+                    },
+                    _token: document.getElementById('csrf_token').value
                 }, res => {
                     this.$emit('pay', res)
                 }, err => {

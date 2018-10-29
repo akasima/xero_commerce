@@ -5,10 +5,11 @@ namespace Xpressengine\XePlugin\XeroPay;
 
 
 use Xpressengine\Http\Request;
+use Xpressengine\XePlugin\XeroPay\Models\Payment;
 
 interface PaymentRequest
 {
-    public function __construct(Request $request);
+    public function __construct(Request $request, Payment $payment);
 
     public function getMethod();
 
@@ -19,6 +20,4 @@ interface PaymentRequest
     public function encrypt();
 
     public function setForm();
-
-    public function url();
 }

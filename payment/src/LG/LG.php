@@ -18,6 +18,8 @@ class LG extends PaymentGate
         '신용카드', '무통장입'
     ];
 
+    static $handler = LGHandler::class;
+
     protected static $configItems = [
         'id' => '상점아이디',
         'mertKey' => 'MertKey',

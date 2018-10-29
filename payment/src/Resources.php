@@ -9,6 +9,8 @@
 namespace Xpressengine\XePlugin\XeroPay;
 
 use App\Facades\XeRegister;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Route;
 
 class Resources
@@ -62,5 +64,29 @@ class Resources
             'display' => true,
             'ordering' => 20000
         ]);
+    }
+
+    public static function makeDataTable()
+    {
+        Schema::create('xero_pay_payment', function(Blueprint $table){
+            $table->string('id',36);
+            $table->string('user_id');
+            $table->string('ip');
+            $table->string('payment_type');
+            $table->string('payable_id');
+            $table->integer('price');
+            $table->string('status');
+            $table->timestamps();
+        });
+
+        Schema::create('xero_pay_log', function(Blueprint $table){
+           $table->increments('id');
+           $table->string('status');
+           $table->string('payment_id',36);
+           $table->text('req');
+           $table->text('res');
+           $table->string('action');
+            $table->timestamps();
+        });
     }
 }
