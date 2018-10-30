@@ -34,7 +34,7 @@ class LGRequest extends AbstractPaymentRequest
             'LGD_OID'=>str_replace('-','_',$this->payment->id),
             'LGD_AMOUNT'=>$this->payment->price,
             'LGD_BUYER'=>$this->request->get('user')['name'],
-            'LGD_PRODUCTINFO'=>'테스트',
+            'LGD_PRODUCTINFO'=>$this->payment->name,
             'LGD_TIMESTAMP'=>now()->format('YmdHis'),
             'LGD_RETURNURL'=>route('xero_pay::callback'),
             'LGD_CASNOTEURL'=>route('xero_pay::close'),
@@ -43,6 +43,7 @@ class LGRequest extends AbstractPaymentRequest
             'LGD_BUYERIP'=>$this->request->ip(),
             'LGD_BUYEREMAIL'=>$this->request->get('user')['email'],
             'LGD_CUSTOM_PROCESSTYPE'=>'TWOTR',
+            'LGD_CUSTOM_USABLEPAY'=>$this->getRequest('method'),
             'LGD_ENCODING'=>'UTF-8',
             'LGD_ENCODING_RETURNURL'=>'UTF-8'
         ];

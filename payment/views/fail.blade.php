@@ -3,10 +3,11 @@
 </body>
 <script>
     function func (){
-        console.log('load!')
         setTimeout(()=>{
             var ev = new CustomEvent('fail',{
-                msg: "{{$msg}}"
+                detail: {
+                    msg: "{{$msg}}"
+                }
             })
             document.dispatchEvent(ev)
         },1000)

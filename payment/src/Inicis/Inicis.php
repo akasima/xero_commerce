@@ -11,7 +11,11 @@ class Inicis extends PaymentGate
     static $handler = InicisHandler::class;
 
     static $methods = [
-        '무통장입금', '신용카드'
+        'Card'=>'신용카드',
+        'DirectBank'=>'실시간계좌이체',
+        'HPP'=>'핸드폰결제',
+        'VBank'=>'무통장입금',
+        'GiftCard'=>'상품권'
     ];
     protected static $configItems = [
         'mid' => 'mid',

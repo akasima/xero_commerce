@@ -11,7 +11,27 @@ namespace Xpressengine\XePlugin\XeroPay;
 
 trait Payable
 {
-    abstract function getId();
+    function getId()
+    {
+        return $this->id;
+    }
 
-    abstract function getPrice();
+    function getType()
+    {
+        return self::class;
+    }
+
+    abstract function getPriceForPay();
+
+    abstract function getNameForPay();
+
+    function getPayInfo()
+    {
+        return [
+            'id'=>$this->getId(),
+            'type'=>$this->getType(),
+            'price'=>$this->getPriceForPay(),
+            'name'=>$this->getNameForPay()
+        ];
+    }
 }

@@ -15,7 +15,9 @@ class LG extends PaymentGate
 {
     static $version = 'PHP_Non-ActiveX_Standard';
     static $methods = [
-        '신용카드', '무통장입'
+        'SC0010'=>'신용카드',
+        'SC0030'=>'계좌이체',
+        'SC0040'=>'무통장',
     ];
 
     static $handler = LGHandler::class;

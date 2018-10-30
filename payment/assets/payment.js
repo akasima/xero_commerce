@@ -24,6 +24,10 @@ const payment = {
       alert('결제모듈을 불러오는 것에 실패했습니다. 새로고침하여 다시 시도해주세요.')
       return false
     }
+    var initialForm =document.getElementById('xero_pay');
+    if(initialForm !== null){
+      initialForm.remove()
+    }
     $.ajax({
       url: '/payment/form',
       method: 'post',

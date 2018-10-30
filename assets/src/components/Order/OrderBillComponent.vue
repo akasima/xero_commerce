@@ -40,7 +40,7 @@
     export default {
         name: "OrderBillComponent",
         props: [
-            'summary', 'payOption', 'validate', 'method', 'discountOption', 'orderId', 'user', 'userInfo'
+            'summary', 'payOption', 'validate', 'method', 'discountOption', 'orderId', 'user', 'userInfo', 'target'
         ],
         methods: {
             pay() {
@@ -50,8 +50,7 @@
                 }
                 payment.submit({
                     method: this.method,
-                    target_id: this.orderId,
-                    price: this.summary.sum,
+                    target: this.target,
                     user: {
                         email: this.user.email,
                         phone: this.userInfo.phone,

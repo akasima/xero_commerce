@@ -12,8 +12,7 @@ const lg = {
         )
       })
       $(iframe.document).on("fail", err => {
-        console.log(err.msg)
-        fail(err.msg)
+        fail(err.detail.msg)
         parent.closeIframe()
       })
     })

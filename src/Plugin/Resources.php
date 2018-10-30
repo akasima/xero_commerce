@@ -3,6 +3,7 @@
 namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
 use App\Facades\XeCategory;
+use App\Facades\XeConfig;
 use App\Facades\XeInterception;
 use App\Facades\XeLang;
 use Faker\Factory;
@@ -641,7 +642,9 @@ class Resources
 
 
         $app->singleton(PaymentHandler::class, function ($app) {
-            $proxyHandler = XeInterception::proxy(InicisHandler::class);
+            $uses = XeConfig::getOrNew('xero_pay')->get('uses');
+            $useHandler = app('xe.pluginRegister')->get('xero_pay')[$uses]::$handler;
+            $proxyHandler = XeInterception::proxy($useHandler);
 
             $instance = new $proxyHandler();
 

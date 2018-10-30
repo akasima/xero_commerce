@@ -5,9 +5,11 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Database\Eloquent\DynamicModel;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
+use Xpressengine\XePlugin\XeroPay\Payable;
 
 class Order extends DynamicModel
 {
+    use Payable;
     protected $table = 'xero_commerce_order';
     public $incrementing = false;
 
@@ -53,5 +55,20 @@ class Order extends DynamicModel
     public function orderGroup()
     {
         return $this->hasManyThrough(OrderItemGroup::class, OrderItem::class);
+    }
+
+    function getPriceForPay()
+    {
+        $orderHandler = new OrderHandler();
+        $summary = $orderHandler->getSummary($this->orderItems);
+        return $summary['sum'];
+    }
+
+    function getNameForPay()
+    {
+        $sellSetList = $this->orderItems;
+        $name = $sellSetList->first()->sellType->getName(). (($sellSetList->count()>1)? ' 외'.($sellSetList->count()-1).'건':'');
+        $shortName = (mb_strlen($name) > 15) ? mb_substr($name, 0, 12). '...' : $name;
+        return $shortName;
     }
 }

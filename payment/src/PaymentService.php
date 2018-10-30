@@ -84,8 +84,10 @@ class PaymentService
         $pay->user_id = 'test';
         $pay->ip = $request->ip();
         $pay->payment_type = XeConfig::getOrNew('xero_pay')->get('uses');
-        $pay->payable_id = $request->get('target_id');
-        $pay->price = $request->get('price');
+        $pay->payable_id = $request->get('target')['id'];
+        $pay->payable_type = $request->get('target')['type'];
+        $pay->name = $request->get('target')['name'];
+        $pay->price = $request->get('target')['price'];
         $pay->status = '';
         $pay->save();
         return $pay;

@@ -71,9 +71,10 @@ class Resources
         Schema::create('xero_pay_payment', function(Blueprint $table){
             $table->string('id',36);
             $table->string('user_id');
+            $table->string('name');
             $table->string('ip');
             $table->string('payment_type');
-            $table->string('payable_id');
+            $table->morphs('payable');
             $table->integer('price');
             $table->string('status');
             $table->timestamps();

@@ -15,10 +15,9 @@ const inicis = {
           }
         )
       })
-      $(iframe.document).on("fail", err => {
-        console.log(err.msg)
-        fail(err.msg)
-        parent.closeIframe()
+      $(iframe.document).on("fail", (err, data) => {
+        fail(err.detail.msg)
+        INIStdPay.viewOff()
       })
     })
   }
