@@ -49,6 +49,6 @@ class TagUIObject extends AbstractUIObject
             $args['scriptInit'] = true;
         }
 
-        return \View::make('xero_commerce::src/components/UIObjects/Tag/views/tag', $args)->render();
+        return \View::make('xero_commerce::src/Components/UIObjects/Tag/views/tag', $args)->render();
     }
 }
