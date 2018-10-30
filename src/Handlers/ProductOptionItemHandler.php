@@ -18,11 +18,32 @@ class ProductOptionItemHandler
         $this->storeRevision($newProductOptionItem);
     }
 
+    public function getOptionItem($productOptionItemId)
+    {
+        $item = ProductOptionItem::where('id', $productOptionItemId)->first();
+
+        return $item;
+    }
+
     public function destroy(ProductOptionItem $item)
     {
         $item->delete();
 
         $this->storeRevision($item);
+    }
+
+    public function update(ProductOptionItem $optionItem, array $args)
+    {
+        $attributes = $optionItem->getAttributes();
+        foreach ($args as $key => $value) {
+            if (array_key_exists($key, $attributes) === true) {
+                $optionItem->{$key} = $value;
+            }
+        }
+
+        $optionItem->save();
+
+        $this->storeRevision($optionItem);
     }
 
     private function storeRevision($optionItem)

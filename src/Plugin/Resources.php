@@ -85,8 +85,11 @@ class Resources
         self::setCanUseXeroCommercePrefixRoute();
 
         $defaultMenu = self::createDefaultMenu();
+        self::storeConfigData('mainMenuId', $defaultMenu['id']);
+
         $mainWidgetboxPageId = self::createDefaultMainWidgetboxPage($defaultMenu);
         self::storeConfigData('mainPageId', $mainWidgetboxPageId);
+
         self::createDefaultCategoryModule($defaultMenu);
         self::setDefaultThemeConfig($defaultMenu);
         self::createXeroStoreDirectLink();

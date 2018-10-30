@@ -53,6 +53,25 @@ class ProductOptionItemSettingService
         $this->productOptionItemHandler->store($productOptionItemArgs);
     }
 
+    public function create(array $args)
+    {
+        $this->productOptionItemHandler->store($args);
+    }
+
+    public function update(array $args, $optionItemId)
+    {
+        $optionItem = $this->productOptionItemHandler->getOptionItem($optionItemId);
+
+        $this->productOptionItemHandler->update($optionItem, $args);
+    }
+
+    public function remove($optionItemId)
+    {
+        $optionItem = $this->productOptionItemHandler->getOptionItem($optionItemId);
+
+        $this->productOptionItemHandler->destroy($optionItem);
+    }
+
     public function removeProductOptionItems($productId)
     {
         $items = ProductOptionItem::where('product_id', $productId)->get();
