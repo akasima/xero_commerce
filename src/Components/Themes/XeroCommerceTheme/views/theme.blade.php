@@ -6,7 +6,10 @@
 {{-- stylesheet --}}
 {{ app('xe.frontend')->css([
     'assets/vendor/bootstrap/css/bootstrap.min.css',
-    $theme::asset('css/theme.css')
+    $theme::asset('css/user/layout.css'),
+    $theme::asset('css/user/widget_cross_list.css'),
+    $theme::asset('css/user/widget_slider.css'),
+    $theme::asset('css/user/widget_tab_list.css'),
 ])->load() }}
 
 {{-- inline style --}}

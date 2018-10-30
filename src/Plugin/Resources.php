@@ -950,8 +950,7 @@ class Resources
             $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
             $product->save();
 
-            $image = new Image();
-            $image->url = Plugin::asset('assets/sample/tmp_tablist.jpg');
+            $image = Plugin::asset('assets/sample/tmp_tablist.jpg');
             $product->images()->save($image);
 
             self::storeProductOption($product->id);
