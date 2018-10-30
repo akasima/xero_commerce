@@ -16,12 +16,7 @@ class Test extends PaymentGate
 
     static $url = '';
 
-    static $handler;
-
-    public function __construct()
-    {
-        self::$handler = new TestHandler();
-    }
+    static $handler = TestHandler::class;
 
     public static function url()
     {

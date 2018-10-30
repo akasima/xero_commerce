@@ -792,6 +792,7 @@ class Resources
      */
     public static function setConfig()
     {
+        XeConfig::set('xero_pay',['uses'=>array_keys(app('xe.pluginRegister')->get('xero_pay'))[0]]);
         \XeEditor::setInstance(Plugin::getId(), CkEditor::getId());
         \XeEditor::setConfig(Plugin::getId(), ['uploadActive' => true]);
 
