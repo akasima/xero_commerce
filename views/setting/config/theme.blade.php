@@ -2,11 +2,11 @@
     <div class="col-sm-12">
         <div class="panel-group">
             <div class="panel">
-                <form role="form" action="{{ route('settings.setting.theme') }}" method="post" id="__xe_settingForm" enctype="multipart/form-data">
+                <form role="form" action="{{ route('xero_commerce:setting.config.updateTheme') }}" method="post" id="__xe_settingForm" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="panel-heading">
                         <div class="pull-left">
-                            <h3 class="panel-title">{{xe_trans('xe::siteDefaultTheme')}} <small>{{xe_trans('xe::siteDefaultThemeDescription')}}</small></h3>
+                            <h3 class="panel-title">XeroCommerce 테마 지정</h3>
                         </div>
                         <div class="pull-right">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="btn-link panel-toggle pull-right"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">{{xe_trans('xe::fold')}}</span></a>
