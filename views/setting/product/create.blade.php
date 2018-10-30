@@ -1,8 +1,6 @@
 <?php
-
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
-
 ?>
 
 @section('page_title')
@@ -16,12 +14,12 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
     <div class="form-group">
         @if(count($shops)>1)
-        <label>입점몰</label>
-        <select name="shop_id" class="form-control">
-            @foreach($shops as $shop)
-                <option value="{{$shop->id}}">{{$shop->shop_name}}</option>
-            @endforeach
-        </select>
+            <label>입점몰</label>
+            <select name="shop_id" class="form-control">
+                @foreach($shops as $shop)
+                    <option value="{{$shop->id}}">{{$shop->shop_name}}</option>
+                @endforeach
+            </select>
         @else
             <h4>{{$shops[0]->shop_name}}</h4>
             <input type="hidden" name="shop_id" value="{{$shops[0]->id}}">
@@ -99,26 +97,27 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <label>배송사</label>
                         <select name="shop_delivery_id" class="form-control">
                             @php
-                            $deliverys = $shops[0]->deliveryCompanys;
+                                //TODO 입점몰이 여러개일 때 처리
+                                $deliverys = $shops[0]->deliveryCompanys;
                             @endphp
                             <option value="">선택</option>
                             @foreach($deliverys as $delivery)
-                            <option value="{{$delivery->pivot->id}}">{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
+                                <option value="{{$delivery->pivot->id}}" @if (Request::old('shop_delivery_id') == $delivery->pivot->id) selected @endif>{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
                             @endforeach
                         </select>
                     </div>
                     <script>
-                        $(function(){
-                            $("[name=shop_id]").change(function(){
+                        $(function () {
+                            $("[name=shop_id]").change(function () {
                                 $("[name=shop_delivery_id]").val("");
                                 $("[name=shop_delivery_id] option").not(':selected').remove();
                                 $.ajax({
-                                    url: '{{route('xero_commerce::setting.config.shop.delivery',['shop'=>''])}}/'+$("[name=shop_id]").val(),
-                                }).done(res=>{
-                                    $.each(res,(k,v)=>{
-                                        $("[name=shop_delivery_id]").append('<option value="'+v.pivot.id+'">'+v.name+'('+Number(v.pivot.delivery_fare).toLocaleString()+')</option>');
+                                    url: '{{route('xero_commerce::setting.config.shop.delivery',['shop'=>''])}}/' + $("[name=shop_id]").val(),
+                                }).done(res => {
+                                    $.each(res, (k, v) => {
+                                        $("[name=shop_delivery_id]").append('<option value="' + v.pivot.id + '">' + v.name + '(' + Number(v.pivot.delivery_fare).toLocaleString() + ')</option>');
                                     })
-                                }).fail(res=>{
+                                }).fail(res => {
 
                                 })
                             })
@@ -162,36 +161,40 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         <div class="col-lg-12">
             <div class="panel">
                 @php
-                function formatArray ($array){
-                    return collect($array)->map(function($item,$key){
-                            return [
-                            'text'=>$item,
-                            'value'=>$key];
-                            });
-                }
+                    function formatArray ($array){
+                        return collect($array)->map(function($item,$key){
+                                return [
+                                'text'=>$item,
+                                'value'=>$key];
+                                });
+                    }
                 @endphp
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-4">
-                            {{uio('formSelect', [
-                            'label'=>'과세 유형',
-                            'name'=>'tax_type',
-                            'options'=>formatArray(Product::getTaxTypes())
-                            ])}}
+                            <label>과세 유형</label>
+                            <select class="form-control" name="tax_type">
+                                @foreach (Product::getTaxTypes() as $key => $type)
+                                    <option value="{{ $key }}" @if (Request::old('tax_type') == $key) selected @endif>{{ $type }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label>출력 여부</label>
+                            <select class="form-control" name="state_display">
+                                @foreach (Product::getDisplayStates() as $key => $type)
+                                    <option value="{{ $key }}" @if (Request::old('state_display') == $key) selected @endif>{{ $type }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-lg-4">
-                            {{uio('formSelect', [
-                            'label'=>'출력 여부',
-                            'name'=>'state_display',
-                            'options'=>formatArray(Product::getDisplayStates())
-                            ])}}
-                        </div>
-                        <div class="col-lg-4">
-                            {{uio('formSelect', [
-                            'label'=>'거래 여부',
-                            'name'=>'state_deal',
-                            'options'=>formatArray(Product::getDealStates())
-                            ])}}
+                            <label>거래 여부</label>
+                            <select class="form-control" name="state_deal">
+                                @foreach (Product::getDealStates() as $key => $type)
+                                    <option value="{{ $key }}" @if (Request::old('state_deal') == $key) selected @endif>{{ $type }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -199,7 +202,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             <div class="form-group">
                                 <label>라벨</label>
                                 @foreach ($labels as $label)
-                                    <input type="checkbox" name="labels[]" value="{{ $label->id }}">{{ $label->name }}
+                                    <input type="checkbox" name="labels[]" value="{{ $label->id }}" @if (in_array($label->id, Request::old('labels', [])) == true) checked @endif>{{ $label->name }}
                                 @endforeach
                             </div>
                         </div>
@@ -207,7 +210,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             <label>뱃지</label>
                             <input type="radio" name="badge_id" value="" checked>사용 안함
                             @foreach ($badges as $badge)
-                                <input type="radio" name="badge_id" value="{{ $badge->id }}">{{ $badge->name }}
+                                <input type="radio" name="badge_id" value="{{ $badge->id }}" @if (Request::old('badge_id') == $badge->id) checked @endif>{{ $badge->name }}
                             @endforeach
                         </div>
                     </div>
