@@ -2,18 +2,17 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
+use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
-use Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\XeroCommerceDefaultSkin;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
-use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Routing\InstanceConfig;
 
-class ProductController extends XeroCommerceBasicController
+class ProductController extends Controller
 {
     /** @var ProductService $productService */
     protected $productService;
@@ -26,7 +25,7 @@ class ProductController extends XeroCommerceBasicController
 
     public function __construct()
     {
-        parent::__construct();
+        \XePresenter::setSkinTargetId(XeroCommerceModule::getId());
 
         $this->productService = new ProductService();
 

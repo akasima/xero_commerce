@@ -2,17 +2,21 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
-use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 
-class CartController extends Controller
+class CartController extends XeroCommerceBasicController
 {
     public $cartService;
 
+    /**
+     * CartController constructor.
+     */
     public function __construct()
     {
+        parent::__construct();
+
         $this->cartService = new CartService();
     }
 

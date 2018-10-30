@@ -59,7 +59,10 @@ abstract class SellType extends DynamicModel
 
     function getImages()
     {
-        if ($this->images->count() === 0) return collect([asset('/assets/core/common/img/default_image_1200x800.jpg')]);
+        if ($this->images->count() === 0) {
+            return collect([asset('/assets/core/common/img/default_image_1200x800.jpg')]);
+        }
+
         return $this->images->pluck('url');
     }
 

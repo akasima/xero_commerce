@@ -13,6 +13,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductRevision;
 
 class ProductHandler
 {
@@ -122,6 +123,8 @@ class ProductHandler
 
         $newProduct->save();
 
+        $this->storeRevision($newProduct);
+
         foreach ($args['images'] as $image) {
             if ($image != null) {
                 $this->saveImage($image, $newProduct);
@@ -135,7 +138,7 @@ class ProductHandler
 
     public function saveImage($imageParm, $newProduct)
     {
-        $file = XeStorage::upload($imageParm, 'product');
+        $file = XeStorage::upload($imageParm, 'public/xero_commerce/product');
         $imageFile = XeMedia::make($file);
         $image = new Image();
         $image->url = $imageFile->url();
@@ -168,14 +171,42 @@ class ProductHandler
         });
 
         foreach ($args['addImages'] as $image) {
-            if ($image != null) $this->saveImage($image, $product);
+            if ($image != null) {
+                $this->saveImage($image, $product);
+            }
         }
 
         $product->save();
+
+        $this->storeRevision($product);
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
+
+        $this->storeRevision($product);
+    }
+
+    private function storeRevision($product)
+    {
+        $revisionNo = 0;
+        $lastRevision = ProductRevision::where('id', $product->id)->max('revision_no');
+        if ($lastRevision !== null) {
+            $revisionNo = $lastRevision + 1;
+        }
+
+        $revisionProduct = new ProductRevision();
+
+        $revisionProduct->fill($product->getAttributes());
+
+        $revisionProduct->id = $product->id;
+        $revisionProduct->revision_no = $revisionNo;
+        $revisionProduct->detail_info = $product->detail_info;
+        $revisionProduct->origin_deleted_at = $product->deleted_at;
+        $revisionProduct->origin_created_at = $product->created_at;
+        $revisionProduct->origin_updated_at = $product->updated_at;
+
+        $revisionProduct->save();
     }
 }

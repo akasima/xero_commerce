@@ -88,7 +88,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             @endphp
                             <option value="">선택</option>
                             @foreach($deliverys as $delivery)
-                                <option @if($product->delivery_id==$delivery->pivot->id) selected @endif value="{{$delivery->pivot->id}}">{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
+                                <option @if($product->shop_delivery_id==$delivery->pivot->id) selected @endif value="{{$delivery->pivot->id}}">{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
                             @endforeach
                         </select>
                     </div>

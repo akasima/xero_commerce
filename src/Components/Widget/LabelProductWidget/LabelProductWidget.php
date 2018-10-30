@@ -27,10 +27,21 @@ class LabelProductWidget extends AbstractWidget
         $widgetConfig = $this->setting();
 
         $labelId = $widgetConfig['label_id'];
-
         $label = $this->labelHandler->getLabel($labelId);
-        $categories = CategoryItem::whereIn('id', [$widgetConfig['category_item_id']])->get();
-        $products = Product::whereIn('id', [$widgetConfig['product_id']])->get();
+
+        if (is_array($widgetConfig['category_item_id']) === true) {
+            $categoryIds = $widgetConfig['category_item_id'];
+        } else {
+            $categoryIds = explode(',', $widgetConfig['category_item_id']);
+        }
+        $categories = CategoryItem::whereIn('id', $categoryIds)->get();
+
+        if (is_array($widgetConfig['product_id']) === true) {
+            $productIds = $widgetConfig['product_id'];
+        } else {
+            $productIds = [$widgetConfig['product_id']];
+        }
+        $products = Product::whereIn('id', $productIds)->get();
 
         return $this->renderSkin([
             'widgetConfig' => $widgetConfig,

@@ -42,18 +42,36 @@ class ShopConfigController
         return XePresenter::make('xero_commerce::views.setting.config.skin', compact('skinSection'));
     }
 
-    public function editTheme(ThemeHandler $themeHandler)
+    public function editTheme()
     {
-        $selectedTheme = $themeHandler->getSiteThemeId();
+        $mainMenuId = \XeConfig::get(Plugin::getId())->get('mainMenuId', '');
 
-        return \XePresenter::make('settings.theme', compact('selectedTheme'));
+        if ($mainMenuId == '') {
+            return;
+        }
+
+        $menuTheme = \XeMenu::getMenuTheme(\XeMenu::menus()->findWith($mainMenuId));
+
+        $selectedTheme['desktop'] = $menuTheme['desktopTheme'];
+        $selectedTheme['mobile'] = $menuTheme['mobileTheme'];
+
+        return \XePresenter::make('xero_commerce::views.setting.config.theme', compact('selectedTheme'));
     }
 
-    public function updateTheme(ThemeHandler $themeHandler, Request $request)
+    public function updateTheme(Request $request)
     {
-        $theme = $request->only(['theme_desktop', 'theme_mobile']);
-        $theme = ['desktop' => $theme['theme_desktop'], 'mobile' => $theme['theme_mobile']];
-        $themeHandler->setSiteTheme($theme);
+        $mainMenuId = \XeConfig::get(Plugin::getId())->get('mainMenuId', '');
+
+        if ($mainMenuId == '') {
+            return;
+        }
+
+        $desktopTheme = $request->get('theme_desktop');
+        $mobileTheme = $request->get('theme_mobile');
+
+        $menu = \XeMenu::menus()->findWith($mainMenuId);
+
+        \XeMenu::updateMenuTheme($menu, $desktopTheme, $mobileTheme);
 
         return \Redirect::back()->with('alert', ['type' => 'success', 'message' => xe_trans('xe::saved')]);
     }

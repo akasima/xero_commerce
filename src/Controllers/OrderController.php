@@ -2,25 +2,24 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
-use App\Facades\XeFrontend;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
-use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\AgreementService;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\XePlugin\XeroPay\PaymentService;
 
-class OrderController extends Controller
+class OrderController extends XeroCommerceBasicController
 {
     public $orderService;
 
     public function __construct()
     {
+        parent::__construct();
 
         $this->orderService = new OrderService();
     }
