@@ -85,5 +85,8 @@
         "payment/"
       ]
     }
+  },
+  "config": {
+    "optimize-autoloader": true
   }
 }
