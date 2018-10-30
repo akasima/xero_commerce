@@ -6,6 +6,8 @@ use App\Facades\XeCategory;
 use App\Facades\XeConfig;
 use App\Facades\XeInterception;
 use App\Facades\XeLang;
+use App\Facades\XeMedia;
+use App\Facades\XeStorage;
 use Faker\Factory;
 use XeRegister;
 use XeDB;
@@ -950,9 +952,11 @@ class Resources
             $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
             $product->save();
 
-            $image = new Image();
-            $image->url = Plugin::asset('assets/sample/tmp_tablist.jpg');
-            $product->images()->save($image);
+            $url= file_get_contents(Plugin::asset('assets/sample/tmp_tablist.jpg'));
+            $file = XeStorage::create($url,'public/xero_commerce/product','default.jpg');
+            $imageFile = XeMedia::make($file);
+            XeMedia::createThumbnails($imageFile, 'widen',config('xe.media.thumbnail.dimensions'));
+            $product->images()->attach($imageFile->id);
 
             self::storeProductOption($product->id);
 
