@@ -100,7 +100,6 @@ class Product extends SellType
 
     public function getFare()
     {
-        // TODO: Implement getFare() method.
         return $this->getDelivery()->delivery_fare;
     }
 
@@ -202,7 +201,6 @@ class Product extends SellType
 
     function getContents()
     {
-        // TODO: Implement getContents() method.
         return '';
     }
 

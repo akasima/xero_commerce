@@ -512,6 +512,10 @@ class Resources
                         'uses' => 'ProductController@create', 'settings_menu' => 'xero_commerce.product.create']);
                     Route::post('/store', ['as' => 'xero_commerce::setting.product.store',
                         'uses' => 'ProductController@store']);
+
+                    Route::post('/option/store', ['as' => 'xero_commerce::setting.product.option.store',
+                        'uses' => 'ProductOptionController@store']);
+
                     Route::get('/{productId}', ['as' => 'xero_commerce::setting.product.show',
                         'uses' => 'ProductController@show']);
                     Route::get('/{productId}/edit', ['as' => 'xero_commerce::setting.product.edit',

@@ -3,13 +3,21 @@
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
 use App\Http\Controllers\Controller;
-use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
+use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class XeroCommerceBasicController extends Controller
 {
     public function __construct()
     {
-        //TODO 스킨 변경 가능 여부 확인
-        \XePresenter::setSkinTargetId(XeroCommerceModule::getId());
+        $themeHandler = \XePresenter::getThemeHandler();
+
+        $mainMenuId = \XeConfig::get(Plugin::getId())->get('mainMenuId', '');
+
+        if ($mainMenuId == '') {
+            return;
+        }
+
+        $menuTheme = \XeMenu::getMenuTheme(\XeMenu::menus()->findWith($mainMenuId));
+        $themeHandler->selectTheme($menuTheme['desktopTheme']);
     }
 }
