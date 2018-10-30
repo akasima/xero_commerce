@@ -77,7 +77,7 @@ class Resources
             config('xe.media.thumbnail.dimensions'),
             [
                 'T' => ['width' => 50, 'height' => 40],
-                'B' => ['width' => 500 , 'height'=> 500]
+                'B' => ['width' => 500, 'height' => 500]
             ]
         )]);
     }
@@ -119,7 +119,7 @@ class Resources
         $widgetboxHandler = app('xe.widgetbox');
 
         $widgetboxPrefix = 'widgetpage-';
-        $id = $widgetboxPrefix.$mainWidgetboxPageId;
+        $id = $widgetboxPrefix . $mainWidgetboxPageId;
 
         $categoryId = \XeConfig::get(Plugin::getId())->get('categoryId', '');
         $initCategories = CategoryItem::where('category_id', $categoryId)->pluck('id')->toArray();
@@ -792,7 +792,7 @@ class Resources
      */
     public static function setConfig()
     {
-        XeConfig::set('xero_pay',['uses'=>array_keys(app('xe.pluginRegister')->get('xero_pay'))[0]]);
+        XeConfig::set('xero_pay', ['uses' => array_keys(app('xe.pluginRegister')->get('xero_pay'))[0]]);
         \XeEditor::setInstance(Plugin::getId(), CkEditor::getId());
         \XeEditor::setConfig(Plugin::getId(), ['uploadActive' => true]);
 
@@ -953,10 +953,10 @@ class Resources
             $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
             $product->save();
 
-            $url= file_get_contents(Plugin::asset('assets/sample/tmp_tablist.jpg'));
-            $file = XeStorage::create($url,'public/xero_commerce/product','default.jpg');
+            $url = file_get_contents(Plugin::asset('assets/sample/tmp_tablist.jpg'));
+            $file = XeStorage::create($url, 'public/xero_commerce/product', 'default.jpg');
             $imageFile = XeMedia::make($file);
-            XeMedia::createThumbnails($imageFile, 'widen',config('xe.media.thumbnail.dimensions'));
+            XeMedia::createThumbnails($imageFile, 'widen', config('xe.media.thumbnail.dimensions'));
             $product->images()->attach($imageFile->id);
 
             self::storeProductOption($product->id);
