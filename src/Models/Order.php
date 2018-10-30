@@ -71,4 +71,14 @@ class Order extends DynamicModel
         $shortName = (mb_strlen($name) > 15) ? mb_substr($name, 0, 12). '...' : $name;
         return $shortName;
     }
+
+    function vBank($date, $info)
+    {
+        $payment = $this->payment;
+        $payment->is_paid = 1;
+        $payment->updated_at = $date;
+        $payment->save();
+        $orderHandler = new OrderHandler();
+        $orderHandler->update($this);
+    }
 }

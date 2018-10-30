@@ -9,6 +9,8 @@
 namespace Xpressengine\XePlugin\XeroPay;
 
 
+use Xpressengine\XePlugin\XeroPay\Models\Payment;
+
 trait Payable
 {
     function getId()
@@ -25,6 +27,8 @@ trait Payable
 
     abstract function getNameForPay();
 
+    abstract function vBank($date, $info);
+
     function getPayInfo()
     {
         return [
@@ -33,5 +37,10 @@ trait Payable
             'price'=>$this->getPriceForPay(),
             'name'=>$this->getNameForPay()
         ];
+    }
+
+    function xeropay()
+    {
+        return $this->morphOne(Payment::class,'payable');
     }
 }

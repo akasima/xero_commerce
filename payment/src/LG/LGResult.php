@@ -9,6 +9,7 @@
 namespace Xpressengine\XePlugin\XeroPay\LG;
 
 use Illuminate\Contracts\Support\Jsonable;
+use Xpressengine\XePlugin\XeroPay\Models\Payment;
 use Xpressengine\XePlugin\XeroPay\PaymentResponse;
 
 class LGResult implements PaymentResponse, Jsonable
@@ -59,5 +60,11 @@ class LGResult implements PaymentResponse, Jsonable
     public function toJson($options = 0)
     {
         return json_encode($this->getInfo());
+    }
+
+    public function getPayment()
+    {
+        $oid = $this->res['LGD_OID'];
+        return Payment::find(str_replace('_','-',$oid));
     }
 }

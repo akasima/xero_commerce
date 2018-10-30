@@ -11,6 +11,7 @@ namespace Xpressengine\XePlugin\XeroPay\Inicis;
 
 use App\Facades\XeConfig;
 use App\Facades\XeFrontend;
+use Carbon\Carbon;
 use Xpressengine\Http\Request;
 use Xpressengine\XePlugin\XeroPay\Inicis\Libs\INIStdPayUtil;
 use Xpressengine\XePlugin\XeroPay\Models\Payment;
@@ -82,5 +83,11 @@ class InicisHandler implements PaymentHandler
         $form['signature']=$this->util->makeSignature(array_only($form,['authToken','timestamp']));
         $data = PayCurl::post($request->get('authUrl'), [], $form);
         return new InicisResult($data);
+    }
+
+    public function vBank(Request $request)
+    {
+        $payment = Payment::find($request->get('no_oid'));
+        $payment->target->vBank(Carbon::parse($request->get('dt_trans').$request->get('tm_trans')), $request->all());
     }
 }

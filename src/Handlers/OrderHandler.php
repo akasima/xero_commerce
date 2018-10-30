@@ -175,6 +175,11 @@ class OrderHandler extends SellSetHandler
         $payment->discount = $summary['discount_price'];
         $payment->millage = 0;
         $payment->fare = $summary['fare'];
+        if($pay = $order->xeropay){
+            $payment->method=$pay->method;
+            $payment->info = $pay->info;
+            $payment->is_paid = $pay->is_paid_method;
+        }
         $payment->save();
         return $this->update($order);
     }

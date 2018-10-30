@@ -246,7 +246,7 @@ class Database
             $table->increments('id');
             $table->string('order_id');
             $table->string('method');
-            $table->string('info');
+            $table->text('info');
             $table->integer('price');
             $table->integer('discount');
             $table->integer('millage');

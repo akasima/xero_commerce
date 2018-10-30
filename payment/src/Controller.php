@@ -72,4 +72,9 @@ class Controller extends BaseController
 
         return $inputs;
     }
+
+    public function vBank(Request $request)
+    {
+        $this->service->vBank($request);
+    }
 }

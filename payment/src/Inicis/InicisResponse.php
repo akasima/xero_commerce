@@ -13,6 +13,7 @@ use App\Facades\XeConfig;
 use Xpressengine\Http\Request;
 use Xpressengine\XePlugin\XeroPay\AbstractPaymentResponse;
 use Xpressengine\XePlugin\XeroPay\Inicis\Libs\INIStdPayUtil;
+use Xpressengine\XePlugin\XeroPay\Models\Payment;
 use Xpressengine\XePlugin\XeroPay\PayCurl;
 
 class InicisResponse extends AbstractPaymentResponse
@@ -41,5 +42,10 @@ class InicisResponse extends AbstractPaymentResponse
     public function getInfo()
     {
         return $this->request->all();
+    }
+
+    public function getPayment()
+    {
+        return Payment::find($this->request->get('orderNumber'));
     }
 }

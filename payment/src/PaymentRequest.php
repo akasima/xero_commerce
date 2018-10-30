@@ -20,4 +20,6 @@ interface PaymentRequest
     public function encrypt();
 
     public function setForm();
+
+    public function isPaidMethod();
 }

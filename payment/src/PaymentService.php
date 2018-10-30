@@ -41,7 +41,10 @@ class PaymentService
     {
         $pay = $this->makePayment($request);
         $form = $this->handler->makePaymentRequest($request, $pay);
-        $this->logPayment($pay, 'test', $request->all(), $form);
+        $this->logPayment($pay, Payment::CREATE, $request->all(), $form);
+        $pay->method = $form->getMethod();
+        $pay->is_paid_method=$form->isPaidMethod();
+        $pay->save();
         return $form;
     }
 
@@ -53,11 +56,13 @@ class PaymentService
     {
         //거래요청(고객->pg)
         $response = $this->handler->getResponse($request);
+        $this->logPayment($response->getPayment(), Payment::REQ, $request->all(), []);
         if($response->fail()) return view('xero_commerce::payment.views.fail',['msg'=>$response->msg()]);
 
 
         //거래요청 후 승인 요청(상점->pg)
         $result = $this->handler->getResult($request);
+        $this->logPayment($response->getPayment(), Payment::EXE, $request->all(), $result->getInfo());
 
         //승인 시
         if ($result->success()){
@@ -89,6 +94,9 @@ class PaymentService
         $pay->name = $request->get('target')['name'];
         $pay->price = $request->get('target')['price'];
         $pay->status = '';
+        $pay->method='';
+        $pay->info='';
+        $pay->is_paid_method=0;
         $pay->save();
         return $pay;
     }
@@ -99,7 +107,15 @@ class PaymentService
         $log->req = json_encode($req);
         $log->res = json_encode($res);
         $log->action = $status;
+        $payment->status = $status;
+        $payment->info=$log->res;
         $payment->log()->save($log);
+        $payment->save();
         return $log;
+    }
+
+    public function vBank(Request $request)
+    {
+        $this->handler->vBank($request);
     }
 }

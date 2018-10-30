@@ -36,6 +36,10 @@ class Resources
                     'as' => 'xero_pay::close',
                     'uses' => 'Controller@close'
                 ]);
+                Route::post('/bank', [
+                    'as'=>'xero_pay::bank',
+                    'uses'=>'Controller@vBank'
+                ]);
             });
 //
         Route::settings('xero_pay', function () {
@@ -74,8 +78,12 @@ class Resources
             $table->string('name');
             $table->string('ip');
             $table->string('payment_type');
-            $table->morphs('payable');
+            $table->string('payable_id');
+            $table->string('payable_type');
             $table->integer('price');
+            $table->string('method');
+            $table->boolean('is_paid_method');
+            $table->text('info');
             $table->string('status');
             $table->timestamps();
         });

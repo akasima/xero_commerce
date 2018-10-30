@@ -37,7 +37,7 @@ class LGRequest extends AbstractPaymentRequest
             'LGD_PRODUCTINFO'=>$this->payment->name,
             'LGD_TIMESTAMP'=>now()->format('YmdHis'),
             'LGD_RETURNURL'=>route('xero_pay::callback'),
-            'LGD_CASNOTEURL'=>route('xero_pay::close'),
+            'LGD_CASNOTEURL'=>route('xero_pay::bank'),
             'LGD_WINDOW_TYPE'=>'iframe',
             'LGD_BUYERID'=>$this->request->get('user')['phone'],
             'LGD_BUYERIP'=>$this->request->ip(),
@@ -45,10 +45,16 @@ class LGRequest extends AbstractPaymentRequest
             'LGD_CUSTOM_PROCESSTYPE'=>'TWOTR',
             'LGD_CUSTOM_USABLEPAY'=>$this->getRequest('method'),
             'LGD_ENCODING'=>'UTF-8',
-            'LGD_ENCODING_RETURNURL'=>'UTF-8'
+            'LGD_ENCODING_RETURNURL'=>'UTF-8',
+            'LGD_ENCODING_NOTEURL'=>'UTF-8'
         ];
         $form['LGD_MID']='t'.$form['CST_MID'];
         $form['LGD_HASHDATA'] = md5($form['LGD_MID'].$form['LGD_OID'].$form['LGD_AMOUNT'].$form['LGD_TIMESTAMP'].XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@lg.mertKey'));
         return $form;
+    }
+
+    public function isPaidMethod()
+    {
+        return $this->getMethod()!='무통장입금';
     }
 }

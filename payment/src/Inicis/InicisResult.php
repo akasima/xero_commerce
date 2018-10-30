@@ -10,6 +10,7 @@ namespace Xpressengine\XePlugin\XeroPay\Inicis;
 
 
 use Illuminate\Contracts\Support\Jsonable;
+use Xpressengine\XePlugin\XeroPay\Models\Payment;
 use Xpressengine\XePlugin\XeroPay\PaymentResponse;
 
 class InicisResult implements PaymentResponse, Jsonable
@@ -59,5 +60,10 @@ class InicisResult implements PaymentResponse, Jsonable
     public function fail()
     {
         return !$this->success();
+    }
+
+    public function getPayment()
+    {
+        return Payment::find($this->arr->MOID);
     }
 }

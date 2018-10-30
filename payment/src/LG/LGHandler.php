@@ -12,6 +12,7 @@ namespace Xpressengine\XePlugin\XeroPay\LG;
 use App\Facades\XeConfig;
 use App\Facades\XeFrontend;
 use App\Facades\XePresenter;
+use Carbon\Carbon;
 use Xpressengine\Http\Request;
 use Xpressengine\XePlugin\XeroPay\LG\XPayClient\XPayClient;
 use Xpressengine\XePlugin\XeroPay\Models\Payment;
@@ -113,6 +114,18 @@ class LGHandler implements PaymentHandler
             $charid = strtoupper(md5(uniqid(rand(), true)));
             $uuid = $charid;
             return $uuid;
+        }
+    }
+
+    public function vBank(Request $request)
+    {
+        $data=$request->all();
+        $mertKey = XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@lg.mertKey');
+        $hash = md5($data['LGD_MID'].$data['LGD_OID'].$data['LGD_AMOUNT'].$data['LGD_RESPCODE'].$data['LGD_TIMESTAMP'].$mertKey);
+        if($hash === $request->get('LGD_HASHDATA')){
+            $oid = str_replace('_','-',$request->get('LGD_OID'));
+            $payment = Payment::find($oid);
+            $payment->target->vBank(Carbon::createFromTimestamp($request->get('LGD_TIMESTAMP')),$data);
         }
     }
 }

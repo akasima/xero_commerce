@@ -10,6 +10,7 @@ namespace Xpressengine\XePlugin\XeroPay\LG;
 
 
 use Xpressengine\XePlugin\XeroPay\AbstractPaymentResponse;
+use Xpressengine\XePlugin\XeroPay\Models\Payment;
 use Xpressengine\XePlugin\XeroPay\PayCurl;
 
 class LGResponse extends AbstractPaymentResponse
@@ -38,5 +39,11 @@ class LGResponse extends AbstractPaymentResponse
     public function getInfo()
     {
         return $this->request->all();
+    }
+
+    public function getPayment()
+    {
+        $oid = $this->request->get('LGD_OID');
+        return Payment::find(str_replace('_','-',$oid));
     }
 }

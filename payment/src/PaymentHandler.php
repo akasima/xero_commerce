@@ -34,4 +34,6 @@ interface PaymentHandler
      * @return mixed
      */
     public function getResult(Request $request);
+
+    public function vBank(Request $request);
 }

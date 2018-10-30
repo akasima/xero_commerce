@@ -17,4 +17,6 @@ interface PaymentResponse
     public function getDateTime();
 
     public function getInfo();
+
+    public function getPayment();
 }

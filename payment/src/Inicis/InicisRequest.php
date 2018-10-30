@@ -69,4 +69,9 @@ class InicisRequest extends AbstractPaymentRequest
         }
         return hash('sha256',implode('&', $parseArray));
     }
+
+    public function isPaidMethod()
+    {
+        return $this->getMethod()!='무통장입금';
+    }
 }
