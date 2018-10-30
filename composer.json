@@ -63,11 +63,6 @@
           "name": "XeroCommerce 이벤트 위젯 기본 스킨",
           "description": "XeroCommerce 이벤트 위젯 기본 스킨"
         },
-        "xero_pay/xero_pay@test": {
-          "class": "Xpressengine\\XePlugin\\XeroPay\\Test\\Test",
-          "name": "Test",
-          "descroption": "xero_pay Test"
-        },
         "xero_pay/xero_pay@inicis": {
           "class": "Xpressengine\\XePlugin\\XeroPay\\Inicis\\Inicis",
           "name": "이니시스",
