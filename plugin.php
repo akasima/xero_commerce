@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce;
 
+use Illuminate\Support\Facades\Log;
 use Route;
 use Xpressengine\Log\LogHandler;
 use Xpressengine\Plugin\AbstractPlugin;
@@ -27,6 +28,8 @@ class Plugin extends AbstractPlugin
         self::registerXeroCommerceLogger();
         Resources::bindClasses();
         Resources::setCanNotUseXeroCommercePrefixRoute();
+        Log::info('bootPlugin');
+        Resources::setThumnailDimensionSEtting();
         Resources::registerRoute();
         \Xpressengine\XePlugin\XeroPay\Resources::registerRoute();
         \Xpressengine\XePlugin\XeroPay\Resources::registerMenu();

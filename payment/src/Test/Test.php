@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Xpressengine\XePlugin\XeroPay\Test;
-
 
 use Xpressengine\XePlugin\XeroPay\PaymentGate;
 
@@ -24,5 +21,10 @@ class Test extends PaymentGate
     public function __construct()
     {
         self::$handler = new TestHandler();
+    }
+
+    public static function url()
+    {
+        // TODO: Implement url() method.
     }
 }

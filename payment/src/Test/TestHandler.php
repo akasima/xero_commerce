@@ -43,6 +43,6 @@ class TestHandler implements PaymentHandler
      */
     public function execute(Request $request)
     {
-        return new TestResponse();
+        return new TestResponse($request);
     }
 }

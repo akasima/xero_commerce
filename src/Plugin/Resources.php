@@ -3,6 +3,7 @@
 namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
 use App\Facades\XeCategory;
+use App\Facades\XeConfig;
 use App\Facades\XeInterception;
 use App\Facades\XeLang;
 use Faker\Factory;
@@ -41,6 +42,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\User\Models\User;
+use Xpressengine\XePlugin\XeroPay\Inicis\InicisHandler;
+use Xpressengine\XePlugin\XeroPay\LG\LGHandler;
 use Xpressengine\XePlugin\XeroPay\PaymentHandler;
 use Xpressengine\XePlugin\XeroPay\Test\TestHandler;
 
@@ -64,6 +67,17 @@ class Resources
         array_forget($routing, 'xero_commerce');
 
         config(['xe.routing' => $routing]);
+    }
+
+    public static function setThumnailDimensionSEtting()
+    {
+        config(['xe.media.thumbnail.dimensions' => array_merge(
+            config('xe.media.thumbnail.dimensions'),
+            [
+                'T' => ['width' => 50, 'height' => 40],
+                'B' => ['width' => 500 , 'height'=> 500]
+            ]
+        )]);
     }
 
     /**
@@ -752,7 +766,9 @@ class Resources
 
 
         $app->singleton(PaymentHandler::class, function ($app) {
-            $proxyHandler = XeInterception::proxy(TestHandler::class);
+            $uses = XeConfig::getOrNew('xero_pay')->get('uses');
+            $useHandler = app('xe.pluginRegister')->get('xero_pay')[$uses]::$handler;
+            $proxyHandler = XeInterception::proxy($useHandler);
 
             $instance = new $proxyHandler();
 

@@ -79,7 +79,7 @@ class Database
 
         Schema::create('xero_commerce_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('url');
+            $table->string('image_id',36);
             $table->morphs('imagable');
         });
 
@@ -213,7 +213,7 @@ class Database
             $table->increments('id');
             $table->string('order_id');
             $table->string('method');
-            $table->string('info');
+            $table->text('info');
             $table->integer('price');
             $table->integer('discount');
             $table->integer('millage');

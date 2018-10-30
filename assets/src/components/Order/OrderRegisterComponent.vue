@@ -34,7 +34,7 @@
                             <tr>
                                 <th>일반 결제</th>
                                 <td>
-                                    <pay-component :pay-methods="payMethods"></pay-component>
+                                    <pay-component :pay-methods="payMethods" v-model="payMethod"></pay-component>
                                 </td>
                             </tr>
                         </table>
@@ -62,8 +62,12 @@
                 <order-bill-component :summary="orderSummary"
                                       :validate="validate"
                                       :method="payMethod"
+                                      :order-id="order_id"
                                       @pay="register"
                                       :discount-option="discountOption"
+                                      :user-info="userInfo"
+                                      :user="user"
+                                      :target="payTarget"
                 ></order-bill-component>
                 <order-agreement-component :agreements="agreements" v-model="agreed" :agree-url="agreeUrl"
                                            :denied-url="deniedUrl"></order-agreement-component>
@@ -85,7 +89,7 @@
             OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent, PayComponent
         },
         props: [
-            'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods', 'agreeUrl', 'deniedUrl'
+            'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods', 'agreeUrl', 'deniedUrl', 'payTarget'
         ],
         computed: {
             validate() {

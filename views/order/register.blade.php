@@ -12,6 +12,7 @@
         :user-info='{!! \Xpressengine\Plugins\XeroCommerce\Models\UserInfo::by(\Illuminate\Support\Facades\Auth::id())->load('userDelivery') !!}'
         order_id="{{$order->id}}"
         :pay-methods='{{ json_encode($payMethods)  }} '
+        :pay-target="{{json_encode($order->getPayInfo())}}"
         agree-url="{{route('xero_commerce::agreement.order.save',['order'=>$order->id])}}"
         denied-url="{{route('xero_commerce::agreement.order.cancel',['order'=>$order->id])}}"
     ></order-register-component>

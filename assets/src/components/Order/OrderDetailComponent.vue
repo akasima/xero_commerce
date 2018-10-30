@@ -16,7 +16,7 @@
             </tr>
             <tr>
                 <th>결제 완료일시</th>
-                <td></td>
+                <td v-if="order.payment.is_paid">{{order.payment.updated_at}}</td>
             </tr>
         </table>
         <h2>주문정보</h2>

@@ -244,7 +244,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                         <b style="color:blue; cursor:pointer" href="#" onclick="editImages.edit({{$i}})">수정</b>
                                         <div class="form-group">
                                             <label>사진업로드 #{{$i}}</label> <br>
-                                            <img src="{{$product->images->get($i-1)->url}}" alt="" width="300px" height="240px">
+                                            <img src="{{XeMedia::image()->getThumbNail($product->images->get($i-1),'widen','M')->url()}}" alt="">
                                             <input type="hidden" name="nonEditImage[]" value="{{$product->images->get($i-1)->id}}">
                                         </div>
                                     </div>

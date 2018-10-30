@@ -36,6 +36,7 @@ class Dev
     public function makeTable()
     {
         Database::create();
+        \Xpressengine\XePlugin\XeroPay\Resources::makeDataTable();
     }
 
     public function dropTable()
@@ -53,13 +54,19 @@ class Dev
             Schema::dropIfExists($table_name);
             dump($table_name);
         }
+
+        $tables = DB::select('SHOW TABLES LIKE "xe_xero_pay_%"');
+        foreach ($tables as $table) {
+            $table_name = str_replace('xe_', '', head($table));
+            Schema::dropIfExists($table_name);
+            dump($table_name);
+        }
     }
 
     public function resetTable()
     {
         $this->dropTable();
         $this->makeTable();
-        Resources::setConfig();
         $this->setting();
         $this->deleteTagInfo();
         $this->makeShop(1);
@@ -200,6 +207,7 @@ class Dev
     private function getXeroCommerceCategoryIds()
     {
         $config = \XeConfig::get(Plugin::getId());
+
         $categoryId = $config->get('categoryId');
 
         $categoryIds = CategoryItem::where('category_id', $categoryId)->pluck('id')->toArray();

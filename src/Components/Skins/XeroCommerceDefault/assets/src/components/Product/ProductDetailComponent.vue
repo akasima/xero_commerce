@@ -1,10 +1,12 @@
 <template>
     <div>
         <div class="row" style="margin-top: 20px">
-            <div class="col">
+            <div class="col-lg-6">
                 <div class="row">
-                    <div class="col">
-                        <img :src="mainImg" style="width:100%; height:300px">
+                    <div class="col" >
+                        <div style="margin:0 auto; width:400px;">
+                            <img :src="mainImg">
+                        </div>
                     </div>
                 </div>
                 <div class="row" v-if="product.images.length >1">
@@ -14,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-lg-6">
                 <div class="row">
                     <div class="col">
                         <h1>{{product.data.name}}</h1>

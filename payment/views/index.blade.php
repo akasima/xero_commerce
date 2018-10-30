@@ -13,6 +13,7 @@
                         {{ $class::getComponentInfo('name') }}
                     </label>
                 </h3>
+                <p>가능한 결제수단 : {{implode($class::$methods, ", ")}} </p>
             </div>
             <div class="panel-body">
                 @foreach($class::configItems() as $key => $readable)
