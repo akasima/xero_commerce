@@ -73,7 +73,7 @@
     <section class="logo">
         <div class="container">
             <h2 class="xe-shop-logo">
-                <a href="#"><img src="{{$theme::asset('img/shop-logo@lg.png')}}" alt="쇼핑몰 로고"></a>
+                <a href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}"><img src="{{$theme::asset('img/shop-logo@lg.png')}}" alt="쇼핑몰 로고"></a>
             </h2>
             <button type="button" class="xe-shop-btn-search xe-hidden-md xe-hidden-lg"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
         </div>

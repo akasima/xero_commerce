@@ -1,18 +1,24 @@
+@php
+    $mainPageId = \XeConfig::get(\Xpressengine\Plugins\XeroCommerce\Plugin::getId())->get('mainPageId');
+@endphp
+
 <section class="menu">
     <div class="container">
         <h2 class="xe-sr-only">메뉴</h2>
         <ul class="xe-shop-menu">
             @foreach(menu_list($config->get('gnb')) as $menu)
-                <li @if($menu['selected']) class="active" @endif><a href="{{ url($menu['url']) }}" target="{{ $menu['target'] }}">{{ $menu['link'] }}</a>
-                <ul>
-                    <li><a href="#">1 depth depth depth depth depth depth depth depth</a></li>
-                    <li><a href="#">1 depth</a></li>
-                    <li><a href="#">1 depth</a></li>
-                    <li><a href="#">1 depth</a></li>
-                    <li><a href="#">1 depth</a></li>
-                    <li><a href="#">1 depth</a></li>
-                </ul>
-                </li>
+                @if ($menu->id !== $mainPageId)
+                    <li @if($menu['selected']) class="active" @endif><a href="{{ url($menu['url']) }}" target="{{ $menu['target'] }}">{{ $menu['link'] }}</a>
+                        <ul>
+                            <li><a href="#">1 depth depth depth depth depth depth depth depth</a></li>
+                            <li><a href="#">1 depth</a></li>
+                            <li><a href="#">1 depth</a></li>
+                            <li><a href="#">1 depth</a></li>
+                            <li><a href="#">1 depth</a></li>
+                            <li><a href="#">1 depth</a></li>
+                        </ul>
+                    </li>
+                @endif
             @endforeach
         </ul>
         <h2 class="xe-sr-only">카테고리</h2>
