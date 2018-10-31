@@ -49,7 +49,7 @@
             <article class="xe-shop-utilmenu xe-hidden-xs xe-hidden-sm">
                 <h2 class="xe-sr-only">관련 링크</h2>
                 <ul class="xe-shop-utilmenu-list">
-                    @if(auth()->user()->getRating()=='super' || auth()->user()->getRating()=='manager')
+                    @if(auth()->user()->isAdmin() == true)
                         <li><a style="color:red" href="{{ route('settings') }}">관리자페이지</a></li>
                     @endif
                     @if(auth()->check())
