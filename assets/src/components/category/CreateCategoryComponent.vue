@@ -4,7 +4,8 @@
                                    v-on:selectParent="getChild"
                                    :category-items="categoryItems"
                                    :index="index"
-                                   :key="index">
+                                   :key="index"
+                                   :selected="selected">
         </category-select-component>
 
         <button v-on:click="addCreateComponent" type="button" class="xe-btn" v-if="this.isVisibleAddButton">추가</button>
@@ -18,7 +19,7 @@
     export default {
         name: "CreateCategoryComponent",
         props: [
-            'categoryItems', 'getChildUrl', 'componentIndex'
+            'categoryItems', 'getChildUrl', 'componentIndex', 'selected'
         ],
         data() {
             return {

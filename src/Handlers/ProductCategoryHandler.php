@@ -22,4 +22,9 @@ class ProductCategoryHandler
     {
         ProductCategory::where('product_id', $productId)->delete();
     }
+
+    public function getIds($productId)
+    {
+        return ProductCategory::where('product_id',$productId)->pluck('category_id')->all();
+    }
 }

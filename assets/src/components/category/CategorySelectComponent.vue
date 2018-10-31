@@ -10,7 +10,7 @@
     export default {
         name: "CategorySelectComponent",
         props: [
-            'categoryItems', 'index'
+            'categoryItems', 'index', 'selected'
         ],
         data() {
             return {
@@ -20,6 +20,12 @@
         methods: {
             getChild : function (parentId) {
                 this.$emit('selectParent', parentId, this.index);
+            }
+        },
+        mounted () {
+            if(this.selected){
+                console.log(this.selected)
+                this.selectValue = this.selected
             }
         }
     }

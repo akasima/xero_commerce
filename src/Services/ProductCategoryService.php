@@ -58,8 +58,6 @@ class ProductCategoryService
             return;
         }
 
-        $newCategory = substr($newCategory, 0, strlen($newCategory) - 1);
-
         $categoryItems = explode(',', $newCategory);
 
         $this->handler->store($productId, $categoryItems);
@@ -74,5 +72,10 @@ class ProductCategoryService
     {
         $this->removeProductCategory($productId);
         $this->createProductCategory($productId, $request);
+    }
+
+    public function getProductCategory($productId)
+    {
+        return $this->handler->getIds($productId);
     }
 }
