@@ -12,7 +12,7 @@ use Xpressengine\Plugins\XeroCommerce\Services\ProductService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Routing\InstanceConfig;
 
-class ProductController extends Controller
+class ProductController extends XeroCommerceBasicController
 {
     /** @var ProductService $productService */
     protected $productService;
@@ -25,6 +25,7 @@ class ProductController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
         \XePresenter::setSkinTargetId(XeroCommerceModule::getId());
 
         $this->productService = new ProductService();
