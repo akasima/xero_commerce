@@ -6,7 +6,10 @@
 {{-- stylesheet --}}
 {{ app('xe.frontend')->css([
     'assets/vendor/bootstrap/css/bootstrap.min.css',
-    $theme::asset('css/theme.css')
+    $theme::asset('css/user/layout.css'),
+    $theme::asset('css/user/widget_cross_list.css'),
+    $theme::asset('css/user/widget_slider.css'),
+    $theme::asset('css/user/widget_tab_list.css'),
 ])->load() }}
 
 {{-- inline style --}}
@@ -18,72 +21,267 @@
     }
 </style>
 ")->load() }}
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">{{ $config->get('logo_title', 'Xpressengine') }}</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-
-            @include($theme::view('gnb'))
-
-            <div class="navbar-form navbar-right">
-                <ul class="navbar-nav navbar-expand">
+<div class="xe-shop">
+    <h1 class="xe-sr-only">xe 쇼핑</h1>
+    <!-- 기본 ui
+      scss/user/_skin.scss
+      include/default_header.html
+      include/default_logo.html
+      include/default_menu.html
+      include/default_search.html
+      include/default_slider.html
+    -->
+    <section class="header">
+        <!-- [D] width를 제어하기 위해 사용하는 클래스입니다. 100% 넓이를 사용하는 위젯은 사용할 필요가 없습니다. -->
+        <div class="container">
+            <h2 class="xe-sr-only">상단 유틸</h2>
+            <article class="xe-shop-notice xe-hidden-xs xe-hidden-sm">
+                <h3>notice</h3>
+                <div class="notice-view">
+                    <ul>
+                        <li><a href="#">1.테스트 베이스 입니다 테스트 베이스 입니다 </a></li>
+                        <li><a href="#">2.공지사항입니다.></a></li>
+                        <li><a href="#">3.테스트 베이스 입니다 테스트 베이스 입니다 테스트 베이스 입니다 </a></li>
+                        <li><a href="#">4.테스트 베이스 입니다 테스트 베이스 입니다 테스트 베이스 입니다 </a></li>
+                    </ul>
+                </div>
+            </article>
+            <article class="xe-shop-utilmenu xe-hidden-xs xe-hidden-sm">
+                <h2 class="xe-sr-only">관련 링크</h2>
+                <ul class="xe-shop-utilmenu-list">
                     @if(auth()->check())
-                        <a href="{{ route('logout') }}">로그아웃</a>
-                        <li role="separator" class="divider"></li>
-                        <a href="{{ route('user.settings') }}">마이페이지</a>
-                        <li role="separator" class="divider"></li>
+                        <li><a href="{{ route('logout') }}">로그아웃</a></li>
                     @else
-                        <a href="{{ route('login') }}">로그인</a>
-                        <li role="separator" class="divider"></li>
+                        <li><a href="{{ route('login') }}">로그인</a></li>
                     @endif
-
-                    <a href="{{route('xero_commerce::order.index')}}">주문내역</a>
-                    <li role="separator" class="divider"></li>
-                    <a href="{{route('xero_commerce::cart.index')}}">장바구니</a>
-                    <li role="separator" class="divider"></li>
+                    <li><a href="{{route('auth.register') }}">회원가입</a></li>
+                    <li><a href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
+                    <li><a href="{{route('xero_commerce::order.index')}}">주문조회</a></li>
+                    <li><a href="{{route('user.settings') }}">마이페이지</a></li>
                 </ul>
-            </div>
-        </div><!--/.navbar-collapse -->
-    </div>
-</nav>
-
-@if($config->get('show_spot', 'hide') === 'show')
-<!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
-    <div class="container">
-        <h1>{{ $config->get('spot_title', 'Xpressengine') }}</h1>
-        <p>{!! nl2br($config->get('spot_content', 'This theme is the implementation of <a href="http://getbootstrap.com/examples/jumbotron/">Bootstrap Jumbotron Template</a>.')) !!}</p>
-
-        @if($config->get('spot_image') !== null)
-        <p class="lead">
-                <img src="{{ $config->get('spot_image.path') }}">
-        </p>
-        @endif
-
-    </div>
-</div>
-@endif
-
-<div class="container" style="margin-top:20px">
-    <div id="sub-container">
-        {!! $content !!}
-    </div>
-
-    <hr>
-
-    <footer>
-        <p>© 2016 Company, Inc.</p>
-        <div class="">
-
+                <h2 class="xe-sr-only">검색</h2>
+                <div class="xe-shop-search-input">
+                    <input type="text" class="xe-form-control" placeholder="">
+                    <button type="button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
+                </div>
+            </article>
         </div>
-    </footer>
+    </section>
+    <section class="logo">
+        <div class="container">
+            <h2 class="xe-shop-logo">
+                <a href="#"><img src="{{$theme::asset('img/shop-logo@lg.png')}}" alt="쇼핑몰 로고"></a>
+            </h2>
+            <button type="button" class="xe-shop-btn-search xe-hidden-md xe-hidden-lg"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
+        </div>
+    </section>
+    @include($theme::view('gnb'))
+    <section class="search">
+        <div class="container">
+            <h2 class="xe-sr-only">검색</h2>
+            <!-- [D] 활성화 시 active 클래스 추가 부탁드립니다-->
+            <div class="xe-shop-search">
+                <div class="search-box">
+                    <div class="search-box-border">
+                        <input type="search" class="search-box-input">
+                        <button class="btn-search"><span class="xe-sr-only">검색하기</span><i class="xi-search"></i></button>
+                    </div>
+                </div><!-- //search-box  -->
+                <div class="list-box">
+                    <div class="search-keyword">
+                        <div class="search-keyword-btn">
+                            <!--[D] 활성화시 active 클래스 추가 부탁드립니다.  -->
+                            <button type="button" class="active">최근 검색어</button>
+                            <button type="button">인기 검색어</button>
+                        </div>
+                        <div class="search-keyword-list">
+                            <!-- [D] 최근 검색어 리스트 display: none/block 하셔도 됩니다  -->
+                            <ul>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                                <li><a href="#">dddddddddddddddddddddddddddddddddddddddddd</a></li>
+                            </ul>
+                        </div>
+                        <div class="search-close">
+                            <button class="xi-user-plus"></button>
+                            <button type="button" class="btn-search-close">닫기</button>
+                        </div>
+                    </div>
+                    <div class="search-preview">
+                        <div class="search-preview-list">
+                            <ul>
+                                <li><a href="#">aa<b>aaa</b></a></li>
+                                <li><a href="#">aa<b>aaa</b></a></li>
+                                <li><a href="#">aa<b>aaa</b></a></li>
+                                <li><a href="#">aa<b>aaa</b></a></li>
+                                <li><a href="#">aa<b>aaa</b></a></li>
+                                <li><a href="#">aa<b>aaa</b></a></li>
+                            </ul>
+
+                        </div>
+                        <div class="search-close">
+                            <button type="button" class="btn-search-close">닫기</button>
+                        </div>
+                    </div>
+                </div><!-- //list-box  -->
+            </div><!-- //xe-shop-search  -->
+        </div>
+    </section>
+    <div class="container" style="margin-top:20px">
+        <div id="sub-container">
+            {!! $content !!}
+        </div>
+
+        <hr>
+        <footer class="footer">
+            <section class="xe-company-info">
+                @php
+                    $config = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
+                @endphp
+                <div class="container">
+                    <div class="xe-company-info-article">
+                        <p>
+                            <b>상호명</b>
+                            <span>{{$config['companyName']}}</span>
+                        </p>
+                        <p>
+                            <b>대표자</b>
+                            <span>{{$config['ceoName']}}</span>
+                        </p>
+                        <p>
+                            <b>사업자등록번호</b>
+                            <span>{{$config['companyNumber']}}<a href="#">[사업자정보확인]</a></span>
+                        </p>
+                        <p>
+                            <b>통신판매업</b>
+                            <span>신고 {{$config['communicationMarketingNumber']}}</span>
+                        </p>
+                    </div>
+                    <div class="xe-company-info-article">
+                        <p>
+                            <b>주소</b>
+                            <span>({{$config['zipCode']}}) {{$config['address']}}</span>
+                        </p>
+                        <p>
+                            <b>대표전화</b>
+                            <span>{{$config['telNumber']}}</span>
+                        </p>
+                    </div>
+                    <div class="xe-company-info-article">
+                        <p>
+                            <b>개인정보관리책임자</b>
+                            <span>{{$config['informationCharger']}}</span>
+                        </p>
+                        <p>
+                            <b>이메일</b>
+                            <span>{{$config['email']}}</span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section class="copyright">
+                <div class="container">
+                    <p>Copyright &copy; 2016 {{$config['companyName']}} All rights reserved.&nbsp;&nbsp;&nbsp;<br class="xe-hidden-md xe-hidden-lg">MADE BY XE</p>
+                </div>
+            </section>
+        </footer>
+    </div>
 </div>
+{{--<nav class="navbar navbar-inverse navbar-fixed-top">--}}
+    {{--<div class="container">--}}
+        {{--<div class="navbar-header">--}}
+            {{--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">--}}
+                {{--<span class="sr-only">Toggle navigation</span>--}}
+                {{--<span class="icon-bar"></span>--}}
+                {{--<span class="icon-bar"></span>--}}
+                {{--<span class="icon-bar"></span>--}}
+            {{--</button>--}}
+            {{--<a class="navbar-brand" href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">{{ $config->get('logo_title', 'Xpressengine') }}</a>--}}
+        {{--</div>--}}
+        {{--<div id="navbar" class="navbar-collapse collapse">--}}
+
+            {{--@include($theme::view('gnb'))--}}
+
+            {{--<div class="navbar-form navbar-right">--}}
+                {{--<ul class="navbar-nav navbar-expand">--}}
+                    {{--@if(auth()->check())--}}
+                        {{--<a href="{{ route('logout') }}">로그아웃</a>--}}
+                        {{--<li role="separator" class="divider"></li>--}}
+                        {{--<a href="{{ route('user.settings') }}">마이페이지</a>--}}
+                        {{--<li role="separator" class="divider"></li>--}}
+                    {{--@else--}}
+                        {{--<a href="{{ route('login') }}">로그인</a>--}}
+                        {{--<li role="separator" class="divider"></li>--}}
+                    {{--@endif--}}
+
+                    {{--<a href="{{route('xero_commerce::order.index')}}">주문내역</a>--}}
+                    {{--<li role="separator" class="divider"></li>--}}
+                    {{--<a href="{{route('xero_commerce::cart.index')}}">장바구니</a>--}}
+                    {{--<li role="separator" class="divider"></li>--}}
+                {{--</ul>--}}
+            {{--</div>--}}
+        {{--</div><!--/.navbar-collapse -->--}}
+    {{--</div>--}}
+{{--</nav>--}}
+
+{{--@if($config->get('show_spot', 'hide') === 'show')--}}
+{{--<!-- Main jumbotron for a primary marketing message or call to action -->--}}
+{{--<div class="jumbotron">--}}
+    {{--<div class="container">--}}
+        {{--<h1>{{ $config->get('spot_title', 'Xpressengine') }}</h1>--}}
+        {{--<p>{!! nl2br($config->get('spot_content', 'This theme is the implementation of <a href="http://getbootstrap.com/examples/jumbotron/">Bootstrap Jumbotron Template</a>.')) !!}</p>--}}
+
+        {{--@if($config->get('spot_image') !== null)--}}
+        {{--<p class="lead">--}}
+                {{--<img src="{{ $config->get('spot_image.path') }}">--}}
+        {{--</p>--}}
+        {{--@endif--}}
+
+    {{--</div>--}}
+{{--</div>--}}
+{{--@endif--}}
+
+{{--<div class="container" style="margin-top:20px">--}}
+    {{--<div id="sub-container">--}}
+        {{--{!! $content !!}--}}
+    {{--</div>--}}
+
+    {{--<hr>--}}
+
+    {{--<footer>--}}
+        {{--<p>© 2016 Company, Inc.</p>--}}
+        {{--<div class="">--}}
+
+        {{--</div>--}}
+    {{--</footer>--}}
+{{--</div>--}}

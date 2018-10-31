@@ -1,0 +1,209 @@
+.tab-list-title {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+@media (max-width: 992px) {
+  .tab-list-title {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    border-collapse: collapse;
+    border-top: 1px solid #d1d1d1;
+    border-left: 1px solid #d1d1d1;
+  }
+}
+
+.tab-list-title li {
+  list-style-type: none;
+}
+
+@media (max-width: 992px) {
+  .tab-list-title li {
+    flex: 1 1 25%;
+    max-width: 25%;
+    border-bottom: 1px solid #d1d1d1;
+    border-right: 1px solid #d1d1d1;
+  }
+}
+
+@media (min-width: 992px) {
+  .tab-list-title li {
+    position: relative;
+    display: inline-block;
+    margin-left: -4px;
+  }
+  .tab-list-title li:before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 0;
+    width: 1px;
+    height: 12px;
+    background-color: #999;
+    z-index: 1;
+  }
+  .tab-list-title li:first-child {
+    margin: 0;
+  }
+  .tab-list-title li:first-child:before {
+    display: none;
+  }
+}
+
+.tab-list-title li a {
+  display: block;
+  text-decoration: none;
+  color: #999;
+}
+
+@media (max-width: 992px) {
+  .tab-list-title li a {
+    max-width: 100%;
+    padding: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 992px) {
+  .tab-list-title li a {
+    padding: 11px 15px 14px;
+  }
+}
+
+.tab-list-title li.active a {
+  position: relative;
+  background-color: #f3f3f3;
+  z-index: 2;
+}
+
+.tab-list-container {
+  background-color: #f3f3f3;
+  font-size: 0;
+}
+
+.tab-list-container ul {
+  margin: 0;
+  padding: 25px 0 1px;
+  text-align: center;
+}
+
+@media (min-width: 992px) {
+  .tab-list-container ul {
+    margin: 0 0 0 0;
+    padding: 50px 0 20px 0;
+  }
+}
+
+@media (min-width: 1140px) {
+  .tab-list-container ul {
+    overflow-x: hidden;
+    padding-bottom: 40px;
+    white-space: nowrap;
+  }
+}
+
+.tab-list-container li {
+  margin: 0 auto 20px;
+}
+
+@media (max-width: 768px) {
+  .tab-list-container li {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .tab-list-container li {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .tab-list-container li {
+    display: inline-block;
+    width: 369px;
+    margin: 0 8px 20px;
+  }
+}
+
+@media (min-width: 1140px) {
+  .tab-list-container li {
+    margin: 0 0 0 16px;
+  }
+  .tab-list-container li:first-child {
+    margin: 0;
+  }
+}
+
+.tab-list-container li a {
+  text-decoration: none;
+}
+
+.tab-list-container .tab-list-img {
+  position: relative;
+}
+
+.tab-list-container .tab-list-img img {
+  vertical-align: top;
+  width: 100%;
+}
+
+.tab-list-container .tab-list-number {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border: 38px solid rgba(51, 51, 51, 0.8);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  font-size: 30px;
+  color: #fff;
+  text-indent: 7px;
+}
+
+@media (min-width: 992px) {
+  .tab-list-caption {
+    padding-left: 5px;
+  }
+}
+
+.tab-list-caption h3 {
+  text-align: left;
+  margin: 10px 0 0 0;
+  padding: 0 0 0 0;
+}
+
+.tab-list-caption .default-list-text-price {
+  margin: 3px 0 0 0;
+  font-size: 11px;
+}
+
+@media (max-width: 992px) {
+  .xe-shop .tab-list-caption .default-list-text-price {
+    text-align: left;
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tab-list-caption .xe-shop-tag {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .view1 li:nth-child(1),
+  .view2 li:nth-child(2),
+  .view3 li:nth-child(3) {
+    display: block;
+  }
+}
+
+/*# sourceMappingURL=../../map/user/widget_tab_list.css.map */
