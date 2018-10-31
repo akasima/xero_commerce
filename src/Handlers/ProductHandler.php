@@ -140,7 +140,7 @@ class ProductHandler
     {
         $file = XeStorage::upload($imageParm, 'public/xero_commerce/product');
         $imageFile = XeMedia::make($file);
-        XeMedia::createThumbnails($imageFile, 'widen',config('xe.media.thumbnail.dimensions'));
+        XeMedia::createThumbnails($imageFile, 'widen', config('xe.media.thumbnail.dimensions'));
         $newProduct->images()->attach($imageFile->id);
         return $imageFile;
     }
@@ -161,7 +161,7 @@ class ProductHandler
             if (count($args['editImages']) > 0) {
                 if ($args['editImages'][$key] != null) {
                     $editImage = $this->saveImage($args['editImages'][$key], $product);
-                    $product->images()->updateExistingPivot($originImage->id ,['image_id'=>$editImage->id]);
+                    $product->images()->updateExistingPivot($originImage->id, ['image_id' => $editImage->id]);
                 }
             } else {
                 $originImage->delete();
