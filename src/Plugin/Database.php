@@ -235,6 +235,8 @@ class Database
             $table->string('status');
             $table->timestamps();
         });
+
+        \Xpressengine\XePlugin\XeroPay\Resources::makeDataTable();
     }
 
     /**
