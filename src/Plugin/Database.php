@@ -79,7 +79,7 @@ class Database
 
         Schema::create('xero_commerce_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('image_id',36);
+            $table->string('image_id', 36);
             $table->morphs('imagable');
         });
 
