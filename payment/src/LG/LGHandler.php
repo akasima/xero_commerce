@@ -60,12 +60,12 @@ class LGHandler implements PaymentHandler
     {
         $tx_id = $this->Gen_TX_ID($request->get('LGD_MID'));
         $data = PayCurl::post(LG::url(), [
-            CURLOPT_USERAGENT=>"XPayClient (1.1.0.5/PHP)",
-            CURLOPT_FOLLOWLOCATION=>true,
-            CURLOPT_ENCODING=>'gzip, deflate',
-            CURLOPT_SSL_VERIFYPEER=>0,
-            CURLOPT_SSL_VERIFYHOST=>0,
-            CURLOPT_SSLVERSION=>6
+            CURLOPT_USERAGENT => "XPayClient (1.1.0.5/PHP)",
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_ENCODING => 'gzip, deflate',
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_SSLVERSION => 6
         ], [
             'LGD_MID' => $request->get('LGD_MID'),
             'LGD_TXNAME' => 'PaymentByKey',
@@ -75,7 +75,6 @@ class LGHandler implements PaymentHandler
         ]);
         return new LGResult($data);
     }
-
 
 
     //아래는 샘플에서 긁어와 수정한 소스들
@@ -119,13 +118,37 @@ class LGHandler implements PaymentHandler
 
     public function vBank(Request $request)
     {
-        $data=$request->all();
+        $data = $request->all();
         $mertKey = XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@lg.mertKey');
-        $hash = md5($data['LGD_MID'].$data['LGD_OID'].$data['LGD_AMOUNT'].$data['LGD_RESPCODE'].$data['LGD_TIMESTAMP'].$mertKey);
-        if($hash === $request->get('LGD_HASHDATA')){
-            $oid = str_replace('_','-',$request->get('LGD_OID'));
+        $hash = md5($data['LGD_MID'] . $data['LGD_OID'] . $data['LGD_AMOUNT'] . $data['LGD_RESPCODE'] . $data['LGD_TIMESTAMP'] . $mertKey);
+        if ($hash === $request->get('LGD_HASHDATA')) {
+            $oid = str_replace('_', '-', $request->get('LGD_OID'));
             $payment = Payment::find($oid);
-            $payment->target->vBank(Carbon::createFromTimestamp($request->get('LGD_TIMESTAMP')),$data);
+            $payment->target->vBank(Carbon::createFromTimestamp($request->get('LGD_TIMESTAMP')), $data);
         }
+    }
+
+    public function cancel(Payment $payment, $reason)
+    {
+        $info = json_decode($payment->info);
+        $form = [
+            'CST_MID' => XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@lg.id'),
+            'CST_PLATFORM' => 'test',
+            'LGD_TID' => $info->LGD_RESPONSE[0]->LGD_TID,
+            'LGD_TXNAME' => 'Cancel'
+        ];
+        $form['LGD_MID']='t'.$form['CST_MID'];
+        $tx_id = $this->Gen_TX_ID($form['LGD_MID']);
+        $form['LGD_TXID']=$tx_id;
+        $form['LGD_AUTHCODE']=$this->Gen_Auth_Code($tx_id);
+        $data = PayCurl::post(LG::url(), [
+            CURLOPT_USERAGENT => "XPayClient (1.1.0.5/PHP)",
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_ENCODING => 'gzip, deflate',
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_SSLVERSION => 6
+        ], $form);
+        return new LGCancel($data);
     }
 }

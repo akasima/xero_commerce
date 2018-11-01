@@ -40,6 +40,11 @@ class Resources
                     'as'=>'xero_pay::bank',
                     'uses'=>'Controller@vBank'
                 ]);
+
+                Route::get('/cancel', [
+                    'as'=>'xero_pay::cancel',
+                    'uses'=>'Controller@cancel'
+                ]);
             });
 //
         Route::settings('xero_pay', function () {

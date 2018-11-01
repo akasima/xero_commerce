@@ -471,6 +471,12 @@ class Resources
                 'uses' => 'OrderController@pay',
                 'as' => 'xero_commerce::order.pay'
             ]);
+
+            Route::post('/order/cancel/{order}', [
+                'uses' =>'OrderController@cancel',
+                'as' => 'xero_commerce::order.cancel.register'
+            ]);
+
             Route::post('/order/success/{order}', [
                 'uses' => 'OrderController@success',
                 'as' => 'xero_commerce::order.success'
@@ -479,6 +485,12 @@ class Resources
                 'uses' => 'OrderController@fail',
                 'as' => 'xero_commerce::order.fail'
             ]);
+
+            Route::get('/order/service/cancel/{order}', [
+                'uses' => 'OrderController@cancelService',
+                'as' => 'xero_commerce::order.cancel'
+            ]);
+
             Route::get('/order/service/{as}/{order}/{orderItem}', [
                 'uses' => 'OrderController@afterService',
                 'as' => 'xero_commerce::order.as'

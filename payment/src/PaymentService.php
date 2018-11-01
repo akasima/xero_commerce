@@ -118,4 +118,13 @@ class PaymentService
     {
         $this->handler->vBank($request);
     }
+
+    public function cancel($payable, $reason)
+    {
+        $payment =$payable->xeropay;
+        $cancel = $this->handler->cancel($payment, $reason);
+        $this->logPayment($payment,Payment::CANCEL,[$reason],json_encode($cancel->getInfo()));
+        if($cancel->fail())return $cancel->msg();
+        return true;
+    }
 }

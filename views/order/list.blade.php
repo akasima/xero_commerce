@@ -5,6 +5,7 @@
         :paginate='{!! json_encode($paginate) !!}'
         load-url="{{route('xero_commerce::order.page', ['page'=>''])}}"
         as-url="{{route('xero_commerce::order.as',['as'=> '', 'order'=>'', 'item'=>''])}}"
+        cancel-url="{{route('xero_commerce::order.cancel',['order'=>''])}}"
         :status-list='{!! json_encode(\Xpressengine\Plugins\XeroCommerce\Models\Order::STATUS) !!}'
         detail-url="{{route('xero_commerce::order.detail',['order'=>''])}}"
         token="{{csrf_token()}}"

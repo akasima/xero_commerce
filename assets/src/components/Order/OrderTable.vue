@@ -49,8 +49,10 @@
                     <p>
                         <button class="xe-btn xe-btn-default" @click="url(orderitem.delivery_url)">배송조회</button>
                     </p>
-                    <p><a style="cursor:pointer" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">교환</a> / <a
-                        style="cursor:pointer" @click="url(asUrl+'/refund/'+item.id+'/'+orderitem.id)">환불</a></p>
+                    <p><a style="cursor:pointer" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">교환</a> /
+                        <a style="cursor:pointer" @click="url(asUrl+'/refund/'+item.id+'/'+orderitem.id)">환불</a> /
+                        <a style="cursor:pointer" @click="url(cancelUrl+'/'+item.id)">취소</a>
+                    </p>
                 </td>
             </tr>
         </template>
@@ -87,7 +89,7 @@
     export default {
         name: "OrderTable",
         props: [
-            'list', 'paginate', 'asUrl', 'detailUrl'
+            'list', 'paginate', 'asUrl', 'detailUrl', 'cancelUrl'
         ],
         computed: {
             currentCount() {

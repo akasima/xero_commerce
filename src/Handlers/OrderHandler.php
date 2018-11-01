@@ -113,15 +113,21 @@ class OrderHandler extends SellSetHandler
         $hasExchanged = $order->orderItems()->where('code', OrderItem::EXCHANGED)->exists();
         $hasRefunding = $order->orderItems()->where('code', OrderItem::REFUNDING)->exists();
         $hasRefunded = $order->orderItems()->where('code', OrderItem::REFUNDED)->exists();
+        $hasCanceling = $order->orderItems()->where('code', OrderItem::CANCELING)->exists();
+        $hasCanceled = $order->orderItems()->where('code', OrderItem::CANCELED)->exists();
 
         if ($hasExchanging) {
             return Order::EXCHANGING;
         } elseif ($hasRefunding) {
             return Order::REFUNDING;
+        } elseif ($hasCanceling) {
+            return Order::CANCELING;
         } elseif ($hasRefunded) {
             return Order::REFUNDED;
         } elseif ($hasExchanged) {
             return Order::EXCHANGED;
+        } elseif ($hasCanceled) {
+            return Order::CANCELED;
         }
     }
 
@@ -175,8 +181,8 @@ class OrderHandler extends SellSetHandler
         $payment->discount = $summary['discount_price'];
         $payment->millage = 0;
         $payment->fare = $summary['fare'];
-        if($pay = $order->xeropay){
-            $payment->method=$pay->method;
+        if ($pay = $order->xeropay) {
+            $payment->method = $pay->method;
             $payment->info = $pay->info;
             $payment->is_paid = $pay->is_paid_method;
         }
@@ -294,6 +300,24 @@ class OrderHandler extends SellSetHandler
         $oa->received = false;
         $oa->complete = false;
         $oa->save();
+    }
+
+    public function orderCancel(Order $order, $reason)
+    {
+
+        $orderItems = $order->orderItems;
+        $orderItems->each(function ($orderItem) use ($reason) {
+            $oa = new OrderAfterservice();
+            $oa->order_item_id = $orderItem->id;
+            $oa->type = "취소";
+            $oa->reason = $reason;
+            $oa->delivery_company_id = 0;
+            $oa->ship_no = "";
+            $oa->received = false;
+            $oa->complete = false;
+            $oa->save();
+            $this->changeOrderItem($orderItem, Order::CANCELED);
+        });
     }
 
     public function receiveOrderAfterservice(OrderItem $orderItem)

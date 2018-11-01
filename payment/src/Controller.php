@@ -2,6 +2,7 @@
 namespace Xpressengine\XePlugin\XeroPay;
 
 use App\Facades\XeConfig;
+use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use \Xpressengine\XePlugin\XeroPay\Plugin as Plugin;
 use XeFrontend;
 use XePresenter;
