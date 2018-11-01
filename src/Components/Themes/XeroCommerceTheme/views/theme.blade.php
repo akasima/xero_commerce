@@ -63,10 +63,12 @@
                     <li><a href="{{route('user.settings') }}">마이페이지</a></li>
                 </ul>
                 <h2 class="xe-sr-only">검색</h2>
-                <div class="xe-shop-search-input">
-                    <input type="text" class="xe-form-control" placeholder="">
-                    <button type="button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
-                </div>
+                <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
+                    <div class="xe-shop-search-input">
+                        <input type="text" class="xe-form-control" placeholder="" name="product_name" value="{{ Request::get('product_name') }}">
+                        <button type="button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
+                    </div>
+                </form>
             </article>
         </div>
     </section>

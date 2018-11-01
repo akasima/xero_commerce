@@ -101,8 +101,26 @@ class ProductHandler
      */
     private function commonMakeWhere(Request $request, $query)
     {
-        if ($name = $request->get('name')) {
-            $query = $query->where('name', 'like', '%' . $name . '%');
+        $args = $request->all();
+
+        if (isset($args['product_name']) == true) {
+            $query = $query->where('name', 'like', '%' . $args['product_name'] . '%');
+        }
+
+        if (isset($args['product_code']) == true) {
+            $query = $query->where('product_code', 'like', '%' . $args['product_code'] . '%');
+        }
+
+        if (isset($args['product_deal_state'])) {
+            $query = $query->where('state_deal', $args['product_deal_state']);
+        }
+
+        if (isset($args['product_display_state'])) {
+            $query = $query->where('state_display', $args['product_display_state']);
+        }
+
+        if (isset($args['product_tax_type']) == true) {
+            $query = $query->where('tax_type', $args['product_tax_type']);
         }
 
         return $query;
