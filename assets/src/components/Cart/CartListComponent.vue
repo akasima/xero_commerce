@@ -1,84 +1,123 @@
 <template>
-    <div>
-        <table class="xe-table">
-            <thead>
-            <tr>
-                <th>
-                    <input type="checkbox" v-model="allCheck">
-                </th>
-                <th></th>
-                <th>상품정보</th>
-                <th>상품금액</th>
-                <th>할인금액</th>
-                <th>수량</th>
-                <th>배송비</th>
-                <th>주문금액</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="cart in cartList">
-                <td>
-                    <input type="checkbox" v-model="checkedList" :value="cart.id">
-                </td>
-                <td><img :src="cart.src" alt="" width="150px" height="150px"></td>
-                <span v-for="(info,key) in cart.info" v-html="info"></span>
-                <td>
-                    {{cart.original_price.toLocaleString()}}
-                </td>
-                <td>
-                    {{cart.discount_price.toLocaleString()}}
-                </td>
-                <td>
-                    {{cart.count}} 개 <br>
-                    <button type="button" class="xe-btn xe-btn-default" @click="changeModal(cart)">변경</button>
-                    <div class="modal" :id="'cartChangeModal'+cart.id">
-                        <div class="modal-dialog">
-                            <div class="modal-content" style="padding:20px">
-                                <div class="modal-header">
-                                    <h2>주문 추가/변경</h2>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <img :src="cart.src" alt="" width="100" height="100">
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <h3>{{cart.name}}</h3>
-                                            <h3>{{cart.sell_price.toLocaleString()}} 원</h3>
+    <div class="xe-shop cart">
+        <div class="container">
+            <div class="cart-wrap">
+                <h1 class="page-title">교환수거 정보입력</h1>
+                <button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>
+                <div class="cart-product">
+                    <div class="cart-product-header xe-hidden-xs xe-hidden-sm">
+                        <h3 class="xe-sr-only">목록</h3>
+                        <ul>
+                            <li>
+                                <label class="xe-label">
+                                    <input type="checkbox" v-model="allCheck">
+                                    <span class="xe-input-helper"></span>
+                                    <span class="xe-label-text xe-sr-only">체크 박스</span>
+                                </label>
+                            </li>
+                            <li>상품정보</li>
+                            <li>상품금액</li>
+                            <li>할인금액</li>
+                            <li>수량</li>
+                            <li>배송비</li>
+                            <li>주문금액</li>
+                        </ul>
+                    </div><!-- //cart-product-header -->
+                    <div class="cart-product-body" v-for="cartItem in cartList">
+                        <div class="cart-product-checkbox">
+                            <label class="xe-label">
+                                <input type="checkbox" v-model="checkedList" :value="cartItem.id">
+                                <span class="xe-input-helper"></span>
+                                <span class="xe-label-text xe-sr-only">체크박스</span>
+                            </label>
+                        </div><!-- //cart-product-checkbox -->
+                        <div class="cart-product-info">
+                            <div class="cart-product-img">
+                                <img :src="cartItem.src" alt="상품이미지">
+                            </div><!-- //cart-product-img -->
+                            <div class="cart-product-name">
+                                <a href="#" @click.prevent="url(cartItem.url)">{{cartItem.name}}</a>
+                            </div><!-- //cart-product-name -->
+                            <div class="cart-product-option">
+                                <button type="button" class="xe-btn xe-btn-secondary" @click="changeModal(cartItem)">옵션변경</button>
+                                <div class="modal" :id="'cartChangeModal'+cartItem.id">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content" style="padding:20px">
+                                            <div class="modal-header">
+                                                <h2>주문 추가/변경</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <img :src="cartItem.src" alt="" width="100" height="100">
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <h3>{{cartItem.name}}</h3>
+                                                        <h3>{{cartItem.sell_price.toLocaleString()}} 원</h3>
+                                                    </div>
+                                                </div>
+                                                <option-select-component
+                                                    :delivery="cartItem.delivery"
+                                                    v-model="cartItem.choose"
+                                                    :already-choose="cartItem.choose"
+                                                    :options="cartItem.option_list"></option-select-component>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="xe-btn xe-btn-black" @click="edit(cartItem)">저장하고 계속</button>
+                                                <button class="xe-btn xe-btn-danger" data-dismiss="xe-modal">저장하지않고 닫기</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <option-select-component
-                                        v-model="cart.choose"
-                                        :already-choose="cart.choose"
-                                        :options="cart.option_list">
-                                        <delivery-select-component
-                                            :delivery="cart.delivery"
-                                            v-model="cart.pay"></delivery-select-component>
-                                    </option-select-component>
                                 </div>
-                                <div class="modal-footer">
-                                    <button class="xe-btn xe-btn-black" @click="edit(cart)">저장하고 계속</button>
-                                    <button class="xe-btn xe-btn-danger" data-dismiss="xe-modal">저장하지않고 닫기</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    {{cart.pay}} <br>
-                    {{cart.fare.toLocaleString()}}
-                </td>
-                <td>
-                    <b>{{cart.sell_price.toLocaleString()}} 원</b> <br>
-                    <button class="btn xe-btn-black" @click="onlyThisCart(cart.id)">주문하기</button>
-                    <button class="btn btn-default" @click="draw(cart.id)">삭제하기</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <button class="xe-btn" @click="drawList">선택상품 삭제</button>
-        <button class="xe-btn">선택상품 찜</button>
-    </div>
+                                <ul class="cart-product-option-list">
+                                    <li v-for="choose in cartItem.choose">
+                                        <span>{{choose.unit.name}} / {{choose.count}} </span>
+                                    </li>
+                                </ul>
+                            </div><!-- //cart-product-option -->
+                        </div><!-- //cart-product-info -->
+                        <button type="button" class="btn-cart-num-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i><span class="xe-sr-only">금액 정보 토글</span></button>
+                        <div class="cart-product-num">
+                            <div class="cart-product-num-box">
+                                <div class="cart-product-price">
+                                    <span class="cart-product-title">상품금액</span>
+                                    <span class="cart-product-text">{{cartItem.original_price.toLocaleString()}}원</span>
+                                </div><!-- //cart-product-price -->
+                                <div class="cart-product-sale">
+                                    <span class="cart-product-title">할인금액</span>
+                                    <span class="cart-product-text">{{cartItem.discount_price.toLocaleString()}}원</span>
+                                </div><!-- //cart-product-sale -->
+                                <div class="cart-product-quantity">
+                                    <span class="cart-product-title">수량</span>
+                                    <span class="cart-product-text">{{cartItem.count}}개</span>
+                                </div><!-- //cart-product-num -->
+                                <div class="cart-product-shipping">
+                                    <span class="cart-product-title">배송비</span>
+                                    <span class="cart-product-text">{{cartItem.fare.toLocaleString()}}원</span>
+                                </div><!-- //cart-product-shipping -->
+                                <div class="cart-product-sum">
+                                    <span class="cart-product-title">주문 금액</span>
+                                    <span class="cart-product-text">{{cartItem.sell_price.toLocaleString()}}원</span>
+                                    <div class="cart-product-btn">
+                                        <button type="button" class="btn-buynow" @click="onlyThisCart(cartItem.id)">주문하기</button>
+                                        <button type="button" class="btn-delete" @click="draw(cartItem.id)">삭제하기</button>
+                                    </div><!-- //cart-product-btn -->
+                                </div><!-- //cart-product-sum -->
+                            </div><!-- //cart-product-num-box -->
+                        </div><!-- //cart-product-num -->
+
+                    </div><!-- //cart-product-body -->
+
+                </div> <!-- //cart-product -->
+
+                <div class="bottom-btn-box">
+                    <button type="button" class="btn-default" @click="drawList">선택상품 삭제</button>
+                    <button type="button" class="btn-default">선택상품 찜</button>
+                </div><!-- //cart-product-list-btn -->
+
+            </div><!-- //cart-wrap  -->
+        </div><!-- //container  -->
+    </div><!-- //cart -->
 </template>
 
 <script>

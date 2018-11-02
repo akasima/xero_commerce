@@ -1,5 +1,33 @@
 <template>
     <div>
+        <h2 class="xe-sr-only">쇼핑 단계</h2>
+
+        <div class="step-ui step-1">
+            <ul>
+
+                <li>
+                    <p>
+                        <span class="xe-hidden-sm xe-hidden-xs">01 </span>장바구니 <span class="xe-sr-only">활성화 단계</span>
+                    </p>
+                    <div class="tail"></div>
+                </li>
+
+                <li>
+                    <p>
+                        <span class="xe-hidden-sm xe-hidden-xs">02 </span>주문/결제 <span class="xe-sr-only">활성화 단계</span>
+                    </p>
+                    <div class="tail"></div>
+                </li>
+
+                <li>
+                    <p>
+                        <span class="xe-hidden-sm xe-hidden-xs">03 </span>주문완료 <span class="xe-sr-only">활성화 단계</span>
+                    </p>
+                    <div class="tail"></div>
+                </li>
+
+            </ul>
+        </div><!-- //cart-step -->
         <cart-list-component :cart-list="cartList"
                              :cart-change-url="cartChangeUrl"
                              :cart-draw-url="cartDrawUrl"
@@ -7,15 +35,8 @@
                              @checked="summary"
                              @change="reload"
                              @only="onlyOrder"></cart-list-component>
-        <hr>
-        <cart-sum-component :summary="cartSummary"></cart-sum-component>
-        <hr>
-        <div style="text-align: center" class="xe-col-lg-2 xe-col-lg-offset-4">
-            <button class="xe-btn xe-btn-black xe-btn-lg xe-btn-block" @click="order" :disabled="disable">구매하기</button>
-        </div>
-        <div style="text-align: center" class="xe-col-lg-2">
-            <button class="xe-btn xe-btn-lg xe-btn-block" type="button" @click="back">쇼핑 계속하기</button>
-        </div>
+        <cart-sum-component :summary="cartSummary" :disable="disable" @order="order" @back="back"></cart-sum-component>
+
         <form ref="form">
         </form>
     </div>

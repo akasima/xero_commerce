@@ -37,6 +37,7 @@ class Cart extends SellSet
             'fare' => $this->getFare(),
             'count' => $this->getCount(),
             'src' => $this->getThumbnailSrc(),
+            'url'=> route('xero_commerce::product.show', ['strSlug' => $this->sellType->getSlug()]),
             'option_list' => $this->sellType->sellUnits->map(function (sellUnit $sellUnit) {
                 return $sellUnit->getJsonFormat();
             }),
