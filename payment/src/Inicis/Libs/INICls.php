@@ -3,8 +3,8 @@
 /**
  * Copyright (C) 2007 INICIS Inc.
  *
- * «ÿ¥Á ∂Û¿Ã∫Í∑Ø∏Æ¥¬ ¿˝¥Î ºˆ¡§µ«æÓº≠¥¬ æ»µÀ¥œ¥Ÿ.
- * ¿”¿«∑Œ ºˆ¡§µ» ƒ⁄µÂø° ¥Î«— √•¿”¿∫ ¿¸¿˚¿∏∑Œ ºˆ¡§¿⁄ø°∞‘ ¿÷¿Ω¿ª æÀ∑¡µÂ∏≥¥œ¥Ÿ.
+ * Ìï¥Îãπ ÎùºÏù¥Î∏åÎü¨Î¶¨Îäî Ï†àÎåÄ ÏàòÏ†ïÎêòÏñ¥ÏÑúÎäî ÏïàÎê©ÎãàÎã§.
+ * ÏûÑÏùòÎ°ú ÏàòÏ†ïÎêú ÏΩîÎìúÏóê ÎåÄÌïú Ï±ÖÏûÑÏùÄ Ï†ÑÏ†ÅÏúºÎ°ú ÏàòÏ†ïÏûêÏóêÍ≤å ÏûàÏùåÏùÑ ÏïåÎ†§ÎìúÎ¶ΩÎãàÎã§.
  *
  */
 require_once ( "INIDFN.php" );
@@ -15,59 +15,7 @@ require_once ( "INIXml.php" );
 /* ----------------------------------------------------- */
 extract($_POST);
 extract($_GET);
-switch ($paymethod) {
-    case(Card):    // Ω≈øÎƒ´µÂ
-        $pgid = "CARD";
-        break;
-    case(Account):   // ¿∫«‡ ∞Ë¡¬ ¿Ã√º
-        $pgid = "ACCT";
-        break;
-    case(DirectBank): // Ω«Ω√∞£ ∞Ë¡¬ ¿Ã√º
-        $pgid = "DBNK";
-        break;
-    case(OCBPoint):  // OCB
-        $pgid = "OCBP";
-        break;
-    case(VCard):    // ISP ∞·¡¶
-        $pgid = "ISP_";
-        break;
-    case(HPP):     // »ﬁ¥Î∆˘ ∞·¡¶
-        $pgid = "HPP_";
-        break;
-    case(ArsBill):   // 700 ¿¸»≠∞·¡¶
-        $pgid = "ARSB";
-        break;
-    case(PhoneBill):  // PhoneBill ∞·¡¶(πﬁ¥¬ ¿¸»≠)
-        $pgid = "PHNB";
-        break;
-    case(Ars1588Bill):// 1588 ¿¸»≠∞·¡¶
-        $pgid = "1588";
-        break;
-    case(VBank):    // ∞°ªÛ∞Ë¡¬ ¿Ã√º
-        $pgid = "VBNK";
-        break;
-    case(Culture):   // πÆ»≠ªÛ«∞±« ∞·¡¶
-        $pgid = "CULT";
-        break;
-    case(CMS):     // CMS ∞·¡¶
-        $pgid = "CMS_";
-        break;
-    case(AUTH):    // Ω≈øÎƒ´µÂ ¿Ø»øº∫ ∞ÀªÁ
-        $pgid = "AUTH";
-        break;
-    case(INIcard):   // ≥◊∆º∏”¥œ ∞·¡¶
-        $pgid = "INIC";
-        break;
-    case(MDX):     // ∏Ûµ¶Ω∫ƒ´µÂ
-        $pgid = "MDX_";
-        break;
-    default:         // ªÛ±‚ ¡ˆ∫“ºˆ¥‹ ø‹ √ﬂ∞°µ«¥¬ ¡ˆ∫“ºˆ¥‹¿« ∞ÊøÏ ±‚∫ª¿∏∑Œ paymethod∞° 4¿⁄∏Æ∑Œ ≥—æÓø¬¥Ÿ.
-        $pgid = $paymethod;
-}
 
-if ($quotainterest == "1") {
-    $interest = "(π´¿Ã¿⁄«“∫Œ)";
-}
 
 /* ----------------------------------------------------- */
 /* Global Function                                     */
@@ -78,7 +26,7 @@ function Base64Encode($str) {
 }
 
 function GetMicroTime() {
-    list($usec, $sec) = explode(" ", microtime(true));
+    list($usec, $sec) = explode(" ", microtime());
     return (float) $usec + (float) $sec;
 }
 
@@ -106,7 +54,7 @@ class INILog {
     var $mkey;
     var $mergelog;
 
-    function INILog($request) {
+    function __construct($request) {
         $this->debug_msg = array("", "CRITICAL", "ERROR", "NOTICE", "4", "INFO", "6", "DEBUG", "8");
         $this->debug_mode = $request["debug"];
         $this->type = $request["type"];
@@ -114,7 +62,6 @@ class INILog {
         $this->homedir = $request["inipayhome"];
         $this->mid = $request["mid"];
         $this->starttime = GetMicroTime();
-        $this->mergelog = $request["mergelog"];
     }
 
     function StartLog() {
@@ -188,7 +135,7 @@ class INIData {
     var $m_PG1IP;
     var $m_PG2IP;
     //----------------------------
-    //IFD ø‰√ª« µÂ
+    //IFD ÏöîÏ≤≠ÌïÑÎìú
     //----------------------------
     var $m_sCmd;
     var $m_sCrypto;
@@ -205,7 +152,7 @@ class INIData {
     var $m_sEncrypted;
     var $m_sSessionKey;
     //----------------------------
-    //IFD ¿¿¥‰«Ï¥ı « µÂ
+    //IFD ÏùëÎãµÌó§Îçî ÌïÑÎìú
     //----------------------------
     var $m_FlgCrypto;
     var $m_FlgSign;
@@ -215,64 +162,31 @@ class INIData {
     var $m_Xml = array();
     var $m_REQUEST = array();
     var $m_REQUEST2 = array(); //User Defined Entity
-    var $m_RESULT = array();  //Encrypted « µÂ hash table
+    var $m_RESULT = array();  //Encrypted ÌïÑÎìú hash table
     var $m_RESULT2 = array(); //PG Added Entity
 
-    function INIData($request, $request2) {
+    function __construct($request, $request2) {
         $this->m_Xml = NULL;
 
         $this->m_REQUEST = $request;
         $this->m_REQUEST2 = $request2;
 
         $this->m_Type = $this->m_REQUEST["type"];
-        if ($this->m_Type == TYPE_SECUREPAY || $this->m_Type == TYPE_AUTH) {
-            $this->m_sCmd = CMD_REQ_PAY;
-            $this->m_sCrypto = FLAG_CRYPTO_RC4;
-        } else if ($this->m_Type == TYPE_CANCEL) {
+        if ($this->m_Type == TYPE_CANCEL) {
             $this->m_sCmd = CMD_REQ_CAN;
             $this->m_sCrypto = FLAG_CRYPTO_3DES;
-        } else if ($this->m_Type == TYPE_INQUIRY) {
-            $this->m_sCmd = CMS_REQ_INQR;
-            $this->m_sCrypto = FLAG_CRYPTO_3DES;
-        } else if ($this->m_Type == TYPE_OPENSUB) {
-            $this->m_sCmd = CMS_REQ_OPEN_SUB;
-            $this->m_sCrypto = FLAG_CRYPTO_3DES;
         }
-        //∞°ªÛ∞Ë¡¬ ∫Œ∫–»Ø∫“ √ﬂ∞°
+        //Í∞ÄÏÉÅÍ≥ÑÏ¢å Î∂ÄÎ∂ÑÌôòÎ∂à Ï∂îÍ∞Ä
         else if (( $this->m_Type == TYPE_REPAY) || ( $this->m_Type == TYPE_VACCTREPAY)) {
             $this->m_sCmd = CMD_REQ_PRTC;
             $this->m_sCrypto = FLAG_CRYPTO_3DES;
-        } else if ($this->m_Type == TYPE_CAPTURE) {
-            $this->m_sCmd = CMD_REQ_CAP;
-            $this->m_sCrypto = FLAG_CRYPTO_3DES;
-        } else if ($this->m_Type == TYPE_ESCROW) {
-            $this->m_EscrowType = $this->m_REQUEST["escrowtype"];
-            if ($this->m_EscrowType == TYPE_ESCROW_DLV) {
-                $this->m_sCmd = CMD_REQ_DLV;
-                $this->m_sCrypto = FLAG_CRYPTO_3DES;
-            } else if ($this->m_EscrowType == TYPE_ESCROW_CNF) {
-                parse_str($this->m_REQUEST["encrypted"]);
-                if ($iniescr_type == "1") {//confirm
-                    $this->m_EscrowType = TYPE_ESCROW_CNF;
-                    $this->m_sCmd = CMD_REQ_CNF;
-                    $this->m_sCrypto = FLAG_CRYPTO_RC4;
-                } else if ($iniescr_type == "2") {//deny
-                    $this->m_EscrowType = TYPE_ESCROW_DNY;
-                    $this->m_sCmd = CMD_REQ_DNY;
-                    $this->m_sCrypto = FLAG_CRYPTO_RC4;
-                }
-            } else if ($this->m_EscrowType == TYPE_ESCROW_DNY_CNF) {
-                $this->m_sCmd = CMD_REQ_DNY_CNF;
-                $this->m_sCrypto = FLAG_CRYPTO_3DES;
-            }
-        } else if ($this->m_Type == TYPE_REFUND) { //∞°ªÛ∞Ë¡¬»Ø∫“(09.08.05)
+        } else if ($this->m_Type == TYPE_REFUND) { //Í∞ÄÏÉÅÍ≥ÑÏ¢åÌôòÎ∂à(09.08.05)
             $this->m_sCmd = CMD_REQ_RFD;
             $this->m_sCrypto = FLAG_CRYPTO_3DES;
         } else {
             $this->m_sCmd = CMD_REQ_PAY;
             $this->m_sCrypto = FLAG_CRYPTO_3DES;
         }
-        $this->m_sPayMethod = $this->m_REQUEST["paymethod"];
 
         $this->m_TXVersion = sprintf("%-4.4s", VERSION) .
                 sprintf("B%-6.6s", BUILDDATE) .
@@ -286,7 +200,7 @@ class INIData {
 
     function CheckField() {
         //---------------------------------
-        //∞¯≈Î
+        //Í≥µÌÜµ
         //---------------------------------
         if (trim($this->m_REQUEST["inipayhome"]) == "") {
             $this->m_ErrCode = NULL_DIR_ERR;
@@ -309,76 +223,16 @@ class INIData {
             return false;
         }
         //---------------------------------
-        //type∫∞∑Œ
+        //typeÎ≥ÑÎ°ú
         //---------------------------------
-        if ($this->m_Type == TYPE_SECUREPAY) {
-            /*
-              //delete UIP(2009.01.21)
-              if( trim($this->m_REQUEST["uip"]) == "")
-              {
-              $this->m_ErrCode = NULL_UIP_ERR;
-              $this->m_ErrMsg = "uip";
-              return false;
-              }
-             */
-            if (trim($this->m_REQUEST["url"]) == "") {
-                $this->m_ErrCode = NULL_URL_ERR;
-                $this->m_ErrMsg = "url";
-                return false;
-            }
-            if (trim($this->m_REQUEST["price"]) == "") {
-                $this->m_ErrCode = NULL_PRICE_ERR;
-                $this->m_ErrMsg = "price";
-                return false;
-            }
-            if (trim($this->m_REQUEST["currency"]) == "") {
-                $this->m_ErrCode = NULL_CURRENCY_ERR;
-                $this->m_ErrMsg = "currency";
-                return false;
-            }
-            if (trim($this->m_REQUEST["paymethod"]) == "") {
-                $this->m_ErrCode = NULL_PAYMETHOD_ERR;
-                $this->m_ErrMsg = "paymethod";
-                return false;
-            }
-            if (trim($this->m_REQUEST["goodname"]) == "") {
-                $this->m_ErrCode = NULL_GOODNAME_ERR;
-                $this->m_ErrMsg = "goodname";
-                return false;
-            }
-            if (trim($this->m_REQUEST["buyername"]) == "") {
-                $this->m_ErrCode = NULL_BUYERNAME_ERR;
-                $this->m_ErrMsg = "buyername";
-                return false;
-            }
-            if (trim($this->m_REQUEST["buyertel"]) == "") {
-                $this->m_ErrCode = NULL_BUYERTEL_ERR;
-                $this->m_ErrMsg = "buyertel";
-                return false;
-            }
-            if (trim($this->m_REQUEST["buyeremail"]) == "") {
-                $this->m_ErrCode = NULL_BUYEREMAIL_ERR;
-                $this->m_ErrMsg = "buyeremail";
-                return false;
-            }
-            if (trim($this->m_REQUEST["sessionkey"]) == "") {
-                $this->m_ErrCode = NULL_SESSIONKEY_ERR;
-                $this->m_ErrMsg = "sessionkey";
-                return false;
-            }
-            if (trim($this->m_REQUEST["encrypted"]) == "") {
-                $this->m_ErrCode = NULL_ENCRYPTED_ERR;
-                $this->m_ErrMsg = "encrypted";
-                return false;
-            }
-        } else if ($this->m_Type == TYPE_CANCEL) {
+        if ($this->m_Type == TYPE_CANCEL) {
             if (trim($this->m_REQUEST["tid"]) == "") {
                 $this->m_ErrCode = NULL_TID_ERR;
                 $this->m_ErrMsg = "tid";
                 return false;
             }
         }
-        //∞°ªÛ∞Ë¡¬ ∫Œ∫–»Ø∫“µµ ∫Œ∫–»Ø∫“ ∑Œ¡˜ø° √ﬂ∞°
+        //Í∞ÄÏÉÅÍ≥ÑÏ¢å Î∂ÄÎ∂ÑÌôòÎ∂àÎèÑ Î∂ÄÎ∂ÑÌôòÎ∂à Î°úÏßÅÏóê Ï∂îÍ∞Ä
         else if (( $this->m_Type == TYPE_REPAY ) || ( $this->m_Type == TYPE_VACCTREPAY )) {
             if (trim($this->m_REQUEST["oldtid"]) == "") {
                 $this->m_ErrCode = NULL_TID_ERR;
@@ -396,34 +250,23 @@ class INIData {
                 return false;
             }
 
-            //∞°ªÛ∞Ë¡¬ ∫Œ∫–»Ø∫“ ∑Œ¡˜ø°º≠¥¬ ∞Ë¡∂π¯»£,¿∫«‡ƒ⁄µÂ,∞Ë¡¬¡÷∏Ì¿Ã « ºˆ 
+            //Í∞ÄÏÉÅÍ≥ÑÏ¢å Î∂ÄÎ∂ÑÌôòÎ∂à Î°úÏßÅÏóêÏÑúÎäî Í≥ÑÏ°∞Î≤àÌò∏,ÏùÄÌñâÏΩîÎìú,Í≥ÑÏ¢åÏ£ºÎ™ÖÏù¥ ÌïÑÏàò 
             if ($this->m_Type == TYPE_VACCTREPAY) {
                 if (trim($this->m_REQUEST["refundacctnum"]) == "") {
                     $this->m_ErrCode = NULL_FIELD_REFUNDACCTNUM;
-                    $this->m_ErrMsg = "»Ø∫“∞Ë¡¬π¯»£";
+                    $this->m_ErrMsg = "ÌôòÎ∂àÍ≥ÑÏ¢åÎ≤àÌò∏";
                     return false;
                 }
                 if (trim($this->m_REQUEST["refundbankcode"]) == "") {
                     $this->m_ErrCode = NULL_FIELD_REFUNDBANKCODE;
-                    $this->m_ErrMsg = "»Ø∫“¿∫«‡ƒ⁄µÂ";
+                    $this->m_ErrMsg = "ÌôòÎ∂àÏùÄÌñâÏΩîÎìú";
                     return false;
                 }
                 if (trim($this->m_REQUEST["refundacctname"]) == "") {
                     $this->m_ErrCode = NULL_FIELD_REFUNDACCTNAME;
-                    $this->m_ErrMsg = "»Ø∫“∞Ë¡¬¡÷º∫∏Ì";
+                    $this->m_ErrMsg = "ÌôòÎ∂àÍ≥ÑÏ¢åÏ£ºÏÑ±Î™Ö";
                     return false;
                 }
-            }
-        } else if ($this->m_Type == TYPE_CHKFAKE) {
-            if (trim($this->m_REQUEST["nointerest"]) == "") {
-                $this->m_ErrCode = NULL_NOINTEREST_ERR;
-                $this->m_ErrMsg = "nointerest";
-                return false;
-            }
-            if (trim($this->m_REQUEST["quotabase"]) == "") {
-                $this->m_ErrCode = NULL_QUOTABASE_ERR;
-                $this->m_ErrMsg = "quotabase";
-                return false;
             }
         } else if ($this->m_Type == TYPE_REFUND) {
             if (trim($this->m_REQUEST["tid"]) == "") {
@@ -433,17 +276,17 @@ class INIData {
             }
             if (trim($this->m_REQUEST["racctnum"]) == "") {
                 $this->m_ErrCode = NULL_FIELD_REFUNDACCTNUM;
-                $this->m_ErrMsg = "»Ø∫“∞Ë¡¬π¯»£";
+                $this->m_ErrMsg = "ÌôòÎ∂àÍ≥ÑÏ¢åÎ≤àÌò∏";
                 return false;
             }
             if (trim($this->m_REQUEST["rbankcode"]) == "") {
                 $this->m_ErrCode = NULL_FIELD_REFUNDBANKCODE;
-                $this->m_ErrMsg = "»Ø∫“¿∫«‡ƒ⁄µÂ";
+                $this->m_ErrMsg = "ÌôòÎ∂àÏùÄÌñâÏΩîÎìú";
                 return false;
             }
             if (trim($this->m_REQUEST["racctname"]) == "") {
                 $this->m_ErrCode = NULL_FIELD_REFUNDACCTNAME;
-                $this->m_ErrMsg = "»Ø∫“∞Ë¡¬¡÷º∫∏Ì";
+                $this->m_ErrMsg = "ÌôòÎ∂àÍ≥ÑÏ¢åÏ£ºÏÑ±Î™Ö";
                 return false;
             }
         }
@@ -460,10 +303,10 @@ class INIData {
         list($usec, $sec) = explode(" ", microtime());
         $datestr = date("YmdHis", $sec) . substr($usec, 2, 3); //YYYYMMDDHHMMSSSSS
 
-        $datestr_con = substr($datestr, 0, 14) . substr($datestr, 15, 2); //YYYYMMDDHHMMSSxSS ¡ﬂ∞£¿« x∞™¿∫ πˆ∏≤(milli second¿« √ππ¯¬∞ ¿⁄∏Æºˆ)
+        $datestr_con = substr($datestr, 0, 14) . substr($datestr, 15, 2); //YYYYMMDDHHMMSSxSS Ï§ëÍ∞ÑÏùò xÍ∞íÏùÄ Î≤ÑÎ¶º(milli secondÏùò Ï≤´Î≤àÏß∏ ÏûêÎ¶¨Ïàò)
 
-        mt_srand(getmypid() * mt_rand(1, 999));  //mt_rand «œ±‚¿¸ø° srand ∑Œ seed ¿˚øÎ , seed key = pid * mt_rand(1,999)
-        //pgid + mid + 16¿⁄∏Æ ≥Ø¬•π◊ Ω√∞£ + random_key 4¿⁄∏Æ (seed¿˚øÎ)
+        mt_srand(getmypid() * mt_rand(1, 999));  //mt_rand ÌïòÍ∏∞Ï†ÑÏóê srand Î°ú seed Ï†ÅÏö© , seed key = pid * mt_rand(1,999)
+        //pgid + mid + 16ÏûêÎ¶¨ ÎÇ†ÏßúÎ∞è ÏãúÍ∞Ñ + random_key 4ÏûêÎ¶¨ (seedÏ†ÅÏö©)
         $this->m_sTID = $this->m_REQUEST["pgid"] . $this->m_REQUEST["mid"] . $datestr_con . mt_rand(1000, 9999);
         if (strlen($this->m_sTID) != TID_LEN) {
             return false;
@@ -524,16 +367,16 @@ class INIData {
             $CD = $xml->add_node($CI, TX_PRTC_REMAINS, $this->m_REQUEST["confirm_price"]);
             $CD = $xml->add_node($CI, TX_PRTC_QUOTA, $this->m_REQUEST["cardquota"]);
             $CD = $xml->add_node($CI, TX_PRTC_INTEREST, $this->m_REQUEST["quotainterest"]);
-            //I∞Ë¡¬¿Ã√º ±ππŒ¿∫«‡ ∫Œ∫–√Îº“Ω√ ∞Ë¡¬π¯»£ ∞Ë¡¬¡÷º∫∏Ì¿ª πﬁ¿Ω 2011-10-06
+            //IÍ≥ÑÏ¢åÏù¥Ï≤¥ Íµ≠ÎØºÏùÄÌñâ Î∂ÄÎ∂ÑÏ∑®ÏÜåÏãú Í≥ÑÏ¢åÎ≤àÌò∏ Í≥ÑÏ¢åÏ£ºÏÑ±Î™ÖÏùÑ Î∞õÏùå 2011-10-06
             $CD = $xml->add_node($CI, TX_PRTC_NOACCT, $this->m_REQUEST["no_acct"]);
             $CD = $xml->add_node($CI, TX_PRTC_NMACCT, $this->m_REQUEST["nm_acct"], array("urlencode" => "1"));
-            //∞˙ºº,∫Ò∞˙ºº √ﬂ∞° 2014-07-23 by jung.ks
+            //Í≥ºÏÑ∏,ÎπÑÍ≥ºÏÑ∏ Ï∂îÍ∞Ä 2014-07-23 by jung.ks
             //$CD = $xml->add_node($CI,               TX_PRTC_TAX,		$this->m_REQUEST["tax"]		);
             //$CD = $xml->add_node($CI,               TX_PRTC_TAXFREE,		$this->m_REQUEST["taxfree"]		);
 
             $this->AddUserDefinedEntity(PARTCANCELINFO, "", $xml, $CI);
         }
-        //∞°ªÛ∞Ë¡¬ ∫Œ∫–»Ø∫“
+        //Í∞ÄÏÉÅÍ≥ÑÏ¢å Î∂ÄÎ∂ÑÌôòÎ∂à
         else if ($this->m_Type == TYPE_VACCTREPAY) {
             //PartCancelInfo(ROOT)
             $CI = $xml->add_node("", PARTCANCELINFO);
@@ -634,10 +477,7 @@ class INIData {
         $this->m_sHead .= sprintf("%20s", $this->m_TXPGPubSN);
         $this->m_sHead .= sprintf("%4s", $this->m_sCmd);
         $this->m_sHead .= sprintf("%10s", $this->m_REQUEST["mid"]);
-        if ($this->m_Type == TYPE_RECEIPT)
-            $this->m_sHead .= sprintf("%20s", $this->m_REQUEST["cr_price"]);
-        else
-            $this->m_sHead .= sprintf("%20s", $this->m_REQUEST["price"]);
+        $this->m_sHead .= sprintf("%20s", $this->m_REQUEST["price"]);
         $this->m_sHead .= sprintf("%40s", $this->m_REQUEST["tid"]);
 
         $this->m_sMsg = $this->m_sHead . $this->m_sBody . $this->m_sTail;
@@ -682,90 +522,16 @@ class INIData {
     function MakeBody() {
         $xml = new XML();
 
-        //ROOT(INIpay) ROOT∏¶ ROOTINFO∑Œ ºˆ¡§ 2011-05-23
+        //ROOT(INIpay) ROOTÎ•º ROOTINFOÎ°ú ÏàòÏ†ï 2011-05-23
         $root = $xml->add_node("", ROOTINFO);
 
-        if ($this->m_Type == TYPE_SECUREPAY || $this->m_Type == TYPE_RECEIPT) {
-            //GoodsInfo
-            //¿ÂπŸ±∏¥œ ±‚¥… √ﬂ∞°(2010.04.13)
-            //==goodscnt∞° æ¯¿ª ∞ÊøÏ(¿ÂπŸ±∏¥œ ±‚¥…¿Ã æ∆¥“∞ÊøÏ) ±‚∫ª ∞™ 1∑Œ º≥¡§
-            $tGoodCnt = ($this->m_REQUEST["goodscnt"] != null && (int) $this->m_REQUEST["goodscnt"] > 0 ) ? $this->m_REQUEST["goodscnt"] : 1;
-
-            $GI = $xml->add_node($root, GOODSINFO);
-            //¿ÂπŸ±∏¥œ ±‚¥… √ﬂ∞°(2010.04.13) 
-            //==TX_GOOSCNT¥¬  $tGoodCnt∑Œ ∫Œ≈Õ ¿‘∑¬
-            //$GP = $xml->add_node($GI,		TX_GOOSCNT, 		"1"															);
-            $GP = $xml->add_node($GI, TX_GOOSCNT, $tGoodCnt);
-            $GP = $xml->add_node($GI, TX_MOID, $this->m_REQUEST["oid"], array("urlencode" => "1"));
-            $GP = $xml->add_node($GI, TX_CURRENCY, $this->m_REQUEST["currency"]);
-            $GP = $xml->add_node($GI, TX_TAX, $this->m_REQUEST["tax"]);
-            $GP = $xml->add_node($GI, TX_TAXFREE, $this->m_REQUEST["taxfree"]);
-            $this->AddUserDefinedEntity(GOODSINFO, "", $xml, $GI);
-
-            //¿ÂπŸ±∏¥œ ±‚¥… √ﬂ∞°(2010.04.13) [START]
-            //==¿ÂπŸ±∏¥œ XML ¿¸πÆ √ﬂ∞°
-            $iGoodCnt = 1;
-            while ($iGoodCnt <= $tGoodCnt) {
-                if ($this->m_REQUEST["smid_" . $iGoodCnt] != "" && strlen($this->m_REQUEST["smid_" . $iGoodCnt]) > 0) {
-                    $GS = $xml->add_node($GI, GOODS);
-                    $GD = $xml->add_node($GS, TX_SMID, $this->m_REQUEST["smid_" . $iGoodCnt]);
-                    $GD = $xml->add_node($GS, TX_GOODSNAME, $this->m_REQUEST["goodsname_" . $iGoodCnt], array("urlencode" => "1"));
-                    $GD = $xml->add_node($GS, TX_GOODSCNTS, $this->m_REQUEST["goodscnts_" . $iGoodCnt]);
-                    if ($this->m_Type == TYPE_SECUREPAY)
-                        $GD = $xml->add_node($GS, TX_GOODSPRICE, $this->m_REQUEST["goodsprice_" . $iGoodCnt]);
-                    if ($this->m_Type == TYPE_RECEIPT)
-                        $GD = $xml->add_node($GS, TX_GOODSPRICE, $this->m_REQUEST["cr_price"]);
-                }
-                else {
-                    $GS = $xml->add_node($GI, GOODS);
-                    $GD = $xml->add_node($GS, TX_SMID, $this->m_REQUEST["mid"]);
-                    $GD = $xml->add_node($GS, TX_GOODSNAME, $this->m_REQUEST["goodname"], array("urlencode" => "1"));
-
-                    if ($this->m_Type == TYPE_SECUREPAY)
-                        $GD = $xml->add_node($GS, TX_GOODSPRICE, $this->m_REQUEST["price"]);
-                    if ($this->m_Type == TYPE_RECEIPT)
-                        $GD = $xml->add_node($GS, TX_GOODSPRICE, $this->m_REQUEST["cr_price"]);
-                }
-                $iGoodCnt++;
-            }
-            //¿ÂπŸ±∏¥œ ±‚¥… √ﬂ∞°(2010.04.13) [END]
-
-            $this->AddUserDefinedEntity(GOODSINFO, GOODS, $xml, $GS);
-            //BuyerInfo
-            $BI = $xml->add_node($root, BUYERINFO);
-            $BP = $xml->add_node($BI, TX_BUYERNAME, $this->m_REQUEST["buyername"], array("urlencode" => "1"));
-            $BP = $xml->add_node($BI, TX_BUYERTEL, $this->m_REQUEST["buyertel"]);
-            $BP = $xml->add_node($BI, TX_BUYEREMAIL, $this->m_REQUEST["buyeremail"], array("urlencode" => "1"));
-            $BP = $xml->add_node($BI, TX_PARENTEMAIL, $this->m_REQUEST["parentemail"], array("urlencode" => "1"));
-            $BP = $xml->add_node($BI, TX_RECVNAME, $this->m_REQUEST["recvname"], array("urlencode" => "1"));
-            $BP = $xml->add_node($BI, TX_RECVTEL, $this->m_REQUEST["recvtel"], array("urlencode" => "1"));
-            $BP = $xml->add_node($BI, TX_RECVMSG, $this->m_REQUEST["recvmsg"], array("urlencode" => "1"));
-            $BP = $xml->add_node($BI, TX_RECVADDR, $this->m_REQUEST["recvaddr"], array("urlencode" => "1"));
-            $BP = $xml->add_node($BI, TX_RECVPOSTNUM, $this->m_REQUEST["recvpostnum"], array("urlencode" => "1"));
-            $this->AddUserDefinedEntity(BUYERINFO, "", $xml, $BI);
-            //PaymentInfo
-            $PI = $xml->add_node($root, PAYMENTINFO);
-            $PM = $xml->add_node($PI, PAYMENT);
-            $PD = $xml->add_node($PM, TX_PAYMETHOD, $this->m_REQUEST["paymethod"]);
-            $PD = $xml->add_node($PM, TX_JOINCARD, $this->m_REQUEST["joincard"]);
-            $PD = $xml->add_node($PM, TX_JOINEXPIRE, $this->m_REQUEST["joinexpire"]);
-            $PD = $xml->add_node($PM, TX_MAILORDER, $this->m_REQUEST["mailorder"]);
-            if ($this->m_Type == TYPE_SECUREPAY) {
-                $PD = $xml->add_node($PM, TX_SESSIONKEY, $this->m_REQUEST["sessionkey"]);
-                $PD = $xml->add_node($PM, TX_ENCRYPTED, $this->m_REQUEST["encrypted"], array("urlencode" => "1"));
-            }
-            if ($this->m_Type == TYPE_RECEIPT) {
-                $PD = $xml->add_node($PM, TX_SESSIONKEY, $this->m_sSessionKey);
-                $PD = $xml->add_node($PM, TX_ENCRYPTED, $this->m_sEncrypted);
-            }
-            $this->AddUserDefinedEntity(PAYMENTINFO, PAYMENT, $xml, $PM);
-        } else if ($this->m_Type == TYPE_CANCEL) {
+        if ($this->m_Type == TYPE_CANCEL) {
             //CancelInfo
             $CI = $xml->add_node($root, CANCELINFO);
             $CD = $xml->add_node($CI, TX_SESSIONKEY, $this->m_sSessionKey);
             $CD = $xml->add_node($CI, TX_ENCRYPTED, $this->m_sEncrypted);
         }
-        //∞°ªÛ∞Ë¡¬ ∫Œ∫–»Ø∫“√ﬂ∞°
+        //Í∞ÄÏÉÅÍ≥ÑÏ¢å Î∂ÄÎ∂ÑÌôòÎ∂àÏ∂îÍ∞Ä
         else if (( $this->m_Type == TYPE_REPAY ) || ( $this->m_Type == TYPE_VACCTREPAY )) {
             //PartCancelInfo
             $CI = $xml->add_node($root, PARTCANCELINFO);
@@ -777,60 +543,11 @@ class INIData {
                 $CDG = $xml->add_node($CIG, TX_PRTC_TAXFREE, $this->m_REQUEST["taxfree"]);
                 $CDG = $xml->add_node($CIG, TX_PRTC_CURRENCY, $this->m_REQUEST["currency"]);
             }
-        } else if ($this->m_Type == TYPE_CAPTURE) {
-            //CaptureInfo
-            $CI = $xml->add_node($root, CAPTUREINFO);
-            $CD = $xml->add_node($CI, TX_SESSIONKEY, $this->m_sSessionKey);
-            $CD = $xml->add_node($CI, TX_ENCRYPTED, $this->m_sEncrypted);
-        } else if ($this->m_Type == TYPE_ESCROW) {
-            //EscrowInfo
-            $CI = $xml->add_node($root, ESCROWINFO);
-            if ($this->m_EscrowType == TYPE_ESCROW_DLV || $this->m_EscrowType == TYPE_ESCROW_DNY_CNF) {
-                $CD = $xml->add_node($CI, TX_SESSIONKEY, $this->m_sSessionKey);
-                $CD = $xml->add_node($CI, TX_ENCRYPTED, $this->m_sEncrypted);
-            } else if ($this->m_EscrowType == TYPE_ESCROW_CNF || $this->m_EscrowType == TYPE_ESCROW_DNY) {
-                $CD = $xml->add_node($CI, TX_SESSIONKEY, $this->m_REQUEST["sessionkey"]);
-                $CD = $xml->add_node($CI, TX_ENCRYPTED, $this->m_REQUEST["encrypted"], array("urlencode" => "1"));
-            }
         } else if ($this->m_Type == TYPE_REFUND) {
             //CancelInfo
             $CI = $xml->add_node($root, CANCELINFO);
             $CD = $xml->add_node($CI, TX_SESSIONKEY, $this->m_sSessionKey);
             $CD = $xml->add_node($CI, TX_ENCRYPTED, $this->m_sEncrypted);
-        } else if ($this->m_Type == TYPE_INQUIRY) {
-            //CancelInfo
-            $CI = $xml->add_node($root, INQUIRYINFO);
-            $CD = $xml->add_node($CI, TX_SESSIONKEY, $this->m_sSessionKey);
-            $CD = $xml->add_node($CI, TX_ENCRYPTED, $this->m_sEncrypted);
-        } else if ($this->m_Type == TYPE_OPENSUB) {
-            //GoodsInfo
-            //¿ÂπŸ±∏¥œ ±‚¥… √ﬂ∞°(2010.04.13)
-            //==goodscnt∞° æ¯¿ª ∞ÊøÏ(¿ÂπŸ±∏¥œ ±‚¥…¿Ã æ∆¥“∞ÊøÏ) ±‚∫ª ∞™ 1∑Œ º≥¡§
-            $tSubCnt = ($this->m_REQUEST["subcnt"] != null && (int) $this->m_REQUEST["subcnt"] > 0 ) ? $this->m_REQUEST["subcnt"] : 1;
-
-            $OI = $xml->add_node($root, OPENSUBINFO);
-
-            $OD = $xml->add_node($OI, TX_SESSIONKEY, $this->m_sSessionKey);
-            $OD = $xml->add_node($OI, TX_ENCRYPTED, $this->m_sEncrypted);
-
-            $OD = $xml->add_node($OI, TX_OPENREG_SUBCNT, $tSubCnt);
-
-            $iSubCnt = 1;
-            while ($iSubCnt <= $tSubCnt) {
-                $SG = $xml->add_node($OI, TX_OPENREG_SUBGOODS, "", array("no" => $iSubCnt));
-
-                $SD = $xml->add_node($SG, TX_OPENREG_SUBCOMPNO, $this->m_REQUEST["subcompno_" . $iSubCnt]);
-                $SD = $xml->add_node($SG, TX_OPENREG_SUBCOMPNM, $this->m_REQUEST["subcompnm_" . $iSubCnt], array("urlencode" => "1"));
-                $SD = $xml->add_node($SG, TX_OPENREG_SUBPRSUPPLY, $this->m_REQUEST["subprsupply_" . $iSubCnt]);
-                $SD = $xml->add_node($SG, TX_OPENREG_SUBPRFREE, $this->m_REQUEST["subprfree_" . $iSubCnt]);
-                $SD = $xml->add_node($SG, TX_OPENREG_SUBPRTAX, $this->m_REQUEST["subprtax_" . $iSubCnt]);
-                $SD = $xml->add_node($SG, TX_OPENREG_SUBPRSERVICE, $this->m_REQUEST["subprservice_" . $iSubCnt]);
-                $SD = $xml->add_node($SG, TX_OPENREG_SUBPRICE, $this->m_REQUEST["subprice_" . $iSubCnt]);
-
-                $iSubCnt++;
-            }
-            //¿ÂπŸ±∏¥œ ±‚¥… √ﬂ∞°(2010.04.13) [END]
-            $this->AddUserDefinedEntity(OPENSUBINFO, "", $xml, $OI);
         }
         //ReservedInfo
         $RI = $xml->add_node($root, RESERVEDINFO);
@@ -848,15 +565,6 @@ class INIData {
         //$MD = $xml->add_node($MI, 	TX_TXUSERIP,  	$this->m_REQUEST["uip"]     		);
         $MD = $xml->add_node($MI, TX_TXUSERID, $this->m_REQUEST["id_customer"], array("urlencode" => "1"));
         $MD = $xml->add_node($MI, TX_TXREGNUM, $this->m_REQUEST["id_regnum"]);
-
-        //Ack, rn
-        if ($this->m_Type == TYPE_SECUREPAY || $this->m_Type == TYPE_OCBSAVE ||
-                $this->m_Type == TYPE_FORMPAY || $this->m_Type == TYPE_RECEIPT
-        ) {
-            $MD = $xml->add_node($MI, TX_ACK, "1");
-            if ($this->m_REQUEST["rn"] != "")
-                $MD = $xml->add_node($MI, TX_RN, $this->m_REQUEST["rn"]);
-        }
         $this->AddUserDefinedEntity(MANAGEINFO, "", $xml, $MI);
 
         $this->m_sBody = $xml->make_xml();
@@ -898,22 +606,19 @@ class INIData {
         $this->m_Xml = $xml->xml_node;
 
         //GOODSINFO
-        $this->m_RESULT[NM_MOID] = $this->GetXMLData(MOID);
+        $this->m_RESULT[NM_MOID] = $this->GetXMLData("MOID");
 
-        //PAYMENTINFO
-        //±‚≈∏¡ˆ∫“ºˆ¥‹¿Ã paymethod∏¶ ¡÷¡ˆ æ æ∆ ¿”Ω√∑Œ ø‰√ª Paymethod∑Œ ¥Î√º
-        //PGø°º≠ ¡÷¥¬ PayMethodøÕ ø‰√ªPaymethod¥¬ ∞∞¥Ÿ!
-        $this->m_RESULT[NM_PAYMETHOD] = $this->m_sPayMethod;
 
         $ResultCode = $this->GetXMLData("ResultCode");
+        $ResultMsg = mb_convert_encoding($this->GetXMLData("ResultMsg"),'UTF-8','EUC-KR');
         //if( substr($ResultCode,2, 4) == "0000" )
         if (strcmp(substr($ResultCode, 2, 4), "0000") == 0) {
             $this->m_RESULT[NM_RESULTCODE] = "00";
-            $this->m_RESULT[NM_RESULTMSG] = $this->GetXMLData("ResultMsg");
+            $this->m_RESULT[NM_RESULTMSG] = $ResultMsg;
         } else {
             $this->m_RESULT[NM_RESULTCODE] = "01";
-            $this->m_RESULT[NM_ERRORCODE] = $ResultCode;
-            $this->m_RESULT[NM_RESULTMSG] = "[" . $ResultCode . "|" . $this->GetXMLData("ResultMsg") . "]";
+            $this->m_RESULT["NM_ERRORCODE"] = $ResultCode;
+            $this->m_RESULT[NM_RESULTMSG] = "[" . $ResultCode . "|" . $ResultMsg . "]";
         }
         $encrypted = $this->GetXMLData("Encrypted");
         $sessionkey = $this->GetXMLData("SessionKey");
@@ -926,99 +631,6 @@ class INIData {
             return $rtv;
 
         $this->m_Xml = array_merge($this->m_Xml, $xml->xml_node);
-
-        if ($this->m_Type == TYPE_SECUREPAY || $this->m_Type == TYPE_RECEIPT) {
-            //Ω¬¿Œ≥Ø¬•(ApplDate), Ω¬¿ŒΩ√∞£(ApplTime), Ω¬¿Œπ¯»£(ApplNum)¥¬ ∞¯≈Î!!(OCB, «ˆ±›øµºˆ¡ı ¡¶ø‹)
-            //ISP, CARD¥¬ CARD∑Œ assign. ∞Ì∞¥/ªÛ¡°¿∫ ISP∞° π∫¡ˆ, CARD∞° π∫¡ˆ æÀ∞‘ ππæﬂ!!!-_-
-            if ($this->m_sPayMethod == NM_TX_CARD) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(CARD_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(CARD_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(CARD_APPLNUM);
-                $this->m_RESULT[CARD_NUM] = $this->GetXMLData(CARD_NUM);
-                $this->m_RESULT[CARD_EXPIRE] = $this->GetXMLData(CARD_EXPIRE);
-                $this->m_RESULT[CARD_BANKCODE] = $this->GetXMLData(CARD_BANKCODE);
-                $this->m_RESULT[CARD_CODE] = $this->GetXMLData(CARD_CODE);
-                $this->m_RESULT[CARD_APPLPRICE] = $this->GetXMLData(CARD_APPLPRICE);
-                $this->m_RESULT[CARD_QUOTA] = $this->GetXMLData(CARD_QUOTA);
-                $this->m_RESULT[CARD_INTEREST] = $this->GetXMLData(CARD_INTEREST);
-                $this->m_RESULT[CARD_POINT] = $this->GetXMLData(CARD_POINT);
-                $this->m_RESULT[CARD_AUTHTYPE] = $this->GetXMLData(CARD_AUTHTYPE);
-                $this->m_RESULT[CARD_REGNUM] = $this->GetXMLData(CARD_REGNUM);
-                $this->m_RESULT[CARD_TERMINALNUM] = $this->GetXMLData(CARD_TERMINALNUM);
-                $this->m_RESULT[CARD_MEMBERNUM] = $this->GetXMLData(CARD_MEMBERNUM);
-                $this->m_RESULT[CARD_PURCHASECODE] = $this->GetXMLData(CARD_PURCHASECODE);
-            } else if ($this->m_sPayMethod == NM_TX_ISP) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(ISP_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(ISP_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(ISP_APPLNUM);
-                $this->m_RESULT[CARD_NUM] = $this->GetXMLData(ISP_CARDNUM);
-                $this->m_RESULT[CARD_EXPIRE] = $this->GetXMLData(ISP_EXPIRE);
-                $this->m_RESULT[CARD_BANKCODE] = $this->GetXMLData(ISP_BANKCODE);
-                $this->m_RESULT[CARD_CODE] = $this->GetXMLData(ISP_CARDCODE);
-                $this->m_RESULT[CARD_APPLPRICE] = $this->GetXMLData(ISP_APPLPRICE);
-                $this->m_RESULT[CARD_QUOTA] = $this->GetXMLData(ISP_QUOTA);
-                $this->m_RESULT[CARD_INTEREST] = $this->GetXMLData(ISP_INTEREST);
-                $this->m_RESULT[CARD_POINT] = $this->GetXMLData(ISP_POINT);
-                $this->m_RESULT[CARD_TERMINALNUM] = $this->GetXMLData(ISP_TERMINALNUM);
-                $this->m_RESULT[CARD_MEMBERNUM] = $this->GetXMLData(ISP_MEMBERNUM);
-                $this->m_RESULT[CARD_PURCHASECODE] = $this->GetXMLData(ISP_PURCHASECODE);
-            } else if ($this->m_sPayMethod == NM_TX_CSHR) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(CSHR_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(CSHR_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(CSHR_APPLNUM);
-            } else if ($this->m_sPayMethod == NM_TX_ACCT) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(ACCT_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(ACCT_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(ACCT_APPLNUM);
-            } else if ($this->m_sPayMethod == NM_TX_HPP) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(HPP_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(HPP_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(HPP_APPLNUM);
-            } else if ($this->m_sPayMethod == NM_TX_VACT) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(VACT_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(VACT_APPLTIME);
-            } else if ($this->m_sPayMethod == NM_TX_ARSB) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(ARSB_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(ARSB_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(ARSB_APPLNUM);
-            } else if ($this->m_sPayMethod == NM_TX_PHNB) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(PHNB_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(PHNB_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(PHNB_APPLNUM);
-            } else if ($this->m_sPayMethod == NM_TX_CULT) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(CULT_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(CULT_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(CULT_APPLNUM);
-            } else if ($this->m_sPayMethod == NM_TX_GAMG) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(GAMG_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(GAMG_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(GAMG_APPLNUM);
-                $this->m_RESULT[GAMG_CNT] = $this->GetXMLData(GAMG_CNT);
-                //∞‘¿”πÆ»≠ªÛ«∞±«¿∫ Multi∞·¡¶ ∞°¥…
-                MakePathGAMG($this->m_RESULT[GAMG_CNT]);
-                for ($i = 1; $i <= $this->m_RESULT[GAMG_CNT]; $i++) {
-                    $this->m_RESULT[constant("GAMG_NUM$i")] = $this->GetXMLData(constant("GAMG_NUM$i"));
-                    $this->m_RESULT[constant("GAMG_REMAINS$i")] = $this->GetXMLData(constant("GAMG_REMAINS$i"));
-                    $this->m_RESULT[constant("GAMG_ERRMSG$i")] = $this->GetXMLData(constant("GAMG_ERRMSG$i"));
-                }
-                $this->m_RESULT[GAMG_APPLPRICE] = $this->GetXMLData(GAMG_APPLPRICE);
-                $this->m_RESULT[GAMG_NUM] = $this->GetXMLData(GAMG_NUM);
-                $this->m_RESULT[GAMG_RESULTCODE] = $this->GetXMLData(GAMG_RESULTCODE);
-                $this->m_RESULT[GAMG_RESULTMSG] = $this->GetXMLData(GAMG_RESULTMSG);
-            } else if ($this->m_sPayMethod == NM_TX_EDUG) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(EDUG_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(EDUG_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(EDUG_APPLNUM);
-            } else if ($this->m_sPayMethod == NM_TX_TEEN) {
-                $this->m_RESULT[APPLDATE] = $this->GetXMLData(TEEN_APPLDATE);
-                $this->m_RESULT[APPLTIME] = $this->GetXMLData(TEEN_APPLTIME);
-                $this->m_RESULT[APPLNUM] = $this->GetXMLData(TEEN_APPLNUM);
-            }
-        } else if ($this->m_Type == TYPE_INQUIRY) {
-            $this->m_RESULT[INQR_TID] = $this->GetXMLData(INQR_TID);
-            $this->m_RESULT[INQR_PRICE] = $this->GetXMLData(INQR_Price);
-            $this->m_RESULT[INQR_STATUS] = $this->GetXMLData(INQR_Status);
-        }
 
         return OK;
     }
@@ -1053,7 +665,7 @@ class INIData {
     }
 
     function ParsePIEncrypted() {
-        parse_str($this->m_REQUEST["encrypted"]);
+        parse_str($this->m_REQUEST["encrypted"],$temp);
         $this->m_PIPGPubSN = $CertVer;
         $this->m_PG1 = $pg1;
         $this->m_PG2 = $pg2;
@@ -1061,7 +673,7 @@ class INIData {
         $this->m_PG2IP = $pg2ip;
     }
 
-    // Xpath∑Œ æ»∞°¡Æø¬¥Ÿ. «—¥ﬁ¿ª «Í¡ˆ∂ˆ «ﬂ¥Ÿ!!
+    // XpathÎ°ú ÏïàÍ∞ÄÏ†∏Ïò®Îã§. ÌïúÎã¨ÏùÑ ÌóõÏßÄÎûÑ ÌñàÎã§!!
     // added by ddaemiri, 2007.09.03
     function GetXMLData($node) {
         $content = $this->m_Xml[$node . "[1]"]["text"];
@@ -1074,7 +686,7 @@ class INIData {
 
 /* ----------------------------------------------------- */
 /* Crypto Class			                                   */
-/* PHP4.2 & OpenSSL « ø‰)      	                	     */
+/* PHP4.2 & OpenSSL ÌïÑÏöî)      	                	     */
 /* ----------------------------------------------------- */
 
 class INICrypto {
@@ -1086,11 +698,11 @@ class INICrypto {
     var $mprivkeyid = NULL;
     var $mkey;
 
-    function INICrypto($request) {
+    function __construct($request) {
         $this->homedir = $request["inipayhome"];
         $this->mid = $request["mid"];
         $this->admin = $request["admin"];
-        $this->mkey = $request["mkey"];
+        $this->mkey = null;
     }
 
     function LoadPGPubKey(&$pg_pubcert_SN) {
@@ -1211,14 +823,74 @@ class INICrypto {
         return OK;
     }
 
+    function openssl_cipher_block_length($cipher)
+    {
+        $ivSize = @openssl_cipher_iv_length($cipher);
+
+        // Invalid or unsupported cipher.
+        if (false === $ivSize) {
+            return false;
+        }
+
+        $iv = str_repeat("a", $ivSize);
+
+        // Loop over possible block sizes, from 1 upto 1024 bytes.
+        // The upper limit is arbitrary but high enough that is
+        // sufficient for any current & foreseeable cipher.
+        for ($size = 1; $size < 1024; $size++) {
+            $output = openssl_encrypt(
+            // Try varying the length of the raw data
+                str_repeat("a", $size),
+
+                // Cipher to use
+                $cipher,
+
+                // OpenSSL expands the key as necessary,
+                // so this value is actually not relevant.
+                "a",
+
+                // Disable data padding: php_openssl will return false
+                // if the input data's length is not a multiple
+                // of the block size.
+                //
+                // We also pass OPENSSL_RAW_DATA so that PHP does not
+                // base64-encode the data (since we just throw it away
+                // afterwards anyway)
+                OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING,
+
+                // Feed it with an IV to avoid nasty warnings.
+                // The actual value is not relevant as long as
+                // it has the proper length.
+                $iv
+            );
+
+            if (false !== $output) {
+                return $size;
+            }
+        }
+
+        // Could not determine the cipher's block length.
+        return false;
+    }
+
     function SymmEncrypt($src_data, &$enc_data, $key, $iv) {
-        $size = mcrypt_get_block_size(MCRYPT_3DES, MCRYPT_MODE_CBC);
-        $src_data = $this->pkcs5_pad($src_data, $size);
-        $cipher = mcrypt_module_open(MCRYPT_3DES, '', MCRYPT_MODE_CBC, '');
-        mcrypt_generic_init($cipher, $key, $iv);
-        $enc_data = mcrypt_generic($cipher, $src_data);
-        mcrypt_generic_deinit($cipher);
-        mcrypt_module_close($cipher);
+        if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
+            $size = $this->openssl_cipher_block_length('DES-EDE3-CBC');
+
+            if( !$size ){
+                $size = 8;
+            }
+
+            $enc_data = openssl_encrypt($this->pkcs5_pad($src_data, $size), 'DES-EDE3-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_NO_PADDING, $iv);
+        } else {
+            $size = mcrypt_get_block_size(MCRYPT_3DES, MCRYPT_MODE_CBC);
+            $src_data = $this->pkcs5_pad($src_data, $size);
+            $cipher = mcrypt_module_open(MCRYPT_3DES, '', MCRYPT_MODE_CBC, '');
+            mcrypt_generic_init($cipher, $key, $iv);
+            $enc_data = mcrypt_generic($cipher, $src_data);
+            mcrypt_generic_deinit($cipher);
+            mcrypt_module_close($cipher);
+        }
 
         if (!$enc_data)
             return ENC_FINAL_ERR;
@@ -1228,11 +900,15 @@ class INICrypto {
     }
 
     function SymmDecrypt($enc_data, &$dec_data, $key, $iv) {
-        $cipher = mcrypt_module_open(MCRYPT_3DES, '', MCRYPT_MODE_CBC, '');
-        mcrypt_generic_init($cipher, $key, $iv);
-        $dec_data = mdecrypt_generic($cipher, $enc_data);
-        mcrypt_generic_deinit($cipher);
-        mcrypt_module_close($cipher);
+        if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
+            $dec_data = $this->pkcs5_unpad(openssl_decrypt($enc_data, 'DES-EDE3-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_NO_PADDING, $iv));
+        } else {
+            $cipher = mcrypt_module_open(MCRYPT_3DES, '', MCRYPT_MODE_CBC, '');
+            mcrypt_generic_init($cipher, $key, $iv);
+            $dec_data = mdecrypt_generic($cipher, $enc_data);
+            mcrypt_generic_deinit($cipher);
+            mcrypt_module_close($cipher);
+        }
 
         if (!$dec_data)
             return false;

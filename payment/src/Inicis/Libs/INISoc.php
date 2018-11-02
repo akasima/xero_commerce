@@ -2,8 +2,8 @@
 /**
  * Copyright (C) 2007 INICIS Inc.
  *
- * �ش� ���̺귯���� ���� �����Ǿ�� �ȵ˴ϴ�.
- * ���Ƿ� ������ �ڵ忡 ���� å���� �������� �����ڿ��� ������ �˷��帳�ϴ�.
+ * 해당 라이브러리는 절대 수정되어서는 안됩니다.
+ * 임의로 수정된 코드에 대한 책임은 전적으로 수정자에게 있음을 알려드립니다.
  *
  */
 
@@ -39,7 +39,7 @@ class INISocket{
 		return false;
 	}
 
-  function INISocket($host)
+  function __construct($host)
 	{
     $this->family = AF_INET;
     $this->type = SOCK_STREAM;
@@ -89,7 +89,7 @@ class INISocket{
     		socket_set_block($this->hnd);
 				return OK;
 			}
-			//EINPROGRESS( Linux:115, Window Socket:10035, FreeBSD4.10:36, ��� OS üũ �Ұ����ؼ� str���ε� �˻� )
+			//EINPROGRESS( Linux:115, Window Socket:10035, FreeBSD4.10:36, 모든 OS 체크 불가능해서 str으로도 검색 )
       if ($err != ERRCODE_INPROGRESS_LINUX && $err != ERRCODE_INPROGRESS_WIN && 
 					$err != ERRCODE_INPROGRESS_FREEBSD && $err_str != ERRSTR_INPROGRESS ) 
       {

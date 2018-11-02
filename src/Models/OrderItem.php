@@ -10,6 +10,8 @@ class OrderItem extends SellSet
     const EXCHANGED = 2;
     const REFUNDING = 3;
     const REFUNDED = 4;
+    const CANCELING = 5;
+    const CANCELED = 6;
 
 
     public function sellGroups()

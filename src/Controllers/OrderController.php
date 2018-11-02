@@ -150,4 +150,23 @@ class OrderController extends XeroCommerceBasicController
         if ($type == '교환') $this->orderService->exchangeOrderItem($orderItem, $request);
         if ($type == '환불') $this->orderService->refundOrderItem($orderItem, $request);
     }
+
+    public function cancelRegister(Order $order, Request $request){
+        $this->orderService->cancel($order, $request);
+    }
+
+    public function cancelService(Order $order)
+    {
+        return \XePresenter::make('xero_commerce::views.order.cancel',
+            [
+                'order' => $order,
+                'summary'=>$this->orderService->summary($order)
+            ]);
+    }
+
+    public function cancel(Order $order, Request $request)
+    {
+        $this->orderService->cancel($order, $request);
+        return redirect()->route('xero_commerce::order.list');
+    }
 }

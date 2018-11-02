@@ -47,8 +47,8 @@
 
 /**
  *
- * ÇØ´ç ¶óÀÌºê·¯¸®´Â Àý´ë ¼öÁ¤µÇ¾î¼­´Â ¾ÈµË´Ï´Ù.
- * ÀÓÀÇ·Î ¼öÁ¤µÈ ÄÚµå¿¡ ´ëÇÑ Ã¥ÀÓÀº ÀüÀûÀ¸·Î ¼öÁ¤ÀÚ¿¡°Ô ÀÖÀ½À» ¾Ë·Áµå¸³´Ï´Ù.
+ * ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½Ìºê·¯ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾î¼­ï¿½ï¿½ ï¿½ÈµË´Ï´ï¿½.
+ * ï¿½ï¿½ï¿½Ç·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµå¿¡ ï¿½ï¿½ï¿½ï¿½ Ã¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½å¸³ï¿½Ï´ï¿½.
  *
  */
 
@@ -188,8 +188,8 @@ class XML
     * @see       load_xml()
     */
 		//modify by ddaemiri, 2007.05.28
-		//load_file -> load_xml·Î ÆÄÀÏ ¹× string À¸·Î ¸ðµÎ ÀÔ·Â¹ÞÀ» ¼ö ÀÖÀ½.
-    function XML ( $file = "" )
+		//load_file -> load_xmlï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ string ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô·Â¹ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+    function __construct ( $file = "" )
     {
         // Check whether a file was given.
         if ( !empty($file) )
@@ -213,7 +213,7 @@ class XML
     *            handle_character_data()
     */
 		//modify by ddaemiri, 2007.05.28
-		//load_file -> load_xml·Î ÆÄÀÏ ¹× string À¸·Î ¸ðµÎ ÀÔ·Â¹ÞÀ» ¼ö ÀÖÀ½.
+		//load_file -> load_xmlï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ string ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô·Â¹ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
     function load_xml ( $file, $str )
     {
         // Check whether the file exists and is readable.
@@ -266,10 +266,10 @@ class XML
     }
 		
 		//modify by ddaemiri, 2007.05.28
-		//charset Ãß°¡( header »ý¼º )
+		//charset ï¿½ß°ï¿½( header ï¿½ï¿½ï¿½ï¿½ )
     function make_xml ( $highlight = array(), $root = "", $level = 0, $charset = "UTF-8" )
 		{
-				// header Ãß°¡
+				// header ï¿½ß°ï¿½
 				$header = "<?xml version=\"1.0\" encoding=\"".$charset."\"?>"."\n";
 				$body = $this->get_xml( $highlight, $root, $level );
 				return $header.$body;
@@ -297,7 +297,7 @@ class XML
     * @see       load_xml(), evaluate(), get_content()
     */
 		//modify by ddaemiri, 2007.05.28
-		//get_file -> get_xml ·Î ÇÔ¼öÀÌ¸§ º¯°æ. 
+		//get_file -> get_xml ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½. 
     function get_xml ( $highlight = array(), $root = "", $level = 0 )
     {
 
@@ -342,7 +342,7 @@ class XML
         $xml .= "<".$this->nodes[$root]["name"];
         
         // Check whether there are attributes for this node.
-        if ( count($this->nodes[$root]["attributes"]) > 0 )
+        if ( count((array)$this->nodes[$root]["attributes"]) > 0 )
         {
             // Run through all attributes.
             foreach ( $this->nodes[$root]["attributes"] as $key => $value )
@@ -922,7 +922,7 @@ class XML
         $this->path = $this->add_node($this->path, $name);
         
         // Set the attributes.
-				// Xpath·Î ¾È°¡Á®¿Â´Ù. ÇÑ´ÞÀ» ÇêÁö¶ö Çß´Ù!!
+				// Xpathï¿½ï¿½ ï¿½È°ï¿½ï¿½ï¿½ï¿½Â´ï¿½. ï¿½Ñ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½!!
 				// modifyed by ddaemiri, 2007.09.03
         // $this->set_attributes($this->path, $attributes);
 
@@ -967,13 +967,13 @@ class XML
         $text = strtr($text, $this->entities);
         
         // Save the text.
-				// Xpath·Î ¾È°¡Á®¿Â´Ù. ÇÑ´ÞÀ» ÇêÁö¶ö Çß´Ù!!
+				// Xpathï¿½ï¿½ ï¿½È°ï¿½ï¿½ï¿½ï¿½Â´ï¿½. ï¿½Ñ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½!!
 				// modifyed by ddaemiri, 2007.09.03
         //$this->add_content($this->path, addslashes(trim($text)));
 			
 				// add array, added by ddaemiri, 2007.09.03
 				$arr = preg_split( "/[\/]+/", $this->path, -1, PREG_SPLIT_NO_EMPTY  );
-				//edited by ddaemiri. libexpatÀº \nÀ» ºÐ¸®ÀÚ·Î ÀÎ½Ä
+				//edited by ddaemiri. libexpatï¿½ï¿½ \nï¿½ï¿½ ï¿½Ð¸ï¿½ï¿½Ú·ï¿½ ï¿½Î½ï¿½
 				//$this->xml_node[$arr[count($arr)-1]]["text"] = addslashes(trim($text));
 				$this->xml_node[$arr[count($arr)-1]]["text"] = $this->xml_node[$arr[count($arr)-1]]["text"].addslashes(trim($text));
     }
@@ -3473,7 +3473,7 @@ class XML
     }
 
 		//added by ddaemiri, 2007.05.28
-		//entity °¡ ÇÏ³ª¸¸ ÀÖ´Ù°í °¡Á¤!! ¹è¿­ÀÇ Ã¹¹øÂ°¸¸ °¡Á®¿È.
+		//entity ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½Ö´Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½!! ï¿½è¿­ï¿½ï¿½ Ã¹ï¿½ï¿½Â°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
     function get_content_fetch ( $path )
 		{
 			$e = $this->evaluate($path);

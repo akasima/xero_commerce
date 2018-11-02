@@ -36,4 +36,11 @@ interface PaymentHandler
     public function getResult(Request $request);
 
     public function vBank(Request $request);
+
+    /**
+     * @param Payment $payment
+     * @param $reason
+     * @return PaymentResponse
+     */
+    public function cancel(Payment $payment, $reason);
 }

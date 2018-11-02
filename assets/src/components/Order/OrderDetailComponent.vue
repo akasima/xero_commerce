@@ -3,7 +3,8 @@
         <h2>상품내역</h2>
         <order-table
             :list="[order]"
-        :detail-url="detailUrl"></order-table>
+        :detail-url="detailUrl"
+        :cancel-url="cancelUrl"></order-table>
         <h2>결제금액정보</h2>
         <table class="table">
             <tr>
@@ -58,7 +59,7 @@
     export default {
         name: "OrderDetailComponent",
         props: [
-            'order', 'detailUrl'
+            'order', 'detailUrl', 'cancelUrl'
         ],
         components: {
             OrderTable

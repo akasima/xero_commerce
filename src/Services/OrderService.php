@@ -8,6 +8,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderAfterservice;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
+use Xpressengine\XePlugin\XeroPay\PaymentService;
 
 class OrderService
 {
@@ -133,5 +134,13 @@ class OrderService
     public function getOrderableOrder($order_id)
     {
         return $this->orderHandler->getOrderableOrder($order_id);
+    }
+
+    public function cancel(Order $order, Request $request)
+    {
+        $paymentService = new PaymentService();
+        $cancel = $paymentService->cancel($order, $request->get('reason'));
+        if($cancel !== true) abort(500, $cancel);
+        $this->orderHandler->orderCancel($order,$request->get('reason'));
     }
 }

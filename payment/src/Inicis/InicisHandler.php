@@ -13,8 +13,10 @@ use App\Facades\XeConfig;
 use App\Facades\XeFrontend;
 use Carbon\Carbon;
 use Xpressengine\Http\Request;
+use Xpressengine\XePlugin\XeroPay\Inicis\Libs\INILib;
 use Xpressengine\XePlugin\XeroPay\Inicis\Libs\INIStdPayUtil;
 use Xpressengine\XePlugin\XeroPay\Models\Payment;
+use Xpressengine\XePlugin\XeroPay\Payable;
 use Xpressengine\XePlugin\XeroPay\PayCurl;
 use Xpressengine\XePlugin\XeroPay\PaymentHandler;
 use Xpressengine\XePlugin\XeroPay\PaymentRequest;
@@ -89,5 +91,24 @@ class InicisHandler implements PaymentHandler
     {
         $payment = Payment::find($request->get('no_oid'));
         $payment->target->vBank(Carbon::parse($request->get('dt_trans').$request->get('tm_trans')), $request->all());
+    }
+
+    public function cancel(Payment $payment, $reason)
+    {
+        $info = json_decode($payment->info);
+        $config = XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@inicis');
+
+        $lib = new INILib();
+        $lib->SetField("inipayhome", base_path("plugins/xero_commerce/payment/src/Inicis"));
+        $lib->SetField("type", "cancel");
+        $lib->SetField("debug", "false");
+        $lib->SetField("log", "false");
+        $lib->SetField("mid", $config['mid']);
+        $lib->SetField("admin", "1111");
+        $lib->SetField("price", $payment->price);
+        $lib->SetField("tid", $info->tid);
+        $lib->SetField("cancelmsg", $reason);
+        $lib->startAction();
+        return new InicisCancel($lib);
     }
 }
