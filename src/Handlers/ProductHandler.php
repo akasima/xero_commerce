@@ -101,8 +101,26 @@ class ProductHandler
      */
     private function commonMakeWhere(Request $request, $query)
     {
-        if ($name = $request->get('name')) {
-            $query = $query->where('name', 'like', '%' . $name . '%');
+        $args = $request->all();
+
+        if (isset($args['product_name']) == true) {
+            $query = $query->where('name', 'like', '%' . $args['product_name'] . '%');
+        }
+
+        if (isset($args['product_code']) == true) {
+            $query = $query->where('product_code', 'like', '%' . $args['product_code'] . '%');
+        }
+
+        if (isset($args['product_deal_state'])) {
+            $query = $query->where('state_deal', $args['product_deal_state']);
+        }
+
+        if (isset($args['product_display_state'])) {
+            $query = $query->where('state_display', $args['product_display_state']);
+        }
+
+        if (isset($args['product_tax_type']) == true) {
+            $query = $query->where('tax_type', $args['product_tax_type']);
         }
 
         return $query;
@@ -140,7 +158,7 @@ class ProductHandler
     {
         $file = XeStorage::upload($imageParm, 'public/xero_commerce/product');
         $imageFile = XeMedia::make($file);
-        XeMedia::createThumbnails($imageFile, 'widen',config('xe.media.thumbnail.dimensions'));
+        XeMedia::createThumbnails($imageFile, 'widen', config('xe.media.thumbnail.dimensions'));
         $newProduct->images()->attach($imageFile->id);
         return $imageFile;
     }
@@ -161,7 +179,7 @@ class ProductHandler
             if (count($args['editImages']) > 0) {
                 if ($args['editImages'][$key] != null) {
                     $editImage = $this->saveImage($args['editImages'][$key], $product);
-                    $product->images()->updateExistingPivot($originImage->id ,['image_id'=>$editImage->id]);
+                    $product->images()->updateExistingPivot($originImage->id, ['image_id' => $editImage->id]);
                 }
             } else {
                 $originImage->delete();

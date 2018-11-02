@@ -49,7 +49,7 @@
             <article class="xe-shop-utilmenu xe-hidden-xs xe-hidden-sm">
                 <h2 class="xe-sr-only">관련 링크</h2>
                 <ul class="xe-shop-utilmenu-list">
-                    @if(auth()->user()->getRating()=='super' || auth()->user()->getRating()=='manager')
+                    @if(auth()->user()->isAdmin() == true)
                         <li><a style="color:red" href="{{ route('settings') }}">관리자페이지</a></li>
                     @endif
                     @if(auth()->check())
@@ -63,17 +63,19 @@
                     <li><a href="{{route('user.settings') }}">마이페이지</a></li>
                 </ul>
                 <h2 class="xe-sr-only">검색</h2>
-                <div class="xe-shop-search-input">
-                    <input type="text" class="xe-form-control" placeholder="">
-                    <button type="button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
-                </div>
+                <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
+                    <div class="xe-shop-search-input">
+                        <input type="text" class="xe-form-control" placeholder="" name="product_name" value="{{ Request::get('product_name') }}">
+                        <button type="button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
+                    </div>
+                </form>
             </article>
         </div>
     </section>
     <section class="logo">
         <div class="container">
             <h2 class="xe-shop-logo">
-                <a href="#"><img src="{{$theme::asset('img/shop-logo@lg.png')}}" alt="쇼핑몰 로고"></a>
+                <a href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}"><img src="{{$theme::asset('img/shop-logo@lg.png')}}" alt="쇼핑몰 로고"></a>
             </h2>
             <button type="button" class="xe-shop-btn-search xe-hidden-md xe-hidden-lg"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
         </div>

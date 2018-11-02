@@ -36,7 +36,7 @@ class Dev
     public function makeTable()
     {
         Database::create();
-        \Xpressengine\XePlugin\XeroPay\Resources::makeDataTable();
+//        \Xpressengine\XePlugin\XeroPay\Resources::makeDataTable();
     }
 
     public function dropTable()
