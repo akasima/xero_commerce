@@ -47,7 +47,9 @@
                             <th>간략소개</th>
                             <td>{{$product->sub_name}}</td>
                             <th>배송사</th>
-                            <td>{{$product->delivery->company->name}} ({{number_format($product->delivery->delivery_fare)}})</td>
+                            <td>{{$product->delivery->company->name}}
+                                ({{number_format($product->delivery->delivery_fare)}})
+                            </td>
                             <th>최대 구매 수량</th>
                             <td>{{ number_format($product->max_buy_count ) }}</td>
                         </tr>
@@ -66,23 +68,23 @@
                     <table class="table detail_info">
                         <tr>
                             @php
-                            $i =0;
+                                $i =0;
                             @endphp
-                        @foreach((array)json_decode($product->detail_info) as $key => $val)
-                            <th>
-                                {{$key}}
-                            </th>
-                            <td>
-                                {{$val}}
-                            </td>
-                            @if($i%2==1)
-                            </tr>
-                            <tr>
+                            @foreach((array)json_decode($product->detail_info) as $key => $val)
+                                <th>
+                                    {{$key}}
+                                </th>
+                                <td>
+                                    {{$val}}
+                                </td>
+                                @if($i%2==1)
+                        </tr>
+                        <tr>
                             @endif
                             @php
-                            $i++;
+                                $i++;
                             @endphp
-                        @endforeach
+                            @endforeach
                         </tr>
                     </table>
                 </div>
@@ -96,7 +98,10 @@
                 </div>
 
                 <div class="panel-body">
-                    <option-table-component :options='{{ json_encode($options) }}'></option-table-component>
+                    <option-table-component :options='{{ json_encode($options) }}'
+                                            save-url="{{route('xero_commerce::setting.product.option.save')}}"
+                                            remove-url="{{route('xero_commerce::setting.product.option.remove')}}"
+                                            load-url="{{route('xero_commerce::setting.product.option.load',['product'=>$product])}}"></option-table-component>
                 </div>
             </div>
         </div>
@@ -121,8 +126,8 @@
     </div>
 </div>
 <style>
-    .detail_info th{
+    .detail_info th {
         background: #ddd;
-        width:200px
+        width: 200px
     }
 </style>

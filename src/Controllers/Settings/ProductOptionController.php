@@ -4,7 +4,9 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductOptionItemSettingService;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductSettingService;
 
 class ProductOptionController extends Controller
 {
@@ -16,6 +18,15 @@ class ProductOptionController extends Controller
         $this->optionItemService = new ProductOptionItemSettingService();
     }
 
+    public function save(Request $request)
+    {
+        if($request->id){
+            $this->update($request);
+        }else{
+            $this->store($request);
+        }
+    }
+
     public function store(Request $request)
     {
         $optionItemArgs = $request->all();
@@ -25,11 +36,19 @@ class ProductOptionController extends Controller
 
     public function update(Request $request)
     {
+        $args = $request->all();
+        $id = $args['id'];
+        $this->optionItemService->update($args,$id);
 
     }
 
-    public function destroy(Request $request)
+    public function remove(Request $request)
     {
+        $this->optionItemService->remove($request->get('id'));
+    }
 
+    public function load(Product $product) {
+        $service = new ProductSettingService();
+        return $service->getProductOptionArrays($product);
     }
 }

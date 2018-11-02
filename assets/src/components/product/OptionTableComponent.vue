@@ -15,7 +15,7 @@
         </thead>
 
         <tbody>
-            <row-component v-for="(option,key) in options" v-bind:optionData="option" :key="key"></row-component>
+            <row-component v-for="(option,key) in optionList" v-bind:optionData="option" :key="key" @save="save" @remove="remove"></row-component>
         </tbody>
     </table>
 </template>
@@ -29,8 +29,45 @@
             RowComponent
         },
         props: [
-            'options'
-        ]
+            'options', 'saveUrl', 'removeUrl', 'loadUrl'
+        ],
+        data () {
+            return{
+                optionList: this.options
+            }
+        },
+        methods: {
+            save (item) {
+                item._token=$('input[name=_token]').val()
+                $.ajax({
+                    url: this.saveUrl,
+                    method: 'post',
+                    data: item
+                }).done(()=>{
+                    this.load()
+                })
+            },
+            remove (item) {
+                if(item.id){
+                    item._token=$('input[name=_token]').val()
+                    $.ajax({
+                        url: this.removeUrl,
+                        method: 'post',
+                        data: item
+                    }).done(()=>{
+                        this.load()
+                    })
+                }
+            },
+            load () {
+                $.ajax({
+                    url: this.loadUrl,
+                    method: 'get'
+                }).done(res=>{
+                    this.optionList = res
+                })
+            }
+        }
     }
 </script>
 
