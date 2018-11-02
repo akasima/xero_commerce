@@ -544,8 +544,12 @@ class Resources
                     Route::post('/store', ['as' => 'xero_commerce::setting.product.store',
                         'uses' => 'ProductController@store']);
 
-                    Route::post('/option/store', ['as' => 'xero_commerce::setting.product.option.store',
-                        'uses' => 'ProductOptionController@store']);
+                    Route::post('/option/save', ['as' => 'xero_commerce::setting.product.option.save',
+                        'uses' => 'ProductOptionController@save']);
+                    Route::post('/option/remove', ['as' => 'xero_commerce::setting.product.option.remove',
+                        'uses' => 'ProductOptionController@remove']);
+                    Route::get('/option/load/{product}', ['as' => 'xero_commerce::setting.product.option.load',
+                        'uses' => 'ProductOptionController@load']);
 
                     Route::get('/{productId}', ['as' => 'xero_commerce::setting.product.show',
                         'uses' => 'ProductController@show']);

@@ -47,12 +47,13 @@ class ProductSettingService
             $optionData['id'] = $option->id;
             $optionData['option_type_name'] = $option->getOptionTypeName();
             $optionData['name'] = $option->name;
-            $optionData['addition_price'] = number_format($option->addition_price);
-            $optionData['sell_price'] = number_format($option->getSellPrice());
-            $optionData['stock'] = number_format($option->stock);
-            $optionData['alert_stock'] = number_format($option->alert_stock);
-            $optionData['state_display'] = $option->getOptionDisplayStateName();
-            $optionData['state_deal'] = $option->getOptionDealStateName();
+            $optionData['addition_price'] = $option->addition_price;
+            $optionData['sell_price'] = $option->getSellPrice();
+            $optionData['stock'] = $option->stock;
+            $optionData['alert_stock'] = $option->alert_stock;
+            $optionData['state_display'] = $option->state_display;
+            $optionData['state_deal'] = $option->state_deal;
+            $optionData['data']=$option;
 
             $options[] = $optionData;
         }
