@@ -11,12 +11,18 @@
         <tr>
             <th>배송비 결제</th>
             <td>
-                <b-form-group>
-                    <b-form-checkbox-group id="checkboxes1" v-model="pay">
-                        <b-form-checkbox value="선불">선불</b-form-checkbox>
-                        <b-form-checkbox value="착불">착불</b-form-checkbox>
-                    </b-form-checkbox-group>
-                </b-form-group>
+                <div class="table-cell">
+                    <label>
+                        <input type="radio" checked="checked" name="pay-type" value="선불" v-model="pay">
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text">선불</span>
+                    </label>
+                    <label>
+                        <input type="radio" checked="checked" name="pay-type" value="착불" v-model="pay">
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text">착불</span>
+                    </label>
+                </div>
             </td>
         </tr>
     </table>

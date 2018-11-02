@@ -33,7 +33,7 @@
                     <div class="product-img">
                         <h3 class="xe-sr-only">상품 이미지</h3>
                         <div class="product-img-view">
-                            <img :src="mainImg">
+                            <img :src="mainImg" style="width:450px">
                             <button class="xe-btn left" @click="beforeMainImage"><i class="xi-angle-left-thin"><span class="xe-sr-only">이전 사진 보기</span></i></button>
                             <button class="xe-btn right" @click="afterMainImage"><i class="xi-angle-right-thin"><span class="xe-sr-only">다음 사진 보기</span></i></button>
                         </div>
@@ -93,7 +93,7 @@
                         </div>
 
                         <!-- [D] 모바일에서 활성화시 on 클래스 추가 부탁드립니다 -->
-                        <div class="product-info-options on">
+                        <div class="product-info-options on" id="toggleBtn">
                             <option-select-component
                                 v-model="choose"
                                 :options="product.options"

@@ -62,7 +62,7 @@ abstract class SellType extends DynamicModel
     {
         if ($this->images->count() === 0) return collect([asset('/assets/core/common/img/default_image_1200x800.jpg')]);
         return $this->images->map(function($item){
-            return XeMedia::images()->getThumbnail($item,'widen','T')->url();
+            return XeMedia::images()->getThumbnail($item,'widen','L')->url();
         });
     }
 
