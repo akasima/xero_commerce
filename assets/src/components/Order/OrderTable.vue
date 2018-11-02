@@ -78,9 +78,6 @@
                            @click="$emit('page',paginate.current_page+2)">{{paginate.current_page+2}}</a>
                         <a @click="$emit('page',paginate.last_page)">끝</a>
                     </div>
-                    <div style="position:absolute; right:0; bottom:0">
-
-                    </div>
                 </div>
             </td>
         </tr>

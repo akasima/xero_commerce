@@ -1,37 +1,57 @@
 <template>
-    <div class="row">
-        <div class="col-sm-12">
-            <slot></slot>
-            <table class="table">
-                <tr v-if="!onlyOneOption">
-                    <th>옵션</th>
-                    <td>
-                        <select v-model="selectOption" style="width:100%">
-                            <option :value="null">선택</option>
-                            <option v-for="option in options" :value="option">{{option.name}}
-                                (+{{Number(option.add_price).toLocaleString()}} )
-                            </option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-sm-12">
-            <div class="row" v-for="(selectedOption, key) in select">
-                <div class="col-sm-5 col-sm-offset-1">
-                    <span v-if="!onlyOneOption">선택: {{selectedOption.unit.name}} ({{selectedOption.unit.sell_price.toLocaleString()}})</span>
-                </div>
-                <div class="col-sm-5">
-                    <input type="number" v-model="selectedOption.count"> 개
-                </div>
-                <div class="col-sm-1" v-if="!onlyOneOption">
-                    <i class="xi-close" @click="dropOption(key)"></i>
-                </div>
+    <div>
+        <h3 class="xe-sr-only">상품 구매 옵션</h3>
+
+        <!-- [D] 클릭시  on 클래스 토글  -->
+        <button type="button" class="btn-option-toggle xe-visible-xs xe-visible-sm">
+            <i class="xi-angle-down-thin"></i>
+            <span class="xe-sr-only">상품 옵션 패널 열기 / 닫기</span>
+        </button>
+        <slot></slot>
+        <div class="product-info-select">
+            <div class="xe-select-box xe-btn">
+                <label>선택</label>
+                <select v-model="selectOption">
+                    <option disabled="">Master</option>
+                    <option v-for="option in options" :value="option">{{option.name}}
+                        (+{{Number(option.add_price).toLocaleString()}} )
+                    </option>
+                </select>
             </div>
         </div>
-        <div class="col-sm-12 text-right">
-            총상품금액
-            <h2>{{totalChoosePrice.toLocaleString()}} 원 </h2>
+
+        <div class="product-info-counter">
+            <div v-if="!onlyOneOption" class="product-info-cell" v-for="(selectedOption, key) in select">
+                <div class="product-info-counter-title">{{selectedOption.unit.name}} </div>
+                <div class="xe-spin-box">
+                    <button type="button" @click="selectedOption.count--; if(selectedOption.count<=0)dropOption(key)"><i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span></button>
+                    <p>{{selectedOption.count}}</p>
+                    <button type="button" @click="selectedOption.count++"><i class="xi-plus-thin"></i><span class="xe-sr-only">증가</span></button>
+                </div>
+                <p class="product-info-counter-sum">{{(selectedOption.unit.sell_price * selectedOption.count).toLocaleString()}}원</p>
+                <button class="xe-btn xe-btn-remove" @click="dropOption(key)"><i class="xi-close-thin"></i><span class="xe-sr-only">이 옵션 삭제</span></button>
+            </div> <!-- //product-info-cell -->
+
+            <div v-if="onlyOneOption" class="product-info-low xe-border-top xe-border-bottom counter" v-for="(selectedOption, key) in select">
+                <div class="product-info-cell">{{selectedOption.unit.name}}</div>
+                <div class="product-info-cell">
+                    <div class="xe-spin-box">
+                        <button type="button" @click="selectedOption.count--; if(selectedOption.count<=0)dropOption(key)"><i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span></button>
+                        <p>{{selectedOption.count}}</p>
+                        <button type="button" @click="selectedOption.count++"><i class="xi-plus-thin"></i><span class="xe-sr-only">증가</span></button>
+                    </div>
+                    <p>{{(selectedOption.unit.sell_price * selectedOption.count).toLocaleString()}}원</p>
+                    <button class="xe-btn xe-btn-remove" @click="dropOption(key)"><i class="xi-close-thin"></i><span class="xe-sr-only">이 옵션 삭제</span></button>
+                </div>
+            </div>
+
+        </div> <!-- //product-info-counter -->
+
+        <div class="product-info-sum">
+            <div class="product-info-sum-title">총 합계 금액</div>
+            <div class="product-info-sum-num">
+                <p>{{totalChoosePrice.toLocaleString()}}</p><span>원</span>
+            </div>
         </div>
     </div>
 </template>

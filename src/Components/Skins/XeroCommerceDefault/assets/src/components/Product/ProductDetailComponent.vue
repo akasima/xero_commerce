@@ -1,74 +1,182 @@
 <template>
     <div>
-        <div class="row" style="margin-top: 20px">
-            <div class="col-lg-6">
-                <div class="row">
-                    <div class="col" >
-                        <div style="margin:0 auto; width:400px;">
-                            <img :src="mainImg">
+        <div class="xe-shop category-item-wrap xe-hidden-sm xe-hidden-xs">
+            <div class="container">
+                <ol class="category-item">
+                    <li><a href="#">HOME</a><i class="xi-angle-right-thin"></i></li>
+                    <li>
+                        <div class="xe-dropdown ">
+                            <button class="xe-btn" type="button" data-toggle="xe-dropdown xe-ellesis">CATEGORYCATEGORYCATEGORY 1</button>
+                            <ul class="xe-dropdown-menu">
+                                <li><a href="#">text</a></li>
+                                <li><a href="#">text</a></li>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-                <div class="row" v-if="product.images.length >1">
-                    <div class="col" style="overflow-x:scroll;height:60px; width:100%">
-                        <img v-for="image in product.images" :src="image" style="width:50px; height:40px"
-                             @click="changeMainImage(image)">
-                    </div>
-                </div>
+                        <i class="xi-angle-right-thin"></i>
+                    </li>
+                    <li>
+                        <div class="xe-dropdown ">
+                            <button class="xe-btn" type="button" data-toggle="xe-dropdown">2dqpth</button>
+                            <ul class="xe-dropdown-menu">
+                                <li><a href="#">text</a></li>
+                                <li><a href="#">text</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol>
             </div>
-            <div class="col-lg-6">
-                <div class="row">
-                    <div class="col">
-                        <h1>{{product.data.name}}</h1>
-                        <p>{{product.data.sub_name}}</p>
-                        <span style="text-decoration-line: line-through;color: #aaa">{{Number(product.data.original_price).toLocaleString()}} 원</span>
-                        <h2>{{Number(product.data.sell_price).toLocaleString()}} 원</h2>
-                        <option-select-component
-                            v-model="choose"
-                            :options="product.options"
-                            :already-choose="[]">
-                            <delivery-select-component
-                                v-model="pay"
-                                :delivery="product.delivery">
-                            </delivery-select-component>
-                        </option-select-component>
+        </div>
+        <div class="xe-shop product">
+            <div class="container">
+                <div class="product-wrap">
+                    <h2 class="xe-sr-only">상품 관련 정보</h2>
+                    <div class="product-img">
+                        <h3 class="xe-sr-only">상품 이미지</h3>
+                        <div class="product-img-view">
+                            <img :src="mainImg">
+                            <button class="xe-btn left" @click="beforeMainImage"><i class="xi-angle-left-thin"><span class="xe-sr-only">이전 사진 보기</span></i></button>
+                            <button class="xe-btn right" @click="afterMainImage"><i class="xi-angle-right-thin"><span class="xe-sr-only">다음 사진 보기</span></i></button>
+                        </div>
+                        <div class="product-img-list">
+                            <h3 class="xe-sr-only">상품 이미지 목록</h3>
+                            <ul>
+                                <li v-for="(image, key) in product.images"><a href="#" @click.prevent="changeMainImage(key)"><img :src="image" alt=""></a></li>
+                            </ul>
+                        </div>
+                    </div><!-- //product-img  -->
+                    <div class="product-info">
+                        <div class="product-info-top">
+                            <h3 class="product-info-title">{{product.data.name}}</h3>
+                            <div class="label_wrap">
+                                <span class="xe-shop-tag black">new</span>
+                                <span class="xe-shop-tag">best</span>
+                            </div>
+                            <p class="product-info-title-caption">{{product.data.sub_name}}</p>
+                        </div>
+                        <div class="product-info-container">
+                            <div class="product-info-cell price">{{Number(product.data.original_price).toLocaleString()}} <span>원</span></div>
+                            <div class="product-info-cell before-price">{{Number(product.data.sell_price).toLocaleString()}}<span>원</span></div>
+                            <div class="product-info-favor">
+                                <button type="button" class="favor-btn"> 구매 혜택 보기</button>
+
+                                <!-- [D] 클릭시 on 클래스 추가 부탁드립니다. -->
+                                <div class="xe-tooltip bottom " role="tooltip">
+                                    <div class="xe-tooltip-arrow"></div>
+                                    <div class="xe-tooltip-inner">
+                                        <h4 class="favor-title">구매혜택</h4>
+                                        <div>
+                                            <p class="favor-text">추가 적립 포인트 최대 1,000원</p>
+                                        </div>
+                                        <div>
+                                            <p class="favor-text">구매평 작성시 포인트 최대 500원</p>
+                                        </div>
+                                        <h4 class="favor-title">무이자할부</h4>
+                                        <div>
+                                            <p class="favor-text">KB국민카드</p>
+                                            <p class="favor-text right">2,3,4,5개월 무이자 (5만원 이상)</p>
+                                        </div>
+                                        <div>
+                                            <p class="favor-text">삼성카드</p>
+                                            <p class="favor-text right">2,3,4,5개월 무이자 (5만원 이상)</p>
+                                        </div>
+                                        <button type="button" class="btn-tooltip-close"><i class="xi-close-thin"></i><span class="xe-sr-only">닫기</span></button>
+                                    </div>
+                                </div>
+                            </div><!-- //product-info-favor  -->
+                            <div class="product-info-cell shipping">배송비 2,500원(주문시 결제)</div>
+
+                            <div class="btn-buy-wrap xe-hidden-md xe-hidden-lg">
+                                <button class="xe-btn xe-btn-buy">구매하기</button>
+                                <button class="xe-btn"><i class="xe-visible-xs xe-visible-sm xi-basket"></i><span class="xe-visible-md xe-visible-lg">장바구니</span></button>
+                                <button class="xe-btn"><i class="xe-visible-xs xe-visible-sm xi-heart"></i><span class="xe-visible-md xe-visible-lg">찜하기</span></button>
+                            </div><!-- //btn-buy-wrap -->
+                        </div>
+
+                        <!-- [D] 모바일에서 활성화시 on 클래스 추가 부탁드립니다 -->
+                        <div class="product-info-options on">
+                            <option-select-component
+                                v-model="choose"
+                                :options="product.options"
+                                :already-choose="[]">
+                                <delivery-select-component
+                                    v-model="pay"
+                                    :delivery="product.delivery">
+                                </delivery-select-component>
+                            </option-select-component>
+                            <div class="btn-buy-wrap">
+                                <button class="xe-btn xe-btn-buy" @click="buyPage" >구매하기</button>
+                                <button class="xe-btn" @click="cartPage"><i class="xe-visible-xs xe-visible-sm xi-basket"></i><span class="xe-visible-md xe-visible-lg">장바구니</span></button>
+                                <button class="xe-btn"><i class="xe-visible-xs xe-visible-sm xi-heart"></i><span class="xe-visible-md xe-visible-lg">찜하기</span></button>
+                            </div><!-- //btn-buy-wrap -->
+
+                        </div><!-- //options -->
+                    </div><!-- //product-info  -->
+                </div><!-- //product-wrap  -->
+            </div><!-- //container  -->
+        </div><!-- //product -->
+        <div class="xe-shop detail">
+            <div class="container">
+                <div class="detail-wrap">
+                    <h2 class="xe-sr-only">상품 상세 보기</h2>
+                    <div class="detail-tab">
+                        <h3 class="xe-sr-only">상품 정보 탭</h3>
+                        <ul>
+                            <li :class="(tab===1) ? 'active' : ''"><a href="#" @click.prevent="tab=1">상품정보</a></li>
+                            <!--<li><a href="#">구매평</a></li>-->
+                            <!--<li><a href="#">Q&A</a></li>-->
+                            <li :class="(tab===2) ? 'active' : ''"><a href="#" @click.prevent="tab=2">반품정보</a></li>
+                        </ul>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <button class="xe-btn xe-btn-black xe-btn-block xe-btn-lg" @click="buyPage">구매하기</button>
-                    </div>
-                    <div class="col-3">
-                        <button class="xe-btn xe-btn-block xe-btn-lg" @click="cartPage">장바구니</button>
-                    </div>
-                    <div class="col-3">
-                        <button class="xe-btn xe-btn-block xe-btn-lg">찜하기</button>
+                    <div class="detail-container">
+                        <div v-if="tab===1" class="detail-information">
+                            <h3 class="xe-sr-only">상품 상세 정보</h3>
+                            <div class="detail-information-table">
+                                <div class="detail-information-row" v-for="each in detail()">
+                                    <template v-for="(val,key) in each">
+                                        <div class="detail-information-cell th">{{key}}</div>
+                                        <div class="detail-information-cell">{{val}}</div>
+                                    </template>
+                                </div>
+
+                            </div>
+                            <div class="detail-information-view">
+                                <!-- [D] 상품 상세 정보 구역-->
+                                <div v-html="product.data.description">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="detail-talks"></div> -->
+                        <!-- <div class="detail-qna"></div> -->
+                         <div v-if="tab===2" class="detail-as">
+                             <div v-html="product.shop.as_info">
+
+                             </div>
+                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <hr>
-        <div class="row">
-            <div class="col">
-                <div>
-                    <b-tabs>
-                        <b-tab title="상품정보" active>
-                            <h4>상품 상세 정보</h4>
-                            <table class="xe-table">
-                                <tr v-for="each in detail()">
-                                    <template v-for="(val,key) in each">
-                                        <th>
-                                            {{key}}
-                                        </th>
-                                        <td>
-                                            {{val}}
-                                        </td>
-                                    </template>
-                                </tr>
-                            </table>
-                            <div v-html="product.data.description">
-                            </div>
-                        </b-tab>
+        <!--<div class="row">-->
+            <!--<div class="col">-->
+                <!--<div>-->
+                    <!--<b-tabs>-->
+                        <!--<b-tab title="상품정보" active>-->
+                            <!--<h4>상품 상세 정보</h4>-->
+                            <!--<table class="xe-table">-->
+                                <!--<tr v-for="each in detail()">-->
+                                    <!--<template v-for="(val,key) in each">-->
+                                        <!--<th>-->
+                                            <!--{{key}}-->
+                                        <!--</th>-->
+                                        <!--<td>-->
+                                            <!--{{val}}-->
+                                        <!--</td>-->
+                                    <!--</template>-->
+                                <!--</tr>-->
+                            <!--</table>-->
+                            <!--<div v-html="product.data.description">-->
+                            <!--</div>-->
+                        <!--</b-tab>-->
                         <!--<b-tab title="구매평">-->
                         <!--<h4>구매평</h4>-->
                             <!--<b-list-group style="margin-top:10px">-->
@@ -147,16 +255,16 @@
                                 <!--</tbody>-->
                             <!--</table>-->
                         <!--</b-tab>-->
-                        <b-tab title="반품정보">
-                            <h4>반품정보</h4>
-                            <div v-html="product.shop.as_info">
+                        <!--<b-tab title="반품정보">-->
+                            <!--<h4>반품정보</h4>-->
+                            <!--<div v-html="product.shop.as_info">-->
 
-                            </div>
-                        </b-tab>
-                    </b-tabs>
-                </div>
-            </div>
-        </div>
+                            <!--</div>-->
+                        <!--</b-tab>-->
+                    <!--</b-tabs>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <form ref="form">
         </form>
     </div>
@@ -174,16 +282,32 @@
         props: [
             'product', 'orderUrl', 'cartUrl', 'cartPageUrl'
         ],
+        computed:{
+            mainImg () {
+                return this.product.images[this.mainImageKey]
+            }
+        },
         data() {
             return {
-                mainImg: this.product.mainImage,
                 choose: [],
-                pay: '선불'
+                pay: '선불',
+                tab: 1,
+                mainImageKey: 0
             }
         },
         methods: {
-            changeMainImage(img) {
-                this.mainImg = img
+            changeMainImage(key) {
+                this.mainImageKey = key
+            },
+            beforeMainImage() {
+                if(this.mainImageKey>0){
+                    this.mainImageKey--
+                }
+            },
+            afterMainImage() {
+                if(this.mainImageKey<this.product.images.length-1){
+                    this.mainImageKey++
+                }
             },
             buyPage() {
                 this.addCart(res => {
