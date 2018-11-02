@@ -1,26 +1,29 @@
 <template>
-    <div>
-        <div role="tablist">
-            <b-card v-for="(agreement, key) in agreements" :key="key">
-                <b-card-header role="tab">
-                    <b-form-checkbox v-model="checked" :value="agreement">
-                    <span @click="toggling(agreement)" :aria-controls="agreement.type"
-                          :aria-expanded="opened[agreement.type]" role="button">
-                    {{agreement.name}}
-                    </span>
-                    </b-form-checkbox>
-                </b-card-header>
-                <b-collapse :id="agreement.type" :visible="opened[agreement.type]" accordion="my-agreement"
-                            role="tabpanel">
-                    <b-card-body>
-                        <p class="card-text">
-                            {{ agreement.contents }}
-                        </p>
-                    </b-card-body>
-                </b-collapse>
-            </b-card>
-        </div>
-    </div>
+    <div class="payment-aside-agree">
+        <h1 class="xe-sr-only">동의</h1>
+
+        <div class="payment-aside-agree-all xe-form-inline">
+            <label class="xe-label">
+                <input type="checkbox" v-model="allCheck">
+                <span class="xe-input-helper"></span>
+                <span class="xe-label-text agree-all-text">전체 동의합니다.</span>
+            </label>
+        </div><!-- //payment-aside-agree-all -->
+
+        <div class="payment-aside-agree-article" v-for="(agreement, key) in agreements" :key="key">
+            <div class="payment-aside-agree-header xe-form-inline">
+                <label class="xe-label">
+                    <input type="checkbox" v-model="checked" :value="agreement">
+                    <span class="xe-input-helper"></span>
+                    <span class="xe-label-text">{{agreement.name}}</span>
+                </label>
+                <button type="button" class="btn-toggle" @click="opened[agreement.type]=!opened[agreement.type]"><i :class="(opened[agreement.type])?'xi-angle-up-thin':'xi-angle-down-thin'"></i></button>
+            </div><!-- //payment-aside-agree-header -->
+            <div class="payment-aside-agree-content color" v-show="opened[agreement.type]">
+                {{ agreement.contents }}
+            </div><!-- //payment-aside-agree-content -->
+        </div><!-- //payment-aside-agree -->
+    </div><!-- //payment-aside-agree -->
 </template>
 
 <script>
@@ -34,15 +37,22 @@
                 this.$emit('input', this.checked)
                 var regDiff = $(el).not(oldEl).get()
                 if(regDiff.length>0){
-                    this.register(regDiff[0])
+                    $.each(regDiff,(k,v)=>{
+                        this.register(v)
+                    })
                 }
                 if(oldEl){
-
                     var remDiff = $(oldEl).not(el).get()
-                    if(remDiff.length>0)
-                    {
-                        this.remove(remDiff[0])
-                    }
+                    $.each(remDiff,(k,v)=>{
+                        this.remove(v)
+                    })
+                }
+            },
+            allCheck (el) {
+                if(el){
+                    this.checked = Object.values(this.agreements)
+                }else{
+                    this.checked = []
                 }
             }
         },
@@ -53,7 +63,8 @@
                     purchase: true,
                     privacy: false,
                     thirdParty: false
-                }
+                },
+                allCheck:false
             }
         },
         methods: {

@@ -1,39 +1,54 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h2>최종 결제금액</h2>
+    <div class="payment-aside-top">
+        <div class="payment-aside-title">
+            <h1>최종 결제금액</h1>
         </div>
-        <div class="card-content">
-            <table class="xe-table">
-                <tr>
-                    <th>상품금액</th>
-                    <td>{{Number(summary.original_price).toLocaleString()}} 원</td>
-                </tr>
-                <tr>
-                    <th>할인금액</th>
-                    <td><i class="xi-minus-min"></i> {{Number(summary.discount_price).toLocaleString()}} 원</td>
-                </tr>
-                <tr v-if="discountOption">
-                    <th>적립금 사용</th>
-                    <td><i class="xi-minus-min"></i> 0 원</td>
-                </tr>
-                <tr>
-                    <th>배송비</th>
-                    <td><i class="xi-plus-min"></i> {{Number(summary.fare).toLocaleString()}} 원</td>
-                </tr>
-                <tr>
-                    <th>최종 결제금액</th>
-                    <td>{{Number(summary.sum).toLocaleString()}} 원</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button type="button" class="xe-btn xe-btn-lg xe-btn-black xe-btn-block" @click="pay">결제하기
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
+
+        <button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>
+
+        <div class="payment-aside-info">
+            <div class="payment-aside-info-row">
+                <h2 class="payment-aside-info-title">상품금액</h2>
+                <div class="payment-aside-info-num">
+                    {{Number(summary.original_price).toLocaleString()}}원
+                </div>
+            </div><!-- //payment-aside-info-row -->
+
+            <div class="payment-aside-info-row">
+                <h2 class="payment-aside-info-title">할인금액</h2>
+                <div class="payment-aside-info-num">
+                    <span class="payment-aside-icon"><i class="xi-minus-min"></i></span>
+                    {{Number(summary.discount_price).toLocaleString()}}원
+                </div>
+            </div><!-- //payment-aside-info-row -->
+
+            <!--<div class="payment-aside-info-row">-->
+                <!--<h2 class="payment-aside-info-title">적립금 사용</h2>-->
+                <!--<div class="payment-aside-info-num">-->
+                    <!--<span class="payment-aside-icon"><i class="xi-minus-min"></i></span>-->
+                    <!--0원-->
+                <!--</div>-->
+            <!--</div>&lt;!&ndash; //payment-aside-info-row &ndash;&gt;-->
+
+            <div class="payment-aside-info-row">
+                <h2 class="payment-aside-info-title">배송비</h2>
+                <div class="payment-aside-info-num">
+                    <span class="payment-aside-icon"><i class="xi-plus-min"></i></span>
+                    {{Number(summary.fare).toLocaleString()}}원
+                </div>
+            </div><!-- //payment-aside-info-row -->
+
+            <div class="payment-aside-info-sum">
+                <h2 class="payment-aside-info-title">최종 결제금액</h2>
+                <div class="payment-aside-info-num">
+                    {{Number(summary.sum).toLocaleString()}}원
+                </div>
+            </div><!-- //payment-aside-info-row -->
+
+            <button type="button" class="xe-btn payment-aside-btn" @click="pay">결제하기</button>
+
+        </div><!-- //payment-aside-info -->
+    </div><!-- //payment-aside-top -->
 </template>
 
 <script>

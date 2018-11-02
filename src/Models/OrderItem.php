@@ -45,6 +45,9 @@ class OrderItem extends SellSet
             'user' => $this->order->userInfo,
             'order_no' => $this->order->order_no,
             'info' => $this->renderInformation(),
+            'options'=>$this->sellGroups->map(function(SellGroup $sellGroup){
+                return $sellGroup->getJsonFormat();
+            }),
             'name' => $this->sellType->getName(),
             'original_price' => $this->getOriginalPrice(),
             'sell_price' => $this->getSellPrice(),

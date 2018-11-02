@@ -1,64 +1,98 @@
 <template>
     <div>
+        <h2 class="xe-sr-only">쇼핑 단계</h2>
+
+        <div class="step-ui step-2">
+            <ul>
+
+                <li>
+                    <p>
+                        <span class="xe-hidden-sm xe-hidden-xs">01 </span>장바구니 <span class="xe-sr-only">활성화 단계</span>
+                    </p>
+                    <div class="tail"></div>
+                </li>
+
+                <li>
+                    <p>
+                        <span class="xe-hidden-sm xe-hidden-xs">02 </span>주문/결제 <span class="xe-sr-only">활성화 단계</span>
+                    </p>
+                    <div class="tail"></div>
+                </li>
+
+                <li>
+                    <p>
+                        <span class="xe-hidden-sm xe-hidden-xs">03 </span>주문완료 <span class="xe-sr-only">활성화 단계</span>
+                    </p>
+                    <div class="tail"></div>
+                </li>
+
+            </ul>
+        </div><!-- //cart-step -->
         <order-item-list-component :order-item-list="orderItemList"></order-item-list-component>
-        <div class="xe-row">
-            <div class="xe-col-lg-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>주문고객 정보</h4>
+        <div class="payment-bottom">
+            <div class="table-wrap">
+                <h4 class="table-type-title">주문고객 정보</h4>
+                <button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>
+                <div class="table-type">
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            이름
+                        </div>
+                        <div class="table-cell">
+                            {{userInfo.name}}
+                        </div>
                     </div>
-                    <div class="card-content">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>이름</th>
-                                <td>{{userInfo.name}}</td>
-                            </tr>
-                            <tr>
-                                <th>연락처</th>
-                                <td>{{userInfo.phone}}</td>
-                            </tr>
-                            <tr>
-                                <th>이메일</th>
-                                <td>{{user.email}}</td>
-                            </tr>
-                        </table>
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            연락처
+                        </div>
+                        <div class="table-cell">
+                            {{userInfo.phone}}
+                        </div>
                     </div>
-                </div>
-                <order-delivery-component :user-info="userInfo" v-model="delivery"></order-delivery-component>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>결제 정보 입력</h4>
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            이메일
+                        </div>
+                        <div class="table-cell">
+                            {{user.email}}
+                        </div>
                     </div>
-                    <div class="card-content">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>일반 결제</th>
-                                <td>
-                                    <pay-component :pay-methods="payMethods" v-model="payMethod"></pay-component>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="card" v-if="discountOption">
-                    <div class="card-header">
-                        <h4>할인 정보</h4>
-                    </div>
-                    <div class="card-content">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>할인 쿠폰</th>
-                                <td><input type="text" value="0">원</td>
-                            </tr>
-                            <tr>
-                                <th>적립금 사용</th>
-                                <td><input type="text" value="0">원</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="xe-col-lg-4">
+                </div><!-- //table-type -->
+            </div><!-- //table-wrap -->
+            <order-delivery-component :user-info="userInfo" v-model="delivery"></order-delivery-component>
+            <!--<div class="table-wrap">-->
+                <!--<h4 class="table-type-title">할인 정보</h4>-->
+                <!--<button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>-->
+                <!--<div class="table-type">-->
+                    <!--<div class="table-row">-->
+                        <!--<div class="table-cell header">-->
+                            <!--할인 쿠폰-->
+                        <!--</div>-->
+                        <!--<div class="table-cell">-->
+                            <!--<input type="text" class="xe-form-control table-input table-input-sale" value="1,000">-->
+                            <!--원-->
+                            <!--<button type="button" class="xe-btn xe-btn-secondary table-btn-sale">쿠폰사용</button>-->
+                            <!--<span class="xe-hidden-xs xe-hidden-sm">(사용가능쿠폰 1장 / 보유쿠폰 2장)</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="table-row">-->
+                        <!--<div class="table-cell header">-->
+                            <!--적립금 사용-->
+                        <!--</div>-->
+                        <!--<div class="table-cell">-->
+                            <!--<input type="text" class="xe-form-control table-input table-input-sale" value="1,000">-->
+                            <!--원-->
+                            <!--<button type="button" class="xe-btn xe-btn-secondary table-btn-sale">쿠폰사용</button>-->
+                            <!--<span class="xe-hidden-xs xe-hidden-sm">(사용가능적립금 : 10,000원)</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                <!--</div>&lt;!&ndash; //table-type &ndash;&gt;-->
+            <!--</div>&lt;!&ndash; //table-wrap &ndash;&gt;-->
+            <pay-component :pay-methods="payMethods" v-model="payMethod"></pay-component>
+            <aside class="payment-aside">
                 <order-bill-component :summary="orderSummary"
                                       :validate="validate"
                                       :method="payMethod"
@@ -71,7 +105,7 @@
                 ></order-bill-component>
                 <order-agreement-component :agreements="agreements" v-model="agreed" :agree-url="agreeUrl"
                                            :denied-url="deniedUrl"></order-agreement-component>
-            </div>
+            </aside>
         </div>
     </div>
 </template>
