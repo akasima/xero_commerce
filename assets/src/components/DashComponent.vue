@@ -1,159 +1,131 @@
 <template>
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="row">
-                <div class="col-lg-12 text-center text-white bg-dark" style="padding-top:20px">
-                    {{user.display_name}}님의 <br>
-                    회원등급
-                    <div class="circle text-dark">
-                        <p>VIP</p>
-                    </div>
-                </div>
-                <div class="col-lg-12 card" v-if="discountOption">
-                    <div class="card-header">
-                        <h3>적립금</h3>
-                    </div>
-                    <div class="card-content">
-                        원
-                    </div>
-                </div>
-                <div class="col-lg-12 card" v-if="discountOption">
-                    <div class="card-header">
-                        <h3>쿠폰</h3>
-                    </div>
-                    <div class="card-content">
-                        장
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-9">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header">
-                            진행중인 주문
+    <div class="xe-shop mypage">
+        <div class="container">
+            <div class="mypage-wrap">
+
+                <h1 class="page-title xe-hidden-sm xe-hidden-xs">마이페이지</h1>
+                <div class="mypage-box">
+                    <section class="mypage-membership">
+                        <h2 class="mypage-membership-title"><span>{{user.display_name}}</span>님의 <br class="xe-hidden-sm xe-hidden-xs">회원등급</h2>
+                        <div class="mypage-membership-rating">VIP</div>
+                    </section><!-- //mypage-membership -->
+                    <!--<div class="mypage-accumulation">-->
+                        <!--<section class="mypage-accumulation-point">-->
+                            <!--<h3 class="mypage-accumulation-title">적립금</h3>-->
+                            <!--<div class="mypage-accumulation-number"><p>999,999,999원</p></div>-->
+                        <!--</section>-->
+                        <!--<section class="mypage-accumulation-point">-->
+                            <!--<h3 class="mypage-accumulation-title">쿠폰</h3>-->
+                            <!--<div class="mypage-accumulation-number"><p>999,999,999장</p></div>-->
+                        <!--</section>-->
+                    <!--</div>&lt;!&ndash; //mypage-accumulation &ndash;&gt;-->
+                </div><!-- //mypage-box -->
+                <div class="mypage-box">
+                    <section class="mypage-status">
+                        <h3 class="mypage-status-title">진행중인 주문</h3>
+                        <div class="mypage-status-content">
+                            <ul class="mypage-status-step">
+                                <li @click.prevent="url(listUrl+'?code=1')">
+                                    <h4 class="mypage-status-step-title">입금 대기중</h4>
+                                    <p class="mypage-status-step-count">{{dashboard['결제대기']}}</p>
+                                    <i class="mypage-status-step-icon xi-angle-right"></i>
+                                </li>
+                                <li @click.prevent="url(listUrl+'?code=2')">
+                                    <h4 class="mypage-status-step-title">배송준비중</h4>
+                                    <p class="mypage-status-step-count">{{dashboard['상품준비']}}</p>
+                                    <i class="mypage-status-step-icon xi-angle-right"></i>
+                                </li>
+                                <li @click.prevent="url(listUrl+'?code=3')">
+                                    <h4 class="mypage-status-step-title">배송중</h4>
+                                    <p class="mypage-status-step-count">{{dashboard['배송중']}}</p>
+                                    <i class="mypage-status-step-icon xi-angle-right"></i>
+                                </li>
+                                <li @click.prevent="url(listUrl+'?code=4')">
+                                    <h4 class="mypage-status-step-title">배송완료</h4>
+                                    <p class="mypage-status-step-count">{{dashboard['배송완료']}}</p>
+                                </li>
+                            </ul>
+                            <ul class="mypage-status-total">
+                                <li>
+                                    <b>취소</b>
+                                    <p><span>{{dashboard['취소중']+dashboard['취소완료']}}</span>건</p>
+                                </li>
+                                <li>
+                                    <b>교환</b>
+                                    <p><span>{{dashboard['교환중']+dashboard['교환완료']}}</span>건</p>
+                                </li>
+                                <li>
+                                    <b>반품</b>
+                                    <p><span>{{dashboard['환불중']+dashboard['환불완료']}}</span>건</p>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="card-content">
-                            <div class="row">
-                                <div class="col">
-                                    <h3>입금 대기중</h3>
+                    </section><!-- //mypage-status -->
+                    <section class="mypage-util">
+                        <h4 class="xe-sr-only">그외 링크</h4>
+                        <ul>
+                            <li>
+                                <a href="#" @click.prevent="url(listUrl)">
                                     <p>
-                                        {{dashboard['결제대기']}}
+                                        <i class="xi-desktop"></i> <br class="xe-hidden-lg xe-hidden-md">
+                                        주문내역조회
                                     </p>
-                                    <div style="position:absolute; right:-10px; top:25px">
-                                        <i class="xi-angle-right"></i>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <h3>배송준비중</h3>
+                                    <div class="mypage-util-caption xe-hidden-sm xe-hidden-xs">고객님께서 주문하신 상품의 주문내역을 확인하실 수 있습니다.</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click.prevent="url('/user')">
                                     <p>
-                                        {{dashboard['상품준비']}}
+                                        <i class="xi-user"></i> <br class="xe-hidden-lg xe-hidden-md">
+                                        회원 정보
                                     </p>
-                                    <div style="position:absolute; right:-10px; top:25px">
-                                        <i class="xi-angle-right"></i>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <h3>배송중</h3>
+                                    <div class="mypage-util-caption xe-hidden-sm xe-hidden-xs">회원이신 고객님의 개인정보를 관리하는 공간입니다.</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
                                     <p>
-                                        {{dashboard['배송중']}}
+                                        <i class="xi-basket"></i> <br class="xe-hidden-lg xe-hidden-md">
+                                        관심상품
                                     </p>
-                                    <div style="position:absolute; right:-10px; top:25px">
-                                        <i class="xi-angle-right"></i>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <h3>배송완료</h3>
+                                    <div class="mypage-util-caption xe-hidden-sm xe-hidden-xs">관심상품으로 등록하신 상품의 목록을 보여드립니다.</div>
+                                </a>
+                            </li>
+                            <li v-if="discountOption">
+                                <a href="#">
                                     <p>
-                                        {{dashboard['배송완료']}}
+                                        <i class="xi-piggy-bank"></i> <br class="xe-hidden-lg xe-hidden-md">
+                                        적립금 관리
                                     </p>
-                                </div>
-                                <div class="col">
+                                    <div class="mypage-util-caption xe-hidden-sm xe-hidden-xs">적립금은 상품 구매 시 사용하실 수 있습니다. <br>적립된 금액은 현금으로 환불되지 않습니다.</div>
+                                </a>
+                            </li>
+                            <li v-if="discountOption">
+                                <a href="#">
                                     <p>
-                                        교환중 : {{dashboard['교환중']}}
+                                        <i class="xi-coupon"></i> <br class="xe-hidden-lg xe-hidden-md">
+                                        쿠폰 관리
                                     </p>
+                                    <div class="mypage-util-caption xe-hidden-sm xe-hidden-xs">고객님이 보유하고 계신 쿠폰내역을 보여드립니다.</div>
+                                </a>
+                            </li>
+                            <li v-if="discountOption">
+                                <a href="#">
                                     <p>
-                                        환불중 : {{dashboard['환불중']}}
+                                        <i class="xi-border-color"></i> <br class="xe-hidden-lg xe-hidden-md">
+                                        게시물 관리
                                     </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12" id="direct" style="margin-top:20px">
-                    <div class="row text-center">
-                        <div class="col-lg-4">
-                            <div class="card" style="cursor:pointer; " @click="url(listUrl)">
-                                <div class="card-header">
-                                    <i class="xi-desktop"></i> <br>
-                                    주문내역조회
-                                </div>
-                                <div class="card-content">
-                                    주문내역을 조회합니다
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card" style="cursor:pointer"  @click="url('/user')">
-                                <div class="card-header">
-                                    <i class="xi-user"></i> <br>
-                                    회원정보
-                                </div>
-                                <div class="card-content">
-                                    회원정보를 조회/수정합니다.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card">
-                                <div class="card-header">
-                                    <i class="xi-basket"></i> <br>
-                                    관심상품
-                                </div>
-                                <div class="card-content">
-                                    내 관심상품 보기
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4" v-if="discountOption">
-                            <div class="card">
-                                <div class="card-header">
-                                    <i class="xi-piggy-bank"></i> <br>
-                                    적립금 관리
-                                </div>
-                                <div class="card-content">
-                                    적립금 보기
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4" v-if="discountOption">
-                            <div class="card">
-                                <div class="card-header">
-                                    <i class="xi-coupon"></i> <br>
-                                    쿠폰 관리
-                                </div>
-                                <div class="card-content">
-                                    쿠폰 확인
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4" v-if="discountOption">
-                            <div class="card">
-                                <div class="card-header">
-                                    <i class="xi-border-color"></i> <br>
-                                    게시물 관리
-                                </div>
-                                <div class="card-content">
-                                    게시물 확인
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                                    <div class="mypage-util-caption xe-hidden-sm xe-hidden-xs">고객님께서 작성하신 글을 한눈에 관리하실 수 있습니다.</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </section><!-- //mypage-util -->
+                </div><!-- //mypage-box -->
+
+
+            </div><!-- //shipping-wrap -->
+        </div><!-- //container  -->
+    </div><!-- //shipping -->
 </template>
 
 <script>

@@ -1,88 +1,123 @@
 <template>
-    <table class="xe-table">
-        <thead>
-        <tr>
-            <th width="170">주문일자</th>
-            <th>상품정보</th>
-            <th>결제금액</th>
-            <th>수량</th>
-            <th>배송비</th>
-            <th>주문상태</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-if="list.length===0">
-            <td style="text-align: center" colspan="6">
-                <i class="xi-error"></i> 조회된 주문이 없습니다.
-            </td>
-        </tr>
-        <template v-for="item in list" v-if="list.length>0">
-            <tr v-for="(orderitem, key) in item.orderItems">
-                <td style="text-align: center; background:#f1f1f1;cursor:pointer" :rowspan="item.orderItems.length"
-                    v-if="key===0" @click="url(detailUrl+'/'+item.id)">
-                    <p>{{item.order_no}}</p>
-                    <p style="color:#aaa">{{item.created_at.substr(0,16)}}</p>
-                    <h3>{{item.status}}</h3>
-                </td>
-                <td>
-                    <div class="row">
-                        <div class="col">
-                            <img :src="orderitem.src" alt="" width="120" height="120">
-                        </div>
-                        <div class="col">
-                            <span v-for="html in orderitem.info" v-html="html"></span>
-                        </div>
+    <section class="shipping-result">
+        <h2 class="xe-sr-only">조회 결과</h2>
+
+        <div class="table-wrap" v-if="list.length>0">
+            <h2 class="xe-sr-only">주문번호별 상품 내역</h2>
+            <div class="table-type3">
+                <div class="table-header xe-hidden-sm xe-hidden-xs">
+                    <div class="table-row">
+                        <div class="table-cell ordernum">주문일자</div>
+                        <div class="table-cell info">상품정보</div>
+                        <div class="table-cell pay">결제금액</div>
+                        <div class="table-cell counter">수량</div>
+                        <div class="table-cell shipping">배송비</div>
+                        <div class="table-cell status">주문상태</div>
                     </div>
-                </td>
-                <td>
-                    {{orderitem.sell_price.toLocaleString()}}
-                </td>
-                <td>
-                    {{orderitem.count}} 개
-                </td>
-                <td>
-                    {{orderitem.delivery_pay}} <br>
-                    {{orderitem.fare.toLocaleString()}}
-                </td>
-                <td>
-                    <p>{{orderitem.status}}</p>
-                    <p>
-                        <button class="xe-btn xe-btn-default" @click="url(orderitem.delivery_url)">배송조회</button>
-                    </p>
-                    <p>
-                        <span v-if="inDelivery(item)">
-                        <a style="cursor:pointer" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">교환</a> /
-                        <a style="cursor:pointer" @click="url(asUrl+'/refund/'+item.id+'/'+orderitem.id)">환불</a>
-                        </span>
-                        <a v-if="notInDelivery(item)" style="cursor:pointer" @click="url(cancelUrl+'/'+item.id)">취소</a>
-                    </p>
-                </td>
-            </tr>
-        </template>
-        </tbody>
-        <tfoot v-if="typeof paginate!=='undefined'">
-        <tr>
-            <td colspan="6">
-                <div style="width:100%; position:relative">
-                    <div style="position:absolute; left:0; bottom:0">
-                        total : {{currentCount}} / {{paginate.total}} ({{paginate.from}} ~ {{paginate.to}})
-                    </div>
-                    <div style="margin:0 auto; width:50%; text-align: center">
-                        <a @click="$emit('page',1)">처음</a>
-                        <a v-if="paginate.current_page-2>0" @click="$emit('page',paginate.current_page-2)">{{paginate.current_page-2}}</a>
-                        <a v-if="paginate.current_page-1>0" @click="$emit('page',paginate.current_page-1)">{{paginate.current_page-1}}</a>
-                        <b><a @click="$emit('page',first_page)">{{paginate.current_page}}</a></b>
-                        <a v-if="paginate.current_page+1<=paginate.last_page"
-                           @click="$emit('page',paginate.current_page+1)">{{paginate.current_page+1}}</a>
-                        <a v-if="paginate.current_page+2<=paginate.last_page"
-                           @click="$emit('page',paginate.current_page+2)">{{paginate.current_page+2}}</a>
-                        <a @click="$emit('page',paginate.last_page)">끝</a>
+                </div> <!-- //table-header -->
+                <div class="table-body">
+
+                    <!-- [D] 복사 영역 주문별 영역 -->
+                    <div class="table-row"  v-for="item in list">
+                        <div class="table-cell header">
+                            <h3 class="order-number xe-hidden-md xe-hidden-lg">주문 번호</h3>
+                            <p class="order-number">
+                                <span class="xe-hidden-xs xe-hidden-sm">{{item.created_at.substr(0,10)}}</span>
+                                <br class="xe-hidden-xs xe-hidden-sm">
+                                <a href="#"><span>({{item.order_no}})</span></a>
+                            </p>
+                            <button class="order-number-btn">
+                                <i class="xi-angle-right-thin"></i>
+                            </button>
+                        </div>
+                        <div class="table-cell">
+
+                            <!-- [D] 복사 영역 상품 블럭 -->
+                            <div class="shipping-product"  v-for="(orderitem, key) in item.orderItems">
+                                <div class="cart-product-body">
+                                    <div class="cart-product-info">
+                                        <div class="cart-product-img">
+                                            <img :src="orderitem.src" alt="상품이미지">
+                                        </div><!-- //cart-product-img -->
+                                        <div class="cart-product-name">
+                                            {{orderitem.name}}
+                                        </div><!-- //cart-product-name -->
+                                        <div class="cart-product-option">
+                                            <ul class="cart-product-option-list">
+                                                <li v-for="option in orderitem.options">
+                                                    <span>{{option.unit.name}} / {{option.count}}개</span>
+                                                </li>
+                                            </ul>
+                                        </div><!-- //cart-product-option -->
+                                    </div><!-- //cart-product-info -->
+                                    <div class="cart-product-num">
+                                        <div class="cart-product-num-box">
+                                            <div class="cart-product-price">
+                                                <span class="cart-product-title">결제금액</span>
+                                                <span class="cart-product-text">{{orderitem.sell_price.toLocaleString()}}원</span>
+                                            </div><!-- //cart-product-price -->
+                                            <div class="cart-product-quantity">
+                                                <span class="cart-product-title">수량</span>
+                                                <span class="cart-product-text">{{orderitem.count}}개</span>
+                                            </div><!-- //cart-product-num -->
+                                            <div class="cart-product-shipping">
+                                                <span class="cart-product-title">배송비</span>
+                                                <span class="cart-product-text">{{orderitem.fare.toLocaleString()}}원</span>
+                                            </div><!-- //cart-product-shipping -->
+                                            <div class="cart-product-sum">
+                                                <span class="cart-product-title">주문 상태</span>
+                                                <span class="cart-product-text">{{item.status}}</span>
+                                                <div class="cart-product-btn">
+                                                    <button type="button" class="btn-shipping-status" @click="url(orderitem.delivery_url)">배송조회</button>
+                                                    <div v-if="inDelivery(item)">
+                                                        <button type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">교환요청</button>
+                                                        <button type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">환불요청</button>
+                                                    </div>
+                                                    <button v-if="notInDelivery(item)" type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">취소요청</button>
+                                                </div><!-- //cart-product-btn -->
+                                            </div><!-- //cart-product-sum -->
+                                        </div><!-- //cart-product-num-box -->
+                                    </div><!-- //cart-product-num -->
+                                </div> <!-- //cart-product-body -->
+                            </div><!-- //shipping-product -->
+                        </div>
+                    </div> <!-- //table-row -->
+                </div><!-- //table-body -->
+            </div><!-- //table-type3 -->
+            <div class="container pagination">
+                <div style="margin:0 auto">
+                    <div style="position:relative">
+                        <div style="position:absolute; left:0; bottom:0">
+                            total : {{currentCount}} / {{paginate.total}} ({{paginate.from}} ~ {{paginate.to}})
+                        </div>
+                        <div style="margin:0 auto; width:50%; text-align: center">
+                            <a @click="$emit('page',1)">처음</a>
+                            <a v-if="paginate.current_page-2>0" @click="$emit('page',paginate.current_page-2)">{{paginate.current_page-2}}</a>
+                            <a v-if="paginate.current_page-1>0" @click="$emit('page',paginate.current_page-1)">{{paginate.current_page-1}}</a>
+                            <b><a @click="$emit('page',first_page)">{{paginate.current_page}}</a></b>
+                            <a v-if="paginate.current_page+1<=paginate.last_page"
+                               @click="$emit('page',paginate.current_page+1)">{{paginate.current_page+1}}</a>
+                            <a v-if="paginate.current_page+2<=paginate.last_page"
+                               @click="$emit('page',paginate.current_page+2)">{{paginate.current_page+2}}</a>
+                            <a @click="$emit('page',paginate.last_page)">끝</a>
+                        </div>
                     </div>
                 </div>
-            </td>
-        </tr>
-        </tfoot>
-    </table>
+            </div>
+        </div> <!-- //table-wrap -->
+        <div class="container" v-if="list.length===0">
+            <h2 class="xe-sr-only">데이터가 없는 경우</h2>
+            <div class="xe-none-date">
+                <i class="xi-error-o"></i>
+                <p class="xe-none-date-text">
+                    <span class="xe-none-date-text-title">검색 결과가 없습니다.</span>
+                    검색어/제외검색의 입력이 정확한지 확인해 보세요.<br>
+                    두 단어 이상의 검색어인 경우, 띄어쓰기를 확인해 보세요.<br>
+                    검색 옵션을 다시 확인해 보세요.
+                </p>
+            </div>
+        </div>
+    </section>
 </template>
 
 <script>
@@ -117,8 +152,8 @@
 </script>
 
 <style scoped>
-    tfoot a {
-        color: #0f74a8;
+    .pagination a {
+        color: #666;
         cursor: pointer;
     }
 
