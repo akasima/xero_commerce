@@ -51,13 +51,13 @@
                     @endif
                     @if(auth()->check())
                         <li><a href="{{ route('logout') }}">로그아웃</a></li>
-                        <li><a href="{{route('user.settings') }}">마이페이지</a></li>
+                        <li><a href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
                     @else
                         <li><a href="{{ route('login') }}">로그인</a></li>
                         <li><a href="{{route('auth.register') }}">회원가입</a></li>
                     @endif
                     <li><a href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
-                    <li><a href="{{route('xero_commerce::order.index')}}">주문조회</a></li>
+                    <li><a href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
                 </ul>
                 <h2 class="xe-sr-only">검색</h2>
                 <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
