@@ -151,6 +151,7 @@
 
 .tab-list-container .tab-list-img img {
     vertical-align: top;
+    max-width: 369px;
     width: 100%;
 }
 

@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use App\Facades\XeMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Xpressengine\Database\Eloquent\DynamicModel;
+use Xpressengine\Category\Models\Category;
 use Xpressengine\Tag\Tag;
 
 class Product extends SellType
@@ -208,5 +208,10 @@ class Product extends SellType
     public function getStock()
     {
         return $this->sellUnits()->sum('stock');
+    }
+
+    public function category()
+    {
+        return $this->hasManyThrough(Category::class, ProductCategory::class, 'product_id', 'id');
     }
 }
