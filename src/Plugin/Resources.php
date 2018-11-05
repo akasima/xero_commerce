@@ -154,7 +154,7 @@ class Resources
         //Label Widget
         $labelWidget['label_id'] = '1';
         $labelWidget['category_item_id'] = $initCategories;
-        $labelWidget['product_id'] = '1';
+        $labelWidget['product_id'] = '1,2,3,4,5,6';
         $labelWidget['@attributes'] = [
             'id' => 'widget/xero_commerce@label_product_widget',
             'title' => 'Label',
