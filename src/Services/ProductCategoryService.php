@@ -40,6 +40,7 @@ class ProductCategoryService
     private function convertCategoryItemArray($categoryItems)
     {
         $items = [];
+
         foreach ($categoryItems as $categoryItem) {
             $items[] = [
                 'value' => $categoryItem->id,

@@ -61,12 +61,14 @@ class ProductController extends XeroCommerceBasicController
     public function cartAdd(Request $request, Product $product)
     {
         $cartService = new CartService();
+
         return $cartService->addList($request, $product);
     }
 
     public function wishToggle(Product $product)
     {
         $wishService = new WishService();
+
         return $wishService->toggle($product);
     }
 }

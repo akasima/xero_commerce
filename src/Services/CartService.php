@@ -38,6 +38,7 @@ class CartService
         $cartGroupList = collect($parms)->map(function ($parm) use ($sellType) {
             return $this->cartHandler->makeCartGroup($sellType->sellUnits()->find($parm['unit']['id']), $parm['count']);
         });
+
         return $this->cartHandler->addCart($sellType, $cartGroupList, $request->get('delivery'));
     }
 
@@ -64,9 +65,11 @@ class CartService
     public function summary(Request $request)
     {
         $ids = $request->get('cart_ids');
+
         if (is_null($ids)) {
             $ids = [];
         }
+
         return $this->cartHandler->getSummary($this->cartHandler->getCartListByCartIds($ids));
     }
 
@@ -75,6 +78,7 @@ class CartService
         $cartGroupList = collect($request->choose)->map(function ($parm) use ($cart) {
             return $this->cartHandler->makeCartGroup($cart->sellType->sellUnits()->find($parm['unit']['id']), $parm['count']);
         });
+
         return $this->cartHandler->changeCartItem($cart, $cartGroupList, $request->get('pay'));
     }
 }

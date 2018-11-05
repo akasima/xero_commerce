@@ -20,9 +20,9 @@ class ProductOptionController extends Controller
 
     public function save(Request $request)
     {
-        if($request->id){
+        if ($request->id) {
             $this->update($request);
-        }else{
+        } else {
             $this->store($request);
         }
     }
@@ -38,8 +38,7 @@ class ProductOptionController extends Controller
     {
         $args = $request->all();
         $id = $args['id'];
-        $this->optionItemService->update($args,$id);
-
+        $this->optionItemService->update($args, $id);
     }
 
     public function remove(Request $request)
@@ -47,7 +46,8 @@ class ProductOptionController extends Controller
         $this->optionItemService->remove($request->get('id'));
     }
 
-    public function load(Product $product) {
+    public function load(Product $product)
+    {
         $service = new ProductSettingService();
         return $service->getProductOptionArrays($product);
     }

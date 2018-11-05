@@ -21,11 +21,13 @@ class AgreementController extends XeroCommerceBasicController
     public function saveContacts(Request $request)
     {
         AgreementService::userAgree($request->agreement_id);
+
         $userInfo = new UserInfo();
         $userInfo->name = $request->name;
         $userInfo->phone = $request->phone;
         $userInfo->user_id = Auth::id();
         $userInfo->save();
+
         return redirect()->intended();
     }
 

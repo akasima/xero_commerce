@@ -12,5 +12,4 @@ class UserAgreement extends DynamicModel
     {
         return $this->belongsTo(Agreement::class);
     }
-
 }

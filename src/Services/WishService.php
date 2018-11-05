@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: hero
- * Date: 05/11/2018
- * Time: 12:34 PM
- */
 
 namespace Xpressengine\Plugins\XeroCommerce\Services;
-
 
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\WishHandler;
@@ -39,10 +32,11 @@ class WishService
     public function toggle(SellType $sellType)
     {
         $existWish = $this->wishHandler->list($sellType);
-        if($existWish->count()>0){
+
+        if ($existWish->count() > 0) {
             $this->remove($sellType);
             return 0;
-        }else{
+        } else {
             $this->store($sellType);
             return 1;
         }

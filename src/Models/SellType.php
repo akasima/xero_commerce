@@ -20,12 +20,12 @@ abstract class SellType extends DynamicModel
 
     public function wishs()
     {
-        return $this->morphMany(Wish::class,'type');
+        return $this->morphMany(Wish::class, 'type');
     }
 
     public function userWish()
     {
-        return $this->wishs()->where('user_id',Auth::id())->first();
+        return $this->wishs()->where('user_id', Auth::id())->first();
     }
 
     public function carts()
@@ -40,7 +40,7 @@ abstract class SellType extends DynamicModel
 
     public function images()
     {
-        return $this->morphToMany(\Xpressengine\Media\Models\Image::class,'imagable','xero_commerce_images');
+        return $this->morphToMany(\Xpressengine\Media\Models\Image::class, 'imagable', 'xero_commerce_images');
     }
 
     public function delivery()
@@ -71,9 +71,12 @@ abstract class SellType extends DynamicModel
 
     function getImages()
     {
-        if ($this->images->count() === 0) return collect([asset('/assets/core/common/img/default_image_1200x800.jpg')]);
-        return $this->images->map(function($item){
-            return XeMedia::images()->getThumbnail($item,'widen','L')->url();
+        if ($this->images->count() === 0) {
+            return collect([asset('/assets/core/common/img/default_image_1200x800.jpg')]);
+        }
+
+        return $this->images->map(function ($item) {
+            return XeMedia::images()->getThumbnail($item, 'widen', 'L')->url();
         });
     }
 

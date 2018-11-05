@@ -19,7 +19,10 @@ class Payment extends Model
 
     public function getMethod()
     {
-        if (is_null($this->method) || $this->method == '') return '없음';
+        if (is_null($this->method) || $this->method == '') {
+            return '없음';
+        }
+
         return self::METHOD[$this->method];
     }
 }

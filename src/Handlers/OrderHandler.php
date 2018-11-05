@@ -3,9 +3,7 @@
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\CartGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderAfterservice;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderDelivery;
@@ -14,7 +12,6 @@ use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItemGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\Payment;
 use Xpressengine\Plugins\XeroCommerce\Models\UserDelivery;
-use Xpressengine\User\Models\User;
 
 class OrderHandler extends SellSetHandler
 {
@@ -30,28 +27,37 @@ class OrderHandler extends SellSetHandler
         if (!$order = $this->whereUser()->where('code', Order::TEMP)->find($id)) {
             abort(500, '잘못된 주문 요청입니다.');
         }
-        return $order;
 
+        return $order;
     }
 
     public function register($carts)
     {
         $order = $this->makeOrder();
+
         foreach ($carts as $cart) {
             $orderItem = new OrderItem();
+
             $orderItem->order_id = $order->id;
             $orderItem->delivery_pay = $cart->delivery_pay;
             $cart->sellType->orderItems()->save($orderItem);
+
             $orderItem->save();
+
             $cart->sellGroups->each(function (CartGroup $cartGroup) use (&$orderItem) {
                 $orderItemGroup = new OrderItemGroup();
+
                 $cartGroup->sellUnit->orderItemGroup()->save($orderItemGroup);
                 $orderItemGroup->setCount($cartGroup->getCount());
+
                 $orderItem->sellGroups()->save($orderItemGroup);
             });
+
             $cart->order_id = $order->id;
+
             $cart->save();
         }
+
         return $this->update($order);
     }
 
@@ -66,20 +72,25 @@ class OrderHandler extends SellSetHandler
         if ($paidCheck) {
             $code = $paidCheck;
         }
+
         if (!is_null($deliveryCheck)) {
             $code = $deliveryCheck;
         }
+
         if (!is_null($ASCheck)) {
             $code = $ASCheck;
         }
+
         $order->code = $code;
         $order->save();
+
         return $order;
     }
 
     public function paidCheck(Order $order)
     {
         $payment = $order->payment;
+
         if ($payment) {
             if ($payment->is_paid) {
                 return Order::PAID;
@@ -96,12 +107,15 @@ class OrderHandler extends SellSetHandler
         $hasProcessingDelivery = $order->orderItems()->whereHas('delivery', function ($query) {
             $query->where('status', OrderDelivery::PROCESSING);
         })->exists();
+
         $hasDoneDelivery = $order->orderItems()->whereHas('delivery', function ($query) {
             $query->where('status', OrderDelivery::DONE);
         })->exists();
+
         if ($hasProcessingDelivery) {
             return Order::DELIVER;
         }
+
         if ($hasDoneDelivery) {
             return Order::COMPLETE;
         }
@@ -140,10 +154,14 @@ class OrderHandler extends SellSetHandler
     {
         $now = now();
         $order = new Order();
+
         $order->code = $order::TEMP;
-        $order->order_no = $now->format('YmdHis') . '-' . sprintf("%'.06d", $order->whereDate('created_at', $now->toDateString())->count());
+        $order->order_no = $now->format('YmdHis') . '-' .
+            sprintf("%'.06d", $order->whereDate('created_at', $now->toDateString())->count());
         $order->user_id = Auth::id() ?: request()->ip();
+
         $order->save();
+
         return $order;
     }
 
@@ -159,12 +177,14 @@ class OrderHandler extends SellSetHandler
                 ->when(!is_null($condition), function ($query) use ($condition) {
                     $query->where($condition);
                 })
-                ->with('orderItems.delivery.company', 'orderItems.order.orderItems.sellGroups.sellSet')->latest()->get()->pluck('orderItems')->flatten();
+                ->with('orderItems.delivery.company', 'orderItems.order.orderItems.sellGroups.sellSet')
+                ->latest()->get()->pluck('orderItems')->flatten();
         } else {
             $orderItems = $order->orderItems()->when(!is_null($condition), function ($query) use ($condition) {
                 $query->where($condition);
             })->with('delivery.company', 'order.orderItems.sellGroups.sellSet')->latest()->get();
         }
+
         return $orderItems->map(function (OrderItem $orderItem) {
             return $orderItem->getJsonFormat();
         });
@@ -173,7 +193,9 @@ class OrderHandler extends SellSetHandler
     public function makePayment(Order $order)
     {
         $summary = $this->getSummary($order->orderItems);
+
         $payment = new Payment();
+
         $payment->order_id = $order->id;
         $payment->method = '';
         $payment->info = '';
@@ -181,12 +203,15 @@ class OrderHandler extends SellSetHandler
         $payment->discount = $summary['discount_price'];
         $payment->millage = 0;
         $payment->fare = $summary['fare'];
+
         if ($pay = $order->xeropay) {
             $payment->method = $pay->method;
             $payment->info = $pay->info;
             $payment->is_paid = $pay->is_paid_method;
         }
+
         $payment->save();
+
         return $this->update($order);
     }
 
@@ -202,11 +227,13 @@ class OrderHandler extends SellSetHandler
             $del = $request->delivery;
             $del['user_id'] = Auth::id();
             $del['seq'] = UserDelivery::where('user_id', Auth::id())->count() + 1;
+
             UserDelivery::updateOrCreate(
                 ['nickname' => $request->delivery['nickname']],
                 $del
             );
         }
+
         $order->orderItems->each(function (OrderItem $orderItem) use ($request) {
             $delivery = new OrderDelivery();
             $delivery->order_item_id = $orderItem->id;
@@ -220,6 +247,7 @@ class OrderHandler extends SellSetHandler
             $delivery->recv_msg = $request->delivery['msg'];
             $delivery->save();
         });
+
         return $this->update($order);
     }
 
@@ -228,7 +256,9 @@ class OrderHandler extends SellSetHandler
         $count = collect(Order::STATUS)->map(function ($name, $code) {
             return $this->whereUser()->where('code', $code)->count();
         });
+
         return collect(Order::STATUS)->combine($count);
+
         return Order::where('user_id', $user_id)->where('code', '!=', Order::TEMP)->get()->groupBy(function (Order $order) {
             return $order->getStatus();
         })->map(function ($codes) {
@@ -239,12 +269,15 @@ class OrderHandler extends SellSetHandler
     public function dailyBoard()
     {
         $days = [];
+
         for ($i = 0; $i < 7; $i++) {
             $days[] = now()->subDays($i)->toDateString();
         }
+
         $counts = collect($days)->map(function ($item) {
             return $this->whereUser()->whereDate('created_at', $item)->count();
         })->all();
+
         return [
             'days' => $days,
             'count' => $counts
@@ -278,6 +311,7 @@ class OrderHandler extends SellSetHandler
         $delivery = $orderItem->delivery;
         $order = $orderItem->order;
         $delivery->complete();
+
         $this->update($order);
     }
 
@@ -286,12 +320,14 @@ class OrderHandler extends SellSetHandler
         $order = $orderItem->order;
         $orderItem->code = $code;
         $orderItem->save();
+
         $this->update($order);
     }
 
     public function makeOrderAfterservice($type, OrderItem $orderItem, Request $request)
     {
         $oa = new OrderAfterservice();
+
         $oa->order_item_id = $orderItem->id;
         $oa->type = $type;
         $oa->reason = $request->reason;
@@ -299,15 +335,17 @@ class OrderHandler extends SellSetHandler
         $oa->ship_no = $request->ship_no;
         $oa->received = false;
         $oa->complete = false;
+
         $oa->save();
     }
 
     public function orderCancel(Order $order, $reason)
     {
-
         $orderItems = $order->orderItems;
+
         $orderItems->each(function ($orderItem) use ($reason) {
             $oa = new OrderAfterservice();
+
             $oa->order_item_id = $orderItem->id;
             $oa->type = "취소";
             $oa->reason = $reason;
@@ -315,7 +353,9 @@ class OrderHandler extends SellSetHandler
             $oa->ship_no = "";
             $oa->received = false;
             $oa->complete = false;
+
             $oa->save();
+
             $this->changeOrderItem($orderItem, Order::CANCELED);
         });
     }
@@ -324,6 +364,7 @@ class OrderHandler extends SellSetHandler
     {
         $oa = $orderItem->afterService;
         $oa->received = true;
+
         $oa->save();
     }
 
@@ -331,13 +372,16 @@ class OrderHandler extends SellSetHandler
     {
         $oa = $orderItem->afterService;
         $oa->complete = true;
+
         $oa->save();
     }
 
     public function getAfterserviceList()
     {
         $orders = $this->whereUser()->pluck('id');
+
         $orderItems = OrderItem::whereIn('order_id', $orders)->has('afterService')->with('afterService')->get();
+
         return $orderItems->map(function (OrderItem $orderItem) {
             return $orderItem->getJsonFormat();
         });

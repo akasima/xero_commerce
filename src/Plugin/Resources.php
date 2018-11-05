@@ -42,7 +42,6 @@ use Xpressengine\Plugins\XeroCommerce\Models\SellType;
 use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
-use Xpressengine\Plugins\XeroCommerce\Models\Wish;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Routing\InstanceRoute;
@@ -909,7 +908,7 @@ class Resources
     }
 
     /**
-     * @param string $configKey configKey
+     * @param string $configKey   configKey
      * @param string $configValue configValue
      *
      * @return void

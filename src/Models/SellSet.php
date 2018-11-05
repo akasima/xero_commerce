@@ -26,6 +26,7 @@ abstract class SellSet extends DynamicModel
     function getCount()
     {
         $method = $this->sellType->getCountMethod();
+
         return $method($this->sellGroups);
     }
 
@@ -37,12 +38,14 @@ abstract class SellSet extends DynamicModel
     function getOriginalPrice()
     {
         $method = $this->sellType->getOriginalPriceMethod();
+
         return $method($this->sellGroups);
     }
 
     function getSellPrice()
     {
         $method = $this->sellType->getSellPriceMethod();
+
         return $method($this->sellGroups);
     }
 
@@ -58,7 +61,10 @@ abstract class SellSet extends DynamicModel
 
     public function getFare()
     {
-        if ($this->getDeliveryPay() == '착불') return 0;
+        if ($this->getDeliveryPay() == '착불') {
+            return 0;
+        }
+
         return $this->sellType->getFare();
     }
 

@@ -3,7 +3,6 @@
 namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Xpressengine\Plugins\XeroCommerce\Models\Agreement;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderAgreement;

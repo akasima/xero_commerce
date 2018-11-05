@@ -19,6 +19,7 @@ class ShopController extends Controller
 
     /** @var ShopUserService $shopUserService */
     protected $shopUserService;
+
     /**
      * ShopController constructor.
      */
@@ -130,25 +131,25 @@ class ShopController extends Controller
 
     public function customValidate(Request $request)
     {
-        Validator::make($request->all(),[
-            'shop_name'=>[
+        Validator::make($request->all(), [
+            'shop_name' => [
                 'required',
-                Rule::unique('xero_commerce_shop')->ignore($request->shop_name,'shop_name'),
+                Rule::unique('xero_commerce_shop')->ignore($request->shop_name, 'shop_name'),
                 'max:255'
             ],
-            'shop_eng_name'=>[
+            'shop_eng_name' => [
                 'required',
-                Rule::unique('xero_commerce_shop')->ignore($request->shop_eng_name,'shop_eng_name')
+                Rule::unique('xero_commerce_shop')->ignore($request->shop_eng_name, 'shop_eng_name')
             ],
-            'user_id'=>'required',
-            'delivery_info'=>'required',
-            'as_info'=>'required'
-        ],[
-            'shop_name.required'=>'이름 필드는 필수입니다.',
-            'shop_eng_name.required'=>'영어 이름 필드는 필수입니다.',
-            'user_id.required'=>'관리자 아이디는 적어도 하나가 필요합니다.',
-            'delivery_info.required'=>'배송정보는 필수입니다.',
-            'as_info'=>'반품/교환정보는 필수입니다.'
+            'user_id' => 'required',
+            'delivery_info' => 'required',
+            'as_info' => 'required'
+        ], [
+            'shop_name.required' => '이름 필드는 필수입니다.',
+            'shop_eng_name.required' => '영어 이름 필드는 필수입니다.',
+            'user_id.required' => '관리자 아이디는 적어도 하나가 필요합니다.',
+            'delivery_info.required' => '배송정보는 필수입니다.',
+            'as_info' => '반품/교환정보는 필수입니다.'
         ])->validate();
     }
 

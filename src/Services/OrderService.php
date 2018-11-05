@@ -35,7 +35,10 @@ class OrderService
 
     public function summary($order = null)
     {
-        if (!is_null($order)) return $this->orderHandler->getSummary($order->orderItems);
+        if (!is_null($order)) {
+            return $this->orderHandler->getSummary($order->orderItems);
+        }
+
         return $this->orderHandler->getSummary($order = null);
     }
 
@@ -58,6 +61,8 @@ class OrderService
     public function orderList($page, $count, $query)
     {
         $paginate = $this->orderHandler->getOrderList($page, $count, $this->makeQueryFromArray($query));
+
+        //TODO return 확인
         return [
             'data' => $paginate->map(function (Order $order) {
 
@@ -67,7 +72,6 @@ class OrderService
         ];
 
         return $this->orderHandler->getOrderList($page, $count, $this->makeQueryFromArray($query))->map(function (Order $order) {
-
             return $this->orderDetail($order);
         });
     }
@@ -79,11 +83,13 @@ class OrderService
                 $query->whereDate('created_at', '>=', $condition['date'][0])
                     ->whereDate('created_at', '<=', $condition['date'][1]);
             }
+
             if (isset($condition['compare'])) {
                 foreach ($condition['compare'] as $key => $value) {
                     $query->where($key, $value[0], $value[1]);
                 }
             }
+
             if (isset($condition['equal'])) {
                 foreach ($condition['equal'] as $key => $value) {
                     if ($key != 'code' || $value != 'all') {
@@ -91,6 +97,7 @@ class OrderService
                     }
                 }
             }
+
             if (isset($condition['inGroup'])) {
                 foreach ($condition['inGroup'] as $key => $value) {
                     $query->whereIn($key, $value);
@@ -104,6 +111,7 @@ class OrderService
         $order->orderItems = $this->orderHandler->getOrderItemList($order);
         $order->status = $order->getStatus();
         $order->load('payment', 'userInfo');
+
         return $order;
     }
 
@@ -122,12 +130,14 @@ class OrderService
     public function exchangeOrderItem(OrderItem $orderItem, Request $request)
     {
         $this->orderHandler->makeOrderAfterservice('교환', $orderItem, $request);
+
         return $this->orderHandler->changeOrderItem($orderItem, OrderItem::EXCHANGING);
     }
 
     public function refundOrderItem(OrderItem $orderItem, Request $request)
     {
         $this->orderHandler->makeOrderAfterservice('환불', $orderItem, $request);
+
         return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDING);
     }
 
@@ -140,7 +150,11 @@ class OrderService
     {
         $paymentService = new PaymentService();
         $cancel = $paymentService->cancel($order, $request->get('reason'));
-        if($cancel !== true) abort(500, $cancel);
-        $this->orderHandler->orderCancel($order,$request->get('reason'));
+
+        if ($cancel !== true) {
+            abort(500, $cancel);
+        }
+
+        $this->orderHandler->orderCancel($order, $request->get('reason'));
     }
 }

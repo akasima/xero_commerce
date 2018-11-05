@@ -13,7 +13,6 @@ class OrderItem extends SellSet
     const CANCELING = 5;
     const CANCELED = 6;
 
-
     public function sellGroups()
     {
         return $this->hasMany(OrderItemGroup::class);
@@ -35,6 +34,7 @@ class OrderItem extends SellSet
             $row [] = $this->renderSpanBr($group->sellUnit->getName() . ' / ' . $group->getCount() . '개', "color: grey");
         });
         $row [] = $this->renderSpanBr($this->sellType->shop->shop_name);
+
         return $row;
     }
 
@@ -45,7 +45,7 @@ class OrderItem extends SellSet
             'user' => $this->order->userInfo,
             'order_no' => $this->order->order_no,
             'info' => $this->renderInformation(),
-            'options'=>$this->sellGroups->map(function(SellGroup $sellGroup){
+            'options' => $this->sellGroups->map(function (SellGroup $sellGroup) {
                 return $sellGroup->getJsonFormat();
             }),
             'name' => $this->sellType->getName(),
