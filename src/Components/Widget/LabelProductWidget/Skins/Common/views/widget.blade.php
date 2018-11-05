@@ -41,30 +41,32 @@
 
                 @foreach ($categories as $category)
                     <ul id={{"view_" . $category->id }} style="display:none;">
-                        @foreach ($products[$category->id] as $idx => $product)
-                            @if ($idx > 2)
-                                @break;
-                            @endif
+                        @if (isset($products[$category->id]) == true)
+                            @foreach ($products[$category->id] as $idx => $product)
+                                @if ($idx > 2)
+                                    @break;
+                                @endif
 
-                            <li>
-                                <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}">
-                                    <div class="tab-list-img">
-                                        <div class="tab-list-number">{{ $idx + 1 }}</div>
-                                        <img src="{{ $product->getThumbnailSrc() }}" alt="">
-                                    </div>
-                                    <div class="tab-list-caption">
-                                        <h3 class="default-list-text-title"><span class="xe-shop-tag black">new</span><span class="xe-shop-tag">best</span> {{ $product->name }}</h3>
-                                        <p class="default-list-text-price">
-                                            <span class="xe-sr-only">할인 전</span>
-                                            <span class="through">{{ number_format($product->original_price) }}원</span>
-                                            <i class="xi-arrow-right"></i>
-                                            <span class="xe-sr-only">할인 후</span>
-                                            <span>{{ number_format($product->sell_price) }}원</span>
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
-                        @endforeach
+                                <li>
+                                    <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}">
+                                        <div class="tab-list-img">
+                                            <div class="tab-list-number">{{ $idx + 1 }}</div>
+                                            <img src="{{ $product->getThumbnailSrc() }}" alt="">
+                                        </div>
+                                        <div class="tab-list-caption">
+                                            <h3 class="default-list-text-title"><span class="xe-shop-tag black">new</span><span class="xe-shop-tag">best</span> {{ $product->name }}</h3>
+                                            <p class="default-list-text-price">
+                                                <span class="xe-sr-only">할인 전</span>
+                                                <span class="through">{{ number_format($product->original_price) }}원</span>
+                                                <i class="xi-arrow-right"></i>
+                                                <span class="xe-sr-only">할인 후</span>
+                                                <span>{{ number_format($product->sell_price) }}원</span>
+                                            </p>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endif
                     </ul>
                 @endforeach
             </div><!-- //container  -->
