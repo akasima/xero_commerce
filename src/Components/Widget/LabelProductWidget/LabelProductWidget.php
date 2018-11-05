@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Components\Widget\LabelProductWidget
 
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
-use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
 use Xpressengine\Widget\AbstractWidget;
 use View;
 
@@ -39,9 +39,19 @@ class LabelProductWidget extends AbstractWidget
         if (is_array($widgetConfig['product_id']) === true) {
             $productIds = $widgetConfig['product_id'];
         } else {
-            $productIds = [$widgetConfig['product_id']];
+            $productIds = explode(',', $widgetConfig['product_id']);
         }
-        $products = Product::whereIn('id', $productIds)->get();
+
+        $productCategories = ProductCategory::whereIn('category_id', $categoryIds)->get();
+
+        $products = [];
+        foreach ($productCategories as $category) {
+            foreach ($category->product as $product) {
+                if (in_array($product->id, $productIds) == true) {
+                    $products[$category->category_id][] = $product;
+                }
+            }
+        }
 
         return $this->renderSkin([
             'widgetConfig' => $widgetConfig,
