@@ -470,14 +470,14 @@ class Resources
             'middleware' => ['web']
         ], function () {
 
-            Route::get('/wish',[
-               'uses'=>'WishController@index',
-               'as'=>'xero_commerce::wish.index'
+            Route::get('/wish', [
+                'uses' => 'WishController@index',
+                'as' => 'xero_commerce::wish.index'
             ]);
 
-            Route::post('/wish/remove',[
-                'uses'=>'WishController@remove',
-                'as'=>'xero_commerce::wish.remove'
+            Route::post('/wish/remove', [
+                'uses' => 'WishController@remove',
+                'as' => 'xero_commerce::wish.remove'
             ]);
 
             Route::get('/cart', [
@@ -511,9 +511,9 @@ class Resources
                 'as' => 'xero_commerce::product.cart'
             ]);
 
-            Route::get('/wish/toggle/{product}',[
-                'uses'=>'ProductController@wishToggle',
-                'as'=>'xero_commerce::product.wish.toggle'
+            Route::get('/wish/toggle/{product}', [
+                'uses' => 'ProductController@wishToggle',
+                'as' => 'xero_commerce::product.wish.toggle'
             ]);
 
             Route::get('/order', [
@@ -546,7 +546,7 @@ class Resources
             ]);
 
             Route::post('/order/cancel/{order}', [
-                'uses' =>'OrderController@cancel',
+                'uses' => 'OrderController@cancel',
                 'as' => 'xero_commerce::order.cancel.register'
             ]);
 
@@ -900,7 +900,7 @@ class Resources
 
         for ($i = 1; $i <= 3; $i++) {
             $categoryItem = self::storeCagegoryItem($category, $i);
-            self::storeProduct(3, $categoryItem->id);
+            self::storeProduct(4, $categoryItem->id);
         }
 
         self::storeConfigData('categoryId', $category->id);
@@ -909,7 +909,7 @@ class Resources
     }
 
     /**
-     * @param string $configKey   configKey
+     * @param string $configKey configKey
      * @param string $configValue configValue
      *
      * @return void
@@ -1052,7 +1052,14 @@ class Resources
             $product->save();
 
             $url = file_get_contents(Plugin::asset('assets/sample/tmp_product.jpg'));
-            if($i==2 && $category_id==3)$url = file_get_contents(Plugin::asset('assets/sample/tmp_cross.jpg'));
+            if ($i == 3) {
+                if ($category_id == 3) {
+                    $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross2.jpg'));
+                } elseif ($category_id == 2) {
+                    $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross.jpg'));
+                }
+
+            }
             $file = XeStorage::create($url, 'public/xero_commerce/product', 'default.jpg');
             $imageFile = XeMedia::make($file);
             XeMedia::createThumbnails($imageFile, 'widen', config('xe.media.thumbnail.dimensions'));
