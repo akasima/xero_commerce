@@ -46,7 +46,7 @@
                         <h4 class="xe-sr-only">sns 공유</h4>
                         <ul class="default-list-sns">
                             <!-- [D] a 클릭시 내부에 xi-heart-o 클래스 명을 xi-heart 로 변경 부탁드립니다. -->
-                            <li><a href="#"><i class="xi-heart"></i><span class="xe-sr-only">좋아요</span></a></li>
+                            <li><a href="#" onclick="event.preventDefault();toggleHeart('{{$product->id}}')"><i id="heart{{$product->id}}" class="{{($product->userWish())? 'xi-heart' : 'xi-heart-o'}}"></i><span class="xe-sr-only">좋아요</span></a></li>
                             <li><a href="#"><i class="xi-facebook"></i><span class="xe-sr-only">페이스북 공유</span></a></li>
                             <li><a href="#"><i class="xi-instagram"></i><span class="xe-sr-only">인스타그램 공유</span></a>
                             </li>
@@ -70,5 +70,24 @@
         </ul>
     </div>
 </section>
+<script>
+    function toggleHeart(id)
+    {
+        $.ajax({
+            url: '{{route('xero_commerce::product.wish.toggle',['product'=>''])}}/'+id
+        }).done(()=>{
+            toggleClass('#heart'+id,'xi-heart-o')
+            toggleClass('#heart'+id,'xi-heart')
+        })
+    }
+    function toggleClass(target, className)
+    {
+        if($(target).hasClass(className)){
+            $(target).removeClass(className)
+        }else{
+            $(target).addClass(className)
+        }
+    }
+</script>
 
 {{ uio('widgetbox', ['id' => \Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-bottom', 'link'=>'하단 위젯 편집하기']) }}

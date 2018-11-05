@@ -20,6 +20,7 @@ Vue.component('order-detail-component', require('./components/Order/OrderDetailC
 Vue.component('order-after-service-component', require('./components/Order/OrderAfterServiceComponent').default);
 Vue.component('dash-component', require('./components/DashComponent').default);
 Vue.component('shop-delivery-component', require('./components/setting/shop/DeliveryComponent').default);
+Vue.component('wish-component', require('./components/Wish/WishComponent').default);
 
 var app = new Vue({
     el: '#component-container'

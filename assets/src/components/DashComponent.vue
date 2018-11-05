@@ -83,7 +83,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="#" @click.prevent="url(wishUrl)">
                                     <p>
                                         <i class="xi-basket"></i> <br class="xe-hidden-lg xe-hidden-md">
                                         관심상품
@@ -132,7 +132,7 @@
   export default {
     name: "OrderDashComponent",
     props: [
-      'dashboard', 'user', 'userInfo', 'listUrl'
+      'dashboard', 'user', 'userInfo', 'listUrl', 'wishUrl'
     ],
     data () {
       return {

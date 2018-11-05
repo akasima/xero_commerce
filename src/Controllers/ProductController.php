@@ -10,6 +10,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
+use Xpressengine\Plugins\XeroCommerce\Services\WishService;
 use Xpressengine\Routing\InstanceConfig;
 
 class ProductController extends XeroCommerceBasicController
@@ -61,5 +62,11 @@ class ProductController extends XeroCommerceBasicController
     {
         $cartService = new CartService();
         return $cartService->addList($request, $product);
+    }
+
+    public function wishToggle(Product $product)
+    {
+        $wishService = new WishService();
+        return $wishService->toggle($product);
     }
 }

@@ -3,5 +3,7 @@
 :product='{!! json_encode($product->getJsonFormat()) !!}'
 cart-url="{{route('xero_commerce::product.cart', ['product'=> ''])}}"
 order-url="{{route('xero_commerce::order.register')}}"
-cart-page-url="{{route('xero_commerce::cart.index')}}"></product-detail-component>
+cart-page-url="{{route('xero_commerce::cart.index')}}"
+wish-url="{{route('xero_commerce::product.wish.toggle',['product'=>$product])}}"
+wish-list-url="{{route('xero_commerce::wish.index')}}"></product-detail-component>
 <input type="hidden" id="csrf_token" value="{{csrf_token()}}">

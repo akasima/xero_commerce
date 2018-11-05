@@ -140,19 +140,18 @@ class Database
             $table->timestamps();
         });
 
+        Schema::create('xero_commerce_wish', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('user_id', 36);
+            $table->morphs('type');
+            $table->timestamps();
+        });
+
         Schema::create('xero_commerce_cart_group', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cart_id');
             $table->morphs('unit');
             $table->integer('count');
-        });
-
-        Schema::create('xero_commerce_wish', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('user_id', 36);
-            $table->integer('product_id');
-            $table->integer('option_id');
-            $table->timestamps();
         });
 
         Schema::create('xero_commerce_order_item', function (Blueprint $table) {
