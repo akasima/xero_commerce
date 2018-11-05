@@ -47,6 +47,7 @@ class OrderController extends XeroCommerceBasicController
 
             ]
         ];
+        if ($request->get('code')) $default['equal']['code'] = $request->get('code');
         $data = $this->orderService->orderList(1, 5, $default);
         return \XePresenter::make('xero_commerce::views.order.list',
             [

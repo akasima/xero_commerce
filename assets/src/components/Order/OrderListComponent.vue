@@ -1,28 +1,51 @@
 <template>
     <div>
-        <div class="xe-row mt-5">
-            <div class="xe-col-lg-3">
-                <div class="xe-btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="xe-btn xe-btn-default" @click="setDate(0,'days')">오늘</button>
-                    <button type="button" class="xe-btn xe-btn-default" @click="setDate(1,'weeks')">1주일</button>
-                    <button type="button" class="xe-btn xe-btn-default" @click="setDate(1,'months')">1개월</button>
-                    <button type="button" class="xe-btn xe-btn-default" @click="setDate(6,'months')">6개월</button>
+        <section class="shipping-search">
+            <h2 class="xe-sr-only">검색 영역</h2>
+            <div class="shipping-search-btn">
+                <h3 class="xe-sr-only">주 또는 개월 검색 버튼</h3>
+                <div class="xe-btn-group">
+                    <button type="button" class="xe-btn" @click="setDate(0,'days')">오늘</button>
+                    <button type="button" class="xe-btn" @click="setDate(1,'weeks')">1주일</button>
+                    <button type="button" class="xe-btn" @click="setDate(1,'months')">1개월</button>
+                    <button type="button" class="xe-btn" @click="setDate(6,'months')">6개월</button>
                 </div>
-            </div>
-            <div class="xe-col-lg-3">
-                <input type="date" v-model="date[0]" class="form-control">
-                <input type="date" v-model="date[1]" class="form-control">
-            </div>
-            <div class="xe-col-lg-3">
-                <select class="form-control" v-model="status">
-                    <option value="all">전부</option>
-                    <option v-for="(name, value) in statusList" :value="value">{{name}}</option>
-                </select>
-            </div>
-            <div class="xe-col-lg-3">
-                <button class="xe-btn xe-btn-block xe-btn-black" :disabled="btn" @click="load">조회</button>
-            </div>
-        </div>
+            </div><!-- //shipping-search-btn -->
+
+            <div class="shipping-search-term">
+                <h3 class="xe-sr-only">일자 검색</h3>
+                <div class="shipping-search-term-inner">
+                    <div class="xe-input-group">
+                        <input type="text" class="xe-form-control" placeholder="0000-00-00" v-model="date[0]">
+                        <span class="xe-input-group-btn">
+                  <button class="xe-btn " type="button"><span class="xe-sr-only">검색 시작일</span><i class="xi-calendar"></i></button>
+                </span>
+                    </div>
+                </div>
+                <span class="shipping-search-term-between">~</span>
+                <div class="shipping-search-term-inner">
+                    <div class="xe-input-group">
+                        <input type="text" class="xe-form-control" placeholder="0000-00-00" v-model="date[1]">
+                        <span class="xe-input-group-btn">
+                  <button class="xe-btn " type="button"><span class="xe-sr-only">검색 종료일</span><i class="xi-calendar"></i></button>
+                </span>
+                    </div>
+                </div>
+            </div><!-- //shipping-search-term -->
+
+            <div class="shipping-search-status">
+                <h3 class="xe-sr-only">상태별 검색 </h3>
+                <div class="xe-select-box xe-btn">
+                    <label>{{(statusList[status]) ? statusList[status] :'전부'}}</label>
+                    <select v-model="status">
+                        <option value="all">전부</option>
+                        <option v-for="(name, value) in statusList" :value="value">{{name}}</option>
+                    </select>
+                </div>
+                <button class="xe-btn shipping-search-confirm" :disabled="btn" @click="load">조회</button>
+            </div> <!-- //shipping-search-status -->
+
+        </section><!-- //shipping-search -->
         <div class="xe-row">
             <div class="xe-col">
                 <order-table
