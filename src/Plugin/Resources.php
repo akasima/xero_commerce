@@ -900,7 +900,7 @@ class Resources
 
         for ($i = 1; $i <= 3; $i++) {
             $categoryItem = self::storeCagegoryItem($category, $i);
-            self::storeProduct(2, $categoryItem->id);
+            self::storeProduct(3, $categoryItem->id);
         }
 
         self::storeConfigData('categoryId', $category->id);
@@ -1051,7 +1051,8 @@ class Resources
             $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
             $product->save();
 
-            $url = file_get_contents(Plugin::asset('assets/sample/tmp_tablist.jpg'));
+            $url = file_get_contents(Plugin::asset('assets/sample/tmp_product.jpg'));
+            if($i==2 && $category_id==3)$url = file_get_contents(Plugin::asset('assets/sample/tmp_cross.jpg'));
             $file = XeStorage::create($url, 'public/xero_commerce/product', 'default.jpg');
             $imageFile = XeMedia::make($file);
             XeMedia::createThumbnails($imageFile, 'widen', config('xe.media.thumbnail.dimensions'));
