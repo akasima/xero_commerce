@@ -1051,13 +1051,14 @@ class Resources
             $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
             $product->save();
 
-            $url = file_get_contents(Plugin::asset('assets/sample/tmp_product.jpg'));
             if (Product::count() == 4) {
                 $url = file_get_contents(Plugin::asset('assets/sample/tmp_tablist.jpg'));
             } elseif (Product::count() == 8) {
                 $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross2.jpg'));
             } elseif (Product::count() == 12) {
                 $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross.jpg'));
+            } else {
+                $url = file_get_contents(Plugin::asset('assets/sample/tmp_product.jpg'));
             }
 
             $file = XeStorage::create($url, 'public/xero_commerce/product', 'default.jpg');
