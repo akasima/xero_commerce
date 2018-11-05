@@ -63,15 +63,35 @@
           "name": "XeroCommerce 이벤트 위젯 기본 스킨",
           "description": "XeroCommerce 이벤트 위젯 기본 스킨"
         },
+        "widget/xero_commerce@slide_widget": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\SlideWidget\\SlideWidget",
+          "name": "XeroCommerce 슬라이드 위젯",
+          "description": "XeroCommerce 슬라이드 위젯"
+        },
+        "widget/xero_commerce@slide_widget/skin/xero_commerce@slide_widget_common_skin": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\SlideWidget\\Skins\\Common\\CommonSkin",
+          "name": "XeroCommerce 슬라이드 위젯 기본 스킨",
+          "description": "XeroCommerce 슬라이드 위젯 기본 스킨"
+        },
+        "widget/xero_commerce@default_widget": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\DefaultWidget\\DefaultWidget",
+          "name": "XeroCommerce 기본 위젯",
+          "description": "XeroCommerce 기본 위젯"
+        },
+        "widget/xero_commerce@default_widget/skin/xero_commerce@default_widget_common_skin": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\DefaultWidget\\Skins\\Common\\CommonSkin",
+          "name": "XeroCommerce 기본 위젯 기본 스킨",
+          "description": "XeroCommerce 기본 위젯 기본 스킨"
+        },
         "xero_pay/xero_pay@inicis": {
           "class": "Xpressengine\\XePlugin\\XeroPay\\Inicis\\Inicis",
           "name": "이니시스",
-          "descroption": "xero_pay 이니시스 모듈"
+          "description": "xero_pay 이니시스 모듈"
         },
         "xero_pay/xero_pay@lg": {
           "class": "Xpressengine\\XePlugin\\XeroPay\\LG\\LG",
           "name": "LG X페이",
-          "descroption": "xero_pay LG U+ X페이 모듈"
+          "description": "xero_pay LG U+ X페이 모듈"
         }
       }
     }
