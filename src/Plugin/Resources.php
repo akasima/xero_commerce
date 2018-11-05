@@ -1052,13 +1052,10 @@ class Resources
             $product->save();
 
             $url = file_get_contents(Plugin::asset('assets/sample/tmp_product.jpg'));
-            if ($i == 3) {
-                if ($category_id == 3) {
-                    $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross2.jpg'));
-                } elseif ($category_id == 2) {
-                    $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross.jpg'));
-                }
-
+            if (Product::count() == 8) {
+                $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross2.jpg'));
+            } elseif (Product::count() == 12) {
+                $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross.jpg'));
             }
             $file = XeStorage::create($url, 'public/xero_commerce/product', 'default.jpg');
             $imageFile = XeMedia::make($file);
