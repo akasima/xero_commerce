@@ -26,6 +26,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\WishHandler;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
 use Xpressengine\Plugins\XeroCommerce\Models\Agreement;
 use Xpressengine\Plugins\XeroCommerce\Models\Badge;
@@ -40,6 +41,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\SellType;
 use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
+use Xpressengine\Plugins\XeroCommerce\Models\Wish;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Routing\InstanceRoute;
@@ -414,6 +416,17 @@ class Resources
             'prefix' => Plugin::XERO_COMMERCE_URL_PREFIX,
             'middleware' => ['web']
         ], function () {
+
+            Route::get('/wish',[
+               'uses'=>'WishController@index',
+               'as'=>'xero_commerce::wish.index'
+            ]);
+
+            Route::post('/wish/remove',[
+                'uses'=>'WishController@remove',
+                'as'=>'xero_commerce::wish.remove'
+            ]);
+
             Route::get('/cart', [
                 'uses' => 'CartController@index',
                 'as' => 'xero_commerce::cart.index'
@@ -438,9 +451,16 @@ class Resources
                 'uses' => 'CartController@summary',
                 'as' => 'xero_commerce::cart.summary'
             ]);
+
+
             Route::post('/product/cart/{product}', [
                 'uses' => 'ProductController@cartAdd',
                 'as' => 'xero_commerce::product.cart'
+            ]);
+
+            Route::get('/wish/toggle/{product}',[
+                'uses'=>'ProductController@wishToggle',
+                'as'=>'xero_commerce::product.wish.toggle'
             ]);
 
             Route::get('/order', [
@@ -781,6 +801,15 @@ class Resources
             return $instance;
         });
         $app->alias(CartHandler::class, 'xero_commerce.cartHandler');
+
+        $app->singleton(WishHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(WishHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(WishHandler::class, 'xero_commerce.wishHandler');
 
 
         $app->singleton(PaymentHandler::class, function ($app) {

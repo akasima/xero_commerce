@@ -3,6 +3,7 @@
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use App\Facades\XeMedia;
+use Illuminate\Support\Facades\Auth;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 abstract class SellType extends DynamicModel
@@ -16,6 +17,16 @@ abstract class SellType extends DynamicModel
     abstract public function getShop();
 
     abstract public function getThumbnailSrc();
+
+    public function wishs()
+    {
+        return $this->morphMany(Wish::class,'type');
+    }
+
+    public function userWish()
+    {
+        return $this->wishs()->where('user_id',Auth::id())->first();
+    }
 
     public function carts()
     {

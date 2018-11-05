@@ -5,6 +5,7 @@
         :dashboard='{!! $dashboard !!}'
         :user='{!! \Illuminate\Support\Facades\Auth::user() !!}'
         :user-info='{!! \Xpressengine\Plugins\XeroCommerce\Models\UserInfo::by(\Illuminate\Support\Facades\Auth::id()) !!}'
-        list-url="{{route('xero_commerce::order.list')}}"></dash-component>
+        list-url="{{route('xero_commerce::order.list')}}"
+        wish-url="{{route('xero_commerce::wish.index')}}"></dash-component>
 
 </div>

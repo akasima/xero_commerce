@@ -71,7 +71,7 @@
                                 </div>
                                 <ul class="cart-product-option-list">
                                     <li v-for="choose in cartItem.choose">
-                                        <span>{{choose.unit.name}} / {{choose.count}} </span>
+                                        <span>{{choose.unit.name}} / {{choose.count}}개 </span>
                                     </li>
                                 </ul>
                             </div><!-- //cart-product-option -->

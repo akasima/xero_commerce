@@ -58,14 +58,10 @@
         name: "OptionSelectComponent",
         watch: {
             selectOption(el) {
-                console.log('el')
-                console.log(el)
                 if (el == null) return
                 var exist = this.select.find(v => {
                     return v.unit.id === el.id
                 })
-                console.log(exist)
-                console.log('pass')
                 if (exist) {
                     exist.count++
                 } else {
@@ -77,6 +73,10 @@
                 }
                 this.$emit('input', this.select)
                 this.selectOption = null
+            },
+            reset () {
+                this.select= []
+                this.initialize()
             }
         },
         computed: {
@@ -88,7 +88,7 @@
             }
         },
         props: [
-            'options', 'alreadyChoose'
+            'options', 'alreadyChoose', 'value', 'reset'
         ],
         data() {
             return {
@@ -112,12 +112,15 @@
                 }else{
                     $("#toggleBtn").addClass("on")
                 }
+            },
+            initialize () {
+                if(this.onlyOneOption && this.select.length===0) this.selectOption=this.options[0]
             }
         },
         mounted() {
             this.select = this.alreadyChoose
             this.$emit('input', this.select)
-            if(this.onlyOneOption && this.select.length===0) this.selectOption=this.options[0]
+            this.initialize()
         }
     }
 </script>

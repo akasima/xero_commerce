@@ -13,12 +13,12 @@
             <td>
                 <div class="table-cell">
                     <label>
-                        <input type="radio" checked="checked" name="pay-type" value="선불" v-model="pay">
+                        <input type="radio" value="선불" v-model="pay">
                         <span class="xe-input-helper"></span>
                         <span class="xe-label-text">선불</span>
                     </label>
                     <label>
-                        <input type="radio" checked="checked" name="pay-type" value="착불" v-model="pay">
+                        <input type="radio"  value="착불" v-model="pay">
                         <span class="xe-input-helper"></span>
                         <span class="xe-label-text">착불</span>
                     </label>
@@ -34,7 +34,6 @@
         watch: {
           pay (el) {
               this.$emit('input', el)
-              console.log(el)
           }
         },
         props: [ 'delivery', 'value'],
@@ -46,7 +45,6 @@
         mounted () {
             this.pay = this.value
             this.$emit('input', this.pay)
-            console.log(this.delivery)
         }
     }
 </script>

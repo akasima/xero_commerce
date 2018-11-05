@@ -86,9 +86,9 @@
                             <div class="product-info-cell shipping">배송비 2,500원(주문시 결제)</div>
 
                             <div class="btn-buy-wrap xe-hidden-md xe-hidden-lg">
-                                <button class="xe-btn xe-btn-buy">구매하기</button>
-                                <button class="xe-btn"><i class="xe-visible-xs xe-visible-sm xi-basket"></i><span class="xe-visible-md xe-visible-lg">장바구니</span></button>
-                                <button class="xe-btn"><i class="xe-visible-xs xe-visible-sm xi-heart"></i><span class="xe-visible-md xe-visible-lg">찜하기</span></button>
+                                <button class="xe-btn xe-btn-buy" @click="buyPage">구매하기</button>
+                                <button class="xe-btn" @click="cartPage"><i class="xe-visible-xs xe-visible-sm xi-basket"></i><span class="xe-visible-md xe-visible-lg">장바구니</span></button>
+                                <button class="xe-btn" @click="toggleWish"><i class="xe-visible-xs xe-visible-sm xi-heart"></i><span class="xe-visible-md xe-visible-lg">찜하기</span></button>
                             </div><!-- //btn-buy-wrap -->
                         </div>
 
@@ -106,7 +106,7 @@
                             <div class="btn-buy-wrap">
                                 <button class="xe-btn xe-btn-buy" @click="buyPage" >구매하기</button>
                                 <button class="xe-btn" @click="cartPage"><i class="xe-visible-xs xe-visible-sm xi-basket"></i><span class="xe-visible-md xe-visible-lg">장바구니</span></button>
-                                <button class="xe-btn"><i class="xe-visible-xs xe-visible-sm xi-heart"></i><span class="xe-visible-md xe-visible-lg">찜하기</span></button>
+                                <button class="xe-btn" @click="toggleWish"><i class="xe-visible-xs xe-visible-sm xi-heart"></i><span class="xe-visible-md xe-visible-lg">찜하기</span></button>
                             </div><!-- //btn-buy-wrap -->
 
                         </div><!-- //options -->
@@ -280,7 +280,7 @@
             OptionSelectComponent, DeliverySelectComponent
         },
         props: [
-            'product', 'orderUrl', 'cartUrl', 'cartPageUrl'
+            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl'
         ],
         computed:{
             mainImg () {
@@ -362,6 +362,23 @@
                     success(res)
                 }).fail(err => {
                     fail(err)
+                })
+            },
+            toggleWish(){
+                $.ajax({
+                    url: this.wishUrl,
+                    method: 'get'
+                }).done(res => {
+                    if(Number(res)){
+                        var conf = confirm('관심상품에 담았습니다. 관심상품으로 갈까요?')
+                        if (conf) {
+                            document.location.href = this.wishListUrl
+                        }
+                    }else{
+                        alert('관심상품에서 제거했습니다.')
+                    }
+                }).fail(err => {
+                    console.log(err)
                 })
             },
             detail() {
