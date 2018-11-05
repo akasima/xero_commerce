@@ -83,6 +83,16 @@
           "name": "XeroCommerce 기본 위젯 기본 스킨",
           "description": "XeroCommerce 기본 위젯 기본 스킨"
         },
+        "widget/xero_commerce@product_list_widget": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\ProductListWidget\\ProductListWidget",
+          "name": "XeroCommerce 상품 목록 위젯",
+          "description": "XeroCommerce 상품 목록 위젯"
+        },
+        "widget/xero_commerce@product_list_widget/skin/xero_commerce@product_list_widget_common_skin": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\ProductListWidget\\Skins\\Common\\CommonSkin",
+          "name": "XeroCommerce 상품 목록 위젯 기본 스킨",
+          "description": "XeroCommerce 상품 목록 위젯 기본 스킨"
+        },
         "xero_pay/xero_pay@inicis": {
           "class": "Xpressengine\\XePlugin\\XeroPay\\Inicis\\Inicis",
           "name": "이니시스",

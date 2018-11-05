@@ -3,9 +3,9 @@
         <h2 class="xe-sr-only">비주얼 영역</h2>
         <div class="xe-spot-slider-view">
             <ul>
-                <li><a href="#"><img src="{{ \Xpressengine\Plugins\XeroCommerce\Components\Widget\DefaultWidget\Skins\Common\CommonSkin::asset('/img/tmp_spot.jpg') }}" alt=""></a></li>
-                <li><a href="#"><img src="{{ \Xpressengine\Plugins\XeroCommerce\Components\Widget\DefaultWidget\Skins\Common\CommonSkin::asset('/img/tmp_spot.jpg') }}" alt=""></a></li>
-                <li><a href="#"><img src="{{ \Xpressengine\Plugins\XeroCommerce\Components\Widget\DefaultWidget\Skins\Common\CommonSkin::asset('/img/tmp_spot.jpg') }}" alt=""></a></li>
+                @foreach ($images as $image)
+                    <li><a href="#"><img src="{{ $image }}"></a></li>
+                @endforeach
             </ul>
         </div>
         <div class="xe-spot-slider-pager">

@@ -29,6 +29,15 @@ class ProductHandler
         return $item;
     }
 
+    public function getProductsQueryForWidget($request)
+    {
+        $query = new Product();
+
+        $query = $this->commonMakeWhere($request, $query);
+
+        return $query;
+    }
+
     /**
      * @param Request $request request
      *

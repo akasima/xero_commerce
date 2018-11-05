@@ -2,7 +2,6 @@
 
 namespace Xpressengine\Plugins\XeroCommerce;
 
-use Illuminate\Support\Facades\Log;
 use Route;
 use Xpressengine\Log\LogHandler;
 use Xpressengine\Plugin\AbstractPlugin;
