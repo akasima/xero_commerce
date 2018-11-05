@@ -22,7 +22,7 @@
             @endforeach
         </ul>
         <h2 class="xe-sr-only">카테고리</h2>
-        <button type="button" class="xe-btn-category" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
+        <button type="button" class="xe-btn-category" style="left:10px; top:0px;" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
         <!-- [D] 활성화 시 active 클래스 추가 부탁드립니다-->
         <div class="xe-shop-category">
             <div class="xe-shop-login-box xe-hidden-lg xe-hidden-md">
