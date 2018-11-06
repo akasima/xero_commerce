@@ -100,6 +100,8 @@ class Database
             $table->increments('id');
             $table->string('name');
             $table->string('eng_name');
+            $table->string('background_color')->nullable();
+            $table->string('text_color')->nullable();
         });
 
         Schema::create('xero_commerce_badge', function (Blueprint $table) {

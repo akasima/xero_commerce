@@ -10,7 +10,7 @@ class Label extends DynamicModel
 
     public $timestamps = false;
 
-    protected $fillable = ['name', 'eng_name'];
+    protected $fillable = ['name', 'eng_name', 'background_color', 'text_color'];
 
     public function product()
     {

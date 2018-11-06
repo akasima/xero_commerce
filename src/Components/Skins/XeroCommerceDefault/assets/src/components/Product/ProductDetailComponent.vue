@@ -48,8 +48,7 @@
                         <div class="product-info-top">
                             <h3 class="product-info-title">{{product.data.name}}</h3>
                             <div class="label_wrap">
-                                <span class="xe-shop-tag black">new</span>
-                                <span class="xe-shop-tag">best</span>
+                                <span v-for="label in product.labels" class="xe-shop-tag" :style="{background:label.background_color, color:label.text_color}">{{label.name}}</span>
                             </div>
                             <p class="product-info-title-caption">{{product.data.sub_name}}</p>
                         </div>

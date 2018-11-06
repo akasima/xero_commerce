@@ -4,7 +4,6 @@ window.VueDaumPostcode = require('vue-daum-postcode');
 
 Vue.use(VueDaumPostcode);
 
-
 Vue.component('option-table-component', require('./components/product/OptionTableComponent').default);
 Vue.component('row-component', require('./components/product/RowComponent').default);
 Vue.component('category-component', require('./components/category/CategoryComponent').default);

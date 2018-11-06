@@ -53,9 +53,13 @@
                         </ul>
                     </div>
                     <div class="default-list-text">
-                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}"><h3
-                                class="default-list-text-title"><span class="xe-shop-tag black">new</span><span
-                                    class="xe-shop-tag">best</span> {{$product->name}}</h3>
+                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}">
+                            <h3 class="default-list-text-title">
+
+                                @foreach($product->labels as $label)
+                                <span class="xe-shop-tag" @if($label->background_color && $label->text_color)style="background: {{$label->background_color}}; color:{{$label->text_color}}" @endif>{{$label->name}}</span>
+                                @endforeach
+                                {{$product->name}}</h3>
                             <p class="default-list-text-price">
                                 <span class="xe-sr-only">할인 전</span>
                                 <span class="through">{{ number_format($product->original_price)}}원</span>
