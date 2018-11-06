@@ -29,6 +29,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\WishHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\XeroCommerceImageHandler;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
 use Xpressengine\Plugins\XeroCommerce\Models\Agreement;
 use Xpressengine\Plugins\XeroCommerce\Models\Badge;
@@ -863,6 +864,10 @@ class Resources
         });
         $app->alias(WishHandler::class, 'xero_commerce.wishHandler');
 
+        $app->singleton(XeroCommerceImageHandler::class, function ($app) {
+            return new XeroCommerceImageHandler();
+        });
+        $app->alias(XeroCommerceImageHandler::class, 'xero_commerce.imageHandler');
 
         $app->singleton(PaymentHandler::class, function ($app) {
             $uses = XeConfig::getOrNew('xero_pay')->get('uses');

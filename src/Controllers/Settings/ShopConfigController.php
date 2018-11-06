@@ -7,6 +7,7 @@ use XeConfig;
 use XePresenter;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
+use Xpressengine\Plugins\XeroCommerce\Handlers\XeroCommerceImageHandler;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Theme\ThemeHandler;
 
@@ -23,7 +24,20 @@ class ShopConfigController
     {
         $config = XeConfig::getOrNew(Plugin::getId());
 
-        $inputs = $request->except(['_token']);
+        $inputs = $request->except(['_token', 'logo']);
+
+        //이미지 관리
+        /** @var XeroCommerceImageHandler $imageHandler */
+        $imageHandler = app('xero_commerce.imageHandler');
+        if ($request->get('logo') == 'del') {
+            $imageHandler->removeFile($config->get('logo_id'));
+
+            $config->set('logo_id', '');
+        } elseif ($logo = $request->file('logo')) {
+            $image = $imageHandler->resizeAfterSave($logo, 107, 78, 'logo', 'logo.'. $logo->getClientOriginalExtension());
+
+            $inputs['logo_id'] = $image->id;
+        }
 
         foreach ($inputs as $key => $input) {
             $config->set($key, $input);

@@ -18,6 +18,10 @@
     }
 </style>
 ")->load() }}
+@php
+    $config = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
+@endphp
+
 <div class="xe-shop">
     <h1 class="xe-sr-only">xe 쇼핑</h1>
     <!-- 기본 ui
@@ -72,7 +76,15 @@
     <section class="logo">
         <div class="container">
             <h2 class="xe-shop-logo">
-                <a href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}"><img src="{{$theme::asset('img/shop-logo@lg.png')}}" alt="쇼핑몰 로고"></a>
+                <a href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
+                    <img alt="쇼핑몰 로고"
+                        @if (app('xero_commerce.imageHandler')->getImageUrlByFileId($config['logo_id']) != '')
+                            src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($config['logo_id'])}}"
+                        @else
+                            src="{{$theme::asset('img/shop-logo@lg.png')}}"
+                        @endif
+                    >
+                </a>
             </h2>
             <button type="button" class="xe-shop-btn-search xe-hidden-md xe-hidden-lg"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
         </div>
@@ -167,9 +179,6 @@
         <hr>
         <footer class="footer">
             <section class="xe-company-info">
-                @php
-                    $config = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
-                @endphp
                 <div class="container">
                     <div class="xe-company-info-article">
                         <p>
