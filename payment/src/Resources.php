@@ -83,6 +83,7 @@ class Resources
             $table->boolean('is_paid_method');
             $table->text('info');
             $table->string('status');
+            $table->text('receipt');
             $table->timestamps();
         });
 

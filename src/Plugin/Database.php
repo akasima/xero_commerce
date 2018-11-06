@@ -220,6 +220,7 @@ class Database
             $table->integer('millage');
             $table->integer('fare');
             $table->boolean('is_paid');
+            $table->text('receipt');
             $table->timestamps();
         });
 

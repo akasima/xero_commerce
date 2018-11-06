@@ -515,6 +515,8 @@ class Resources
                 'as' => 'xero_commerce::product.wish.toggle'
             ]);
 
+
+
             Route::get('/order', [
                 'uses' => 'OrderController@index',
                 'as' => 'xero_commerce::order.index'
@@ -558,6 +560,10 @@ class Resources
                 'as' => 'xero_commerce::order.fail'
             ]);
 
+            Route::get('/order/complete/{order}', [
+                'uses' => 'OrderController@complete',
+                'as' => 'xero_commerce::order.complete'
+            ]);
             Route::get('/order/service/cancel/{order}', [
                 'uses' => 'OrderController@cancelService',
                 'as' => 'xero_commerce::order.cancel'

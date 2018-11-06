@@ -208,6 +208,7 @@ class OrderHandler extends SellSetHandler
             $payment->method = $pay->method;
             $payment->info = $pay->info;
             $payment->is_paid = $pay->is_paid_method;
+            $payment->receipt = $pay->receipt;
         }
 
         $payment->save();

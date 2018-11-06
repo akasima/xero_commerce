@@ -12,8 +12,9 @@ namespace Xpressengine\XePlugin\XeroPay\Inicis;
 use Illuminate\Contracts\Support\Jsonable;
 use Xpressengine\XePlugin\XeroPay\Models\Payment;
 use Xpressengine\XePlugin\XeroPay\PaymentResponse;
+use Xpressengine\XePlugin\XeroPay\PaymentResult;
 
-class InicisResult implements PaymentResponse, Jsonable
+class InicisResult extends PaymentResult
 {
     private $arr;
     public function __construct($arr)
@@ -65,5 +66,24 @@ class InicisResult implements PaymentResponse, Jsonable
     public function getPayment()
     {
         return Payment::find($this->arr->MOID);
+    }
+
+    public function getReceipt()
+    {
+        $info = ($this->getPayment()->is_paid_method) ?
+            [
+                '결제승인번호'=>$this->arr->applNum,
+                '결제금액'=>number_format($this->arr->TotPrice).'원'
+            ] :
+            [
+                '입금은행'=>Inicis::$banks[$this->arr->VACT_BankCode].'('.$this->arr->VACT_Num.')',
+                '예금주'=>$this->arr->VACT_Name,
+                '입금기한'=>$this->arr->VACT_Date
+            ];
+        if($this->arr->payMethod=='VCard'||$this->arr->payMethod=='Card'){
+            $info['카드번호']=$this->arr->CARD_Num.'('.Inicis::$cards[$this->arr->CARD_Code].')';
+            $info['할부']=($this->arr->CARD_Interest==1)?$this->arr->CARD_Quota.'개월':'일시불';
+        }
+        return json_encode($info);
     }
 }

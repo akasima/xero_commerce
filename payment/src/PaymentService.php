@@ -56,13 +56,16 @@ class PaymentService
     {
         //거래요청(고객->pg)
         $response = $this->handler->getResponse($request);
-        $this->logPayment($response->getPayment(), Payment::REQ, $request->all(), []);
+        $payment = $response->getPayment();
+        $this->logPayment($payment, Payment::REQ, $request->all(), []);
         if($response->fail()) return view('xero_commerce::payment.views.fail',['msg'=>$response->msg()]);
 
 
         //거래요청 후 승인 요청(상점->pg)
         $result = $this->handler->getResult($request);
-        $this->logPayment($response->getPayment(), Payment::EXE, $request->all(), $result->getInfo());
+        $payment->receipt = $result->getReceipt();
+        $payment->save();
+        $this->logPayment($payment, Payment::EXE, $request->all(), $result->getInfo());
 
         //승인 시
         if ($result->success()){
