@@ -44,6 +44,7 @@ class Order extends DynamicModel
         if (is_null($this->code)) {
             $this->code = self::TEMP;
         }
+
         return self::STATUS[$this->code];
     }
 
@@ -60,15 +61,18 @@ class Order extends DynamicModel
     function getPriceForPay()
     {
         $orderHandler = new OrderHandler();
+
         $summary = $orderHandler->getSummary($this->orderItems);
+
         return $summary['sum'];
     }
 
     function getNameForPay()
     {
         $sellSetList = $this->orderItems;
-        $name = $sellSetList->first()->sellType->getName(). (($sellSetList->count()>1)? ' 외'.($sellSetList->count()-1).'건':'');
-        $shortName = (mb_strlen($name) > 15) ? mb_substr($name, 0, 12). '...' : $name;
+        $name = $sellSetList->first()->sellType->getName() . (($sellSetList->count() > 1) ? ' 외' . ($sellSetList->count() - 1) . '건' : '');
+        $shortName = (mb_strlen($name) > 15) ? mb_substr($name, 0, 12) . '...' : $name;
+
         return $shortName;
     }
 

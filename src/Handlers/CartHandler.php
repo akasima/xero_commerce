@@ -30,6 +30,7 @@ class CartHandler extends SellSetHandler
     public function addCart(SellType $sellType, $cartGroupList, $delivery)
     {
         $cart = new Cart();
+
         $cart->user_id = Auth::id() ?: \request()->ip();
         $cart->delivery_pay = Cart::DELIVERY[$delivery];
         $sellType->carts()->save($cart);
@@ -37,6 +38,7 @@ class CartHandler extends SellSetHandler
         $cartGroupList->each(function (CartGroup $cartGroup) use ($cart) {
             $cart->addGroup($cartGroup);
         });
+
         return $cart;
     }
 
@@ -44,9 +46,11 @@ class CartHandler extends SellSetHandler
     {
         if (is_iterable($cart_id)) {
             CartGroup::whereIn('cart_id', $cart_id)->delete();
+
             return Cart::whereIn('id', $cart_id)->delete();
         }
         CartGroup::where('cart_id', $cart_id)->delete();
+
         return Cart::find($cart_id)->delete();
     }
 
@@ -64,9 +68,11 @@ class CartHandler extends SellSetHandler
     public function makeCartGroup(SellUnit $sellUnit, $count)
     {
         $cartGroup = new CartGroup();
+
         $sellUnit->cartGroup()->save($cartGroup);
         $cartGroup->setCount($count);
         $cartGroup->save();
+
         return $cartGroup;
     }
 
@@ -74,10 +80,14 @@ class CartHandler extends SellSetHandler
     {
         $cart->sellGroups()->delete();
         $cart->delivery_pay = Cart::DELIVERY[$delivery];
+
         $cartGroupList->each(function (CartGroup $cartGroup) use ($cart) {
             $cart->addGroup($cartGroup);
         });
         $cart->save();
-        if ($cart->getCount() == 0) $cart->delete();
+
+        if ($cart->getCount() == 0) {
+            $cart->delete();
+        }
     }
 }

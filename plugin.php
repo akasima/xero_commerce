@@ -27,7 +27,7 @@ class Plugin extends AbstractPlugin
         self::registerXeroCommerceLogger();
         Resources::bindClasses();
         Resources::setCanNotUseXeroCommercePrefixRoute();
-        Resources::setThumnailDimensionSEtting();
+        Resources::setThumnailDimensionSetting();
         Resources::registerRoute();
         \Xpressengine\XePlugin\XeroPay\Resources::registerRoute();
         \Xpressengine\XePlugin\XeroPay\Resources::registerMenu();

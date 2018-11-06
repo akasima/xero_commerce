@@ -15,6 +15,7 @@ class AgreementMiddleware
         if (is_null(AgreementService::check('contacts')) || is_null(UserInfo::by(Auth::id()))) {
             return redirect()->guest(route('xero_commerce::agreement.contacts'));
         }
+
         return $next($request);
     }
 }

@@ -41,8 +41,8 @@ class ProductSettingService
     public function getProductOptionArrays($product)
     {
         $options = [];
-        /** @var ProductOptionItem $option
-         */
+
+        /** @var ProductOptionItem $option */
         foreach ($product->productOption as $option) {
             $optionData['id'] = $option->id;
             $optionData['option_type_name'] = $option->getOptionTypeName();

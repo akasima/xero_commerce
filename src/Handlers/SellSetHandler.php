@@ -11,16 +11,21 @@ abstract class SellSetHandler
         if (is_null($sellSetList)) {
             $sellSetList = $this->getSellSetList();
         }
+
         $origin = $sellSetList->sum(function (SellSet $sellSet) {
             return $sellSet->getOriginalPrice();
         });
+
         $sell = $sellSetList->sum(function (SellSet $sellSet) {
             return $sellSet->getSellPrice();
         });
+
         $fare = $sellSetList->sum(function (SellSet $sellSet) {
             return $sellSet->getFare();
         });
+
         $sum = $sell + $fare;
+
         return [
             'original_price' => $origin,
             'sell_price' => $sell,
@@ -31,6 +36,4 @@ abstract class SellSetHandler
     }
 
     abstract public function getSellSetList();
-
-
 }

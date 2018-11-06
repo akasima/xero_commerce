@@ -26,6 +26,7 @@ class OrderController extends Controller
     public function dash()
     {
         XeFrontend::js('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js')->load();
+
         return \XePresenter::make('xero_commerce::views.setting.order.dash', [
             'title' => 'xero_commerce',
             'dash' => $this->orderService->dashBoard(),
@@ -48,7 +49,7 @@ class OrderController extends Controller
     {
         return \XePresenter::make('xero_commerce::views.setting.order.delivery', [
             'title' => 'xero_commerce',
-            'orderItems'=> $this->orderService->deliveryOrderItemList()
+            'orderItems' => $this->orderService->deliveryOrderItemList()
         ]);
     }
 
@@ -80,7 +81,7 @@ class OrderController extends Controller
     public function afterservice()
     {
         return \XePresenter::make('xero_commerce::views.setting.order.as', [
-            'list'=>$this->orderService->afterserviceList()
+            'list' => $this->orderService->afterserviceList()
         ]);
     }
 
@@ -92,10 +93,15 @@ class OrderController extends Controller
     public function afterserviceEnd($type, OrderItem $orderItem)
     {
 
-        if($type =='교환')$this->orderService->endExchangeOrderItem($orderItem);
-        if($type =='환불')$this->orderService->endRefundOrderItem($orderItem);
-        if( get_class($orderItem->sellType) =='Xpressengine\Plugins\XeroCommerce\Models\Product' )
-        {
+        if ($type == '교환') {
+            $this->orderService->endExchangeOrderItem($orderItem);
+        }
+
+        if ($type == '환불') {
+            $this->orderService->endRefundOrderItem($orderItem);
+        }
+
+        if (get_class($orderItem->sellType) == 'Xpressengine\Plugins\XeroCommerce\Models\Product') {
             return route('xero_commerce::setting.product.show', [
                 'productId' => $orderItem->sellType->id
             ]);

@@ -169,21 +169,26 @@ class ProductHandler
         $imageFile = XeMedia::make($file);
         XeMedia::createThumbnails($imageFile, 'widen', config('xe.media.thumbnail.dimensions'));
         $newProduct->images()->attach($imageFile->id);
+
         return $imageFile;
     }
 
     public function update(Product $product, $args)
     {
         $attributes = $product->getAttributes();
+
         foreach ($args as $name => $value) {
             if (array_key_exists($name, $attributes) === true) {
                 $product->{$name} = $value;
             }
         }
+
         $info = array_combine(key_exists('infoKeys', $args) ? $args['infoKeys'] : [], key_exists('infoValues', $args) ? $args['infoValues'] : []);
+
         $product->detail_info = json_encode($info);
         $nonEditImage = key_exists('nonEditImage', $args) ? $args['nonEditImage'] : [];
         $editImages = $product->images()->whereNotIn('files.id', $nonEditImage)->get();
+
         $editImages->each(function (Image $originImage, $key) use ($args, $product) {
             if (count($args['editImages']) > 0) {
                 if ($args['editImages'][$key] != null) {

@@ -25,6 +25,6 @@ class ProductCategoryHandler
 
     public function getIds($productId)
     {
-        return ProductCategory::where('product_id',$productId)->pluck('category_id')->all();
+        return ProductCategory::where('product_id', $productId)->pluck('category_id')->all();
     }
 }

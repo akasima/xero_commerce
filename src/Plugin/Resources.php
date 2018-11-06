@@ -42,7 +42,6 @@ use Xpressengine\Plugins\XeroCommerce\Models\SellType;
 use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
-use Xpressengine\Plugins\XeroCommerce\Models\Wish;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Routing\InstanceRoute;
@@ -71,7 +70,7 @@ class Resources
         config(['xe.routing' => $routing]);
     }
 
-    public static function setThumnailDimensionSEtting()
+    public static function setThumnailDimensionSetting()
     {
         config(['xe.media.thumbnail.dimensions' => array_merge(
             config('xe.media.thumbnail.dimensions'),
@@ -154,7 +153,7 @@ class Resources
         //Label Widget
         $labelWidget['label_id'] = '1';
         $labelWidget['category_item_id'] = $initCategories;
-        $labelWidget['product_id'] = '1,2,3,4,5,6';
+        $labelWidget['product_id'] = '1,2,3,5,6,7,9,10,11';
         $labelWidget['@attributes'] = [
             'id' => 'widget/xero_commerce@label_product_widget',
             'title' => 'Label',
@@ -162,10 +161,10 @@ class Resources
         ];
 
         //Event Widget
-        $eventWidget['left_product_id'] = '1';
-        $eventWidget['center_up_product_id'] = '1';
-        $eventWidget['center_down_product_id'] = '1';
-        $eventWidget['right_product_id'] = '1';
+        $eventWidget['left_product_id'] = '12';
+        $eventWidget['center_up_product_id'] = '8';
+        $eventWidget['center_down_product_id'] = '8';
+        $eventWidget['right_product_id'] = '12';
         $eventWidget['@attributes'] = [
             'id' => 'widget/xero_commerce@event_widget',
             'title' => 'Event',
@@ -909,7 +908,7 @@ class Resources
     }
 
     /**
-     * @param string $configKey configKey
+     * @param string $configKey   configKey
      * @param string $configValue configValue
      *
      * @return void
@@ -1051,12 +1050,16 @@ class Resources
             $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
             $product->save();
 
-            $url = file_get_contents(Plugin::asset('assets/sample/tmp_product.jpg'));
-            if (Product::count() == 8) {
+            if (Product::count() == 4) {
+                $url = file_get_contents(Plugin::asset('assets/sample/tmp_tablist.jpg'));
+            } elseif (Product::count() == 8) {
                 $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross2.jpg'));
             } elseif (Product::count() == 12) {
                 $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross.jpg'));
+            } else {
+                $url = file_get_contents(Plugin::asset('assets/sample/tmp_product.jpg'));
             }
+
             $file = XeStorage::create($url, 'public/xero_commerce/product', 'default.jpg');
             $imageFile = XeMedia::make($file);
             XeMedia::createThumbnails($imageFile, 'widen', config('xe.media.thumbnail.dimensions'));
