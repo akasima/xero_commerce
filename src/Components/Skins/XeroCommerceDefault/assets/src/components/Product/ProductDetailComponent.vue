@@ -53,8 +53,8 @@
                             <p class="product-info-title-caption">{{product.data.sub_name}}</p>
                         </div>
                         <div class="product-info-container">
-                            <div class="product-info-cell price">{{Number(product.data.original_price).toLocaleString()}} <span>원</span></div>
-                            <div class="product-info-cell before-price">{{Number(product.data.sell_price).toLocaleString()}}<span>원</span></div>
+                            <div class="product-info-cell price"> <span>{{Number(product.data.sell_price).toLocaleString()}}원</span></div>
+                            <div class="product-info-cell before-price">{{Number(product.data.original_price).toLocaleString()}}<span>원</span></div>
                             <div class="product-info-favor">
                                 <button type="button" class="favor-btn"> 구매 혜택 보기</button>
 
