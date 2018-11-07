@@ -40,10 +40,9 @@
                 <h3>notice</h3>
                 <div class="notice-view">
                     <ul>
-                        <li><a href="#">1.테스트 베이스 입니다 테스트 베이스 입니다 </a></li>
-                        <li><a href="#">2.공지사항입니다.></a></li>
-                        <li><a href="#">3.테스트 베이스 입니다 테스트 베이스 입니다 테스트 베이스 입니다 </a></li>
-                        <li><a href="#">4.테스트 베이스 입니다 테스트 베이스 입니다 테스트 베이스 입니다 </a></li>
+                        @foreach ($notices as $notice)
+                            <li><a href="{{ $urlHandler->getShow($notice) }}">{{ $notice->title }} </a></li>
+                        @endforeach
                     </ul>
                 </div>
             </article>
