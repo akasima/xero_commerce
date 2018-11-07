@@ -1,11 +1,13 @@
+<?php
+    use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
+?>
 {{ XeFrontend::css('plugins/xero_commerce/src/Components/Skins/XeroCommerceDefault/assets/css/skin.css')->load() }}
 {{ uio('widgetbox', ['id' => \Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-top', 'link'=>'상단 위젯 편집하기']) }}
 
 <section class="xe-shop list">
     <div class="container" style="padding-left:0; padding-right:0">
         <div class="search-results">
-
-            @if(count($products)===0)
+            @if($products->total() == 0)
                 <p class="search-results-text">검색된 상품이 존재하지 않습니다.</p>
             @else
                 <p class="search-results-text"><span class="search-results-text-num">{{ $products->total() }}</span>개의 상품이
@@ -13,7 +15,7 @@
             @endif
         </div>
         <form action="{{url()->current()}}" method="post">
-            {{csrf_field()}}
+            {{ csrf_field() }}
             <div class="range-box">
                 <div class="research-box">
                     <input type="text" name="product_name" class="xe-form-control" placeholder value="{{( request()->product_name)? : ''}}">
@@ -22,27 +24,16 @@
                     </button>
                 </div>
 
-
                 <div class="xe-dropdown">
-                    <button class="xe-btn" type="button" >{{(request()->sort_name)? : 'Low Price'}}</button>
+                    <button class="xe-btn" type="button" >{{ request()->sort_type? ProductHandler::getSortAble()[request()->sort_type] : '정렬 옵션' }}</button>
                     <ul class="xe-dropdown-menu">
-                        <li><a href="#">Low Price</a></li>
-                        <li><a href="#">High Price</a></li>
-                        <li><a href="#">ABC</a></li>
-                        <li><a href="#">ZYX</a></li>
+                        <li><a href="#">정렬 옵션</a></li>
+                        @foreach (ProductHandler::getSortAble() as $key => $sort)
+                            <li><a href="#" value="{{ $key }}">{{ $sort }}</a></li>
+                        @endforeach
                     </ul>
                     <input type="hidden" name="sort_type">
                 </div>
-                <script>
-                    $('.xe-dropdown .xe-btn, .xe-dropdown-menu a').on('click', function () {
-                        toggleClass('.xe-dropdown','open')
-                    });
-                    $('.xe-dropdown-menu a').on('click', function (e) {
-                        e.preventDefault()
-                        $("input[name=sort_type]").val($(this).text())
-                        $("form").submit()
-                    });
-                </script>
             </div>
         </form>
 
@@ -100,12 +91,24 @@
     }
     function toggleClass(target, className)
     {
-        if($(target).hasClass(className)){
+        if ($(target).hasClass(className)){
             $(target).removeClass(className)
-        }else{
+        } else {
             $(target).addClass(className)
         }
     }
+
+    $('.xe-dropdown .xe-btn, .xe-dropdown-menu a').on('click', function () {
+        toggleClass('.xe-dropdown','open')
+    });
+
+    $('.xe-dropdown-menu a').on('click', function (e) {
+        e.preventDefault();
+
+        $("input[name=sort_type]").val($(this).attr('value'));
+
+        $("form").submit();
+    });
 </script>
 
 {{ uio('widgetbox', ['id' => \Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-bottom', 'link'=>'하단 위젯 편집하기']) }}

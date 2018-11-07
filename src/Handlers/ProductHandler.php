@@ -4,12 +4,10 @@ namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use App\Facades\XeMedia;
 use App\Facades\XeStorage;
-use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\Models\Image;
 use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
-use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
@@ -17,6 +15,21 @@ use Xpressengine\Plugins\XeroCommerce\Models\ProductRevision;
 
 class ProductHandler
 {
+    const SORT_LOW_PRICE = 1;
+    const SORT_HIGH_PRICE = 2;
+    const SORT_PRODUCT_NAME_ASC = 3;
+    const SORT_PRODUCT_NAME_DESC = 4;
+
+    public static function getSortAble()
+    {
+        $sortAble[self::SORT_LOW_PRICE] = '낮은 가격순';
+        $sortAble[self::SORT_HIGH_PRICE] = '높은 가격순';
+        $sortAble[self::SORT_PRODUCT_NAME_ASC] = '상품명 오름차순';
+        $sortAble[self::SORT_PRODUCT_NAME_DESC] = '상품명 내림차순';
+
+        return $sortAble;
+    }
+
     /**
      * @param  integer $productId productId
      *
@@ -61,7 +74,6 @@ class ProductHandler
         $query = $this->commonMakeWhere($request, $query);
         $query = $this->commonOrderBy($request, $query);
 
-
         return $query;
     }
 
@@ -95,7 +107,7 @@ class ProductHandler
 
     /**
      * @param Request $request request
-     * @param Product $query product
+     * @param Product $query   product
      *
      * @return Product
      */
@@ -106,7 +118,7 @@ class ProductHandler
 
     /**
      * @param Request $request request
-     * @param Product $query product
+     * @param Product $query   product
      *
      * @return Product
      */
@@ -139,23 +151,23 @@ class ProductHandler
 
     private function commonOrderBy(Request $request, $query)
     {
-        $args = $request->all();
-        if (isset($args['sort_type']) == true) {
-            switch ($args['sort_type']) {
-                case 'Low Price':
+        if ($sortType = $request->get('sort_type')) {
+            switch ($sortType) {
+                case self::SORT_LOW_PRICE:
                     $query = $query->orderBy('sell_price', 'asc');
                     break;
-                case 'High Price':
+                case self::SORT_HIGH_PRICE:
                     $query = $query->orderBy('sell_price', 'desc');
                     break;
-                case 'ABC':
+                case self::SORT_PRODUCT_NAME_ASC:
                     $query = $query->orderBy('name', 'asc');
                     break;
-                case 'XYZ':
+                case self::SORT_PRODUCT_NAME_DESC:
                     $query = $query->orderBy('name', 'desc');
                     break;
             }
         }
+
         return $query;
     }
 
