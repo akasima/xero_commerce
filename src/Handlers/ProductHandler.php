@@ -59,6 +59,8 @@ class ProductHandler
 
         $query = $this->moduleMakeWhere($request, $query, $config);
         $query = $this->commonMakeWhere($request, $query);
+        $query = $this->commonOrderBy($request, $query);
+
 
         return $query;
     }
@@ -93,7 +95,7 @@ class ProductHandler
 
     /**
      * @param Request $request request
-     * @param Product $query   product
+     * @param Product $query product
      *
      * @return Product
      */
@@ -104,7 +106,7 @@ class ProductHandler
 
     /**
      * @param Request $request request
-     * @param Product $query   product
+     * @param Product $query product
      *
      * @return Product
      */
@@ -132,6 +134,28 @@ class ProductHandler
             $query = $query->where('tax_type', $args['product_tax_type']);
         }
 
+        return $query;
+    }
+
+    private function commonOrderBy(Request $request, $query)
+    {
+        $args = $request->all();
+        if (isset($args['sort_type']) == true) {
+            switch ($args['sort_type']) {
+                case 'Low Price':
+                    $query = $query->orderBy('sell_price', 'asc');
+                    break;
+                case 'High Price':
+                    $query = $query->orderBy('sell_price', 'desc');
+                    break;
+                case 'ABC':
+                    $query = $query->orderBy('name', 'asc');
+                    break;
+                case 'XYZ':
+                    $query = $query->orderBy('name', 'desc');
+                    break;
+            }
+        }
         return $query;
     }
 
