@@ -7,6 +7,8 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 
 class ProductService
 {
+    const DEFAULT_PAGINATION_COUNT = 9;
+
     /** @var ProductHandler $handler */
     protected $handler;
 
@@ -18,18 +20,22 @@ class ProductService
         $this->handler = app('xero_commerce.productHandler');
     }
 
-    public function getProductsForWidget($request)
+    public function getProductsForWidget($request, $paginationCount = self::DEFAULT_PAGINATION_COUNT)
     {
         $query = $this->handler->getProductsQueryForWidget($request);
 
-        return $query->get();
+        $items = $query->paginate($paginationCount, ['*'], 'product_page')->appends($request->except('product_page'));
+
+        return $items;
     }
 
-    public function getProducts(Request $request, $config)
+    public function getProducts(Request $request, $config, $paginationCount = self::DEFAULT_PAGINATION_COUNT)
     {
         $query = $this->handler->getProductsQueryForModule($request, $config);
 
-        return $query->get();
+        $items = $query->paginate($paginationCount, ['*'], 'product_page')->appends($request->except('product_page'));
+
+        return $items;
     }
 
     public function getProduct($productId)
