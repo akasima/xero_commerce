@@ -24,7 +24,7 @@
                             <p class="order-number">
                                 <span class="xe-hidden-xs xe-hidden-sm">{{item.created_at.substr(0,10)}}</span>
                                 <br class="xe-hidden-xs xe-hidden-sm">
-                                <a href="#"><span>({{item.order_no}})</span></a>
+                                <a :href="detailUrl+'/'+item.id"><span>({{item.order_no}})</span></a>
                             </p>
                             <button class="order-number-btn">
                                 <i class="xi-angle-right-thin"></i>
@@ -84,7 +84,7 @@
                     </div> <!-- //table-row -->
                 </div><!-- //table-body -->
             </div><!-- //table-type3 -->
-            <div class="container pagination">
+            <div class="container pagination" v-if="paginate">
                 <div style="margin:0 auto">
                     <div style="position:relative">
                         <div style="position:absolute; left:0; bottom:0">

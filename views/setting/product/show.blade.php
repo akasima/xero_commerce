@@ -99,6 +99,8 @@
 
                 <div class="panel-body">
                     <option-table-component :options='{{ json_encode($options) }}'
+                                            product-id="{{$product->id}}"
+                                            product-price="{{$product->sell_price}}"
                                             save-url="{{route('xero_commerce::setting.product.option.save')}}"
                                             remove-url="{{route('xero_commerce::setting.product.option.remove')}}"
                                             load-url="{{route('xero_commerce::setting.product.option.load',['product'=>$product])}}"></option-table-component>

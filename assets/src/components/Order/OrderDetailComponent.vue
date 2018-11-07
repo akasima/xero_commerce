@@ -1,55 +1,100 @@
 <template>
     <div>
-        <h2>상품내역</h2>
+        <h1 class="page-title">주문/배송조회</h1>
         <order-table
             :list="[order]"
         :detail-url="detailUrl"
         :cancel-url="cancelUrl"></order-table>
-        <h2>결제금액정보</h2>
-        <table class="table">
-            <tr>
-                <th>결제 금액</th>
-                <td>{{order.payment.price.toLocaleString()}}</td>
-            </tr>
-            <tr>
-                <th>결제 수단</th>
-                <td>{{order.payment.method}}</td>
-            </tr>
-            <tr>
-                <th>결제 완료일시</th>
-                <td v-if="order.payment.is_paid">{{order.payment.updated_at}}</td>
-            </tr>
-        </table>
-        <h2>주문정보</h2>
-        <table class="table">
-            <tr>
-                <th>이름</th>
-                <td>{{order.user_info.name}}</td>
-            </tr>
-            <tr>
-                <th>연락처</th>
-                <td>{{order.user_info.phone}}</td>
-            </tr>
-        </table>
-        <h2>배송정보</h2>
-        <table class="table">
-            <tr>
-                <th>받는 사람</th>
-                <td>{{delivery.recv_name}}</td>
-            </tr>
-            <tr>
-                <th>연락처</th>
-                <td>{{delivery.recv_phone}}</td>
-            </tr>
-            <tr>
-                <th>주소</th>
-                <td>{{delivery.recv_addr + delivery.recv_addr_detail}}</td>
-            </tr>
-            <tr>
-                <th>배송메세지</th>
-                <td>{{delivery.recv_msg}}</td>
-            </tr>
-        </table>
+        <section class="shipping-pay">
+            <div class="table-wrap">
+                <h4 class="table-type-title">결제금액정보</h4>
+                <div class="table-type">
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            결제 금액
+                        </div>
+                        <div class="table-cell">
+                            <b class="shipping-pay-total">{{order.payment.price.toLocaleString()}}원</b>
+                            <div class="shipping-pay-history">
+                                <div class="shipping-pay-row">
+                                    <span class="shipping-pay-cell">상품금액</span> <span class="shipping-pay-cell">{{(order.payment.price-order.payment.fare+order.payment.discount).toLocaleString()}}원</span>
+                                </div>
+
+                                <!-- [D] 마이너스 금액은 클래스면  minus /  플러스 금액은 plus 클래스명 추가 부탁드립니다 -->
+                                <div class="shipping-pay-row minus">
+                                    <span class="shipping-pay-cell">할인금액</span> <span class="shipping-pay-cell">{{order.payment.discount.toLocaleString()}}원</span>
+                                </div>
+
+                                <!-- [D] 마이너스 금액은 클래스면  minus /  플러스 금액은 plus 클래스명 추가 부탁드립니다 -->
+                                <!--<div class="shipping-pay-row minus">-->
+                                    <!--<span class="shipping-pay-cell">적립금 사용</span> <span class="shipping-pay-cell">1,000원</span>-->
+                                <!--</div>-->
+
+                                <!-- [D] 마이너스 금액은 클래스면  minus /  플러스 금액은 plus 클래스명 추가 부탁드립니다 -->
+                                <div class="shipping-pay-row plus">
+                                    <span class="shipping-pay-cell">배송비</span> <span class="shipping-pay-cell">{{order.payment.fare.toLocaleString()}}원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            결제 수단
+                        </div>
+                        <div class="table-cell">
+                            <span class="shipping-pay-block">{{order.payment.method}}</span>
+                            <span class="shipping-pay-block" :class="{bracket:i===0 || i===Object.keys(JSON.parse(order.payment.receipt)).length-1}" v-for="(v,k,i) in JSON.parse(order.payment.receipt)">{{v}}</span>
+                        </div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            결제 완료일시
+                        </div>
+                        <div class="table-cell">
+                            {{(order.payment.is_paid)?order.payment.updated_at:''}}
+                        </div>
+                    </div>
+                </div><!-- //table-type -->
+            </div><!-- //table-wrap -->
+            <div class="table-wrap">
+                <h4 class="table-type-title">주문 정보</h4>
+                <div class="table-type">
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            이름
+                        </div>
+                        <div class="table-cell">
+                            {{delivery.recv_name}}
+                        </div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            연락처
+                        </div>
+                        <div class="table-cell">
+                            {{delivery.recv_phone}}
+                        </div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            주소
+                        </div>
+                        <div class="table-cell">
+                            {{delivery.recv_addr + delivery.recv_addr_detail}}
+                        </div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell header">
+                            배송 메세지
+                        </div>
+                        <div class="table-cell">
+                            {{delivery.recv_msg}}
+                        </div>
+                    </div>
+                </div><!-- //table-type -->
+            </div><!-- //table-wrap -->
+
+        </section>
     </div>
 </template>
 
