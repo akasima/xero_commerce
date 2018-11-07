@@ -16,7 +16,8 @@ class Resources
             ->group(function () {
                 Route::post('/form', [
                     'as' => 'xero_pay::formList',
-                    'uses' => 'Controller@formList'
+                    'uses' => 'Controller@formList',
+                    'middleware'=>'web'
                 ]);
                 Route::match(['get', 'post'], '/callback', [
                     'as' => 'xero_pay::callback',

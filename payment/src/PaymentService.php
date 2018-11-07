@@ -88,19 +88,20 @@ class PaymentService
 
     private function makePayment(Request $request)
     {
-        $pay = new Payment();
-        $pay->user_id = 'test';
-        $pay->ip = $request->ip();
-        $pay->payment_type = XeConfig::getOrNew('xero_pay')->get('uses');
-        $pay->payable_id = $request->get('target')['id'];
-        $pay->payable_type = $request->get('target')['type'];
-        $pay->name = $request->get('target')['name'];
-        $pay->price = $request->get('target')['price'];
-        $pay->status = '';
-        $pay->method='';
-        $pay->info='';
-        $pay->is_paid_method=0;
-        $pay->save();
+        $pay = Payment::firstOrCreate([
+            'payable_id'=>$request->get('target')['id'],
+            'payable_type'=>$request->get('target')['type']
+        ],[
+            'user_id'=>Auth::id(),
+            'ip'=>$request->ip(),
+            'payment_type'=> XeConfig::getOrNew('xero_pay')->get('uses'),
+            'name'=>$request->get('target')['name'],
+            'price'=>$request->get('target')['price'],
+            'status'=>'',
+            'method'=>'',
+            'info'=>'',
+            'is_paid_method'=>0
+        ]);
         return $pay;
     }
 

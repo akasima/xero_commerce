@@ -148,6 +148,10 @@
                         res.status = false
                     }
                 }
+                if(this.payMethod === null){
+                    res.msg += '결제방식을 선택해주세요.\n\r'
+                    res.status = false
+                }
                 return res
             }
         },
