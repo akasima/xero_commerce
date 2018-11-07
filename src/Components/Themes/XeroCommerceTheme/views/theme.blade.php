@@ -19,7 +19,7 @@
 </style>
 ")->load() }}
 @php
-    $config = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
+    $shopConfig = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
 @endphp
 
 <div class="xe-shop">
@@ -78,8 +78,8 @@
             <h2 class="xe-shop-logo">
                 <a href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
                     <img alt="쇼핑몰 로고"
-                        @if (app('xero_commerce.imageHandler')->getImageUrlByFileId($config['logo_id']) != '')
-                            src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($config['logo_id'])}}"
+                        @if (app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) != '')
+                            src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id'])}}"
                         @else
                             src="{{$theme::asset('img/shop-logo@lg.png')}}"
                         @endif
@@ -183,46 +183,46 @@
                     <div class="xe-company-info-article">
                         <p>
                             <b>상호명</b>
-                            <span>{{$config['companyName']}}</span>
+                            <span>{{$shopConfig['companyName']}}</span>
                         </p>
                         <p>
                             <b>대표자</b>
-                            <span>{{$config['ceoName']}}</span>
+                            <span>{{$shopConfig['ceoName']}}</span>
                         </p>
                         <p>
                             <b>사업자등록번호</b>
-                            <span>{{$config['companyNumber']}}<a href="#">[사업자정보확인]</a></span>
+                            <span>{{$shopConfig['companyNumber']}}<a href="#">[사업자정보확인]</a></span>
                         </p>
                         <p>
                             <b>통신판매업</b>
-                            <span>신고 {{$config['communicationMarketingNumber']}}</span>
+                            <span>신고 {{$shopConfig['communicationMarketingNumber']}}</span>
                         </p>
                     </div>
                     <div class="xe-company-info-article">
                         <p>
                             <b>주소</b>
-                            <span>({{$config['zipCode']}}) {{$config['address']}}</span>
+                            <span>({{$shopConfig['zipCode']}}) {{$shopConfig['address']}}</span>
                         </p>
                         <p>
                             <b>대표전화</b>
-                            <span>{{$config['telNumber']}}</span>
+                            <span>{{$shopConfig['telNumber']}}</span>
                         </p>
                     </div>
                     <div class="xe-company-info-article">
                         <p>
                             <b>개인정보관리책임자</b>
-                            <span>{{$config['informationCharger']}}</span>
+                            <span>{{$shopConfig['informationCharger']}}</span>
                         </p>
                         <p>
                             <b>이메일</b>
-                            <span>{{$config['email']}}</span>
+                            <span>{{$shopConfig['email']}}</span>
                         </p>
                     </div>
                 </div>
             </section>
             <section class="copyright">
                 <div class="container">
-                    <p>Copyright &copy; 2016 {{$config['companyName']}} All rights reserved.&nbsp;&nbsp;&nbsp;<br class="xe-hidden-md xe-hidden-lg">MADE BY XE</p>
+                    <p>Copyright &copy; 2016 {{$shopConfig['companyName']}} All rights reserved.&nbsp;&nbsp;&nbsp;<br class="xe-hidden-md xe-hidden-lg">MADE BY XE</p>
                 </div>
             </section>
         </footer>
