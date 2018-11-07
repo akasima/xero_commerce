@@ -3,7 +3,7 @@
 <div id="component-container">
     <order-register-component
         :agreements='{{json_encode($agreements)}}'
-        dash-url="{{route('xero_commerce::order.index')}}"
+        dash-url="{{route('xero_commerce::order.complete',['order' => $order->id])}}"
         success-url="{{route('xero_commerce::order.success',['order' => $order->id])}}"
         fail-url="{{route('xero_commerce::order.fail',['order' => $order->id])}}"
         :order-item-list='{!! $orderItems !!}'

@@ -170,4 +170,9 @@ class OrderController extends XeroCommerceBasicController
         $this->orderService->cancel($order, $request);
         return redirect()->route('xero_commerce::order.list');
     }
+
+    public function complete(Order $order)
+    {
+        return \XePresenter::make('xero_commerce::views.order.complete',['order'=>$order]);
+    }
 }

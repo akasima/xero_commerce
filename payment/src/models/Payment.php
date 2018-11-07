@@ -4,6 +4,7 @@ namespace Xpressengine\XePlugin\XeroPay\Models;
 class Payment extends \Xpressengine\Database\Eloquent\DynamicModel
 {
 
+    protected $guarded=[];
     const STATUS=[
         '생성',
         '요청',

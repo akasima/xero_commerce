@@ -11,8 +11,9 @@ namespace Xpressengine\XePlugin\XeroPay\LG;
 use Illuminate\Contracts\Support\Jsonable;
 use Xpressengine\XePlugin\XeroPay\Models\Payment;
 use Xpressengine\XePlugin\XeroPay\PaymentResponse;
+use Xpressengine\XePlugin\XeroPay\PaymentResult;
 
-class LGResult implements PaymentResponse, Jsonable
+class LGResult extends PaymentResult
 {
     public $res;
     
@@ -66,5 +67,23 @@ class LGResult implements PaymentResponse, Jsonable
     {
         $oid = $this->res['LGD_OID'];
         return Payment::find(str_replace('_','-',$oid));
+    }
+
+    public function getReceipt()
+    {
+        $res = $this->res->LGD_RESPONSE[0];
+        $info =
+            [
+                '결제금액'=>number_format($res->LGD_AMOUNT).'원',
+                '결제기관'=>$res->LGD_FINANCENAME
+            ];
+        if($res->LGD_PAYTYPE=='SC0040'){
+            $info['입금계좌']=$res->LGD_ACCOUNTNUM;
+        }
+        if($res->LGD_PAYTYPE=='SC0010'){
+            $info['카드번호']=$res->LGD_CARDNUM;
+            $info['할부']=($res->LGD_CARDINSTALLMONTH==0)?'일시불':$res->LGD_CARDINSTALLMONTH.'개월';
+        }
+        return json_encode($info);
     }
 }
