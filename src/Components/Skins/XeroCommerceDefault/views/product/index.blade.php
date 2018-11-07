@@ -1,4 +1,6 @@
+{{ XeFrontend::css('plugins/xero_commerce/src/Components/Skins/XeroCommerceDefault/assets/css/skin.css')->load() }}
 {{ uio('widgetbox', ['id' => \Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-top', 'link'=>'상단 위젯 편집하기']) }}
+
 <section class="xe-shop list">
     <div class="container" style="padding-left:0; padding-right:0">
         <div class="search-results">
@@ -6,7 +8,7 @@
             @if(count($products)===0)
                 <p class="search-results-text">검색된 상품이 존재하지 않습니다.</p>
             @else
-                <p class="search-results-text"><span class="search-results-text-num">{{count($products)}}</span>개의 상품이
+                <p class="search-results-text"><span class="search-results-text-num">{{ $products->total() }}</span>개의 상품이
                     검색 되었습니다.</p>
             @endif
         </div>
@@ -45,7 +47,7 @@
         </form>
 
         <ul class="default-list">
-            @foreach ($products as $key=>$product)
+            @foreach ($products as $key => $product)
                 <li>
                     <div class="default-list-img">
                         <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}"><img
@@ -80,7 +82,12 @@
             @endforeach
         </ul>
     </div>
+
+    <div class="product_pagination">
+        {{ $products->render() }}
+    </div>
 </section>
+
 <script>
     function toggleHeart(id)
     {

@@ -37,3 +37,8 @@ body {
   margin-bottom: 30px;
   background-color: #eee;
 }
+
+.product_pagination {
+  padding-top: 10px;
+  text-align: center;
+}
