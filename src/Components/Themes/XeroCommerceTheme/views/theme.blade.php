@@ -9,15 +9,6 @@
     $theme::asset('css/user/layout.css')
 ])->load() }}
 
-{{-- inline style --}}
-{{ app('xe.frontend')->html('theme.style')->content("
-<style>
-    body {
-        padding-top: 50px;
-        padding-bottom: 20px;
-    }
-</style>
-")->load() }}
 @php
     $shopConfig = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
 @endphp
