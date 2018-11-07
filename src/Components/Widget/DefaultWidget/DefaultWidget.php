@@ -3,7 +3,7 @@
 namespace Xpressengine\Plugins\XeroCommerce\Components\Widget\DefaultWidget;
 
 use View;
-use Xpressengine\Storage\File;
+use Xpressengine\Plugins\XeroCommerce\Handlers\XeroCommerceImageHandler;
 use Xpressengine\Widget\AbstractWidget;
 
 class DefaultWidget extends AbstractWidget
@@ -12,18 +12,16 @@ class DefaultWidget extends AbstractWidget
 
     public function render()
     {
+        /** @var XeroCommerceImageHandler $imageHandler */
+        $imageHandler = app('xero_commerce.imageHandler');
+
         $widgetConfig = $this->setting();
 
-        $media = app('xe.media');
         $imageIds = $widgetConfig['images'];
         $images = [];
 
         foreach ($imageIds as $imageId) {
-            $file = File::where('id', $imageId)->get()->first();
-
-            $mediaFile = $media->make($file);
-
-            $images[] = $mediaFile->url();
+            $images[] = $imageHandler->getImageUrlByFileId($imageId);
         }
 
         return $this->renderSkin([

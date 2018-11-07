@@ -18,6 +18,10 @@
     }
 </style>
 ")->load() }}
+@php
+    $shopConfig = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
+@endphp
+
 <div class="xe-shop">
     <h1 class="xe-sr-only">xe 쇼핑</h1>
     <!-- 기본 ui
@@ -72,7 +76,15 @@
     <section class="logo">
         <div class="container">
             <h2 class="xe-shop-logo">
-                <a href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}"><img src="{{$theme::asset('img/shop-logo@lg.png')}}" alt="쇼핑몰 로고"></a>
+                <a href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
+                    <img alt="쇼핑몰 로고"
+                        @if (app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) != '')
+                            src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id'])}}"
+                        @else
+                            src="{{$theme::asset('img/shop-logo@lg.png')}}"
+                        @endif
+                    >
+                </a>
             </h2>
             <button type="button" class="xe-shop-btn-search xe-hidden-md xe-hidden-lg"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
         </div>
@@ -167,53 +179,50 @@
         <hr>
         <footer class="footer">
             <section class="xe-company-info">
-                @php
-                    $config = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
-                @endphp
                 <div class="container">
                     <div class="xe-company-info-article">
                         <p>
                             <b>상호명</b>
-                            <span>{{$config['companyName']}}</span>
+                            <span>{{$shopConfig['companyName']}}</span>
                         </p>
                         <p>
                             <b>대표자</b>
-                            <span>{{$config['ceoName']}}</span>
+                            <span>{{$shopConfig['ceoName']}}</span>
                         </p>
                         <p>
                             <b>사업자등록번호</b>
-                            <span>{{$config['companyNumber']}}<a href="#">[사업자정보확인]</a></span>
+                            <span>{{$shopConfig['companyNumber']}}<a href="#">[사업자정보확인]</a></span>
                         </p>
                         <p>
                             <b>통신판매업</b>
-                            <span>신고 {{$config['communicationMarketingNumber']}}</span>
+                            <span>신고 {{$shopConfig['communicationMarketingNumber']}}</span>
                         </p>
                     </div>
                     <div class="xe-company-info-article">
                         <p>
                             <b>주소</b>
-                            <span>({{$config['zipCode']}}) {{$config['address']}}</span>
+                            <span>({{$shopConfig['zipCode']}}) {{$shopConfig['address']}}</span>
                         </p>
                         <p>
                             <b>대표전화</b>
-                            <span>{{$config['telNumber']}}</span>
+                            <span>{{$shopConfig['telNumber']}}</span>
                         </p>
                     </div>
                     <div class="xe-company-info-article">
                         <p>
                             <b>개인정보관리책임자</b>
-                            <span>{{$config['informationCharger']}}</span>
+                            <span>{{$shopConfig['informationCharger']}}</span>
                         </p>
                         <p>
                             <b>이메일</b>
-                            <span>{{$config['email']}}</span>
+                            <span>{{$shopConfig['email']}}</span>
                         </p>
                     </div>
                 </div>
             </section>
             <section class="copyright">
                 <div class="container">
-                    <p>Copyright &copy; 2016 {{$config['companyName']}} All rights reserved.&nbsp;&nbsp;&nbsp;<br class="xe-hidden-md xe-hidden-lg">MADE BY XE</p>
+                    <p>Copyright &copy; 2016 {{$shopConfig['companyName']}} All rights reserved.&nbsp;&nbsp;&nbsp;<br class="xe-hidden-md xe-hidden-lg">MADE BY XE</p>
                 </div>
             </section>
         </footer>
