@@ -12,10 +12,11 @@
                     검색 되었습니다.</p>
             @endif
         </div>
-        <form action="{{url()->current()}}" method="get">
+        <form action="{{url()->current()}}" method="post">
+            {{csrf_field()}}
             <div class="range-box">
                 <div class="research-box">
-                    <input type="text" name="product_name" class="xe-form-control" placeholder>
+                    <input type="text" name="product_name" class="xe-form-control" placeholder value="{{( request()->product_name)? : ''}}">
                     <button type="submit">
                         <i class="xi-search"></i><span class="xe-sr-only">검색</span>
                     </button>
@@ -23,17 +24,23 @@
 
 
                 <div class="xe-dropdown">
-                    <button class="xe-btn" type="button" data-toggle="xe-dropdown">Low Price</button>
+                    <button class="xe-btn" type="button" >{{(request()->sort_name)? : 'Low Price'}}</button>
                     <ul class="xe-dropdown-menu">
-                        <li><a href="#">text</a></li>
-                        <li><a href="#">text</a></li>
-                        <li><a href="#">text</a></li>
-                        <li><a href="#">text</a></li>
+                        <li><a href="#">Low Price</a></li>
+                        <li><a href="#">High Price</a></li>
+                        <li><a href="#">ABC</a></li>
+                        <li><a href="#">ZYX</a></li>
                     </ul>
+                    <input type="hidden" name="sort_type">
                 </div>
                 <script>
                     $('.xe-dropdown .xe-btn, .xe-dropdown-menu a').on('click', function () {
-                        $('.xe-dropdown').toggleClass('open');
+                        toggleClass('.xe-dropdown','open')
+                    });
+                    $('.xe-dropdown-menu a').on('click', function (e) {
+                        e.preventDefault()
+                        $("input[name=sort_type]").val($(this).text())
+                        $("form").submit()
                     });
                 </script>
             </div>
