@@ -14,7 +14,9 @@ use XeDB;
 use XeMenu;
 use Route;
 use Xpressengine\Category\Models\CategoryItem;
+use Xpressengine\Document\ConfigHandler;
 use Xpressengine\Http\Request;
+use Xpressengine\Menu\MenuHandler;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
 use Xpressengine\Plugins\XeroCommerce\Components\Widget\DefaultWidget\Skins\Common\CommonSkin as DefaultWidgetCommonSkin;
@@ -111,7 +113,80 @@ class Resources
         self::createXeroStoreDirectLink();
         self::settingWidget($mainWidgetboxPageId);
 
+        $noticeBoardId = self::createNoticeBoard($defaultMenu);
+        self::storeConfigData('noticeBoardId', $noticeBoardId);
+        self::storeDefaultNotice($noticeBoardId);
+
         self::setCanNotUseXeroCommercePrefixRoute();
+    }
+
+    protected static function createNoticeBoard($defaultMenu)
+    {
+        /** @var MenuHandler $menuHandler */
+        $menuHandler = app('xe.menu');
+
+        $menuTitle = XeLang::genUserKey();
+        foreach (XeLang::getLocales() as $locale) {
+            $value = "공지사항";
+            if ($locale != 'ko') {
+                $value = "Notice";
+            }
+            XeLang::save($menuTitle, $locale, $value, false);
+        }
+
+        $inputs = [
+            'menu_id' => $defaultMenu->id,
+            'parent_id' => null,
+            'title' => $menuTitle,
+            'url' => 'xero_commerce_notice',
+            'description' => '공지사항',
+            'target' => '',
+            'type' => 'board@board',
+            'ordering' => '1',
+            'activated' => '1',
+        ];
+        $menuTypeInput = [
+            'page_title' => 'XeroCommerce Notice Board',
+            'board_name' => 'Notice',
+            'site_key' => 'default',
+            'revision' => 'true',
+            'division' => 'false',
+        ];
+
+        $item = $menuHandler->createItem($defaultMenu, $inputs, $menuTypeInput);
+
+        $menuHandler->setMenuItemTheme($item, null, null);
+        app('xe.permission')->register($menuHandler->permKeyString($item), new Grant);
+
+        return $item->id;
+    }
+
+    protected static function storeDefaultNotice($noticeBoardInstanceId)
+    {
+        /** @var \Xpressengine\Plugins\Board\Handler $boardHandler */
+        $boardHandler = app('xe.board.handler');
+
+        /** @var ConfigHandler $configHandler */
+        $configHandler = app('xe.board.config');
+        $config = $configHandler->get($noticeBoardInstanceId);
+
+        $user = \Auth::user();
+
+        $inputs['head'] = null;
+        $inputs['queryString'] = null;
+        $inputs['title'] = 'XeroCommerce 공지사항';
+        $inputs['slug'] = 'XeroCommerce 공지사항';
+        $inputs['content'] = '<p>XeroCommerce 기본 공지사항입니다.</p>';
+        $inputs['_coverId'] = null;
+        $inputs['allow_comment'] = '1';
+        $inputs['use_alarm'] = '1';
+        $inputs['file'] = null;
+        $inputs['instance_id'] = $noticeBoardInstanceId;
+        $inputs['format'] = 10;
+        $inputs['_files'] = [];
+        $inputs['_hashTags'] = [];
+
+        $boardHandler->add($inputs, $user, $config);
     }
 
     protected static function settingWidget($mainWidgetboxPageId)

@@ -115,7 +115,7 @@ body, input, textarea, select, table {
   display: inline-block;
   width: 200px;
   margin-left: 7px;
-  height: 15px;
+  height: 26px;
 }
 
 .xe-shop-notice .notice-view ul {
@@ -129,22 +129,6 @@ body, input, textarea, select, table {
   width: 100%;
   list-style-type: none;
   transition: top .2s ease-in;
-}
-
-.xe-shop-notice .notice-view li:nth-child(1) {
-  top: 0;
-}
-
-.xe-shop-notice .notice-view li:nth-child(2) {
-  top: 15px;
-}
-
-.xe-shop-notice .notice-view li:nth-child(3) {
-  top: 30px;
-}
-
-.xe-shop-notice .notice-view li:last-child {
-  top: -15px;
 }
 
 .xe-shop-notice .notice-view a {
