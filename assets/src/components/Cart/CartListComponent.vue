@@ -162,6 +162,11 @@
                 $('#cartChangeModal' + cart.id).xeModal()
             },
             edit(cart) {
+                var val= this.validate(cart)
+                if(! val.status){
+                    alert(val.msg)
+                    return
+                }
                 $.ajax({
                     url: this.cartChangeUrl + '/' + cart.id,
                     data: cart
@@ -170,6 +175,30 @@
                 }).fail(() => {
                     console.log('fail')
                 })
+            },
+            validate (cart) {
+                var validate =
+                    {
+                        status: true,
+                        msg: ''
+                    }
+                if(cart.max)
+                {
+                    if(Number(cart.choose.map(v=>{return Number(v.count)}).reduce((a,b)=>a+b,0))>cart.max)
+                    {
+                        validate.status = false,
+                            validate.msg+='선택한 상품의 갯수가 최대 구매 수량을 넘었습니다.'
+                    }
+                }
+                if(cart.min)
+                {
+                    if(Number(cart.choose.map(v=>{return Number(v.count)}).reduce((a,b)=>a+b,0))<cart.min)
+                    {
+                        validate.status = false,
+                            validate.msg+='선택한 상품의 갯수가 최소 구매 수량보다 부족합니다.'
+                    }
+                }
+                return validate;
             },
             draw(cart_id) {
                 $.ajax({

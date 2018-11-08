@@ -48,7 +48,9 @@ class Cart extends SellSet
             }),
             'name' => $this->sellType->getName(),
             'delivery' => $this->sellType->getDelivery(),
-            'pay' => $this->getDeliveryPay()
+            'pay' => $this->getDeliveryPay(),
+            'min'=>$this->sellType->min_buy_count,
+            'max'=>$this->sellType->max_buy_count
         ];
     }
 }

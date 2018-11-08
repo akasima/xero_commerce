@@ -356,7 +356,6 @@
                 })
             },
             addCart(success, fail) {
-                console.log()
                 var val= this.validate()
                 if(! val.status){
                     alert(val.msg)
@@ -425,12 +424,23 @@
                     validate.status = false,
                         validate.msg+='선택한 상품의 갯수가 없습니다.'
                 }
+                if(this.product.data.min_buy_count){
+                    if(this.product.data.min_buy_count > Number(this.choose.map(v=>{return Number(v.count)}).reduce((a,b)=>a+b,0)))
+                    {
+                        validate.status = false,
+                            validate.msg+='선택한 상품의 갯수가 최소 구매 수량보다 부족합니다.'
+                    }
+                }
+
+                if(this.product.data.max_buy_count){
+                    if(this.product.data.max_buy_count < Number(this.choose.map(v=>{return Number(v.count)}).reduce((a,b)=>a+b,0)))
+                    {
+                        validate.status = false,
+                            validate.msg+='선택한 상품의 갯수가 최대 구매 수량을 넘었습니다.'
+                    }
+                }
                 return validate
             }
-        },
-        mounted() {
-            console.log(this.product)
-            console.log(this.category)
         }
     }
 </script>
