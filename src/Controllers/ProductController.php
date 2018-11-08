@@ -8,6 +8,7 @@ use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 use Xpressengine\Plugins\XeroCommerce\Services\WishService;
@@ -50,12 +51,15 @@ class ProductController extends XeroCommerceBasicController
 
         $product = $this->productService->getProduct($productId);
 
+        $cagegoryService = new ProductCategoryService();
+        $category = $cagegoryService->getCategoryTree();
+
         if ($product == null) {
             return redirect()->to(instance_route('xero_commerce::product.index', [], $this->instanceId))
                 ->with('alert', ['type' => 'danger', 'message' => '존재하지 않는 상품입니다.']);
         }
 
-        return \XePresenter::make('product.show', ['product' => $product]);
+        return \XePresenter::make('product.show', ['product' => $product, 'category'=>$category]);
     }
 
     public function cartAdd(Request $request, Product $product)

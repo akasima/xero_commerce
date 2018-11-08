@@ -37,6 +37,57 @@ class ProductCategoryService
         return $this->convertCategoryItemArray($categoryItems);
     }
 
+    public function getChildren(CategoryItem $categoryItem){
+        return [
+            'self'=>[
+                'id'=>$categoryItem->id,
+                'label'=>xe_trans($categoryItem->word),
+                'url'=>$this->getRoute($categoryItem)
+                ],
+            'children'=>$categoryItem->getChildren()->map(function (CategoryItem $categoryItem){
+                return $this->getChildren($categoryItem);
+            })
+        ];
+    }
+
+    private function getRoute(CategoryItem $categoryItem)
+    {
+        $config=\XeConfig::get('xero_commerce.mainModuleList');
+        $instances = collect($config->get('moduleList'));
+        $instance = $instances->first(function($instance_id)use($categoryItem){
+            $config = \XeConfig::get('xero_commerce.'.$instance_id);
+            return $config->get('categoryItemId') === $categoryItem->id;
+        });
+        if($instance)return instance_route('xero_commerce::product.index',[],$instance);
+        return url(Plugin::XERO_COMMERCE_URL_PREFIX);
+    }
+
+    public function getCategoryTree()
+    {
+        $first = CategoryItem::whereNull('parent_id')->get();
+        return $first->map(function(CategoryItem $categoryItem){
+            return $this->getChildren($categoryItem);
+        });
+    }
+
+    public function getProductCategoryTree($productId)
+    {
+        $productCateogryIds = $this->getProductCategory($productId);
+        $productCateogrys=CategoryItem::find($productCateogryIds);
+        $convertedCategoryItems=$productCateogrys->map(function(CategoryItem $categoryItem){
+            $ancestors = $categoryItem->ancestors(false)->orderBy($categoryItem->getClosureTable().'.'.$categoryItem->getDepthName(),'desc')->get();
+            return $ancestors->map(function (CategoryItem $categoryItem){
+                return [
+                    'id'=>$categoryItem->id,
+                    'label'=>xe_trans($categoryItem->word)
+                ];
+            });
+        });
+        return $convertedCategoryItems;
+
+
+    }
+
     private function convertCategoryItemArray($categoryItems)
     {
         $items = [];

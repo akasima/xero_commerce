@@ -1,31 +1,9 @@
 <template>
     <div>
-        <div class="xe-shop category-item-wrap xe-hidden-sm xe-hidden-xs">
-            <div class="container">
-                <ol class="category-item">
-                    <li><a href="#">HOME</a><i class="xi-angle-right-thin"></i></li>
-                    <li>
-                        <div class="xe-dropdown ">
-                            <button class="xe-btn" type="button" data-toggle="xe-dropdown xe-ellesis">CATEGORYCATEGORYCATEGORY 1</button>
-                            <ul class="xe-dropdown-menu">
-                                <li><a href="#">text</a></li>
-                                <li><a href="#">text</a></li>
-                            </ul>
-                        </div>
-                        <i class="xi-angle-right-thin"></i>
-                    </li>
-                    <li>
-                        <div class="xe-dropdown ">
-                            <button class="xe-btn" type="button" data-toggle="xe-dropdown">2dqpth</button>
-                            <ul class="xe-dropdown-menu">
-                                <li><a href="#">text</a></li>
-                                <li><a href="#">text</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-        </div>
+        <product-category-component
+            :categorys="category"
+            :target-category="product.categorys"
+        ></product-category-component>
         <div class="xe-shop product">
             <div class="container">
                 <div class="product-wrap">
@@ -303,18 +281,22 @@
 <script>
     import OptionSelectComponent from '../../../../../../../../assets/src/components/OptionSelectComponent'
     import DeliverySelectComponent from '../../../../../../../../assets/src/components/DeliverySelectComponent'
+    import ProductCategoryComponent from './ProductCategoryComponent'
 
     export default {
         name: "ProductDetailComponent",
         components: {
-            OptionSelectComponent, DeliverySelectComponent
+            OptionSelectComponent, DeliverySelectComponent, ProductCategoryComponent
         },
         props: [
-            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl'
+            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category'
         ],
         computed:{
             mainImg () {
                 return this.product.images[this.mainImageKey]
+            },
+            categoryMake(){
+                return [];
             }
         },
         data() {
@@ -448,6 +430,7 @@
         },
         mounted() {
             console.log(this.product)
+            console.log(this.category)
         }
     }
 </script>
