@@ -9,7 +9,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 {{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 
-<form method="post" action="{{ route('xero_commerce::setting.product.store') }}" enctype="multipart/form-data">
+<form method="post" action="{{ route('xero_commerce::setting.product.store') }}" enctype="multipart/form-data"
+      data-rule="product" data-rule-alert-type="toast">
     {{ csrf_field() }}
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
     <div class="form-group">
@@ -49,21 +50,23 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     'label'=>'상품명',
                     'name'=>'name',
                     'description'=>'상품명입니다.',
-                    'value'=>Request::old('name')
+                    'data-valid-name' => '상품명',
+                    'value' => Request::old('name')
                     ])}}
 
                     {{uio('formText', [
                     'label'=>'url명',
                     'name'=>'newSlug',
                     'description'=>'상품 링크 Url로 등록되는 이름입니다.(비워두면 자동으로 설정 됩니다.)',
-                    'value'=>Request::old('newSlug')
+                    'value' => Request::old('newSlug')
                     ])}}
 
                     {{uio('formText', [
                     'label'=>'간략 소개',
                     'name'=>'sub_name',
+                    'data-valid-name' => '간략 소개',
                     'description'=>'상품명 아래에 위치하는 소개말입니다.',
-                    'value'=>Request::old('sub_name')
+                    'value' => Request::old('sub_name')
                     ])}}
                 </div>
             </div>
@@ -71,18 +74,19 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         <div class="col-lg-4">
             <div class="panel">
                 <div class="panel-body">
-
                     {{uio('formText', [
                     'label'=>'정상 가격',
                     'name'=>'original_price',
                     'description'=>'상품의 정상가격으로 표기됩니다.',
-                    'value'=>Request::old('original_price')
+                    'data-valid-name' => '정상 가격',
+                    'value' => Request::old('original_price')
                     ])}}
 
                     {{uio('formText', [
                     'label'=>'판매 가격',
                     'name'=>'sell_price',
                     'description'=>'실제로 판매하는 가격입니다.',
+                    'data-valid-name' => '판매 가격',
                     'value'=>Request::old('sell_price')
                     ])}}
 
@@ -95,7 +99,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
                     <div class="form-group">
                         <label>배송사</label>
-                        <select name="shop_delivery_id" class="form-control">
+                        <select name="shop_delivery_id" class="form-control" data-valid-name="배송사">
                             @php
                                 //TODO 입점몰이 여러개일 때 처리
                                 $deliverys = $shops[0]->deliveryCompanys;
@@ -129,11 +133,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         <div class="col-lg-4">
             <div class="panel">
                 <div class="panel-body">
-
                     {{uio('formText', [
                     'label'=>'초기 재고',
                     'name'=>'stock',
                     'description'=>'현재 재고량을 표기합니다.',
+                    'data-valid-name' => '초기 재고',
                     'value'=>Request::old('stock')
                     ])}}
                     {{uio('formText', [
@@ -293,3 +297,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     </div>
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
 </form>
+
+<script>
+    $(function () {
+        $('textarea[name=description]').attr('data-valid-name', '상품 소개');
+    })
+</script>

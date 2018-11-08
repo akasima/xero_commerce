@@ -950,6 +950,11 @@ class Resources
         });
         $app->alias(XeroCommerceImageHandler::class, 'xero_commerce.imageHandler');
 
+        $app->singleton(ValidateManager::class, function ($app) {
+            return new ValidateManager();
+        });
+        $app->alias(ValidateManager::class, 'xero_commerce.validateManager');
+
         $app->singleton(PaymentHandler::class, function ($app) {
             $uses = XeConfig::getOrNew('xero_pay')->get('uses');
             $useHandler = app('xe.pluginRegister')->get('xero_pay')[$uses]::$handler;

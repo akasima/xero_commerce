@@ -9,7 +9,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 {{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 
-<form method="post" action="{{ route('xero_commerce::setting.product.update', ['productId' => $product->id]) }}" enctype="multipart/form-data">
+<form method="post" action="{{ route('xero_commerce::setting.product.update', ['productId' => $product->id]) }}" enctype="multipart/form-data"
+    data-rule="product" data-rule-alert-type="toast">
     {{ csrf_field() }}
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
     <div class="row">
@@ -37,6 +38,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     'label'=>'상품명',
                     'name'=>'name',
                     'description'=>'상품명입니다.',
+                    'data-valid-name' => '상품명',
                     'value'=>$product->name
                     ])}}
 
@@ -51,6 +53,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     'label'=>'간략 소개',
                     'name'=>'sub_name',
                     'description'=>'상품명 아래에 위치하는 소개말입니다.',
+                    'data-valid-name' => '간략 소개',
                     'value'=>$product->sub_name
                     ])}}
                 </div>
@@ -64,6 +67,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     'label'=>'정상 가격',
                     'name'=>'original_price',
                     'description'=>'상품의 정상가격으로 표기됩니다.',
+                    'data-valid-name' => '정상 가격',
                     'value'=>$product->original_price
                     ])}}
 
@@ -71,6 +75,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     'label'=>'판매 가격',
                     'name'=>'sell_price',
                     'description'=>'실제로 판매하는 가격입니다.',
+                    'data-valid-name' => '판매 가격',
                     'value'=>$product->sell_price
                     ])}}
 
@@ -83,7 +88,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
                     <div class="form-group">
                         <label>배송사</label>
-                        <select name="shop_delivery_id" class="form-control">
+                        <select name="shop_delivery_id" class="form-control" data-valid-name="배송사">
                             @php
                                 $deliverys = $product->shop->deliveryCompanys;
                             @endphp
@@ -321,3 +326,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     </div>
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
 </form>
+
+<script>
+    $(function () {
+        $('textarea[name=description]').attr('data-valid-name', '상품 소개');
+    })
+</script>
