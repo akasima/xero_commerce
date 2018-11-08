@@ -44,6 +44,8 @@ class ProductManager
      */
     public function store(Request $request)
     {
+        $this->validateProduct($request);
+
         try {
             XeDB::beginTransaction();
 
@@ -74,6 +76,8 @@ class ProductManager
      */
     public function update(Request $request, $productId)
     {
+        $this->validateProduct($request);
+
         try {
             XeDB::beginTransaction();
 
@@ -137,5 +141,10 @@ class ProductManager
     {
         $tags = \XeTag::fetchByTaggable($productId);
         \XeTag::detach($productId, $tags);
+    }
+
+    private function validateProduct($request)
+    {
+        app('xero_commerce.validateManager')->productValidate($request);
     }
 }
