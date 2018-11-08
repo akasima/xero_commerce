@@ -33,6 +33,7 @@ class Plugin extends AbstractPlugin
         \Xpressengine\XePlugin\XeroPay\Resources::registerMenu();
         Resources::registerSettingMenu();
         EventManager::listenEvents();
+        Resources::interceptGetSettingsMenus();
     }
 
     /**

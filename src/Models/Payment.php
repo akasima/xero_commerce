@@ -23,6 +23,6 @@ class Payment extends Model
             return '없음';
         }
 
-        return self::METHOD[$this->method];
+        return $this->method;
     }
 }

@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use App\Facades\XeMedia;
 use App\Facades\XeStorage;
+use Illuminate\Support\Facades\Auth;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\Models\Image;
@@ -12,6 +13,8 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductRevision;
+use Xpressengine\Plugins\XeroCommerce\Models\ShopUser;
+use Xpressengine\User\Rating;
 
 class ProductHandler
 {
@@ -62,6 +65,7 @@ class ProductHandler
 
         $query = $this->settingMakeWhere($request, $query);
         $query = $this->commonMakeWhere($request, $query);
+        $query = $this->filterByOwnShop($query);
 
         return $query;
     }
@@ -74,6 +78,21 @@ class ProductHandler
         $query = $this->commonMakeWhere($request, $query);
         $query = $this->commonOrderBy($request, $query);
 
+        return $query;
+    }
+
+    private function filterByOwnShop($query)
+    {
+        if(Auth::check()){
+            if(Auth::user()->rating === Rating::SUPER)return $query;
+            if(Auth::user()->rating === Rating::MANAGER){
+                $shopUserHandler = new ShopUserHandler();
+                $shop_ids = $shopUserHandler->getUsersShop(Auth::id())->pluck('shop_id');
+                $query = $query->whereIn('shop_id',$shop_ids);
+            }
+        }else{
+            abort(500,'권한에러');
+        }
         return $query;
     }
 

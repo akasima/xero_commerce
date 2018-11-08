@@ -122,7 +122,7 @@
                         <ul>
                             <li :class="(tab===1) ? 'active' : ''"><a href="#" @click.prevent="tab=1">상품정보</a></li>
                             <!--<li><a href="#">구매평</a></li>-->
-                            <!--<li><a href="#">Q&A</a></li>-->
+                            <li :class="(tab===3) ? 'active' : ''"><a href="#" @click.prevent="tab=3">Q&A</a></li>
                             <li :class="(tab===2) ? 'active' : ''"><a href="#" @click.prevent="tab=2">반품정보</a></li>
                         </ul>
                     </div>
@@ -145,7 +145,38 @@
                             </div>
                         </div>
                         <!-- <div class="detail-talks"></div> -->
-                        <!-- <div class="detail-qna"></div> -->
+                         <div v-if="tab===3" class="detail-qna">
+                             <table class="table">
+                             <thead>
+                             <tr>
+                             <th>번호</th>
+                             <th>제목</th>
+                             <th>작성자</th>
+                             <th>작성일</th>
+                             </tr>
+                             </thead>
+                             <tbody>
+                             <tr>
+                             <td>1</td>
+                             <td>??</td>
+                             <td>hero</td>
+                             <td>{{new Date()}}</td>
+                             </tr>
+                             <tr>
+                             <td colspan="4">dafdfdsafdf <br>dsafdfd</td>
+                             </tr>
+                             <tr>
+                             <td>1</td>
+                             <td>??</td>
+                             <td>hero</td>
+                             <td>{{new Date()}}</td>
+                             </tr>
+                             <tr>
+                             <td colspan="4">dafdfdsafdf</td>
+                             </tr>
+                             </tbody>
+                             </table>
+                         </div>
                          <div v-if="tab===2" class="detail-as">
                              <div v-html="product.shop.as_info">
 
