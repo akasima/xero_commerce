@@ -40,10 +40,10 @@
             <article class="xe-shop-utilmenu xe-hidden-xs xe-hidden-sm">
                 <h2 class="xe-sr-only">관련 링크</h2>
                 <ul class="xe-shop-utilmenu-list">
-                    @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || \Xpressengine\User\Rating::SUPER)
-                        <li><a style="color:red" href="{{ route('xero_commerce::setting.order.index') }}">관리자페이지</a></li>
-                    @endif
                     @if(auth()->check())
+                        @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || \Xpressengine\User\Rating::SUPER)
+                            <li><a style="color:red" href="{{ route('xero_commerce::setting.order.index') }}">관리자페이지</a></li>
+                        @endif
                         <li><a href="{{ route('logout') }}">로그아웃</a></li>
                         <li><a href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
                     @else
