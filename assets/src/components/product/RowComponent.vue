@@ -28,7 +28,11 @@
             <td v-if="!isShowState"><input type="text" class="form-control" v-model="optionList.data.stock"></td>
             <td v-if="!isShowState"><input type="text" class="form-control" v-model="optionList.data.alert_stock"></td>
             <td v-if="!isShowState"><input type="radio" class="form-control" v-model="optionList.data.state_display" value="1" name="display">출력  <input type="radio" class="form-control" v-model="optionList.data.state_display" name="display" value="2">미출력</td>
-            <td v-if="!isShowState"><input type="radio" class="form-control" v-model="optionList.data.state_deal" value="1" name="deal">판매<input type="radio" class="form-control" v-model="optionList.data.state_deal" value="2" name="deal">일시중단<input type="radio" class="form-control" v-model="optionList.state_deal" value="3" name="deal">중단</td>
+            <td v-if="!isShowState">
+                <input type="radio" class="form-control" v-model="optionList.data.state_deal" value="1" name="deal">판매
+                <input type="radio" class="form-control" v-model="optionList.data.state_deal" value="2" name="deal">일시중단
+                <input type="radio" class="form-control" v-model="optionList.data.state_deal" value="3" name="deal">중단
+            </td>
             <td v-if="!isShowState">
                 <button type="button" v-on:click="toggleShowState();save(optionList)" class="xe-btn">수정</button>
                 <button type="button" v-on:click="toggleShowState();remove(optionList)" class="xe-btn xe-btn-danger">삭제</button>

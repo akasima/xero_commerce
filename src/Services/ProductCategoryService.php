@@ -60,7 +60,7 @@ class ProductCategoryService
             $config = \XeConfig::get(Plugin::XERO_COMMERCE_PREFIX . '.' . $instance_id);
 
             if ($config == null) {
-                return;
+                return false;
             }
 
             return $config->get('categoryItemId') === $categoryItem->id;
