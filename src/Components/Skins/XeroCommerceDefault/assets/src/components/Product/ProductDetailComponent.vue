@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                             </div><!-- //product-info-favor  -->
-                            <div class="product-info-cell shipping">배송비 2,500원(주문시 결제)</div>
+                            <!--<div class="product-info-cell shipping">배송비 2,500원(주문시 결제)</div>-->
 
                             <div class="btn-buy-wrap xe-hidden-md xe-hidden-lg">
                                 <button class="xe-btn xe-btn-buy" @click="buyPage">구매하기</button>

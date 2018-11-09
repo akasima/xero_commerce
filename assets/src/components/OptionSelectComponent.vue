@@ -13,7 +13,6 @@
                 <label>선택</label>
                 <select v-model="selectOption">
                     <option disabled="">Master</option>
-                    <option disabled=""><span style="text-decoration: line-through">hi</span></option>
                     <option v-for="option in options" :value="option" :disabled="option.state!=='판매중'">{{option.name}}
                         (+{{Number(option.add_price).toLocaleString()}} ) {{(option.state!=='판매중')? '-'+ option.state: ''}}
                     </option>
