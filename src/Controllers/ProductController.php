@@ -51,15 +51,15 @@ class ProductController extends XeroCommerceBasicController
 
         $product = $this->productService->getProduct($productId);
 
-        $cagegoryService = new ProductCategoryService();
-        $category = $cagegoryService->getCategoryTree();
+        $categoryService = new ProductCategoryService();
+        $category = $categoryService->getCategoryTree();
 
         if ($product == null) {
             return redirect()->to(instance_route('xero_commerce::product.index', [], $this->instanceId))
                 ->with('alert', ['type' => 'danger', 'message' => '존재하지 않는 상품입니다.']);
         }
 
-        return \XePresenter::make('product.show', ['product' => $product, 'category'=>$category]);
+        return \XePresenter::make('product.show', ['product' => $product, 'category' => $category]);
     }
 
     public function cartAdd(Request $request, Product $product)

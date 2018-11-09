@@ -37,14 +37,15 @@ class ProductCategoryService
         return $this->convertCategoryItemArray($categoryItems);
     }
 
-    public function getChildren(CategoryItem $categoryItem){
+    public function getChildren(CategoryItem $categoryItem)
+    {
         return [
-            'self'=>[
-                'id'=>$categoryItem->id,
-                'label'=>xe_trans($categoryItem->word),
-                'url'=>$this->getRoute($categoryItem)
-                ],
-            'children'=>$categoryItem->getChildren()->map(function (CategoryItem $categoryItem){
+            'self' => [
+                'id' => $categoryItem->id,
+                'label' => xe_trans($categoryItem->word),
+                'url' => $this->getRoute($categoryItem)
+            ],
+            'children' => $categoryItem->getChildren()->map(function (CategoryItem $categoryItem) {
                 return $this->getChildren($categoryItem);
             })
         ];
@@ -52,20 +53,34 @@ class ProductCategoryService
 
     private function getRoute(CategoryItem $categoryItem)
     {
-        $config=\XeConfig::get('xero_commerce.mainModuleList');
+        $config = \XeConfig::get(Plugin::XERO_COMMERCE_PREFIX . '.mainModuleList');
         $instances = collect($config->get('moduleList'));
-        $instance = $instances->first(function($instance_id)use($categoryItem){
-            $config = \XeConfig::get('xero_commerce.'.$instance_id);
+
+        $instance = $instances->first(function ($instance_id) use ($categoryItem) {
+            $config = \XeConfig::get(Plugin::XERO_COMMERCE_PREFIX . '.' . $instance_id);
+
+            if ($config == null) {
+                return;
+            }
+
             return $config->get('categoryItemId') === $categoryItem->id;
         });
-        if($instance)return instance_route('xero_commerce::product.index',[],$instance);
+
+        if ($instance) {
+            return instance_route('xero_commerce::product.index', [], $instance);
+        }
+
         return url(Plugin::XERO_COMMERCE_URL_PREFIX);
     }
 
     public function getCategoryTree()
     {
-        $first = CategoryItem::whereNull('parent_id')->get();
-        return $first->map(function(CategoryItem $categoryItem){
+        $xeroCommerceConfig = \XeConfig::get(Plugin::XERO_COMMERCE_PREFIX);
+        $categoryId = $xeroCommerceConfig->get('categoryId');
+
+        $first = CategoryItem::where('category_id', $categoryId)->whereNull('parent_id')->get();
+
+        return $first->map(function (CategoryItem $categoryItem) {
             return $this->getChildren($categoryItem);
         });
     }
@@ -73,19 +88,19 @@ class ProductCategoryService
     public function getProductCategoryTree($productId)
     {
         $productCateogryIds = $this->getProductCategory($productId);
-        $productCateogrys=CategoryItem::find($productCateogryIds);
-        $convertedCategoryItems=$productCateogrys->map(function(CategoryItem $categoryItem){
-            $ancestors = $categoryItem->ancestors(false)->orderBy($categoryItem->getClosureTable().'.'.$categoryItem->getDepthName(),'desc')->get();
-            return $ancestors->map(function (CategoryItem $categoryItem){
+        $productCateogrys = CategoryItem::find($productCateogryIds);
+
+        $convertedCategoryItems = $productCateogrys->map(function (CategoryItem $categoryItem) {
+            $ancestors = $categoryItem->ancestors(false)->orderBy($categoryItem->getClosureTable() . '.' . $categoryItem->getDepthName(), 'desc')->get();
+            return $ancestors->map(function (CategoryItem $categoryItem) {
                 return [
-                    'id'=>$categoryItem->id,
-                    'label'=>xe_trans($categoryItem->word)
+                    'id' => $categoryItem->id,
+                    'label' => xe_trans($categoryItem->word)
                 ];
             });
         });
+
         return $convertedCategoryItems;
-
-
     }
 
     private function convertCategoryItemArray($categoryItems)
