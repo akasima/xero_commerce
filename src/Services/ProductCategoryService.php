@@ -56,6 +56,9 @@ class ProductCategoryService
         $instances = collect($config->get('moduleList'));
         $instance = $instances->first(function($instance_id)use($categoryItem){
             $config = \XeConfig::get('xero_commerce.'.$instance_id);
+            if(is_null($config)){
+                return false;
+            }
             return $config->get('categoryItemId') === $categoryItem->id;
         });
         if($instance)return instance_route('xero_commerce::product.index',[],$instance);
