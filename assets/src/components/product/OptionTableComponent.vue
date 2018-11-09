@@ -39,7 +39,7 @@
             <td>
                 <input type="radio" v-model="option.state_deal" value="1" class="form-control"/>판매중
                 <input type="radio" v-model="option.state_deal" value="2" class="form-control"/>일시 중단
-                <input type="radio" v-model="option.state_deal" value="3" class="form-control"/>중
+                <input type="radio" v-model="option.state_deal" value="3" class="form-control"/>중단
             </td>
             <td>
                 <button class="btn btn-default" @click="save(option); pop(key)">저장</button>
