@@ -36,4 +36,30 @@ class ValidateManager
             ]
         )->validate();
     }
+
+    public static function getShopValidateRules()
+    {
+        return [
+            'shop_name' => 'required|max:255',
+            'shop_eng_name' => 'required',
+            'user_id' => 'required',
+            'delivery_info' => 'required',
+            'as_info' => 'required'
+        ];
+    }
+
+    public function shopValidate(Request $request)
+    {
+        Validator::make(
+            $request->all(),
+            self::getShopValidateRules(),
+            [
+                'shop_name.required' => '이름 필드는 필수입니다.',
+                'shop_eng_name.required' => '영어 이름 필드는 필수입니다.',
+                'user_id.required' => '관리자 아이디는 적어도 하나가 필요합니다.',
+                'delivery_info.required' => '배송정보는 필수입니다.',
+                'as_info' => '반품/교환정보는 필수입니다.'
+            ]
+        )->validate();
+    }
 }

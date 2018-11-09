@@ -5,7 +5,7 @@
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 ?>
 {{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
-<form method="post" action="{{ route('xero_commerce::setting.config.shop.store') }}">
+<form method="post" action="{{ route('xero_commerce::setting.config.shop.store') }}" data-rule="shop" data-rule-alert-type="toast">
     {{ csrf_field() }}
     <div class="row">
         <div class="col-sm-12">
@@ -14,11 +14,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-6">
-
                                 {{uio('formText', [
                                 'label'=>'입점몰 이름',
                                 'name'=>'shop_name',
                                 'description'=>'입점몰 이름입니다',
+                                'data-valid-name' => '입점몰 이름',
                                 'value'=>Request::old('shop_name')
                                 ])}}
 
@@ -26,6 +26,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 'label'=>'입점몰 영어 이름',
                                 'name'=>'shop_eng_name',
                                 'description'=>'입점몰 영어표기명입니다',
+                                'data-valid-name' => '입점몰 영어 이름',
                                 'value'=>Request::old('shop_eng_name')
                                 ])}}
 
@@ -69,3 +70,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
 </form>
+
+<script>
+    $('textarea[name=delivery_info]').attr('data-valid-name', '배송정보');
+    $('textarea[name=as_info]').attr('data-valid-name', '반품/교환 정보');
+</script>
