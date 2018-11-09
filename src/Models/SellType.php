@@ -48,6 +48,13 @@ abstract class SellType extends DynamicModel
         return $this->belongsTo(ShopDelivery::class, 'shop_delivery_id');
     }
 
+    protected function visibleSellUnits()
+    {
+        return $this->sellUnits->filter(function(SellUnit $sellUnit){
+            return $sellUnit->isDisplay();
+        });
+    }
+
     public function getJsonFormat()
     {
         return [
@@ -57,7 +64,7 @@ abstract class SellType extends DynamicModel
             'contents' => $this->getContents(),
             'data' => $this,
             'shop' => $this->getShop(),
-            'options' => $this->sellUnits->map(function (SellUnit $sellUnit) {
+            'options' => $this->visibleSellUnits()->map(function (SellUnit $sellUnit) {
                 return $sellUnit->getJsonFormat();
             }),
             'delivery' => $this->getDelivery()

@@ -126,6 +126,11 @@ class ProductOptionItem extends SellUnit
 
     public function getDealState()
     {
-        return $this->getDealStates()[$this->state_deal];
+        return self::getDealStates()[$this->state_deal];
+    }
+
+    public function isDisplay()
+    {
+        return $this->state_display === self::DISPLAY_VISIBLE;
     }
 }

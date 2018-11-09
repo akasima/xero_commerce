@@ -28,6 +28,8 @@ abstract class SellUnit extends DynamicModel
 
     abstract public function getDealState();
 
+    abstract public function isDisplay();
+
     public function getDiscountPrice()
     {
         return $this->getOriginalPrice() - $this->getSellPrice();
