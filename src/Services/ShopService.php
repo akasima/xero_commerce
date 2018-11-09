@@ -60,6 +60,8 @@ class ShopService
      */
     public function create(Request $request)
     {
+        $this->validateShop($request);
+
         $args = $request->all();
 
         $args['state_approval'] = Shop::APPROVAL_WAITING;
@@ -89,6 +91,8 @@ class ShopService
      */
     public function update(Request $request, $shopId)
     {
+        $this->validateShop($request);
+
         $args = $request->all();
         $shop = $this->handler->getShop($shopId);
 
@@ -123,5 +127,10 @@ class ShopService
     {
         $args = $request->all();
         $this->handler->removeDelivery($args, $shop);
+    }
+
+    protected function validateShop(Request $request)
+    {
+        app('xero_commerce.validateManager')->shopValidate($request);
     }
 }
