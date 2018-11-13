@@ -51,9 +51,14 @@
                             <li><a href="#"><i class="xi-instagram"></i><span class="xe-sr-only">인스타그램 공유</span></a>
                             </li>
                         </ul>
+                        @if($product->state_deal !== \Xpressengine\Plugins\XeroCommerce\Models\Product::DEAL_ON_SALE)
+                        <div style="background: rgba(255,255,255,0.5); position: absolute; width: 100%; height:100%; color:black; font-weight: bold; padding-top:70%; text-align: center">
+                            {{$product->getDealStates()[$product->state_deal]}}
+                        </div>
+                        @endif
                     </div>
                     <div class="default-list-text">
-                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}">
+                        <a href="{{ ($product->state_deal === \Xpressengine\Plugins\XeroCommerce\Models\Product::DEAL_ON_SALE)?route('xero_commerce::product.show', ['slug' => $product->getSlug()]):'#' }}">
                             <h3 class="default-list-text-title">
 
                                 @foreach($product->labels as $label)
@@ -70,7 +75,7 @@
                         </a>
                     </div>
                 </li>
-            @endforeach
+            @endforeachk
         </ul>
     </div>
 
