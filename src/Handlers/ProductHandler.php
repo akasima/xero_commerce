@@ -119,6 +119,7 @@ class ProductHandler
         }
 
         $targetProductIds = array_unique($targetProductIds);
+        $query = $query->where('state_display',Product::DISPLAY_VISIBLE);
         $query = $query->whereIn('id', $targetProductIds);
 
         return $query;

@@ -177,7 +177,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="col-lg-4">
                             {{uio('formSelect', [
                             'label'=>'거래 여부',
-                            'name'=>'tax_type',
+                            'name'=>'state_deal',
                             'options'=>formatArray(Product::getDealStates())
                             ])}}
                         </div>
