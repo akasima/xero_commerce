@@ -8,7 +8,7 @@
         fail-url="{{route('xero_commerce::order.fail',['order' => $order->id])}}"
         :order-item-list='{!! $orderItems !!}'
         :order-summary='{!! json_encode($summary)  !!}'
-        :user='{!! \Illuminate\Support\Facades\Auth::user() !!}'
+        :user='{!! \Illuminate\Support\Facades\Auth::user()->makeVisible('email') !!}'
         :user-info='{!! \Xpressengine\Plugins\XeroCommerce\Models\UserInfo::by(\Illuminate\Support\Facades\Auth::id())->load('userDelivery') !!}'
         order_id="{{$order->id}}"
         :pay-methods='{{ json_encode($payMethods)  }} '

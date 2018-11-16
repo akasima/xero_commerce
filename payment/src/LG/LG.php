@@ -29,7 +29,7 @@ class LG extends PaymentGate
 
     public static function url()
     {
-        return "https://pretestclient.uplus.co.kr:9443/xpay/Gateway.do";
+//        return "https://pretestclient.uplus.co.kr:9443/xpay/Gateway.do";
         return "https://xpayvvipclient.uplus.co.kr/xpay/Gateway.do";
     }
 }

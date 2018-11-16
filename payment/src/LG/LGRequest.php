@@ -29,7 +29,7 @@ class LGRequest extends AbstractPaymentRequest
     {
         $form = [
             'LGD_VERSION'=>LG::$version,
-            'CST_PLATFORM'=>'test',
+            'CST_PLATFORM'=>'service',
             'CST_MID'=>XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@lg.id'),
             'LGD_OID'=>str_replace('-','_',$this->payment->id),
             'LGD_AMOUNT'=>$this->payment->price,
@@ -48,7 +48,7 @@ class LGRequest extends AbstractPaymentRequest
             'LGD_ENCODING_RETURNURL'=>'UTF-8',
             'LGD_ENCODING_NOTEURL'=>'UTF-8'
         ];
-        $form['LGD_MID']='t'.$form['CST_MID'];
+        $form['LGD_MID']=$form['CST_MID'];
         $form['LGD_HASHDATA'] = md5($form['LGD_MID'].$form['LGD_OID'].$form['LGD_AMOUNT'].$form['LGD_TIMESTAMP'].XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@lg.mertKey'));
         return $form;
     }

@@ -4,17 +4,20 @@ const lg = {
     var result = openXpay(document.getElementById('xero_pay'), 'test', 'iframe', null, "", "");
     $(result).on("load", () => {
       var iframe = result.contentWindow || result.contentDocument;
-      $(iframe.document).on("complete", () => {
-        success(
-          {
-            status: true
-          }
-        )
-      })
-      $(iframe.document).on("fail", err => {
-        fail(err.detail.msg)
-        parent.closeIframe()
-      })
+      console.log('load');
+      if(iframe.document){
+        $(iframe.document).on("complete", () => {
+          success(
+            {
+              status: true
+            }
+          )
+        })
+        $(iframe.document).on("fail", err => {
+          fail(err.detail.msg)
+          parent.closeIframe()
+        })
+      }
     })
   }
 }

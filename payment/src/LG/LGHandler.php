@@ -133,11 +133,11 @@ class LGHandler implements PaymentHandler
         $info = json_decode($payment->info);
         $form = [
             'CST_MID' => XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@lg.id'),
-            'CST_PLATFORM' => 'test',
+            'CST_PLATFORM' => 'service',
             'LGD_TID' => $info->LGD_RESPONSE[0]->LGD_TID,
             'LGD_TXNAME' => 'Cancel'
         ];
-        $form['LGD_MID']='t'.$form['CST_MID'];
+        $form['LGD_MID']=$form['CST_MID'];
         $tx_id = $this->Gen_TX_ID($form['LGD_MID']);
         $form['LGD_TXID']=$tx_id;
         $form['LGD_AUTHCODE']=$this->Gen_Auth_Code($tx_id);
