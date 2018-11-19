@@ -272,7 +272,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 {{ uio('formImage',
                                       ['label'=>'사진업로드 #'.$i,
                                        'name'=>'images[]',
-                                       'id'=>'image'.$i
+                                       'id'=>'image'.$i,
+                                       'maxSize'=>50000000
                                 ]) }}
                             </div>
                         @endfor

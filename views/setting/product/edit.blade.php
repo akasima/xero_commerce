@@ -261,6 +261,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                        'name'=>'editImages[]',
                                        'id'=>'image'.$i,
                                        'description'=> '휴대폰 사용하여 입력하세요',
+                                       'maxSize'=>50000000,
                                        'disabled'=>true
                                 ]) }}
                                     </div>
@@ -269,6 +270,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                           ['label'=>'사진업로드 #'.$i,
                                            'name'=>'addImages[]',
                                            'id'=>'image'.$i,
+                                           'maxSize'=>50000000,
                                            'description'=> '휴대폰 사용하여 입력하세요'
                                     ]) }}
                                 @endif
