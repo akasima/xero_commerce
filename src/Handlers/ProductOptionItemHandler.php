@@ -44,6 +44,7 @@ class ProductOptionItemHandler
         $optionItem->save();
 
         $this->storeRevision($optionItem);
+        return $optionItem;
     }
 
     private function storeRevision($optionItem)

@@ -2,8 +2,10 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
+use Illuminate\Support\Facades\Notification;
 use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
+use Xpressengine\Plugins\XeroCommerce\Notifications\StockLack;
 
 class EventManager
 {
@@ -26,7 +28,12 @@ class EventManager
             sprintf('%s@update', ProductOptionItemHandler::class),
             'XeroCommerceProductOptionItemUpdate',
             function ($function, $optionItem, $args) {
-                \Log::info('productOptionItem update');
+                $productOptionItem = $function($optionItem, $args);
+
+                if($productOptionItem->stock <= $productOptionItem->alert_stock){
+                    Notification::route('mail', config('mail.from.address'))
+                        ->notify(new StockLack($optionItem));
+                }
 
                 return $function($optionItem, $args);
             }
