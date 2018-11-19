@@ -750,6 +750,8 @@ class Resources
                         'uses' => 'LabelController@create']);
                     Route::post('/store', ['as' => 'xero_commerce::setting.label.store',
                         'uses' => 'LabelController@store']);
+                    Route::post('/update/{id}', ['as' => 'xero_commerce::setting.label.update',
+                        'uses' => 'LabelController@update']);
                     Route::get('/edit/{id}', ['as' => 'xero_commerce::setting.label.edit',
                         'uses' => 'LabelController@edit']);
                     Route::post('/remove/{id}', ['as' => 'xero_commerce::setting.label.remove',
