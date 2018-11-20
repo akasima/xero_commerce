@@ -17,14 +17,15 @@ use Xpressengine\XePlugin\XeroPay\PaymentResult;
 class InicisResult extends PaymentResult
 {
     private $arr;
+
     public function __construct($arr)
     {
-        $this->arr= $arr;
+        $this->arr = $arr;
     }
 
     public function success()
     {
-        return $this->arr->resultCode=='0000';
+        return $this->arr->resultCode == '0000';
     }
 
     public function msg()
@@ -39,7 +40,7 @@ class InicisResult extends PaymentResult
 
     public function getDateTime()
     {
-        return $this->arr->applDate.$this->arr->applTime;
+        return $this->arr->applDate . $this->arr->applTime;
     }
 
     public function getInfo()
@@ -70,19 +71,25 @@ class InicisResult extends PaymentResult
 
     public function getReceipt()
     {
-        $info = ($this->getPayment()->is_paid_method) ?
-            [
-                '결제승인번호'=>$this->arr->applNum,
-                '결제금액'=>number_format($this->arr->TotPrice).'원'
-            ] :
-            [
-                '입금은행'=>Inicis::$banks[$this->arr->VACT_BankCode].'('.$this->arr->VACT_Num.')',
-                '예금주'=>$this->arr->VACT_Name,
-                '입금기한'=>$this->arr->VACT_Date
+        if ($this->success()) {
+            $info = ($this->getPayment()->is_paid_method) ?
+                [
+                    '결제승인번호' => $this->arr->applNum,
+                    '결제금액' => number_format($this->arr->TotPrice) . '원'
+                ] :
+                [
+                    '입금은행' => Inicis::$banks[$this->arr->VACT_BankCode] . '(' . $this->arr->VACT_Num . ')',
+                    '예금주' => $this->arr->VACT_Name,
+                    '입금기한' => $this->arr->VACT_Date
+                ];
+            if ($this->arr->payMethod == 'VCard' || $this->arr->payMethod == 'Card') {
+                $info['카드번호'] = $this->arr->CARD_Num . '(' . Inicis::$cards[$this->arr->CARD_Code] . ')';
+                $info['할부'] = ($this->arr->CARD_Interest == 1) ? $this->arr->CARD_Quota . '개월' : '일시불';
+            }
+        } else {
+            $info = [
+                '결제실패' => $this->msg()
             ];
-        if($this->arr->payMethod=='VCard'||$this->arr->payMethod=='Card'){
-            $info['카드번호']=$this->arr->CARD_Num.'('.Inicis::$cards[$this->arr->CARD_Code].')';
-            $info['할부']=($this->arr->CARD_Interest==1)?$this->arr->CARD_Quota.'개월':'일시불';
         }
         return json_encode($info);
     }

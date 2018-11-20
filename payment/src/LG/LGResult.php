@@ -16,15 +16,15 @@ use Xpressengine\XePlugin\XeroPay\PaymentResult;
 class LGResult extends PaymentResult
 {
     public $res;
-    
-    public function __construct( $arr)
+
+    public function __construct($arr)
     {
         $this->res = $arr;
     }
 
     public function success()
     {
-        return $this->res->LGD_RESPCODE ==='0000';
+        return $this->res->LGD_RESPCODE === '0000';
     }
 
     public function msg()
@@ -66,23 +66,29 @@ class LGResult extends PaymentResult
     public function getPayment()
     {
         $oid = $this->res['LGD_OID'];
-        return Payment::find(str_replace('_','-',$oid));
+        return Payment::find(str_replace('_', '-', $oid));
     }
 
     public function getReceipt()
     {
-        $res = $this->res->LGD_RESPONSE[0];
-        $info =
-            [
-                '결제금액'=>number_format($res->LGD_AMOUNT).'원',
-                '결제기관'=>$res->LGD_FINANCENAME
+        if ($this->success()) {
+            $res = $this->res->LGD_RESPONSE[0];
+            $info =
+                [
+                    '결제금액' => number_format($res->LGD_AMOUNT) . '원',
+                    '결제기관' => $res->LGD_FINANCENAME
+                ];
+            if ($res->LGD_PAYTYPE == 'SC0040') {
+                $info['입금계좌'] = $res->LGD_ACCOUNTNUM;
+            }
+            if ($res->LGD_PAYTYPE == 'SC0010') {
+                $info['카드번호'] = $res->LGD_CARDNUM;
+                $info['할부'] = ($res->LGD_CARDINSTALLMONTH == 0) ? '일시불' : $res->LGD_CARDINSTALLMONTH . '개월';
+            }
+        } else {
+            $info = [
+                '결제실패' => $this->msg()
             ];
-        if($res->LGD_PAYTYPE=='SC0040'){
-            $info['입금계좌']=$res->LGD_ACCOUNTNUM;
-        }
-        if($res->LGD_PAYTYPE=='SC0010'){
-            $info['카드번호']=$res->LGD_CARDNUM;
-            $info['할부']=($res->LGD_CARDINSTALLMONTH==0)?'일시불':$res->LGD_CARDINSTALLMONTH.'개월';
         }
         return json_encode($info);
     }
