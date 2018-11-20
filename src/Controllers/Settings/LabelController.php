@@ -37,7 +37,15 @@ class LabelController extends Controller
 
     public function edit(Request $request, $id)
     {
+        $label = Label::find($id);
+        return XePresenter::make('xero_commerce::views.setting.label.edit', compact('label'));
+    }
 
+    public function update(Request $request, $id)
+    {
+        $label = Label::find($id);
+        $this->labelService->update($request, $label);
+        return redirect()->route('xero_commerce::setting.label.index');
     }
 
     public function remove(Request $request, $id)

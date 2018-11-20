@@ -25,6 +25,13 @@ class LabelService
         $this->handler->store($args);
     }
 
+    public function update(Request $request, $label)
+    {
+        $args = $request->except('_token');
+
+        $this->handler->update($label, $args);
+    }
+
     public function remove($id)
     {
         $this->handler->destroy($id);

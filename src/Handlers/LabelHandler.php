@@ -16,6 +16,14 @@ class LabelHandler
         $newLabel->save();
     }
 
+    public function update($label, array $args)
+    {
+
+        $label->fill($args);
+
+        $label->save();
+    }
+
     public function destroy($id)
     {
         Label::where('id', $id)->delete();
