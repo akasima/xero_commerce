@@ -14,7 +14,7 @@
                         <span class="xe-input-helper"></span>
                         <span class="xe-label-text">기본 배송지</span>
                     </label>
-                    <label v-for="del in userInfo.user_delivery" v-if="del.nickname!=='기본배송지'">
+                    <label class="xe-label" v-for="del in userInfo.user_delivery" v-if="del.nickname!=='기본배송지'">
                         <input type="radio" name="addr" v-model="deliveryCheck" :value="del.nickname">
                         <span class="xe-input-helper"></span>
                         <span class="xe-label-text">{{del.nickname}}</span>
@@ -174,6 +174,14 @@
                 console.log(this.delivery)
             },
             addDelivery() {
+                if(this.new_name===''){
+                    alert('신규 배송지를 알아 볼 수 있는 닉네임을 설정해주세요')
+                    return
+                }
+                if(this.delivery.addr===''){
+                    alert('신규 배송지주소가 없습니다')
+                    return
+                }
                 this.delivery.nickname = this.new_name
                 this.userInfo.user_delivery.push(this.delivery)
                 this.deliveryCheck = this.new_name
