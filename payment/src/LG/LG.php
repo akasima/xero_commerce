@@ -9,6 +9,7 @@
 namespace Xpressengine\XePlugin\XeroPay\LG;
 
 
+use App\Facades\XeConfig;
 use Xpressengine\XePlugin\XeroPay\PaymentGate;
 
 class LG extends PaymentGate
@@ -29,7 +30,13 @@ class LG extends PaymentGate
 
     public static function url()
     {
-//        return "https://pretestclient.uplus.co.kr:9443/xpay/Gateway.do";
-        return "https://xpayvvipclient.uplus.co.kr/xpay/Gateway.do";
+        return (self::isTest()) ?
+            "https://pretestclient.uplus.co.kr:9443/xpay/Gateway.do" :
+            "https://xpayvvipclient.uplus.co.kr/xpay/Gateway.do";
+    }
+
+    public static function isTest()
+    {
+        return !is_null(XeConfig::get('xero_pay')->get('test'));
     }
 }

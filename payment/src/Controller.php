@@ -38,7 +38,7 @@ class Controller extends BaseController
         {
             $pgconfig[$id]=$this->getInputs($request,$id);
         }
-        XeConfig::set('xero_pay',['uses'=>$request->get('pg'), 'pg'=>$pgconfig]);
+        XeConfig::set('xero_pay',['uses'=>$request->get('pg'), 'pg'=>$pgconfig, 'test'=>$request->get('test')]);
         return redirect()->route('xero_pay::index');
     }
 

@@ -1,6 +1,7 @@
 <?php
 namespace Xpressengine\XePlugin\XeroPay\Inicis;
 
+use App\Facades\XeConfig;
 use Xpressengine\XePlugin\XeroPay\PaymentGate;
 
 class Inicis extends PaymentGate
@@ -66,5 +67,10 @@ class Inicis extends PaymentGate
     public static function url()
     {
         return '';
+    }
+
+    public static function isTest()
+    {
+        return !is_null(XeConfig::get('xero_pay')->get('test'));
     }
 }

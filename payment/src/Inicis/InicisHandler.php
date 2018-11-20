@@ -45,7 +45,7 @@ class InicisHandler implements PaymentHandler
         XeFrontend::js([
             Plugin::asset('assets/payment.js'),
             Plugin::asset('assets/inicis.js'),
-            'https://stdpay.inicis.com/stdjs/INIStdPay.js'
+            (Inicis::isTest()) ? 'https://stgstdpay.inicis.com/stdjs/INIStdPay.js' : 'https://stdpay.inicis.com/stdjs/INIStdPay.js'
         ])->appendTo('head')->load();
     }
 

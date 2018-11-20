@@ -65,7 +65,7 @@
                                     <div class="form-group">
                                         <label>영어 이름</label>
                                         <input class="form-control" name="eng_name"
-                                               value="{{ Request::old('eng_name') }}"/>
+                                               value="{{ (Request::old('eng_name'))?:'label' }}"/>
                                     </div>
                                 </div>
                             </div>
