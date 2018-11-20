@@ -22,11 +22,12 @@ class AgreementController extends XeroCommerceBasicController
     {
         AgreementService::userAgree($request->agreement_id);
 
-        $userInfo = new UserInfo();
-        $userInfo->name = $request->name;
-        $userInfo->phone = $request->phone;
-        $userInfo->user_id = Auth::id();
-        $userInfo->save();
+        UserInfo::updateOrcreate([
+            'user_id'=>Auth::id()
+        ],[
+            'name'=>$request->name,
+            'phone'=>$request->phone
+        ]);
 
         return redirect()->intended();
     }

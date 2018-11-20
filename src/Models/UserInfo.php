@@ -11,6 +11,8 @@ class UserInfo extends DynamicModel
 
     public $timestamps = false;
 
+    protected $guarded=[];
+
     static function by($user_id)
     {
         return self::where('user_id', $user_id)->first();
