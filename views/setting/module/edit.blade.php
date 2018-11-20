@@ -23,10 +23,10 @@
     <div class="xe-dropdown __xe-dropdown-form xe-rich-shop-category" data-relative="categoryItemId">
         <input type="hidden" class="categoryItemId" name="categoryItemId" value="" />
         <input type="hidden" class="categoryItemId-depth" name="categoryItemDepth" value="" />
-        <button class="xe-btn select" type="button" data-toggle="xe-dropdown" aria-expanded="false">선택</button>
+        <button class="xe-btn select" type="button" data-toggle="xe-dropdown" aria-expanded="false">{{$selectedLabel}}</button>
         <ul class="xe-dropdown-menu">
             @foreach($categoryItems as $item)
-                <li><a href="#" data-url="{{route('manage.category.edit.item.children', ['id' => $item->category_id])}}" data-id="{{$item->id}}">{{xe_trans($item->word)}}</a></li>
+                <li @if($categoryItemId == $item->id) class="on" @endif ><a href="#" data-url="{{route('manage.category.edit.item.children', ['id' => $item->category_id])}}" data-id="{{$item->id}}">{{xe_trans($item->word)}}</a></li>
             @endforeach
         </ul>
     </div>

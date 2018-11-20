@@ -6,6 +6,7 @@ use Route;
 use XeConfig;
 use View;
 use Xpressengine\Category\Models\Category;
+use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Menu\AbstractModule;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
@@ -71,18 +72,27 @@ class XeroCommerceModule extends AbstractModule
         $categoryItems = Category::find($config->get('categoryId'))->getProgenitors();
 
         $labels = Label::get();
-        $moduleLabels = XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId))['labels'];
-        if ($moduleLabels === null) {
-            $moduleLabels = [];
-        }
+        $instanceConfig = XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId));
 
+        $categoryItemId = $instanceConfig->get('categoryItemId', '');
+        $categoryItemDepth = $instanceConfig->get('categoryItemDepth', '');
+        $moduleLabels = $instanceConfig->get('labels', []);
+
+        $selectedLabel = '선택';
+        $categoryItem = CategoryItem::find($categoryItemId);
+        if ($categoryItem) {
+            $selectedLabel = xe_trans($categoryItem->word);
+        }
+        
         $plugin = Plugin::class;
 
         return View::make('xero_commerce::views/setting/module/edit', [
             'categoryItems' => $categoryItems,
             'plugin' => $plugin,
             'labels' => $labels,
-            'moduleLabels' => $moduleLabels
+            'categoryItemId' => $categoryItemId,
+            'moduleLabels' => $moduleLabels,
+            'selectedLabel' => $selectedLabel,
         ])->render();
     }
 
