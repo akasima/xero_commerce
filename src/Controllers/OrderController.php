@@ -2,7 +2,6 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
-use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
@@ -81,6 +80,7 @@ class OrderController extends XeroCommerceBasicController
     {
         $order = $this->orderService->getOrderableOrder($request->order_id);
         $paymentService = new PaymentService();
+        $paymentService->statusCheck();
         $paymentService->loadScript();
         return \XePresenter::make(
             'xero_commerce::views.order.register',
