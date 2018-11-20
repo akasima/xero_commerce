@@ -245,6 +245,7 @@ class OrderHandler extends SellSetHandler
             $delivery->recv_phone = $request->delivery['phone'];
             $delivery->recv_addr = $request->delivery['addr'] ?: '';
             $delivery->recv_addr_detail = $request->delivery['addr_detail'];
+            $delivery->recv_addr_post = $request->delivery['addr_post'];
             $delivery->recv_msg = $request->delivery['msg'];
             $delivery->save();
         });

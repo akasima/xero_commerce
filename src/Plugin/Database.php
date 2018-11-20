@@ -26,6 +26,7 @@ class Database
             $table->string('phone');
             $table->string('addr');
             $table->string('addr_detail');
+            $table->string('addr_post');
             $table->string('msg')->nullable();
         });
 
@@ -186,6 +187,7 @@ class Database
             $table->string('recv_phone');
             $table->string('recv_addr');
             $table->string('recv_addr_detail');
+            $table->string('recv_addr_post');
             $table->string('recv_msg')->nullable();
             $table->timestamps();
         });

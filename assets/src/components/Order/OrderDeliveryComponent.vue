@@ -69,7 +69,7 @@
                 </div>
                 <div class="table-cell">
                     <div class="table-cell-row">
-                        <input type="text" class="xe-form-control input-only-72" readonly @click="modal">
+                        <input type="text" class="xe-form-control input-only-72" v-model="delivery.addr_post" readonly @click="modal">
                         <button type="button" class="xe-btn xe-btn-secondary" @click="modal">우편번호</button>
                     </div>
                     <div class="table-cell-row">
@@ -143,6 +143,7 @@
                     phone: this.userInfo.phone,
                     addr: '',
                     addr_detail: '',
+                    addr_post:'',
                     msg: ''
                 },
                 new_name: '',
@@ -151,6 +152,7 @@
                     phone: this.userInfo.phone,
                     addr: '',
                     addr_detail: '',
+                    addr_post:'',
                     msg: ''
                 },
                 phone1: '010',
@@ -167,6 +169,7 @@
                     ],
                     addr: '',
                     addr_detail: '',
+                    addr_post:'',
                     msg: ''
                 }
             },
@@ -188,6 +191,7 @@
             },
             addressRegister(res) {
                 this.delivery.addr = res.address
+                this.delivery.addr_post = res.zonecode
                 $('#addressModal').xeModal('hide')
                 $("#addr_detail").focus()
             }

@@ -80,7 +80,7 @@
                             주소
                         </div>
                         <div class="table-cell">
-                            {{delivery.recv_addr + delivery.recv_addr_detail}}
+                            ({{delivery.recv_addr_post}}) {{delivery.recv_addr + delivery.recv_addr_detail}}
                         </div>
                     </div>
                     <div class="table-row">
