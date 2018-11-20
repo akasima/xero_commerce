@@ -767,8 +767,10 @@ class Resources
                         'uses' => 'BadgeController@create']);
                     Route::post('/store', ['as' => 'xero_commerce::setting.badge.store',
                         'uses' => 'BadgeController@store']);
-                    Route::get('/edit/{id}', ['as' => 'xero_commerce::setting.badge.edit',
+                    Route::get('/edit/{badge}', ['as' => 'xero_commerce::setting.badge.edit',
                         'uses' => 'BadgeController@edit']);
+                    Route::post('/update/{badge}', ['as' => 'xero_commerce::setting.badge.update',
+                        'uses' => 'BadgeController@update']);
                     Route::post('/remove/{id}', ['as' => 'xero_commerce::setting.badge.remove',
                         'uses' => 'BadgeController@remove']);
                 });

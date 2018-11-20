@@ -25,9 +25,21 @@ class BadgeController extends Controller
         return XePresenter::make('xero_commerce::views.setting.badge.index', compact('badges'));
     }
 
+    public function edit(Request $request, Badge $badge)
+    {
+        return XePresenter::make('xero_commerce::views.setting.badge.edit', compact('badge'));
+    }
+
     public function store(Request $request)
     {
         $this->badgeService->create($request);
+
+        return redirect()->route('xero_commerce::setting.badge.index');
+    }
+
+    public function update(Request $request, Badge $badge)
+    {
+        $this->badgeService->update($request, $badge);
 
         return redirect()->route('xero_commerce::setting.badge.index');
     }

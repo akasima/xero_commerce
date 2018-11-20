@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Badge;
 
 class BadgeService
 {
@@ -25,5 +26,12 @@ class BadgeService
     public function remove($id)
     {
         $this->handler->destroy($id);
+    }
+
+    public function update(Request $request, Badge $badge)
+    {
+        $args = $request->except('_token');
+
+        $this->handler->update($badge, $args);
     }
 }

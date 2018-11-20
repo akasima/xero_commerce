@@ -15,6 +15,14 @@ class BadgeHandler
         $newBadge->save();
     }
 
+    public function update($badge, $args)
+    {
+
+        $badge->fill($args);
+
+        $badge->save();
+    }
+
     public function destroy($id)
     {
         Badge::where('id', $id)->delete();
