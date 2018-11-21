@@ -316,7 +316,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
                         <div class="form-group">
                             {!! uio('uiobject/xero_commerce@tag', [
-                                'tags' => $product->tags->toArray()
+                                'tags' => $product->tags->pluck('word')
                             ]) !!}
                         </div>
                     </div>
