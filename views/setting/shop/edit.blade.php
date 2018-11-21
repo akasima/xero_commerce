@@ -34,12 +34,14 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 ])}}
 
                                 @if ($shop->shop_type != Shop::TYPE_BASIC_SHOP)
-                                {{uio('formSelect', [
-                                'label'=>'입점몰 형태',
-                                'name'=>'shop_type',
-                                'description'=>'입점몰 사업 형태를 결정합니다',
-                                'options'=>$shopTypes
-                                ])}}
+                                <div class="form-group">
+                                    <label>입점몰 형태</label>
+                                    <select name="shop_type" class="form-control" value="{{$shop->shop_type}}">
+                                        @foreach($shopTypes as $key=>$value)
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 @endif
 
                             </div>
