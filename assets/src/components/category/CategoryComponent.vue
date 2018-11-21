@@ -1,17 +1,24 @@
 <template>
     <div>
         <input type="hidden" name="newCategory" v-model="categoryString">
-
-        <create-category-component v-for="(component, componentIndex) in this.createComponents"
-                                   v-on:selectCategoryItem="selectCategoryItem"
-                                   v-on:addCreateComponent="addCreateComponent"
-                                   v-on:removeCreateComponent="removeCreateComponent"
-                                   :category-items="categoryItems"
-                                   :get-child-url="getChildUrl"
-                                   :componentIndex="componentIndex"
-                                   :key="componentIndex"
-                                   :selected="component">
-        </create-category-component>
+        <div v-for="(component, index) in createComponents" style="display: flex">
+            <div style="flex-grow: 10">
+                <select class="form-control components" :id="'select'+index" v-model="component.category_id" @change="updateChild(component.category_id, index)">
+                    <option>선택</option>
+                    <option :value="item.value" v-for="item in componentCategoryOptions[index]">{{item.text}}</option>
+                </select>
+                <select v-if="captureLength[index] > 0" class="form-control components" :id="'select'+index" v-model="component.category_id" @change="changeOptions(component.category_id,index)">
+                    <option>선택</option>
+                    <option  v-for="item in childItems[index]" :value="item.value">{{item.text}}</option>
+                </select>
+            </div>
+            <div style="flex-grow: 1">
+                <button v-on:click="removeCreateComponent(index)" type="button" class="xe-btn xe-btn-danger xe-btn-block"
+                >삭제
+                </button>
+            </div>
+        </div>
+        <button class="xe-btn xe-btn-block" type="button" @click="addCreateComponent">추가</button>
     </div>
 </template>
 
@@ -19,50 +26,72 @@
     export default {
         name: "CategoryComponent",
         props: ['categoryItems', 'mode', 'getChildUrl', 'selected'],
+        computed: {
+            categoryString () {
+                return this.createComponents.map(function(v){return v.category_id}).join(',')
+            },
+            captureLength () {
+                return this.childItems.map(function(v){return v.length});
+            }
+        },
         data() {
             return {
                 createComponents: [],
-                newCategoryItems: [],
-                categoryString: this.selected ? this.selected : '',
+                childItems: [],
+                componentCategoryOptions: [],
+                firstCategoryId: (this.categoryItems.length===0) ? '' : this.categoryItems[0].value
             }
         },
         mounted() {
             if (this.selected) {
                 console.log(this.selected)
                 $.each(this.selected, (k,v)=>{
-                    this.createComponents.push(v);
-                    this.newCategoryItems.push(v)
+                    this.createComponents.push({
+                        category_id: v
+                    });
+                    this.childItems.push([]);
+                    this.componentCategoryOptions.push (this.categoryItems)
                 })
             } else {
-                this.createComponents.push('');
+                this.addCreateComponent()
             }
-
         },
         methods: {
-            selectCategoryItem: function (componentIndex, itemId) {
-                this.createComponents[componentIndex] = itemId;
-
-                if (this.newCategoryItems.length >= componentIndex + 1) {
-                    this.newCategoryItems[componentIndex] = itemId;
-                } else {
-                    this.newCategoryItems.push(itemId);
-                }
-
-                this.generateCategoryString();
-            },
-            generateCategoryString: function () {
-                var string = '';
-                this.categoryString = this.newCategoryItems.join(',');
-            },
             addCreateComponent: function () {
-                this.createComponents.push('');
+                this.createComponents.push({
+                    category_id: this.firstCategoryId
+                });
+                this.childItems.push([]);
+                this.componentCategoryOptions.push(this.categoryItems)
             },
             removeCreateComponent: function (componentIndex) {
-                this.createComponents.splice(componentIndex, 1);
+                this.createComponents.splice(componentIndex, 1)
+                this.childItems.splice(componentIndex, 1)
+                this.componentCategoryOptions.splice(componentIndex, 1)
 
                 if (this.createComponents.length === 0) {
-                    this.createComponents.push('');
+                    alert('최소 하나의 카테고리가 필요합니다.')
+                    this.addCreateComponent()
                 }
+            },
+            updateChild(target, index){
+                var temp_array = this.childItems.slice()
+                $.ajax({
+                    url: this.getChildUrl,
+                    type: 'get',
+                    dataType: 'json',
+                    data: {'parentId': target},
+                    success: data => {
+                        var childCategories = data.categories;
+                        temp_array[index]=childCategories
+                        this.childItems = temp_array
+                    }
+                });
+            },
+            changeOptions(target,index)
+            {
+                this.componentCategoryOptions[index] = this.childItems[index]
+                this.updateChild(target,index)
             }
         }
     }

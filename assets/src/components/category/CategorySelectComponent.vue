@@ -1,5 +1,5 @@
 <template>
-    <select class="parent_select" v-model="selectValue" @change="getChild(selectValue)">
+    <select class="parent_select form-control" v-model="selectValue" @change="getChild(selectValue)">
         <option value="">선택</option>
         <option v-for="categoryItem in categoryItems"
                 :value="categoryItem['value']">{{ categoryItem['text'] }}</option>

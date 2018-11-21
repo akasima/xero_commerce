@@ -1,17 +1,19 @@
 <template>
-    <div>
-        <category-select-component v-for="(categoryItems, index) in this.allCategory"
-                                   v-on:selectParent="getChild"
-                                   :category-items="categoryItems"
-                                   :index="index"
-                                   :key="index"
-                                   :selected="selected">
-        </category-select-component>
-
-        <button v-on:click="addCreateComponent" type="button" class="xe-btn" v-if="this.isVisibleAddButton">추가</button>
-        <button v-on:click="removeCreateComponent" type="button" class="xe-btn xe-btn-danger"
-                v-if="this.isVisibleRemoveButton">삭제
-        </button>
+    <div style="display: flex">
+        <div style="flex-grow: 10;">
+            <category-select-component v-for="(categoryItems, index) in this.allCategory"
+                                       v-on:selectParent="getChild"
+                                       :category-items="categoryItems"
+                                       :index="index"
+                                       :key="index"
+                                       :selected="selected">
+            </category-select-component>
+        </div>
+        <div style="flex-grow: 1;">
+            <button v-on:click="removeCreateComponent" type="button" class="xe-btn xe-btn-danger xe-btn-block"
+                    >삭제 {{componentIndex}}
+            </button>
+        </div>
     </div>
 </template>
 
