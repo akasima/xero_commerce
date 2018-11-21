@@ -7,7 +7,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     <h2>상품 수정</h2>
 @endsection
 
-{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
+{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->before('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 
 <form method="post" action="{{ route('xero_commerce::setting.product.update', ['productId' => $product->id]) }}" enctype="multipart/form-data"
     data-rule="product" data-rule-alert-type="toast">
@@ -316,7 +316,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
                         <div class="form-group">
                             {!! uio('uiobject/xero_commerce@tag', [
-                                'tags' => $product->tags->pluck('word')
+                                'tags' => $product->tags->toArray()
                             ]) !!}
                         </div>
                     </div>
