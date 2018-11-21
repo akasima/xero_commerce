@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
 
 class ProductCategoryHandler
@@ -26,5 +27,16 @@ class ProductCategoryHandler
     public function getIds($productId)
     {
         return ProductCategory::where('product_id', $productId)->pluck('category_id')->all();
+    }
+
+    public function getLabels($productId)
+    {
+        $product = Product::find($productId);
+        return $product->category()->pluck('word','xero_commerce_product_category.category_id')->map(function($item){
+            return [
+                'label'=>xe_trans($item->word),
+                'id'=>$item->id
+        ];
+        });
     }
 }

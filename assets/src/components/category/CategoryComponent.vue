@@ -1,7 +1,7 @@
 <template>
     <div>
         <input type="hidden" name="newCategory" v-model="categoryString">
-        <div v-for="(component, index) in createComponents" style="display: flex">
+        <div v-if="!loading" v-for="(component, index) in createComponents" style="display: flex">
             <div style="flex-grow: 10">
                 <select class="form-control components" :id="'select'+index" v-model="component.category_id" @change="updateChild(component.category_id, index)">
                     <option>선택</option>
@@ -17,6 +17,9 @@
                 >삭제
                 </button>
             </div>
+        </div>
+        <div v-if="loading">
+            카테고리 로드중...
         </div>
         <button class="xe-btn xe-btn-block" type="button" @click="addCreateComponent">추가</button>
     </div>
@@ -39,18 +42,42 @@
                 createComponents: [],
                 childItems: [],
                 componentCategoryOptions: [],
-                firstCategoryId: (this.categoryItems.length===0) ? '' : this.categoryItems[0].value
+                firstCategoryId: (this.categoryItems.length===0) ? '' : this.categoryItems[0].value,
+                loading: false
             }
         },
         mounted() {
             if (this.selected) {
                 console.log(this.selected)
                 $.each(this.selected, (k,v)=>{
+                    var find = this.find(this.categoryItems, v)
+                    if(!find){
+                        this.loading = true
+                        $.each(this.categoryItems, (key,value)=>{
+                            $.ajax({
+                                url: this.getChildUrl,
+                                type: 'get',
+                                dataType: 'json',
+                                data: {'parentId': value},
+                                success: data => {
+                                    var childCategories = data.categories;
+                                    var childFind = this.find(childCategories, v)
+                                    if(childFind){
+                                        var temp_array = this.componentCategoryOptions.slice()
+                                        temp_array[k]=childCategories
+                                        this.componentCategoryOptions = temp_array
+                                        this.loading = false
+                                    }
+                                }
+                            });
+                        })
+                    }
                     this.createComponents.push({
                         category_id: v
                     });
                     this.childItems.push([]);
                     this.componentCategoryOptions.push (this.categoryItems)
+                    this.updateChild(v, k)
                 })
             } else {
                 this.addCreateComponent()
@@ -92,6 +119,13 @@
             {
                 this.componentCategoryOptions[index] = this.childItems[index]
                 this.updateChild(target,index)
+            },
+            find(list,value)
+            {
+                var find = list.find(item=>{
+                    return item.value === value
+                })
+                return typeof find !=='undefined'
             }
         }
     }
