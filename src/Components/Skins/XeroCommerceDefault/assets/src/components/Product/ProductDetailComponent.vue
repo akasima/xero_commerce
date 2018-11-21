@@ -1,8 +1,10 @@
 <template>
     <div>
         <product-category-component
+            v-for="(target, key) in product.categorys"
+            :first="key===0"
             :categorys="category"
-            :target-category="product.categorys"
+            :target-category="target"
         ></product-category-component>
         <div class="xe-shop product">
             <div class="container">
@@ -11,14 +13,14 @@
                     <div class="product-img">
                         <h3 class="xe-sr-only">상품 이미지</h3>
                         <div class="product-img-view">
-                            <img :src="mainImg" style="width:450px">
+                            <img :src="mainImg" style="width:450px;height:600px;">
                             <button class="xe-btn left" @click="beforeMainImage"><i class="xi-angle-left-thin"><span class="xe-sr-only">이전 사진 보기</span></i></button>
                             <button class="xe-btn right" @click="afterMainImage"><i class="xi-angle-right-thin"><span class="xe-sr-only">다음 사진 보기</span></i></button>
                         </div>
                         <div class="product-img-list">
                             <h3 class="xe-sr-only">상품 이미지 목록</h3>
                             <ul>
-                                <li v-for="(image, key) in product.images"><a href="#" @click.prevent="changeMainImage(key)"><img :src="image" alt=""></a></li>
+                                <li v-for="(image, key) in product.images" :class="{highlight:key===mainImageKey}"><a href="#" @click.prevent="changeMainImage(key)"><img :src="image" alt=""></a></li>
                             </ul>
                         </div>
                     </div><!-- //product-img  -->
@@ -314,11 +316,15 @@
             beforeMainImage() {
                 if(this.mainImageKey>0){
                     this.mainImageKey--
+                }else{
+                    this.mainImageKey = this.product.images.length-1
                 }
             },
             afterMainImage() {
                 if(this.mainImageKey<this.product.images.length-1){
                     this.mainImageKey++
+                }else{
+                    this.mainImageKey = 0
                 }
             },
             buyPage() {
@@ -446,5 +452,7 @@
 </script>
 
 <style scoped>
-
+    .highlight{
+        border: 2px black solid;
+    }
 </style>
