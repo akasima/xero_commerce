@@ -1,6 +1,8 @@
 <?php
+
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
+
 ?>
 
 @section('page_title')
@@ -9,8 +11,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 {{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->before('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 
-<form method="post" action="{{ route('xero_commerce::setting.product.update', ['productId' => $product->id]) }}" enctype="multipart/form-data"
-    data-rule="product" data-rule-alert-type="toast">
+<form method="post" action="{{ route('xero_commerce::setting.product.update', ['productId' => $product->id]) }}"
+      enctype="multipart/form-data"
+      data-rule="product" data-rule-alert-type="toast">
     {{ csrf_field() }}
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
     <div class="row">
@@ -94,22 +97,25 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             @endphp
                             <option value="">선택</option>
                             @foreach($deliverys as $delivery)
-                                <option @if($product->shop_delivery_id==$delivery->pivot->id) selected @endif value="{{$delivery->pivot->id}}">{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
+                                <option @if($product->shop_delivery_id==$delivery->pivot->id) selected
+                                        @endif value="{{$delivery->pivot->id}}">{{$delivery->name}}
+                                    ({{number_format($delivery->pivot->delivery_fare)}})
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <script>
-                        $(function(){
-                            $("[name=shop_id]").change(function(){
+                        $(function () {
+                            $("[name=shop_id]").change(function () {
                                 $("[name=delivery_id]").val("");
                                 $("[name=delivery_id] option").not(':selected').remove();
                                 $.ajax({
-                                    url: '{{route('xero_commerce::setting.config.shop.delivery',['shop'=>''])}}/'+$("[name=shop_id]").val(),
-                                }).done(res=>{
-                                    $.each(res,(k,v)=>{
-                                        $("[name=delivery_id]").append('<option value="'+v.pivot.id+'">'+v.name+'('+Number(v.pivot.delivery_fare).toLocaleString()+')</option>');
+                                    url: '{{route('xero_commerce::setting.config.shop.delivery',['shop'=>''])}}/' + $("[name=shop_id]").val(),
+                                }).done(res => {
+                                    $.each(res, (k, v) => {
+                                        $("[name=delivery_id]").append('<option value="' + v.pivot.id + '">' + v.name + '(' + Number(v.pivot.delivery_fare).toLocaleString() + ')</option>');
                                     })
-                                }).fail(res=>{
+                                }).fail(res => {
 
                                 })
                             })
@@ -187,15 +193,18 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             <div class="form-group">
                                 <label>라벨</label>
                                 @foreach ($labels as $label)
-                                    <input type="checkbox" name="labels[]" value="{{ $label->id }}" @if (in_array($label->id, $productLabelIds) == true) checked @endif>{{ $label->name }}
+                                    <input type="checkbox" name="labels[]" value="{{ $label->id }}"
+                                           @if (in_array($label->id, $productLabelIds) == true) checked @endif>{{ $label->name }}
                                 @endforeach
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <label>뱃지</label>
-                            <input type="radio" name="badge_id" value="" @if ($product->badge_id == '') checked @endif>사용 안함
+                            <input type="radio" name="badge_id" value="" @if ($product->badge_id == '') checked @endif>사용
+                            안함
                             @foreach ($badges as $badge)
-                                <input type="radio" name="badge_id" value="{{ $badge->id }}" @if ($product->badge_id == $badge->id) checked @endif>{{ $badge->name }}
+                                <input type="radio" name="badge_id" value="{{ $badge->id }}"
+                                       @if ($product->badge_id == $badge->id) checked @endif>{{ $badge->name }}
                             @endforeach
                         </div>
                     </div>
@@ -223,22 +232,27 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 <tr id="productInfoTr{{array_search($key,$keys)}}">
                                     <td><input type='text' name='infoKeys[]' value="{{$key}}"></td>
                                     <td><input type='text' name='infoValues[]' value="{{$val}}"></td>
-                                    <td><button onclick="removeProductInfo({{array_search($key,$keys)}})" class="xe-btn xe-btn-default">삭제</button></td>
+                                    <td>
+                                        <button onclick="removeProductInfo({{array_search($key,$keys)}})"
+                                                class="xe-btn xe-btn-default">삭제
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                         <script>
-                            function addProductInfo () {
-                                var id = Number($("#productInfoTable tbody tr").last().attr('id').replace('productInfoTr',''))+1
-                                var tr = "<tr id='productInfoTr"+id+"'>";
-                                tr+="<td><input type='text' name='infoKeys[]'></td>"
-                                tr+="<td><input type='text' name='infoValues[]'></td>"
-                                tr+="<td><button onclick='removeProductInfo("+id+")' class='xe-btn xe-btn-default'>삭제</button></td>"
+                            function addProductInfo() {
+                                var id = Number($("#productInfoTable tbody tr").last().attr('id').replace('productInfoTr', '')) + 1
+                                var tr = "<tr id='productInfoTr" + id + "'>";
+                                tr += "<td><input type='text' name='infoKeys[]'></td>"
+                                tr += "<td><input type='text' name='infoValues[]'></td>"
+                                tr += "<td><button onclick='removeProductInfo(" + id + ")' class='xe-btn xe-btn-default'>삭제</button></td>"
                                 $("#productInfoTable tbody").append(tr)
                             }
-                            function removeProductInfo (id) {
-                                $("#productInfoTable tbody tr#productInfoTr"+id).remove()
+
+                            function removeProductInfo(id) {
+                                $("#productInfoTable tbody tr#productInfoTr" + id).remove()
                             }
                         </script>
                     </div>
@@ -247,19 +261,25 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             <div class="col-lg-4">
                                 @if($product->images->count()>=$i)
                                     <div id="shownImage{{$i}}" class="show">
-                                        <b style="color:blue; cursor:pointer" href="#" onclick="editImages.edit({{$i}})">수정</b>
+                                        <b style="color:blue; cursor:pointer" href="#"
+                                           onclick="editImages.edit({{$i}})">수정</b>
                                         <div class="form-group">
                                             <label>사진업로드 #{{$i}}</label> <br>
-                                            <img src="{{XeMedia::image()->getThumbNail($product->images->get($i-1),'widen','M')->url()}}" alt="">
-                                            <input type="hidden" name="nonEditImage[]" value="{{$product->images->get($i-1)->id}}">
+                                            <img
+                                                src="{{XeMedia::image()->getThumbNail($product->images->get($i-1),'widen','M')->url()}}"
+                                                alt="">
+                                            <input type="hidden" name="nonEditImage[]"
+                                                   value="{{$product->images->get($i-1)->id}}">
                                         </div>
                                     </div>
                                     <div id="editImage{{$i}}" class="editImages hide">
-                                        <b style="color:blue; cursor:pointer" href="#" onclick="editImages.reset({{$i}})">초기화</b>
+                                        <b style="color:blue; cursor:pointer" href="#"
+                                           onclick="editImages.reset({{$i}})">초기화</b>
                                         {{ uio('formImage',
                                       ['label'=>'사진업로드 #'.$i,
                                        'name'=>'editImages[]',
                                        'id'=>'image'.$i,
+                                       'maxSize'=>\Xpressengine\Plugins\XeroCommerce\Models\Product::IMG_MAXSIZE,
                                        'description'=> '휴대폰 사용하여 입력하세요',
                                        'disabled'=>true
                                 ]) }}
@@ -269,32 +289,33 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                           ['label'=>'사진업로드 #'.$i,
                                            'name'=>'addImages[]',
                                            'id'=>'image'.$i,
+                                           'maxSize'=>\Xpressengine\Plugins\XeroCommerce\Models\Product::IMG_MAXSIZE,
                                            'description'=> '휴대폰 사용하여 입력하세요'
                                     ]) }}
                                 @endif
                             </div>
                             @if($i%3 === 0)
-                            </div>
-                            <div class="row">
-                            @endif
+                    </div>
+                    <div class="row">
+                        @endif
                         @endfor
                         <script>
-                            var editImages={
-                                edit (i) {
-                                    $("#shownImage"+i).addClass('hide').removeClass('show');
-                                    $("#editImage"+i).addClass('show').removeClass('hide');
-                                    $("#shownImage"+i+" input").prop('disabled', true)
-                                    $("#editImage"+i+" input").prop('disabled', false)
+                            var editImages = {
+                                edit(i) {
+                                    $("#shownImage" + i).addClass('hide').removeClass('show');
+                                    $("#editImage" + i).addClass('show').removeClass('hide');
+                                    $("#shownImage" + i + " input").prop('disabled', true)
+                                    $("#editImage" + i + " input").prop('disabled', false)
                                 },
-                                reset (i) {
-                                    $("#editImage"+i).addClass('hide').removeClass('show');
-                                    $("#shownImage"+i).addClass('show').removeClass('hide');
-                                    $("#shownImage"+i+" input").prop('disabled', false)
-                                    $("#editImage"+i+" input").prop('disabled', true)
+                                reset(i) {
+                                    $("#editImage" + i).addClass('hide').removeClass('show');
+                                    $("#shownImage" + i).addClass('show').removeClass('hide');
+                                    $("#shownImage" + i + " input").prop('disabled', false)
+                                    $("#editImage" + i + " input").prop('disabled', true)
                                 }
                             }
-                            $(function(){
-                                $(".editImages input").prop('disabled',true)
+                            $(function () {
+                                $(".editImages input").prop('disabled', true)
                             })
                         </script>
                     </div>

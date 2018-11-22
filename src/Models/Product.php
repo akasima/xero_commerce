@@ -14,6 +14,8 @@ class Product extends SellType
 {
     use SoftDeletes;
 
+    const IMG_MAXSIZE = 50000000;
+
     const DISPLAY_VISIBLE = 1;
     const DISPLAY_HIDDEN = 2;
 
