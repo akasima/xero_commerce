@@ -11,6 +11,7 @@ use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
+use Xpressengine\Plugins\XeroCommerce\Services\QnaService;
 use Xpressengine\Plugins\XeroCommerce\Services\WishService;
 use Xpressengine\Routing\InstanceConfig;
 
@@ -74,5 +75,17 @@ class ProductController extends XeroCommerceBasicController
         $wishService = new WishService();
 
         return $wishService->toggle($product);
+    }
+
+    public function qnaAdd(Product $product, Request $request)
+    {
+        $qnaService = new QnaService();
+        $qnaService->store($product, $request);
+    }
+
+    public function qnaLoad(Product $product)
+    {
+        $qnaService = new QnaService();
+        return $qnaService->getTargetQna($product);
     }
 }

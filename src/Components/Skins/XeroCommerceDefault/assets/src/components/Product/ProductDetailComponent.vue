@@ -142,36 +142,14 @@
                         </div>
                         <!-- <div class="detail-talks"></div> -->
                         <div v-if="tab===3" class="detail-qna">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>번호</th>
-                                    <th>제목</th>
-                                    <th>작성자</th>
-                                    <th>작성일</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>??</td>
-                                    <td>hero</td>
-                                    <td>{{new Date()}}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">dafdfdsafdf <br>dsafdfd</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>??</td>
-                                    <td>hero</td>
-                                    <td>{{new Date()}}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">dafdfdsafdf</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <product-qna-component
+                                :default-list="qnaList"
+                                :product-id="product.id"
+                                writer="test"
+                                :qna-add-url="qnaAddUrl"
+                                :qna-get-url="qnaGetUrl"
+                                :answer-url="answerUrl"
+                            ></product-qna-component>
                         </div>
                         <div v-if="tab===2" class="detail-as">
                             <div v-html="product.shop.as_info">
@@ -300,14 +278,15 @@
     import OptionSelectComponent from '../../../../../../../../assets/src/components/OptionSelectComponent'
     import DeliverySelectComponent from '../../../../../../../../assets/src/components/DeliverySelectComponent'
     import ProductCategoryComponent from './ProductCategoryComponent'
+    import ProductQnaComponent from './ProductQnaComponent'
 
     export default {
         name: "ProductDetailComponent",
         components: {
-            OptionSelectComponent, DeliverySelectComponent, ProductCategoryComponent
+            OptionSelectComponent, DeliverySelectComponent, ProductCategoryComponent, ProductQnaComponent
         },
         props: [
-            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category'
+            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category', 'qnaAddUrl', 'qnaGetUrl', 'qnaList', 'answerUrl'
         ],
         computed: {
             mainImg() {

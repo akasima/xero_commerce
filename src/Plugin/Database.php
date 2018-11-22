@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Schema;
 
 class Database
 {
+    public static function addTable()
+    {
+        Schema::table('xero_commerce_qna', function (Blueprint $table) {
+            $table->boolean('privacy')->default(false);
+        });
+    }
+
     public static function create()
     {
         Schema::create('xero_commerce_user', function (Blueprint $table) {
@@ -130,6 +137,15 @@ class Database
             $table->string('order_id');
             $table->integer('agreement_id');
             $table->softDeletes();
+            $table->timestamps();
+        });
+
+        Schema::create('xero_commerce_qna', function (Blueprint $table) {
+            $table->increments('id');
+            $table->morphs('type');
+            $table->string('title');
+            $table->text('content');
+            $table->integer('user_id');
             $table->timestamps();
         });
 

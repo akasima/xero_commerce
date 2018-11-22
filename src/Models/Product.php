@@ -231,4 +231,9 @@ class Product extends SellType
     {
         return $this->hasManyThrough(CategoryItem::class, ProductCategory::class, 'category_id', 'id');
     }
+
+    public function qna()
+    {
+        return $this->morphMany(Qna::class,'type');
+    }
 }
