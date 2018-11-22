@@ -1137,9 +1137,8 @@ class Resources
         }
     }
 
-    public static function storeAgreement($type, $name)
+    public static function storeAgreement($type, $name, $contents)
     {
-        $contents = '약관 샘플';
         $agree = new Agreement();
         $agree->type = $type;
         $agree->name = $name;

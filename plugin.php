@@ -7,6 +7,7 @@ use Xpressengine\Log\LogHandler;
 use Xpressengine\Plugin\AbstractPlugin;
 use Xpressengine\Plugins\XeroCommerce\Exceptions\XeroCommercePrefixUsedException;
 use Xpressengine\Plugins\XeroCommerce\Logger\XeroCommerceLogger;
+use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
 use Xpressengine\Plugins\XeroCommerce\Plugin\EventManager;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
@@ -22,6 +23,7 @@ class Plugin extends AbstractPlugin
      *
      * @return void
      */
+
     public function boot()
     {
         self::registerXeroCommerceLogger();
@@ -68,11 +70,44 @@ class Plugin extends AbstractPlugin
 
         Database::create();
         Resources::storeDefaultDeliveryCompanySet();
-        Resources::storeAgreement('contacts', '주문자정보 수집 동의');
-        Resources::storeAgreement('purchase', '구매 동의');
-        Resources::storeAgreement('privacy', '개인정보 수집 및 이용동의');
-        Resources::storeAgreement('thirdParty', '개인정보 제3자 제공/위탁동의');
         Resources::storeDefaultShop();
+        $shop_name = Shop::first()->shop_name;
+        Resources::storeAgreement(
+            'contacts',
+            '주문자정보 수집 동의',
+            str_replace(
+                '<$company_name>',
+                $shop_name,
+                file_get_contents(self::path('assets/sample/privacy'))
+            )
+        );
+        Resources::storeAgreement(
+            'purchase',
+            '구매 동의',
+            str_replace(
+                '<$company_name>',
+                $shop_name,
+                file_get_contents(self::path('assets/sample/purchase'))
+            )
+        );
+        Resources::storeAgreement(
+            'privacy',
+            '개인정보 수집 및 이용동의',
+            str_replace(
+                '<$company_name>',
+                $shop_name,
+                file_get_contents(self::path('assets/sample/privacy'))
+            )
+        );
+        Resources::storeAgreement(
+            'thirdParty',
+            '개인정보 제3자 제공/위탁동의',
+            str_replace(
+                '<$company_name>',
+                $shop_name,
+                file_get_contents(self::path('assets/sample/thirdParty'))
+            )
+        );
         Resources::setConfig();
         Resources::defaultSitemapSetting();
     }
