@@ -118,7 +118,6 @@
             }
         },
         mounted() {
-            console.log(this.options)
             this.select = this.alreadyChoose
             this.$emit('input', this.select)
             this.initialize()

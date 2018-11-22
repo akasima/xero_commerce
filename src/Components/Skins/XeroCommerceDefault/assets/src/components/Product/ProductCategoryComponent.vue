@@ -46,8 +46,6 @@
         },
         mounted () {
             this.recursivePush(this.categorys, 0)
-            console.log(this.categorys)
-            console.log(this.targetCategory)
         }
     }
 </script>

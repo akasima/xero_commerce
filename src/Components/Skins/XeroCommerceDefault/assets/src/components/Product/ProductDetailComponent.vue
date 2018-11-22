@@ -5,6 +5,7 @@
             :first="key===0"
             :categorys="category"
             :target-category="target"
+            :key="key"
         ></product-category-component>
         <div class="xe-shop product">
             <div class="container">
@@ -14,13 +15,16 @@
                         <h3 class="xe-sr-only">상품 이미지</h3>
                         <div class="product-img-view">
                             <img :src="mainImg" style="width:450px;height:600px;">
-                            <button class="xe-btn left" @click="beforeMainImage"><i class="xi-angle-left-thin"><span class="xe-sr-only">이전 사진 보기</span></i></button>
-                            <button class="xe-btn right" @click="afterMainImage"><i class="xi-angle-right-thin"><span class="xe-sr-only">다음 사진 보기</span></i></button>
+                            <button class="xe-btn left" @click="beforeMainImage"><i class="xi-angle-left-thin"><span
+                                class="xe-sr-only">이전 사진 보기</span></i></button>
+                            <button class="xe-btn right" @click="afterMainImage"><i class="xi-angle-right-thin"><span
+                                class="xe-sr-only">다음 사진 보기</span></i></button>
                         </div>
                         <div class="product-img-list">
                             <h3 class="xe-sr-only">상품 이미지 목록</h3>
                             <ul>
-                                <li v-for="(image, key) in product.images" :class="{highlight:key===mainImageKey}"><a href="#" @click.prevent="changeMainImage(key)"><img :src="image" alt=""></a></li>
+                                <li v-for="(image, key) in product.images" :class="{highlight:key===mainImageKey}"><a
+                                    href="#" @click.prevent="changeMainImage(key)"><img :src="image" alt=""></a></li>
                             </ul>
                         </div>
                     </div><!-- //product-img  -->
@@ -28,13 +32,16 @@
                         <div class="product-info-top">
                             <h3 class="product-info-title">{{product.data.name}}</h3>
                             <div class="label_wrap">
-                                <span v-for="label in product.labels" class="xe-shop-tag" :style="{background:label.background_color, color:label.text_color}">{{label.name}}</span>
+                                <span v-for="label in product.labels" class="xe-shop-tag"
+                                      :style="{background:label.background_color, color:label.text_color}">{{label.name}}</span>
                             </div>
                             <p class="product-info-title-caption">{{product.data.sub_name}}</p>
                         </div>
                         <div class="product-info-container">
-                            <div class="product-info-cell price"> <span>{{Number(product.data.sell_price).toLocaleString()}}원</span></div>
-                            <div class="product-info-cell before-price">{{Number(product.data.original_price).toLocaleString()}}<span>원</span></div>
+                            <div class="product-info-cell price"><span>{{Number(product.data.sell_price).toLocaleString()}}원</span>
+                            </div>
+                            <div class="product-info-cell before-price">
+                                {{Number(product.data.original_price).toLocaleString()}}<span>원</span></div>
                             <div class="product-info-favor">
                                 <button type="button" class="favor-btn"> 구매 혜택 보기</button>
 
@@ -58,7 +65,8 @@
                                             <p class="favor-text">삼성카드</p>
                                             <p class="favor-text right">2,3,4,5개월 무이자 (5만원 이상)</p>
                                         </div>
-                                        <button type="button" class="btn-tooltip-close"><i class="xi-close-thin"></i><span class="xe-sr-only">닫기</span></button>
+                                        <button type="button" class="btn-tooltip-close"><i
+                                            class="xi-close-thin"></i><span class="xe-sr-only">닫기</span></button>
                                     </div>
                                 </div>
                             </div><!-- //product-info-favor  -->
@@ -66,8 +74,12 @@
 
                             <div class="btn-buy-wrap xe-hidden-md xe-hidden-lg">
                                 <button class="xe-btn xe-btn-buy" @click="buyPage">구매하기</button>
-                                <button class="xe-btn" @click="cartPage"><i class="xe-visible-xs xe-visible-sm xi-basket"></i><span class="xe-visible-md xe-visible-lg">장바구니</span></button>
-                                <button class="xe-btn" @click="toggleWish"><i class="xe-visible-xs xe-visible-sm xi-heart"></i><span class="xe-visible-md xe-visible-lg">찜하기</span></button>
+                                <button class="xe-btn" @click="cartPage"><i
+                                    class="xe-visible-xs xe-visible-sm xi-basket"></i><span
+                                    class="xe-visible-md xe-visible-lg">장바구니</span></button>
+                                <button class="xe-btn" @click="toggleWish"><i
+                                    class="xe-visible-xs xe-visible-sm xi-heart"></i><span
+                                    class="xe-visible-md xe-visible-lg">찜하기</span></button>
                             </div><!-- //btn-buy-wrap -->
                         </div>
 
@@ -83,9 +95,13 @@
                                 </delivery-select-component>
                             </option-select-component>
                             <div class="btn-buy-wrap">
-                                <button class="xe-btn xe-btn-buy" @click="buyPage" >구매하기</button>
-                                <button class="xe-btn" @click="cartPage"><i class="xe-visible-xs xe-visible-sm xi-basket"></i><span class="xe-visible-md xe-visible-lg">장바구니</span></button>
-                                <button class="xe-btn" @click="toggleWish"><i class="xe-visible-xs xe-visible-sm xi-heart"></i><span class="xe-visible-md xe-visible-lg">찜하기</span></button>
+                                <button class="xe-btn xe-btn-buy" @click="buyPage">구매하기</button>
+                                <button class="xe-btn" @click="cartPage"><i
+                                    class="xe-visible-xs xe-visible-sm xi-basket"></i><span
+                                    class="xe-visible-md xe-visible-lg">장바구니</span></button>
+                                <button class="xe-btn" @click="toggleWish"><i
+                                    class="xe-visible-xs xe-visible-sm xi-heart"></i><span
+                                    class="xe-visible-md xe-visible-lg">찜하기</span></button>
                             </div><!-- //btn-buy-wrap -->
 
                         </div><!-- //options -->
@@ -125,155 +141,155 @@
                             </div>
                         </div>
                         <!-- <div class="detail-talks"></div> -->
-                         <div v-if="tab===3" class="detail-qna">
-                             <table class="table">
-                             <thead>
-                             <tr>
-                             <th>번호</th>
-                             <th>제목</th>
-                             <th>작성자</th>
-                             <th>작성일</th>
-                             </tr>
-                             </thead>
-                             <tbody>
-                             <tr>
-                             <td>1</td>
-                             <td>??</td>
-                             <td>hero</td>
-                             <td>{{new Date()}}</td>
-                             </tr>
-                             <tr>
-                             <td colspan="4">dafdfdsafdf <br>dsafdfd</td>
-                             </tr>
-                             <tr>
-                             <td>1</td>
-                             <td>??</td>
-                             <td>hero</td>
-                             <td>{{new Date()}}</td>
-                             </tr>
-                             <tr>
-                             <td colspan="4">dafdfdsafdf</td>
-                             </tr>
-                             </tbody>
-                             </table>
-                         </div>
-                         <div v-if="tab===2" class="detail-as">
-                             <div v-html="product.shop.as_info">
+                        <div v-if="tab===3" class="detail-qna">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>제목</th>
+                                    <th>작성자</th>
+                                    <th>작성일</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>??</td>
+                                    <td>hero</td>
+                                    <td>{{new Date()}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">dafdfdsafdf <br>dsafdfd</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>??</td>
+                                    <td>hero</td>
+                                    <td>{{new Date()}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">dafdfdsafdf</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div v-if="tab===2" class="detail-as">
+                            <div v-html="product.shop.as_info">
 
-                             </div>
-                         </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <!--<div class="row">-->
-            <!--<div class="col">-->
-                <!--<div>-->
-                    <!--<b-tabs>-->
-                        <!--<b-tab title="상품정보" active>-->
-                            <!--<h4>상품 상세 정보</h4>-->
-                            <!--<table class="xe-table">-->
-                                <!--<tr v-for="each in detail()">-->
-                                    <!--<template v-for="(val,key) in each">-->
-                                        <!--<th>-->
-                                            <!--{{key}}-->
-                                        <!--</th>-->
-                                        <!--<td>-->
-                                            <!--{{val}}-->
-                                        <!--</td>-->
-                                    <!--</template>-->
-                                <!--</tr>-->
-                            <!--</table>-->
-                            <!--<div v-html="product.data.description">-->
-                            <!--</div>-->
-                        <!--</b-tab>-->
-                        <!--<b-tab title="구매평">-->
-                        <!--<h4>구매평</h4>-->
-                            <!--<b-list-group style="margin-top:10px">-->
-                                <!--<b-list-group-item href="#" class="flex-column align-items-start">-->
-                                    <!--<div class="row">-->
-                                        <!--<div class="col-1">-->
-                                            <!--<img :src="mainImg" alt="" style="width:70px;height:70px">-->
-                                        <!--</div>-->
-                                        <!--<div class="col">-->
-                                            <!--<div class="d-flex w-100 justify-content-between">-->
-                                                <!--<h5 class="mb-1">List group item heading</h5>-->
-                                                <!--<small>3 days ago</small>-->
-                                            <!--</div>-->
-                                            <!--<p class="mb-1">-->
-                                                <!--Donec id elit non mi porta gravida at eget metus. Maecenas-->
-                                                <!--sed diam eget risus varius blandit.-->
-                                            <!--</p>-->
-                                            <!--<small>Donec id elit non mi porta.</small>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</b-list-group-item>-->
-                                <!--<b-list-group-item href="#" class="flex-column align-items-start">-->
-                                    <!--<div class="d-flex w-100 justify-content-between">-->
-                                        <!--<h5 class="mb-1">List group item heading</h5>-->
-                                        <!--<small class="text-muted">3 days ago</small>-->
-                                    <!--</div>-->
-                                    <!--<p class="mb-1">-->
-                                        <!--Donec id elit non mi porta gravida at eget metus. Maecenas-->
-                                        <!--sed diam eget risus varius blandit.-->
-                                    <!--</p>-->
-                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
-                                <!--</b-list-group-item>-->
-                                <!--<b-list-group-item href="#" disabled class="flex-column align-items-start">-->
-                                    <!--<div class="d-flex w-100 justify-content-between">-->
-                                        <!--<h5 class="mb-1">Disabled List group item</h5>-->
-                                        <!--<small class="text-muted">3 days ago</small>-->
-                                    <!--</div>-->
-                                    <!--<p class="mb-1">-->
-                                        <!--Donec id elit non mi porta gravida at eget metus. Maecenas-->
-                                        <!--sed diam eget risus varius blandit.-->
-                                    <!--</p>-->
-                                    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
-                                <!--</b-list-group-item>-->
-                            <!--</b-list-group>-->
-                        <!--</b-tab>-->
-                        <!--<b-tab title="Q&A">-->
-                        <!--<h4>Q%A</h4>-->
-                            <!--<table class="table">-->
-                                <!--<thead>-->
-                                <!--<tr>-->
-                                    <!--<th>번호</th>-->
-                                    <!--<th>제목</th>-->
-                                    <!--<th>작성자</th>-->
-                                    <!--<th>작성일</th>-->
-                                <!--</tr>-->
-                                <!--</thead>-->
-                                <!--<tbody>-->
-                                <!--<tr>-->
-                                    <!--<td>1</td>-->
-                                    <!--<td>??</td>-->
-                                    <!--<td>hero</td>-->
-                                    <!--<td>{{new Date()}}</td>-->
-                                <!--</tr>-->
-                                <!--<tr>-->
-                                    <!--<td colspan="4">dafdfdsafdf <br>dsafdfd</td>-->
-                                <!--</tr>-->
-                                <!--<tr>-->
-                                    <!--<td>1</td>-->
-                                    <!--<td>??</td>-->
-                                    <!--<td>hero</td>-->
-                                    <!--<td>{{new Date()}}</td>-->
-                                <!--</tr>-->
-                                <!--<tr>-->
-                                    <!--<td colspan="4">dafdfdsafdf</td>-->
-                                <!--</tr>-->
-                                <!--</tbody>-->
-                            <!--</table>-->
-                        <!--</b-tab>-->
-                        <!--<b-tab title="반품정보">-->
-                            <!--<h4>반품정보</h4>-->
-                            <!--<div v-html="product.shop.as_info">-->
+        <!--<div class="col">-->
+        <!--<div>-->
+        <!--<b-tabs>-->
+        <!--<b-tab title="상품정보" active>-->
+        <!--<h4>상품 상세 정보</h4>-->
+        <!--<table class="xe-table">-->
+        <!--<tr v-for="each in detail()">-->
+        <!--<template v-for="(val,key) in each">-->
+        <!--<th>-->
+        <!--{{key}}-->
+        <!--</th>-->
+        <!--<td>-->
+        <!--{{val}}-->
+        <!--</td>-->
+        <!--</template>-->
+        <!--</tr>-->
+        <!--</table>-->
+        <!--<div v-html="product.data.description">-->
+        <!--</div>-->
+        <!--</b-tab>-->
+        <!--<b-tab title="구매평">-->
+        <!--<h4>구매평</h4>-->
+        <!--<b-list-group style="margin-top:10px">-->
+        <!--<b-list-group-item href="#" class="flex-column align-items-start">-->
+        <!--<div class="row">-->
+        <!--<div class="col-1">-->
+        <!--<img :src="mainImg" alt="" style="width:70px;height:70px">-->
+        <!--</div>-->
+        <!--<div class="col">-->
+        <!--<div class="d-flex w-100 justify-content-between">-->
+        <!--<h5 class="mb-1">List group item heading</h5>-->
+        <!--<small>3 days ago</small>-->
+        <!--</div>-->
+        <!--<p class="mb-1">-->
+        <!--Donec id elit non mi porta gravida at eget metus. Maecenas-->
+        <!--sed diam eget risus varius blandit.-->
+        <!--</p>-->
+        <!--<small>Donec id elit non mi porta.</small>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</b-list-group-item>-->
+        <!--<b-list-group-item href="#" class="flex-column align-items-start">-->
+        <!--<div class="d-flex w-100 justify-content-between">-->
+        <!--<h5 class="mb-1">List group item heading</h5>-->
+        <!--<small class="text-muted">3 days ago</small>-->
+        <!--</div>-->
+        <!--<p class="mb-1">-->
+        <!--Donec id elit non mi porta gravida at eget metus. Maecenas-->
+        <!--sed diam eget risus varius blandit.-->
+        <!--</p>-->
+        <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+        <!--</b-list-group-item>-->
+        <!--<b-list-group-item href="#" disabled class="flex-column align-items-start">-->
+        <!--<div class="d-flex w-100 justify-content-between">-->
+        <!--<h5 class="mb-1">Disabled List group item</h5>-->
+        <!--<small class="text-muted">3 days ago</small>-->
+        <!--</div>-->
+        <!--<p class="mb-1">-->
+        <!--Donec id elit non mi porta gravida at eget metus. Maecenas-->
+        <!--sed diam eget risus varius blandit.-->
+        <!--</p>-->
+        <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+        <!--</b-list-group-item>-->
+        <!--</b-list-group>-->
+        <!--</b-tab>-->
+        <!--<b-tab title="Q&A">-->
+        <!--<h4>Q%A</h4>-->
+        <!--<table class="table">-->
+        <!--<thead>-->
+        <!--<tr>-->
+        <!--<th>번호</th>-->
+        <!--<th>제목</th>-->
+        <!--<th>작성자</th>-->
+        <!--<th>작성일</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr>-->
+        <!--<td>1</td>-->
+        <!--<td>??</td>-->
+        <!--<td>hero</td>-->
+        <!--<td>{{new Date()}}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td colspan="4">dafdfdsafdf <br>dsafdfd</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>1</td>-->
+        <!--<td>??</td>-->
+        <!--<td>hero</td>-->
+        <!--<td>{{new Date()}}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td colspan="4">dafdfdsafdf</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+        <!--</table>-->
+        <!--</b-tab>-->
+        <!--<b-tab title="반품정보">-->
+        <!--<h4>반품정보</h4>-->
+        <!--<div v-html="product.shop.as_info">-->
 
-                            <!--</div>-->
-                        <!--</b-tab>-->
-                    <!--</b-tabs>-->
-                <!--</div>-->
-            <!--</div>-->
+        <!--</div>-->
+        <!--</b-tab>-->
+        <!--</b-tabs>-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</div>-->
         <form ref="form">
         </form>
@@ -293,11 +309,11 @@
         props: [
             'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category'
         ],
-        computed:{
-            mainImg () {
+        computed: {
+            mainImg() {
                 return this.product.images[this.mainImageKey]
             },
-            categoryMake(){
+            categoryMake() {
                 return [];
             }
         },
@@ -314,16 +330,16 @@
                 this.mainImageKey = key
             },
             beforeMainImage() {
-                if(this.mainImageKey>0){
+                if (this.mainImageKey > 0) {
                     this.mainImageKey--
-                }else{
-                    this.mainImageKey = this.product.images.length-1
+                } else {
+                    this.mainImageKey = this.product.images.length - 1
                 }
             },
             afterMainImage() {
-                if(this.mainImageKey<this.product.images.length-1){
+                if (this.mainImageKey < this.product.images.length - 1) {
                     this.mainImageKey++
-                }else{
+                } else {
                     this.mainImageKey = 0
                 }
             },
@@ -362,8 +378,8 @@
                 })
             },
             addCart(success, fail) {
-                var val= this.validate()
-                if(! val.status){
+                var val = this.validate()
+                if (!val.status) {
                     alert(val.msg)
                     return
                 }
@@ -381,17 +397,17 @@
                     fail(err)
                 })
             },
-            toggleWish(){
+            toggleWish() {
                 $.ajax({
                     url: this.wishUrl,
                     method: 'get'
                 }).done(res => {
-                    if(Number(res)){
+                    if (Number(res)) {
                         var conf = confirm('관심상품에 담았습니다. 관심상품으로 갈까요?')
                         if (conf) {
                             document.location.href = this.wishListUrl
                         }
-                    }else{
+                    } else {
                         alert('관심상품에서 제거했습니다.')
                     }
                 }).fail(err => {
@@ -416,33 +432,36 @@
             },
             validate() {
                 var validate =
-                {
-                    status: true,
-                    msg: ''
-                }
-
-                if(this.choose.length === 0){
-                    validate.status = false,
-                        validate.msg+='선택한 상품이 없습니다.'
-                }
-                if(Number(this.choose.map(v=>{return Number(v.count)}).reduce((a,b)=>a+b,0))<1)
-                {
-                    validate.status = false,
-                        validate.msg+='선택한 상품의 갯수가 없습니다.'
-                }
-                if(this.product.data.min_buy_count){
-                    if(this.product.data.min_buy_count > Number(this.choose.map(v=>{return Number(v.count)}).reduce((a,b)=>a+b,0)))
                     {
+                        status: true,
+                        msg: ''
+                    }
+
+                if (this.choose.length === 0) {
+                    validate.status = false,
+                        validate.msg += '선택한 상품이 없습니다.'
+                }
+                if (Number(this.choose.map(v => {
+                    return Number(v.count)
+                }).reduce((a, b) => a + b, 0)) < 1) {
+                    validate.status = false,
+                        validate.msg += '선택한 상품의 갯수가 없습니다.'
+                }
+                if (this.product.data.min_buy_count) {
+                    if (this.product.data.min_buy_count > Number(this.choose.map(v => {
+                        return Number(v.count)
+                    }).reduce((a, b) => a + b, 0))) {
                         validate.status = false,
-                            validate.msg+='선택한 상품의 갯수가 최소 구매 수량보다 부족합니다.'
+                            validate.msg += '선택한 상품의 갯수가 최소 구매 수량보다 부족합니다.'
                     }
                 }
 
-                if(this.product.data.max_buy_count){
-                    if(this.product.data.max_buy_count < Number(this.choose.map(v=>{return Number(v.count)}).reduce((a,b)=>a+b,0)))
-                    {
+                if (this.product.data.max_buy_count) {
+                    if (this.product.data.max_buy_count < Number(this.choose.map(v => {
+                        return Number(v.count)
+                    }).reduce((a, b) => a + b, 0))) {
                         validate.status = false,
-                            validate.msg+='선택한 상품의 갯수가 최대 구매 수량을 넘었습니다.'
+                            validate.msg += '선택한 상품의 갯수가 최대 구매 수량을 넘었습니다.'
                     }
                 }
                 return validate
@@ -452,7 +471,7 @@
 </script>
 
 <style scoped>
-    .highlight{
+    .highlight {
         border: 2px black solid;
     }
 </style>
