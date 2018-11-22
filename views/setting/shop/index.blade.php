@@ -7,7 +7,6 @@
         <div class="col-sm-3">
 
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="이름" name="shop_name">
                 <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">검색</button>
                           </span>
@@ -38,7 +37,9 @@
                         <tbody>
                         @foreach ($shops as $shop)
                             <tr>
-                                <td></td>
+                                <td>
+                                    <img src="{!! $shop->logo !!}" alt="">
+                                </td>
                                 <td><a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_name }}</span></a></td>
                                 <td><a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_eng_name }}</span></a></td>
                                 <td>{{ $shop->getShopTypes()[$shop->shop_type] }}</td>

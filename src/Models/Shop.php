@@ -68,4 +68,9 @@ class Shop extends DynamicModel
     {
         return $this->belongsToMany(User::class, 'xero_commerce_shop_user');
     }
+
+    public function logo()
+    {
+        return $this->belongsTo(\Xpressengine\Media\Models\Image::class, 'logo_path');
+    }
 }

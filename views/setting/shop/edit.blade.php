@@ -8,7 +8,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 @endsection
 {{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 <form method="post" action="{{ route('xero_commerce::setting.config.shop.update', ['shopId' => $shop->id]) }}"
-    data-rule="shop" data-rule-alert-type="toast">
+    data-rule="shop" data-rule-alert-type="toast" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="row">
         <div class="col-sm-12">
@@ -50,6 +50,40 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 <div id="component-container">
                                     <user-search-component label="관리자ID" name="user_id" url="{{route('xero_commerce::setting.search.user',['keyword'=>''])}}" :value="{{json_encode($shop->users)}}"></user-search-component>
                                 </div>
+                                <div id="shownImage" class="show">
+                                    <b style="color:blue; cursor:pointer" href="#" onclick="editImages.edit()">수정</b>
+                                    <div class="form-group">
+                                        <label>로고이미지</label> <br>
+                                        <img src="{{$shop->logo}}" alt="">
+                                    </div>
+                                </div>
+                                <div id="editImage" class="editImages hide">
+                                    <b style="color:blue; cursor:pointer" href="#" onclick="editImages.reset()">초기화</b>
+                                    {!! uio('formImage',
+                                    [
+                                        'label'=>'로고이미지',
+                                        'name'=>'logo'
+                                    ]) !!}
+                                </div>
+                                <script>
+                                    var editImages={
+                                        edit () {
+                                            $("#shownImage").addClass('hide').removeClass('show');
+                                            $("#editImage").addClass('show').removeClass('hide');
+                                            $("#shownImage input").prop('disabled', true)
+                                            $("#editImage input").prop('disabled', false)
+                                        },
+                                        reset () {
+                                            $("#editImage").addClass('hide').removeClass('show');
+                                            $("#shownImage").addClass('show').removeClass('hide');
+                                            $("#shownImage input").prop('disabled', false)
+                                            $("#editImage input").prop('disabled', true)
+                                        }
+                                    }
+                                    $(function(){
+                                        $(".editImages input").prop('disabled',true)
+                                    })
+                                </script>
                             </div>
                             <div class="col-lg-12">
                                 <label for="xeContentEditorDeliveryInfo">배송정보</label>

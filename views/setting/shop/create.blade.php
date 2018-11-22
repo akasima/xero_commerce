@@ -5,7 +5,7 @@
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 ?>
 {{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
-<form method="post" action="{{ route('xero_commerce::setting.config.shop.store') }}" data-rule="shop" data-rule-alert-type="toast">
+<form method="post" action="{{ route('xero_commerce::setting.config.shop.store') }}" data-rule="shop" data-rule-alert-type="toast" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="row">
         <div class="col-sm-12">
@@ -45,6 +45,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 <div id="component-container">
                                     <user-search-component label="관리자ID" name="user_id" url="{{route('xero_commerce::setting.search.user',['keyword'=>''])}}"></user-search-component>
                                 </div>
+                                {!! uio('formImage',
+                                [
+                                    'label'=>'로고이미지',
+                                    'name'=>'logo'
+                                ]) !!}
                             </div>
                             <div class="col-lg-12">
                                 <label for="xeContentEditorDeliveryInfo">배송정보</label>
