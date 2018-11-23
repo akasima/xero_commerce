@@ -123,6 +123,7 @@
                         phone: del.phone,
                         addr: del.addr,
                         addr_detail: del.addr_detail,
+                        addr_post:del.addr_post,
                         msg: del.msg,
                         nickname: del.nickname
                     }
