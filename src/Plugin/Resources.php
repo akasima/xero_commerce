@@ -597,12 +597,12 @@ class Resources
             ]);
 
             Route::get('/qna/product/{product}',[
-                'uses'=>'productController@qnaLoad',
+                'uses'=>'ProductController@qnaLoad',
                 'as'=>'xero_commerce::product.qna.get'
             ]);
 
             Route::post('/qna/product/{product}',[
-                'uses'=>'productController@qnaAdd',
+                'uses'=>'ProductController@qnaAdd',
                 'as'=>'xero_commerce::product.qna.add'
             ]);
 
