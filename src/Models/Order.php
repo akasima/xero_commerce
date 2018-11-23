@@ -85,4 +85,9 @@ class Order extends DynamicModel
         $orderHandler = new OrderHandler();
         $orderHandler->update($this);
     }
+
+    function getIdforPay()
+    {
+        return $this->order_no;
+    }
 }

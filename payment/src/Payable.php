@@ -13,10 +13,7 @@ use Xpressengine\XePlugin\XeroPay\Models\Payment;
 
 trait Payable
 {
-    function getId()
-    {
-        return $this->id;
-    }
+    abstract function getIdforPay();
 
     function getType()
     {
