@@ -30,6 +30,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\QnaHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\WishHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\XeroCommerceImageHandler;
@@ -595,7 +596,20 @@ class Resources
                 'as' => 'xero_commerce::product.wish.toggle'
             ]);
 
+            Route::get('/qna/product/{product}',[
+                'uses'=>'productController@qnaLoad',
+                'as'=>'xero_commerce::product.qna.get'
+            ]);
 
+            Route::post('/qna/product/{product}',[
+                'uses'=>'productController@qnaAdd',
+                'as'=>'xero_commerce::product.qna.add'
+            ]);
+
+            Route::post('/qna/answer/{qna}',[
+                'uses'=>'QnaController@answer',
+                'as'=>'xero_commerce::qna.answer'
+            ]);
 
             Route::get('/order', [
                 'uses' => 'OrderController@index',
@@ -977,6 +991,16 @@ class Resources
             return $instance;
         });
         $app->alias(WishHandler::class, 'xero_commerce.wishHandler');
+
+        $app->singleton(QnaHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(QnaHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+
+        $app->alias(QnaHandler::class, 'xero_commerce.qnaHandler');
 
         $app->singleton(XeroCommerceImageHandler::class, function ($app) {
             return new XeroCommerceImageHandler();

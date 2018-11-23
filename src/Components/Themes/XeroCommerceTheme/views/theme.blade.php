@@ -41,7 +41,7 @@
                 <h2 class="xe-sr-only">관련 링크</h2>
                 <ul class="xe-shop-utilmenu-list">
                     @if(auth()->check())
-                        @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || \Xpressengine\User\Rating::SUPER)
+                        @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || auth()->user()->rating == \Xpressengine\User\Rating::SUPER)
                             <li><a style="color:red" href="{{ route('xero_commerce::setting.order.index') }}">관리자페이지</a></li>
                         @endif
                         <li><a href="{{ route('logout') }}">로그아웃</a></li>
