@@ -12,8 +12,8 @@ class ValidateManager
         return [
             'name' => 'required|max:255',
             'sub_name' => 'required',
-            'original_price' => 'required',
-            'sell_price' => 'required',
+            'original_price' => 'required|numeric',
+            'sell_price' => 'required|numeric',
             'description' => 'required',
             'stock' => 'required',
             'shop_delivery_id' => 'required'
@@ -29,7 +29,9 @@ class ValidateManager
                 'name.required' => '이름 필드는 필수입니다.',
                 'sub_name.required' => '간략 소개는 필수입니다.',
                 'original_price.required' => '정상 가격은 필수입니다.',
-                'sell_price.required' => '정상 가격은 필수입니다.',
+                'original_price.numeric'=>'정상 가격은 숫자로 입력해주세요.',
+                'sell_price.required' => '판매 가격은 필수입니다.',
+                'sell_price.numeric'=>'판매 가격은 숫자로 입력해주세요.',
                 'description.required' => '상품소개는 필수입니다.',
                 'stock.required' => '기초재고는 필수입니다.',
                 'shop_delivery_id.required' => '배송사선택은 필수입니다.'
