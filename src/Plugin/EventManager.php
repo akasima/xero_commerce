@@ -4,7 +4,13 @@ namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
 use Illuminate\Support\Facades\Notification;
 use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
+use Xpressengine\Plugins\XeroCommerce\Events\OrderObserver;
+use Xpressengine\Plugins\XeroCommerce\Events\ProductOptionItemObserver;
+use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Order;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderItemGroup;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\Plugins\XeroCommerce\Notifications\StockLack;
 
 class EventManager
@@ -13,6 +19,8 @@ class EventManager
     {
         self::newRegisterProductListen();
         self::checkProductOptionStockListen();
+        Order::observe(OrderObserver::class);
+        ProductOptionItem::observe(ProductOptionItemObserver::class);
     }
 
     public static function newRegisterProductListen()
@@ -28,12 +36,6 @@ class EventManager
             sprintf('%s@update', ProductOptionItemHandler::class),
             'XeroCommerceProductOptionItemUpdate',
             function ($function, $optionItem, $args) {
-                $productOptionItem = $function($optionItem, $args);
-
-                if($productOptionItem->stock <= $productOptionItem->alert_stock){
-                    Notification::route('mail', config('mail.from.address'))
-                        ->notify(new StockLack($optionItem));
-                }
 
                 return $function($optionItem, $args);
             }
