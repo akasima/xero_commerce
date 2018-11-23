@@ -7,12 +7,6 @@ use Illuminate\Support\Facades\Schema;
 
 class Database
 {
-    public static function addTable()
-    {
-        Schema::table('xero_commerce_qna', function (Blueprint $table) {
-            $table->boolean('privacy')->default(false);
-        });
-    }
 
     public static function create()
     {
@@ -146,6 +140,7 @@ class Database
             $table->string('title');
             $table->text('content');
             $table->integer('user_id');
+            $table->boolean('privacy')->default(false);
             $table->timestamps();
         });
 
