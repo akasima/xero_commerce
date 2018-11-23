@@ -83,15 +83,15 @@ class ProductHandler
 
     private function filterByOwnShop($query)
     {
-        if(Auth::check()){
-            if(Auth::user()->rating === Rating::SUPER)return $query;
-            if(Auth::user()->rating === Rating::MANAGER){
+        if (Auth::check()) {
+            if (Auth::user()->rating === Rating::SUPER) return $query;
+            if (Auth::user()->rating === Rating::MANAGER) {
                 $shopUserHandler = new ShopUserHandler();
                 $shop_ids = $shopUserHandler->getUsersShop(Auth::id())->pluck('shop_id');
-                $query = $query->whereIn('shop_id',$shop_ids);
+                $query = $query->whereIn('shop_id', $shop_ids);
             }
-        }else{
-            abort(500,'권한에러');
+        } else {
+            abort(500, '권한에러');
         }
         return $query;
     }
@@ -119,7 +119,7 @@ class ProductHandler
         }
 
         $targetProductIds = array_unique($targetProductIds);
-        $query = $query->where('state_display',Product::DISPLAY_VISIBLE);
+        $query = $query->where('state_display', Product::DISPLAY_VISIBLE);
         $query = $query->whereIn('id', $targetProductIds);
 
         return $query;
@@ -127,7 +127,7 @@ class ProductHandler
 
     /**
      * @param Request $request request
-     * @param Product $query   product
+     * @param Product $query product
      *
      * @return Product
      */
@@ -138,7 +138,7 @@ class ProductHandler
 
     /**
      * @param Request $request request
-     * @param Product $query   product
+     * @param Product $query product
      *
      * @return Product
      */
@@ -247,9 +247,11 @@ class ProductHandler
 
         $editImages->each(function (Image $originImage, $key) use ($args, $product) {
             if (count($args['editImages']) > 0) {
-                if ($args['editImages'][$key] != null) {
-                    $editImage = $this->saveImage($args['editImages'][$key], $product);
-                    $product->images()->updateExistingPivot($originImage->id, ['image_id' => $editImage->id]);
+                if (isset($args['editImages'][$key])) {
+                    if (!is_null($args['editImages'][$key])) {
+                        $editImage = $this->saveImage($args['editImages'][$key], $product);
+                        $product->images()->updateExistingPivot($originImage->id, ['image_id' => $editImage->id]);
+                    }
                 }
             } else {
                 $originImage->delete();
