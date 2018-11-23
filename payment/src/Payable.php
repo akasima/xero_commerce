@@ -29,7 +29,7 @@ trait Payable
     function getPayInfo()
     {
         return [
-            'id'=>$this->getId(),
+            'id'=>$this->getIdforPay(),
             'type'=>$this->getType(),
             'price'=>$this->getPriceForPay(),
             'name'=>$this->getNameForPay()
