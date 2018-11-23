@@ -31,7 +31,7 @@ class LGRequest extends AbstractPaymentRequest
             'LGD_VERSION'=>LG::$version,
             'CST_PLATFORM'=>(LG::isTest()) ? 'test' :'service',
             'CST_MID'=>XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@lg.id'),
-            'LGD_OID'=>str_replace('-','_',$this->payment->id),
+            'LGD_OID'=>$this->payment->payable_unique_id,
             'LGD_AMOUNT'=>$this->payment->price,
             'LGD_BUYER'=>$this->request->get('user')['name'],
             'LGD_PRODUCTINFO'=>$this->payment->name,

@@ -43,7 +43,6 @@ class LGResponse extends AbstractPaymentResponse
 
     public function getPayment()
     {
-        $oid = $this->request->get('LGD_OID');
-        return Payment::find(str_replace('_','-',$oid));
+        return Payment::where('payable_unique_id',$this->request->get('LGD_OID'))->first();
     }
 }

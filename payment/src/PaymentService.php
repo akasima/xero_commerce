@@ -117,6 +117,7 @@ class PaymentService
             'payable_id' => $request->get('target')['id'],
             'payable_type' => $request->get('target')['type']
         ], [
+            'payable_unique_id'=>$request->get('target')['uniqueId'],
             'user_id' => Auth::id(),
             'ip' => $request->ip(),
             'payment_type' => XeConfig::getOrNew('xero_pay')->get('uses'),

@@ -41,7 +41,7 @@ class InicisRequest extends AbstractPaymentRequest
             'version'=>Inicis::VERSION,
             'mid'=>XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@inicis.mid'),
             'goodname'=>$this->payment->name,
-            'oid'=>$this->payment->id,
+            'oid'=>$this->payment->payable_unique_id,
             'price'=>$this->payment->price,
             'currency'=>'WON',
             'buyername'=>$this->getRequest('user')['name'],

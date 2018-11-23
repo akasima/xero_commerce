@@ -65,8 +65,7 @@ class LGResult extends PaymentResult
 
     public function getPayment()
     {
-        $oid = $this->res['LGD_OID'];
-        return Payment::find(str_replace('_', '-', $oid));
+        return Payment::where('payable_unique_id',$this->res['LGD_OID'])->first();
     }
 
     public function getReceipt()

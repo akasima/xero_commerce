@@ -46,6 +46,6 @@ class InicisResponse extends AbstractPaymentResponse
 
     public function getPayment()
     {
-        return Payment::find($this->request->get('orderNumber'));
+        return Payment::where('payable_unique_id',$this->request->get('orderNumber'))->first();
     }
 }

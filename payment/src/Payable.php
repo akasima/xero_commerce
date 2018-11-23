@@ -29,15 +29,16 @@ trait Payable
     function getPayInfo()
     {
         return [
-            'id'=>$this->getIdforPay(),
-            'type'=>$this->getType(),
-            'price'=>$this->getPriceForPay(),
-            'name'=>$this->getNameForPay()
+            'id' => $this->id,
+            'uniqueId' => $this->getIdforPay(),
+            'type' => str_replace('_', '-', $this->getType()),
+            'price' => $this->getPriceForPay(),
+            'name' => $this->getNameForPay()
         ];
     }
 
     function xeropay()
     {
-        return $this->morphOne(Payment::class,'payable');
+        return $this->morphOne(Payment::class, 'payable');
     }
 }

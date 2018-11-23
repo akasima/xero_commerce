@@ -66,7 +66,7 @@ class InicisResult extends PaymentResult
 
     public function getPayment()
     {
-        return Payment::find($this->arr->MOID);
+        return Payment::where('payable_unique_id',$this->arr->MOID)->first();
     }
 
     public function getReceipt()

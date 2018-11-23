@@ -69,6 +69,13 @@ class Resources
         ]);
     }
 
+    public static function addColumn()
+    {
+        Schema::table('xero_pay_payment', function (Blueprint $table) {
+            $table->string('payable_unique_id');
+        });
+    }
+
     public static function makeDataTable()
     {
         Schema::create('xero_pay_payment', function (Blueprint $table) {
@@ -79,6 +86,7 @@ class Resources
             $table->string('payment_type');
             $table->string('payable_id');
             $table->string('payable_type');
+            $table->string('payable_unique_id');
             $table->integer('price');
             $table->string('method');
             $table->boolean('is_paid_method');
