@@ -10,14 +10,15 @@ class Database
 
     public static function addTable()
     {
-        Schema::create('xero_commerce_qna', function (Blueprint $table) {
-            $table->increments('id');
-            $table->morphs('type');
-            $table->string('title');
-            $table->text('content');
-            $table->integer('user_id');
-            $table->boolean('privacy')->default(false);
-            $table->timestamps();
+
+        Schema::table('xero_commerce_order_log', function (Blueprint $table) {
+            $table->string('ip');
+            $table->string('url');
+        });
+
+        Schema::table('xero_commerce_pay_log', function (Blueprint $table) {
+            $table->string('ip');
+            $table->string('url');
         });
     }
 
@@ -254,6 +255,8 @@ class Database
             $table->increments('id');
             $table->string('order_id');
             $table->string('status');
+            $table->string('ip');
+            $table->string('url');
             $table->timestamps();
         });
 
@@ -261,6 +264,8 @@ class Database
             $table->increments('id');
             $table->integer('pay_id');
             $table->string('status');
+            $table->string('ip');
+            $table->string('url');
             $table->timestamps();
         });
 
