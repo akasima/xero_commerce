@@ -67,7 +67,8 @@ abstract class SellType extends DynamicModel
             'options' => $this->visibleSellUnits()->map(function (SellUnit $sellUnit) {
                 return $sellUnit->getJsonFormat();
             }),
-            'delivery' => $this->getDelivery()
+            'delivery' => $this->getDelivery(),
+            'url' => $this->slugUrl()
         ];
     }
 
@@ -107,4 +108,6 @@ abstract class SellType extends DynamicModel
      * @return callable
      */
     abstract function getSellPriceMethod();
+
+    abstract function slugUrl();
 }

@@ -32,22 +32,23 @@
                                     </label>
                                 </div><!-- //table-cell -->
                                 <div class="table-cell cell-product">
-
-                                    <div class="cell-product-info">
-                                        <div class="cell-product-img">
-                                            <img :src="item.sellType.mainImage" alt="상품이미지">
-                                        </div><!-- //cart-product-img -->
-                                        <div class="cell-product-text">
-                                            <div class="cell-product-name">
-                                                {{item.sellType.data.name}}
-                                            </div><!-- //cart-product-name -->
-                                        </div><!-- //cell-product-text -->
-                                    </div><!-- //cell-product-info -->
+                                    <a href="#" @click="url(item.sellType.url)">
+                                        <div class="cell-product-info">
+                                            <div class="cell-product-img">
+                                                <img :src="item.sellType.mainImage" alt="상품이미지">
+                                            </div><!-- //cart-product-img -->
+                                            <div class="cell-product-text">
+                                                <div class="cell-product-name">
+                                                    {{item.sellType.data.name}}
+                                                </div><!-- //cart-product-name -->
+                                            </div><!-- //cell-product-text -->
+                                        </div><!-- //cell-product-info -->
+                                    </a>
 
                                 </div><!-- //table-cell -->
                                 <div class="table-cell cell-number cell-first">
                                     <b class="xe-hidden-lg xe-hidden-md">상품금액</b>
-                                    <span>{{item.sellType.data.sell_price}}</span>원
+                                    <span>{{item.sellType.data.sell_price.toLocaleString()}}</span>원
 
                                 </div><!-- //table-cell -->
                                 <div class="table-cell cell-btn cell-last">
@@ -182,7 +183,13 @@
             },
             closeModal(item) {
                 $("#wishOptionModal"+item.id).modal('hide');
+            },
+            url(url) {
+                document.location.href = url
             }
+        },
+        mounted () {
+            console.log(this.list[0])
         }
     }
 </script>
