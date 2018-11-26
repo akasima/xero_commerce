@@ -9,6 +9,13 @@ return [
             'placeholder' => '로고 제목을 입력하세요',
             'description' => '로고 제목을 입력하세요',
         ],
+        'logo_image' => [
+            '_type' => 'image',
+            '_section' => '로고 설정',
+            'label' => '로고 이미지',
+            'placeholder' => '쇼핑몰 메인에 적용할 로고이미지를 등록하세요.',
+            'description' => '쇼핑몰 메인에 적용할 로고이미지를 등록하세요.'
+        ],
         'show_spot' => [
             '_type' => 'select',
             '_section' => '스팟 설정',
