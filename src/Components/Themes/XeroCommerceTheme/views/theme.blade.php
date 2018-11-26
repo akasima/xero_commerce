@@ -9,6 +9,10 @@
     $theme::asset('css/user/layout.css')
 ])->load() }}
 
+{{
+ app('xe.frontend')->meta('my.viewport')->name('viewport')
+->content('width=device-width, initial-scale=1.0')->load()
+}}
 @php
     $shopConfig = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
 @endphp
