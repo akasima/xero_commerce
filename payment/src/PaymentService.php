@@ -90,6 +90,7 @@ class PaymentService
         $result = $this->handler->getResult($request);
         $this->logPayment($payment, Payment::EXE, $request->all(), $result->getInfo());
         $payment->receipt = $result->getReceipt();
+        $payment->transaction_id = $result->getUniqueNo();
         $payment->save();
 
         //승인 시

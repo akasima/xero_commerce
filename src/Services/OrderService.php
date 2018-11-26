@@ -148,6 +148,7 @@ class OrderService
 
     public function cancel(Order $order, Request $request)
     {
+        if($order->code ===Order::CANCELED) abort(500, '이미 취소된 주문입니다');
         $paymentService = new PaymentService();
         $cancel = $paymentService->cancel($order, $request->get('reason'));
 

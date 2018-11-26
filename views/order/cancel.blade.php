@@ -115,7 +115,6 @@
                         </div><!-- //table-body -->
                     </div><!-- //table-type3 -->
                 </div><!-- //table-wrap -->
-                {{json_encode($summary)}}
                 <section class="calc">
                     <h2 class="xe-sr-only">예정 금액</h2>
                     <article class="calc-article">

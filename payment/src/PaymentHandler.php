@@ -31,7 +31,7 @@ interface PaymentHandler
     /**
      * @param Request $request
      * @param array $form
-     * @return mixed
+     * @return PaymentResult
      */
     public function getResult(Request $request);
 

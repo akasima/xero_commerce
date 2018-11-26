@@ -106,7 +106,7 @@ class InicisHandler implements PaymentHandler
         $lib->SetField("mid", $config['mid']);
         $lib->SetField("admin", "1111");
         $lib->SetField("price", $payment->price);
-        $lib->SetField("tid", $info->tid);
+        $lib->SetField("tid", $payment->transaction_id);
         $lib->SetField("cancelmsg", $reason);
         $lib->startAction();
         return new InicisCancel($lib);

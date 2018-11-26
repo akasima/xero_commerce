@@ -134,7 +134,7 @@ class LGHandler implements PaymentHandler
         $form = [
             'CST_MID' => XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@lg.id'),
             'CST_PLATFORM' => (LG::isTest()) ? 'test' :'service',
-            'LGD_TID' => $info->LGD_RESPONSE[0]->LGD_TID,
+            'LGD_TID' => $payment->transaction_id,
             'LGD_TXNAME' => 'Cancel'
         ];
         $form['LGD_MID']=(LG::isTest()) ? 't'.$form['CST_MID'] :$form['CST_MID'];

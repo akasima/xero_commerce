@@ -72,7 +72,7 @@ class Resources
     public static function addColumn()
     {
         Schema::table('xero_pay_payment', function (Blueprint $table) {
-            $table->string('payable_unique_id');
+            $table->string('transaction_id')->nullable();
         });
     }
 
@@ -80,6 +80,7 @@ class Resources
     {
         Schema::create('xero_pay_payment', function (Blueprint $table) {
             $table->string('id', 36);
+            $table->string('transaction_id')->nullable();
             $table->string('user_id');
             $table->string('name');
             $table->string('ip');

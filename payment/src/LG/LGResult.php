@@ -34,7 +34,7 @@ class LGResult extends PaymentResult
 
     public function getUniqueNo()
     {
-        return $this->res->LGD_TID;
+        return $this->res->LGD_RESPONSE[0]->LGD_TID;
     }
 
     public function getDateTime()
