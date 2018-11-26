@@ -129,27 +129,27 @@
             validate() {
                 var res = {
                     status: true,
-                    msg: ''
+                    msg: []
                 }
                 if (this.agreed.length < 3) {
-                    res.msg += '3가지 약관에 모두 동의후에 결제가 진행됩니다.\n\r'
+                    res.msg.push('필수 약관에 모두 동의후 결제가 진행됩니다.')
                     res.status = false
                 }
                 if (this.delivery === null) {
-                    res.msg += '주소가 불분명합니다.\n\r'
+                    res.msg.push('주소가 불분명합니다.')
                     res.status = false
                 } else {
                     if (this.delivery.addr === '') {
-                        res.msg += '주소가 불분명합니다.\n\r'
+                        res.msg.push('주소가 불분명합니다.')
                         res.status = false
                     }
                     if (this.delivery.addr_detail === '') {
-                        res.msg += '상세주소를 적어주세요.\n\r'
+                        res.msg.push('상세주소를 적어주세요.')
                         res.status = false
                     }
                 }
                 if(this.payMethod === null){
-                    res.msg += '결제방식을 선택해주세요.\n\r'
+                    res.msg.push('결제방식을 선택해주세요.')
                     res.status = false
                 }
                 return res

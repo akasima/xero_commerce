@@ -60,7 +60,9 @@
         methods: {
             pay() {
                 if (!this.validate.status) {
-                    alert(this.validate.msg)
+                    this.validate.msg.forEach(v=>{
+                        XE.toast('danger',v)
+                    })
                     return false
                 }
                 payment.submit({
