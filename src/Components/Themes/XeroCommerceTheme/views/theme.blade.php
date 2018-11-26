@@ -19,36 +19,56 @@
 @endphp
 
 <div class="xe-shop">
-
-	<header class="area-header">
+	
+    <!-- header -->
+	<header class="header">
     	<div class="inner-header">
-            <h1>엠엠푸드</h1>
-            <button type="button" class="btn-menu" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
-            <nav>
-            	<ul class="xe-shop-menu">
-                    <li class="active"><a href="" target="">a</a>
-                        <ul>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">1 depth</a></li>
-                            <li><a href="#">1 depth</a></li>
-                            <li><a href="#">1 depth</a></li>
-                            <li><a href="#">1 depth</a></li>
-                            <li><a href="#">1 depth</a></li>
-                        </ul>
-                    </li>
+        	
+            <!-- area-option -->
+            <div class="area-option">
+            	<ul class="list-option">
+                @if(auth()->check())
+                @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || auth()->user()->rating == \Xpressengine\User\Rating::SUPER)
+                    <li class="item-option"><a href="{{ route('xero_commerce::setting.order.index') }}">관리자페이지</a></li>
+                @endif
+                <li class="item-option"><a class="link-option" href="{{ route('logout') }}">로그아웃</a></li>
+                <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
+                @else
+                    <li class="item-option"><a class="link-option" href="{{ route('login') }}">로그인</a></li>
+                    <li class="item-option"><a class="link-option" href="{{route('auth.register') }}">회원가입</a></li>
+                @endif
+                    <li class="item-option"><a class="link-option" href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
+                    <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
                 </ul>
-            </nav>
-            <div class="box-search">
-            	<h2 class="xe-sr-only">검색</h2>
-                <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
-                    <div class="xe-shop-search-input">
-                        <input type="text" class="xe-form-control" placeholder="" name="product_name" value="{{ Request::get('product_name') }}">
-                        <button type="button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
-                    </div>
-                </form>
             </div>
+        	<!-- // area-option -->
+            
+            <!-- area-gnb -->
+        	<div class="area-gnb">
+                <h1 class="logo">엠엠푸드</h1>
+                <button type="button" class="btn-menu reset-button" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
+                <nav>
+                    <ul class="list-gnb">
+                        <li class="item-gnb active"><a href="#" class="link-gnb" target="">영웅님</a></li>
+                        <li class="item-gnb active"><a href="#" class="link-gnb" target="">미안해요</a></li>
+                        <li class="item-gnb active"><a href="#" class="link-gnb" target="">다시 개발넣어줘요</a></li>
+                        <li class="item-gnb active"><a href="#" class="link-gnb" target="">에러가나요</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="area-search">
+                    <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
+                        <input type="text" class="input-text">
+                        <button type="button" class="btn-search reset-button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
+                    </form>
+                </div>
+                
+            </div>
+            <!-- // area-gnb -->
+            
         </div>
     </header>
+    <!-- // header -->
     
     <h1 class="xe-sr-only">xe 쇼핑</h1>
     <!-- 기본 ui
@@ -103,7 +123,7 @@
     
     
     
-    <section class="logo">
+    <section class="logo" style="display:none;">
         <div class="container">
             <h2 class="xe-shop-logo">
                 <a href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
