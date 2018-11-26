@@ -10,10 +10,19 @@ class WishHandler
 {
     public function store(SellType $sellType)
     {
-        $wish = new Wish();
-        $wish->user_id = Auth::id();
-        $sellType->wishs()->save($wish);
-        $wish->save();
+        if(!$this->isWish($sellType)){
+            $wish = new Wish();
+            $wish->user_id = Auth::id();
+            $sellType->wishs()->save($wish);
+            $wish->save();
+        }
+    }
+
+    public function storeMany($collection)
+    {
+        $collection->each(function(SellType $sellType) {
+            $this->store($sellType);
+        });
     }
 
     public function remove(SellType $sellType)

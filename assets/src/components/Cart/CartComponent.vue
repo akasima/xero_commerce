@@ -32,6 +32,7 @@
                              :cart-change-url="cartChangeUrl"
                              :cart-draw-url="cartDrawUrl"
                              :cart-draw-list-url="cartDrawListUrl"
+                             @wish="wish"
                              @checked="summary"
                              @change="reload"
                              @only="onlyOrder"></cart-list-component>
@@ -52,7 +53,7 @@
             CartListComponent, CartSumComponent
         },
         props: [
-            'cartList', 'summaryUrl', 'orderUrl', 'cartChangeUrl', 'cartDrawUrl', 'cartDrawListUrl'
+            'cartList', 'summaryUrl', 'orderUrl', 'cartChangeUrl', 'cartDrawUrl', 'cartDrawListUrl', 'wishAddUrl', 'wishUrl'
         ],
         data() {
             return {
@@ -116,6 +117,22 @@
                 return array.map((v) => {
                     return v[key]
                 }).reduce((a, b) => a + b, 0);
+            },
+            wish(){
+                $.ajax({
+                    url: this.wishAddUrl,
+                    data: {
+                        cart_id: this.checkedList,
+                        _token: document.getElementById('csrf_token').value
+                    },
+                    method: 'post'
+                }).done((res) => {
+                    var conf = window.confirm('찜한 상품에 담았습니다. 찜한 상품에 갈까요?')
+                    if(conf)
+                    {
+                        document.location.href= this.wishUrl
+                    }
+                })
             },
             reload() {
                 document.location.reload()

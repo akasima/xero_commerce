@@ -560,6 +560,11 @@ class Resources
                 'as' => 'xero_commerce::wish.remove'
             ]);
 
+            Route::post('/cart/wish', [
+                'uses'=>'CartController@wishMany',
+                'as' => 'xero_commerce::cart.wish'
+            ]);
+
             Route::get('/cart', [
                 'uses' => 'CartController@index',
                 'as' => 'xero_commerce::cart.index'

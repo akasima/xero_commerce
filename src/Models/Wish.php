@@ -7,6 +7,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 class Wish extends DynamicModel
 {
     protected $table = 'xero_commerce_wish';
+    protected $guarded=[];
 
     public function sellType()
     {

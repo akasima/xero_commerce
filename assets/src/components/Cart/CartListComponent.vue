@@ -110,7 +110,7 @@
 
                 <div class="bottom-btn-box">
                     <button type="button" class="btn-default" @click="drawList">선택상품 삭제</button>
-                    <button type="button" class="btn-default">선택상품 찜</button>
+                    <button type="button" class="btn-default" @click="wishList">선택상품 찜</button>
                 </div><!-- //cart-product-list-btn -->
 
             </div><!-- //cart-wrap  -->
@@ -223,7 +223,7 @@
                 }
             },
             wishList() {
-
+                this.$emit('wish')
             },
             onlyThisCart(cart_id) {
                 this.$emit('only', cart_id)

@@ -24,6 +24,11 @@ class WishService
         $this->wishHandler->store($sellType);
     }
 
+    public function storeMany($collection)
+    {
+        $this->wishHandler->storeMany($collection);
+    }
+
     public function remove(SellType $sellType)
     {
         $this->wishHandler->remove($sellType);

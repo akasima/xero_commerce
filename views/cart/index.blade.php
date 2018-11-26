@@ -8,6 +8,8 @@
         cart-change-url="{{ route('xero_commerce::cart.change',['cart'=>'']) }}"
         cart-draw-url="{{ route('xero_commerce::cart.draw',['cart'=>'']) }}"
         cart-draw-list-url="{{ route('xero_commerce::cart.drawList') }}"
+        wish-url="{{route('xero_commerce::wish.index')}}"
+        wish-add-url="{{route('xero_commerce::cart.wish')}}"
     ></cart-component>
     <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
 </div>

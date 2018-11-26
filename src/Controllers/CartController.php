@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
+use Xpressengine\Plugins\XeroCommerce\Services\WishService;
 
 class CartController extends XeroCommerceBasicController
 {
@@ -53,5 +54,17 @@ class CartController extends XeroCommerceBasicController
     public function drawList(Request $request)
     {
         $this->cartService->drawList($request->get('cart_id'));
+    }
+
+    public function wishMany(Request $request)
+    {
+        $wishService = new WishService();
+
+        $carts = Cart::find($request->get('cart_id'));
+        $selltypes = $carts->map(function(Cart $cart){
+            return $cart->sellType;
+        });
+
+        $wishService->storeMany($selltypes);
     }
 }
