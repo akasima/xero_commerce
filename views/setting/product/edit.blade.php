@@ -353,3 +353,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         $('textarea[name=description]').attr('data-valid-name', '상품 소개');
     })
 </script>
+
+<style>
+    .col-lg-4:nth-child(3n+1) {
+        clear: both;
+    }
+</style>
