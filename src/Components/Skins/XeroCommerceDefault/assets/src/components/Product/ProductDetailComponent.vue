@@ -44,7 +44,7 @@
                             </div>
                             <div class="product-info-cell before-price">
                                 {{Number(product.data.original_price).toLocaleString()}}<span>원</span></div>
-                            <div class="product-info-favor">
+                            <div class="product-info-favor" v-if="benefit">
                                 <button type="button" class="favor-btn"> 구매 혜택 보기</button>
 
                                 <!-- [D] 클릭시 on 클래스 추가 부탁드립니다. -->
@@ -303,7 +303,8 @@
                 choose: [],
                 pay: '선불',
                 tab: 1,
-                mainImageKey: 0
+                mainImageKey: 0,
+                benefit: false
             }
         },
         methods: {
