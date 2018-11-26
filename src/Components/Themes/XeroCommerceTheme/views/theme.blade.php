@@ -41,7 +41,7 @@
                     {{--</ul>--}}
                 {{--</div>--}}
                 <div>
-                    <img src="{{$config->get('logo_image.path', $theme::asset('img/shop-logo@lg.png'))}}" alt="">
+                    <img src="{{$config->get('logo_image.path')}}" alt="">
                 </div>
             </article>
             <article class="xe-shop-utilmenu xe-hidden-xs xe-hidden-sm">
