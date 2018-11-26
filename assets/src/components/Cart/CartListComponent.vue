@@ -97,7 +97,7 @@
                                     <span class="cart-product-title">주문 금액</span>
                                     <span class="cart-product-text">{{cartItem.sell_price.toLocaleString()}}원</span>
                                     <div class="cart-product-btn">
-                                        <button type="button" class="btn-buynow" @click="onlyThisCart(cartItem.id)">주문하기</button>
+                                        <button type="button" class="btn-buynow" @click="onlyThisCart(cartItem.id)">구매하기</button>
                                         <button type="button" class="btn-delete" @click="draw(cartItem.id)">삭제하기</button>
                                     </div><!-- //cart-product-btn -->
                                 </div><!-- //cart-product-sum -->
