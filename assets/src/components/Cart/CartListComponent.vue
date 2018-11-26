@@ -2,7 +2,6 @@
     <div class="xe-shop cart">
         <div class="container">
             <div class="cart-wrap">
-                <h1 class="page-title">교환수거 정보입력</h1>
                 <button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>
                 <div class="cart-product">
                     <div class="cart-product-header xe-hidden-xs xe-hidden-sm">

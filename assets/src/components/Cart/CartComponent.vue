@@ -127,7 +127,7 @@
                 }
                 if(this.cartList.filter((v)=>{return this.checkedList.indexOf(v.id) !== -1;}).map(v=>{return v.count;}).reduce((a,b)=>a+b,0)===0){
                     validate.status=false
-                    validate.msg+= '구매하는 상품이 없거나 개수가 없니다.'
+                    validate.msg+= '구매하는 상품이 없거나 선택된 상품이 없습니다.'
                 }
                 return validate
             },
