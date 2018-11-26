@@ -209,16 +209,19 @@
                 })
             },
             drawList() {
-                $.ajax({
-                    url: this.cartDrawListUrl,
-                    data: {
-                        cart_id:this.checkedList
-                    }
-                }).done(() => {
-                    this.$emit('change')
-                }).fail(() => {
-                    console.log('fail')
-                })
+                var confirm = window.confirm(this.checkedList.length + ' 개 장바구니를 삭제합니다. 계속 하시겠습니까?')
+                if(confirm){
+                    $.ajax({
+                        url: this.cartDrawListUrl,
+                        data: {
+                            cart_id:this.checkedList
+                        }
+                    }).done(() => {
+                        this.$emit('change')
+                    }).fail(() => {
+                        console.log('fail')
+                    })
+                }
             },
             onlyThisCart(cart_id) {
                 this.$emit('only', cart_id)
