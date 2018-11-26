@@ -6981,17 +6981,21 @@ body, input, textarea, select, table {
   }
 }
 
-/*# sourceMappingURL=../../map/user/layout.css.map */
 
 
 
 
 
 /* ryu */
-.header {
+.area-header {
+	position: relative;
 }
 
-
+.area-header .inner-header {
+	width: 1140px;
+	margin: 0 auto;
+	padding: 0 24px;
+}
 
 
 

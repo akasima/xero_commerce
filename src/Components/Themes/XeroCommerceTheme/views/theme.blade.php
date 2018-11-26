@@ -21,9 +21,9 @@
 <div class="xe-shop">
 
 	<header class="area-header">
-    	<div class="inner-haader">
+    	<div class="inner-header">
             <h1>엠엠푸드</h1>
-            <button type="button" class="xe-btn-category" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
+            <button type="button" class="btn-menu" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
             <nav>
             	<ul class="xe-shop-menu">
                     <li class="active"><a href="" target="">a</a>

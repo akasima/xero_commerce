@@ -68,12 +68,12 @@
                                                 <span class="cart-product-title">주문 상태</span>
                                                 <span class="cart-product-text">{{item.status}}</span>
                                                 <div class="cart-product-btn">
-                                                    <button type="button" class="btn-shipping-status" @click="url(orderitem.delivery_url)">배송조회</button>
-                                                    <div v-if="inDelivery(item)">
+                                                    <button v-if="inDelivery(item)" type="button" class="btn-shipping-status" @click="url(orderitem.delivery_url)">배송조회</button>
+                                                    <div v-if="inDelivery(item) && !notInProcess(item)">
                                                         <button type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">교환요청</button>
                                                         <button type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">환불요청</button>
                                                     </div>
-                                                    <button v-if="notInDelivery(item)" type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">취소요청</button>
+                                                    <button v-if="notInDelivery(item) && !notInProcess(item)" type="button" class="btn-shipping-status" @click="url(cancelUrl+'/'+item.id)">취소요청</button>
                                                 </div><!-- //cart-product-btn -->
                                             </div><!-- //cart-product-sum -->
                                         </div><!-- //cart-product-num-box -->
@@ -146,6 +146,9 @@
             },
             notInDelivery( item ){
                 return item.status ==='상품준비' || item.status==='결제대기'
+            },
+            notInProcess (item) {
+                return !this.notInDelivery( item ) &&  !this.inDelivery(item)
             }
         }
     }
