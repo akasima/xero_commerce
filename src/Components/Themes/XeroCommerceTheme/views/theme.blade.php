@@ -32,13 +32,16 @@
         <div class="container">
             <h2 class="xe-sr-only">상단 유틸</h2>
             <article class="xe-shop-notice xe-hidden-xs xe-hidden-sm">
-                <h3>notice</h3>
-                <div class="notice-view">
-                    <ul>
-                        @foreach ($notices as $notice)
-                            <li><a href="{{ $urlHandler->getShow($notice) }}">{{ $notice->title }} </a></li>
-                        @endforeach
-                    </ul>
+                {{--<h3>notice</h3>--}}
+                {{--<div class="notice-view">--}}
+                    {{--<ul>--}}
+                        {{--@foreach ($notices as $notice)--}}
+                            {{--<li><a href="{{ $urlHandler->getShow($notice) }}">{{ $notice->title }} </a></li>--}}
+                        {{--@endforeach--}}
+                    {{--</ul>--}}
+                {{--</div>--}}
+                <div>
+                    <img src="{{$config->get('logo_image.path', $theme::asset('img/shop-logo@lg.png'))}}" alt="">
                 </div>
             </article>
             <article class="xe-shop-utilmenu xe-hidden-xs xe-hidden-sm">
