@@ -9,11 +9,47 @@
     $theme::asset('css/user/layout.css')
 ])->load() }}
 
+{{
+ app('xe.frontend')->meta('my.viewport')->name('viewport')
+->content('width=device-width, initial-scale=1.0')->load()
+}}
+
 @php
     $shopConfig = XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
 @endphp
 
 <div class="xe-shop">
+
+	<header class="area-header">
+    	<div class="inner-haader">
+            <h1>엠엠푸드</h1>
+            <button type="button" class="xe-btn-category" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
+            <nav>
+            	<ul class="xe-shop-menu">
+                    <li class="active"><a href="" target="">a</a>
+                        <ul>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">1 depth</a></li>
+                            <li><a href="#">1 depth</a></li>
+                            <li><a href="#">1 depth</a></li>
+                            <li><a href="#">1 depth</a></li>
+                            <li><a href="#">1 depth</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div class="box-search">
+            	<h2 class="xe-sr-only">검색</h2>
+                <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
+                    <div class="xe-shop-search-input">
+                        <input type="text" class="xe-form-control" placeholder="" name="product_name" value="{{ Request::get('product_name') }}">
+                        <button type="button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+    
     <h1 class="xe-sr-only">xe 쇼핑</h1>
     <!-- 기본 ui
       scss/user/_skin.scss
@@ -63,6 +99,10 @@
             </article>
         </div>
     </section>
+    
+    
+    
+    
     <section class="logo">
         <div class="container">
             <h2 class="xe-shop-logo">
