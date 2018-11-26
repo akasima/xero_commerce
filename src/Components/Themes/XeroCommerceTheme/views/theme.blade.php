@@ -175,42 +175,58 @@
             <section class="xe-company-info">
                 <div class="container">
                     <div class="xe-company-info-article">
+                        @if(!is_null($shopConfig['companyName']))
                         <p>
                             <b>상호명</b>
                             <span>{{$shopConfig['companyName']}}</span>
                         </p>
+                        @endif
+                        @if(!is_null($shopConfig['ceoName']))
                         <p>
                             <b>대표자</b>
                             <span>{{$shopConfig['ceoName']}}</span>
                         </p>
+                        @endif
+                        @if(!is_null($shopConfig['companyNumber']))
                         <p>
                             <b>사업자등록번호</b>
                             <span>{{$shopConfig['companyNumber']}}<a href="#">[사업자정보확인]</a></span>
                         </p>
+                        @endif
+                        @if(!is_null($shopConfig['communicationMarketingNumber']))
                         <p>
                             <b>통신판매업</b>
                             <span>신고 {{$shopConfig['communicationMarketingNumber']}}</span>
                         </p>
+                        @endif
                     </div>
                     <div class="xe-company-info-article">
+                        @if(!is_null($shopConfig['address']))
                         <p>
                             <b>주소</b>
-                            <span>({{$shopConfig['zipCode']}}) {{$shopConfig['address']}}</span>
+                            <span>@if(!is_null($shopConfig['zipCode']))({{$shopConfig['zipCode']}})@endif {{$shopConfig['address']}}</span>
                         </p>
+                        @endif
+                        @if(!is_null($shopConfig['telNumber']))
                         <p>
                             <b>대표전화</b>
                             <span>{{$shopConfig['telNumber']}}</span>
                         </p>
+                        @endif
                     </div>
                     <div class="xe-company-info-article">
+                        @if(!is_null($shopConfig['informationCharger']))
                         <p>
                             <b>개인정보관리책임자</b>
                             <span>{{$shopConfig['informationCharger']}}</span>
                         </p>
+                        @endif
+                        @if(!is_null($shopConfig['email']))
                         <p>
                             <b>이메일</b>
                             <span>{{$shopConfig['email']}}</span>
                         </p>
+                        @endif
                     </div>
                 </div>
             </section>
