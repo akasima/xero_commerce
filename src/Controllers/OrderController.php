@@ -167,6 +167,9 @@ class OrderController extends XeroCommerceBasicController
 
     public function cancel(Order $order, Request $request)
     {
+        $request->validate([
+            'reason'=>'required'
+        ]);
         $this->orderService->cancel($order, $request);
         return redirect()->route('xero_commerce::order.list');
     }
