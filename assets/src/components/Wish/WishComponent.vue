@@ -101,7 +101,7 @@
 
                 <div class="bottom-btn-box">
                     <h2 class="xe-sr-only">관리 버튼</h2>
-                    <button type="button" class="btn-default xe-hidden-sm xe-hidden-xs">선택상품 삭제</button>
+                    <button type="button" class="btn-default xe-hidden-sm xe-hidden-xs" @click="removeList">선택상품 삭제</button>
                     <button type="button" class="btn-default xe-hidden-lg xe-hidden-md">더 보기 <i class="xi-angle-down"></i></button>
                 </div>
 
