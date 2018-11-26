@@ -52,7 +52,7 @@
                 <ul class="xe-shop-category-list">
                     <!-- [D] 열림시 open 클래스 추가 -->
                     @foreach(menu_list($config->get('gnb')) as $menu)
-                        <li @if($menu['selected']) class="open" @endif onclick="toggleSubMenu(this)">
+                        <li @if($menu['selected']) class="open" @endif onclick="toggleSubMenu(this,'{{url($menu['url']) }}')">
                             <h4 class="xe-shop-category-title"><a href="#">{{ $menu['link'] }}</a><i @if($menu['selected']) class="xi-angle-up-thin" @else class="xi-angle-down-thin" @endif></i></h4>
                             <ul>
                                 @foreach($menu['children'] as $submenu)
@@ -72,11 +72,19 @@
         toggleClass(".xe-shop-category", "active")
     }
 
-    function toggleSubMenu (target) {
+    function toggleSubMenu (target, url) {
+        var was_ul_display = $(target).find("ul").css("display")==='block'
+
         toggleClass(target, "open")
         var icon = $(target).find("h4 i");
         toggleClass(icon, "xi-angle-down-thin");
         toggleClass(icon, "xi-angle-up-thin");
+
+        var is_ul_dislay = $(target).find("ul").css("display")==='block'
+
+        if (was_ul_display && is_ul_dislay) {
+            location.href = url
+        }
     }
 
     function toggleClass (target, className) {
