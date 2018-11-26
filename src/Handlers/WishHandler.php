@@ -54,4 +54,13 @@ class WishHandler
             ];
         });
     }
+
+    public function isWish(SellType $sellType)
+    {
+        return
+            Wish::where('user_id', Auth::id())
+                ->where('type_id', $sellType->id)
+                ->where('type_type', get_class($sellType))
+                ->exists();
+    }
 }

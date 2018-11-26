@@ -79,7 +79,7 @@
                                 <button class="xe-btn" @click="cartPage"><i
                                     class="xe-visible-xs xe-visible-sm xi-basket"></i><span
                                     class="xe-visible-md xe-visible-lg">장바구니</span></button>
-                                <button class="xe-btn" @click="toggleWish"><i
+                                <button class="xe-btn wish-btn" :class="(isWish)?'active':''" @click="toggleWish"><i
                                     class="xe-visible-xs xe-visible-sm xi-heart"></i><span
                                     class="xe-visible-md xe-visible-lg">찜하기</span></button>
                             </div><!-- //btn-buy-wrap -->
@@ -101,7 +101,7 @@
                                 <button class="xe-btn" @click="cartPage"><i
                                     class="xe-visible-xs xe-visible-sm xi-basket"></i><span
                                     class="xe-visible-md xe-visible-lg">장바구니</span></button>
-                                <button class="xe-btn" @click="toggleWish"><i
+                                <button class="xe-btn wish-btn" :class="(isWish)?'active':''" @click="toggleWish"><i
                                     class="xe-visible-xs xe-visible-sm xi-heart"></i><span
                                     class="xe-visible-md xe-visible-lg">찜하기</span></button>
                             </div><!-- //btn-buy-wrap -->
@@ -288,7 +288,7 @@
             OptionSelectComponent, DeliverySelectComponent, ProductCategoryComponent, ProductQnaComponent
         },
         props: [
-            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category', 'qnaAddUrl', 'qnaGetUrl', 'qnaList', 'answerUrl'
+            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category', 'qnaAddUrl', 'qnaGetUrl', 'qnaList', 'answerUrl', 'isWish'
         ],
         computed: {
             mainImg() {
@@ -389,8 +389,10 @@
                         if (conf) {
                             document.location.href = this.wishListUrl
                         }
+                        $(".wish-btn").addClass("active")
                     } else {
                         alert('관심상품에서 제거했습니다.')
+                        $(".wish-btn").removeClass("active")
                     }
                 }).fail(err => {
                     console.log(err)
