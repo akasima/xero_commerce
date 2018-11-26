@@ -14,11 +14,13 @@
                     <div class="product-img">
                         <h3 class="xe-sr-only">상품 이미지</h3>
                         <div class="product-img-view">
-                            <img :src="mainImg" style="width:450px;height:600px;">
+                            <div class="box-img">
+                            <img :src="mainImg"  alt="" width="100%" height="auto" >
                             <button class="xe-btn left" @click="beforeMainImage"><i class="xi-angle-left-thin"><span
                                 class="xe-sr-only">이전 사진 보기</span></i></button>
                             <button class="xe-btn right" @click="afterMainImage"><i class="xi-angle-right-thin"><span
                                 class="xe-sr-only">다음 사진 보기</span></i></button>
+                            </div>
                         </div>
                         <div class="product-img-list">
                             <h3 class="xe-sr-only">상품 이미지 목록</h3>
@@ -452,5 +454,14 @@
 <style scoped>
     .highlight {
         border: 2px black solid;
+    }
+    .box-img {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 450px;
+        height: 603px;
+        background: #eee;
     }
 </style>
