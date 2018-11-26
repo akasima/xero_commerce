@@ -83,8 +83,7 @@
                                     <span class="cart-product-text">{{cartItem.original_price.toLocaleString()}}원</span>
                                 </div><!-- //cart-product-price -->
                                 <div class="cart-product-sale">
-                                    <span class="cart-product-title">할인금액</span>
-                                    <span class="cart-product-text">{{cartItem.discount_price.toLocaleString()}}원</span>
+                                    <span class="cart-product-text"><i class="xi-minus-min"></i>{{cartItem.discount_price.toLocaleString()}}원</span>
                                 </div><!-- //cart-product-sale -->
                                 <div class="cart-product-quantity">
                                     <span class="cart-product-title">수량</span>
@@ -92,7 +91,7 @@
                                 </div><!-- //cart-product-num -->
                                 <div class="cart-product-shipping">
                                     <span class="cart-product-title">배송비</span>
-                                    <span class="cart-product-text">{{cartItem.fare.toLocaleString()}}원</span>
+                                    <span class="cart-product-text"><i class="xi-plus-min"></i>({{cartItem.fare.toLocaleString()}}원)</span>
                                 </div><!-- //cart-product-shipping -->
                                 <div class="cart-product-sum">
                                     <span class="cart-product-title">주문 금액</span>
@@ -222,6 +221,9 @@
                         console.log('fail')
                     })
                 }
+            },
+            wishList() {
+
             },
             onlyThisCart(cart_id) {
                 this.$emit('only', cart_id)
