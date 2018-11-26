@@ -87,12 +87,16 @@
 <script>
     function toggleHeart(id)
     {
+        @if(\Illuminate\Support\Facades\Auth::check())
         $.ajax({
             url: '{{route('xero_commerce::product.wish.toggle',['product'=>''])}}/'+id
         }).done(()=>{
             toggleClass('#heart'+id,'xi-heart-o')
             toggleClass('#heart'+id,'xi-heart')
         })
+        @else
+        XE.toast('warning','로그인 후 사용할 수 있습니다')
+        @endif
     }
     function toggleClass(target, className)
     {

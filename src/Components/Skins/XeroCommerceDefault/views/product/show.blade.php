@@ -12,7 +12,8 @@ qna-add-url="{{route('xero_commerce::product.qna.add',['product'=>$product])}}"
 qna-get-url="{{route('xero_commerce::product.qna.get',['product'=>$product])}}"
 answer-url="{{route('xero_commerce::qna.answer',['qna'=>''])}}"
 :qna-list="{{json_encode($product->qna)}}"
-:is-wish="{{app('xero_commerce.wishHandler')->isWish($product)}}"
+:is-wish="{{(app('xero_commerce.wishHandler')->isWish($product))?'true':'false'}}"
+:auth="{{(\Illuminate\Support\Facades\Auth::check())?'true':'false'}}"
 :category = "{{json_encode($category)}}"></product-detail-component>
 <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
 @else

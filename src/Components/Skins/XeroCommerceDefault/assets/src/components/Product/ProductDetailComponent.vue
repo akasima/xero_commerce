@@ -151,6 +151,7 @@
                                 :qna-add-url="qnaAddUrl"
                                 :qna-get-url="qnaGetUrl"
                                 :answer-url="answerUrl"
+                                :auth="auth"
                             ></product-qna-component>
                         </div>
                         <div v-if="tab===2" class="detail-as">
@@ -288,7 +289,7 @@
             OptionSelectComponent, DeliverySelectComponent, ProductCategoryComponent, ProductQnaComponent
         },
         props: [
-            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category', 'qnaAddUrl', 'qnaGetUrl', 'qnaList', 'answerUrl', 'isWish'
+            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category', 'qnaAddUrl', 'qnaGetUrl', 'qnaList', 'answerUrl', 'isWish', 'auth'
         ],
         computed: {
             mainImg() {
@@ -380,23 +381,27 @@
                 })
             },
             toggleWish() {
-                $.ajax({
-                    url: this.wishUrl,
-                    method: 'get'
-                }).done(res => {
-                    if (Number(res)) {
-                        var conf = confirm('관심상품에 담았습니다. 관심상품으로 갈까요?')
-                        if (conf) {
-                            document.location.href = this.wishListUrl
+                if (this.auth) {
+                    $.ajax({
+                        url: this.wishUrl,
+                        method: 'get'
+                    }).done(res => {
+                        if (Number(res)) {
+                            var conf = confirm('관심상품에 담았습니다. 관심상품으로 갈까요?')
+                            if (conf) {
+                                document.location.href = this.wishListUrl
+                            }
+                            $(".wish-btn").addClass("active")
+                        } else {
+                            alert('관심상품에서 제거했습니다.')
+                            $(".wish-btn").removeClass("active")
                         }
-                        $(".wish-btn").addClass("active")
-                    } else {
-                        alert('관심상품에서 제거했습니다.')
-                        $(".wish-btn").removeClass("active")
-                    }
-                }).fail(err => {
-                    console.log(err)
-                })
+                    }).fail(err => {
+                        console.log(err)
+                    })
+                }else{
+                    XE.toast('warning','로그인 후 사용할 수 있습니다')
+                }
             },
             detail() {
                 var a = JSON.parse(this.product.data.detail_info)

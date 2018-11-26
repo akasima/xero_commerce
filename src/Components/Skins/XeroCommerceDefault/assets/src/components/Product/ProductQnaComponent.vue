@@ -69,7 +69,7 @@
 <script>
     export default {
         name: "ProductQnaComponent",
-        props: ['defaultList','productId', 'qnaGetUrl', 'qnaAddUrl', 'answerUrl'],
+        props: ['defaultList','productId', 'qnaGetUrl', 'qnaAddUrl', 'answerUrl', 'auth'],
         computed: {
             listExist () {
                 return this.list.length> 0;
@@ -126,16 +126,21 @@
                 this.add(data, this.answerUrl+'/'+id)
             },
             add (data, url) {
-                data._token = $("#csrf_token").val()
-                data.privacy = Number(data.privacy)
-                $.ajax({
-                    url: url,
-                    method: 'post',
-                    data: data
-                }).done(()=>{
-                    this.load()
-                    this.erase(data)
-                })
+
+                if (this.auth) {
+                    data._token = $("#csrf_token").val()
+                    data.privacy = Number(data.privacy)
+                    $.ajax({
+                        url: url,
+                        method: 'post',
+                        data: data
+                    }).done(()=>{
+                        this.load()
+                        this.erase(data)
+                    })
+                }else{
+                    XE.toast('warning','로그인 후 사용할 수 있습니다')
+                }
             }
         },
         mounted () {
