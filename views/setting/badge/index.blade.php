@@ -1,48 +1,62 @@
 @section('page_title')
-    <h2>배지 관리</h2>
+<h2>배지 관리</h2>
 @endsection
 
 <div class="row">
     <div class="col-sm-12">
         <div class="panel-group">
             <div class="panel">
-                <div class="panel-heading">
-                    <div class="form-group">
-                        <table class="xe-table">
-                            <thead>
+                <div class="panel-body table-scrollable">
+                    <table class="table">
+                        <thead>
                             <tr>
                                 <th>배지 이름</th>
-                                <th>배지 영어 이름</th>
+                                <th>배지 영문 이름</th>
                                 <th>관리</th>
                             </tr>
-                            </thead>
-
-                            <tbody>
+                        </thead>
+                        <tbody>
                             @foreach ($badges as $badge)
-                                <tr>
-                                    <td>{{ $badge->name }}</td>
-                                    <td>{{ $badge->eng_name }}</td>
-                                    <td>
+                            <tr>
+                                <td>{{ $badge->name }}</td>
+                                <td>{{ $badge->eng_name }}</td>
+                                <td class="full">
+                                    <form method="post" action="{{ route('xero_commerce::setting.badge.remove', ['id' => $badge->id]) }}">
+                                        {!! csrf_field() !!}
                                         <a href="{{ route('xero_commerce::setting.badge.edit', ['badge' => $badge->id]) }}" class="xe-btn">수정</a>
-                                        <form method="post" action="{{ route('xero_commerce::setting.badge.remove', ['id' => $badge->id]) }}">
-                                            {!! csrf_field() !!}
-                                            <button type="submit" class="xe-btn xe-btn-danger">삭제</button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                        <button type="submit" class="xe-btn xe-btn-sm xe-btn-danger">삭제</button>
+                                    </form>
+                                </td>
+                            </tr>
                             @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                            <form method="post" action="{{ route('xero_commerce::setting.badge.store') }}">
-                                {!! csrf_field() !!}
-                                <tr>
-                                    <td><input name="name" value="{{ Request::old('name') }}"> </td>
-                                    <td><input name="eng_name" value="{{ Request::old('eng_name') }}"></td>
-                                    <td><button type="submit" class="xe-btn xe-btn-positive">추가</button></td>
-                                </tr>
-                            </form>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>배지 추가</h3>
+                </div>
+                <div class="panel-body">
+                    <form method="post" action="{{ route('xero_commerce::setting.badge.store') }}">
+                        {!! csrf_field() !!}
+                        <div class="form-group">
+                            <label class="control-label col-xs-4 col-md-2">배지 이름</label>
+                            <div class=" col-md-8">
+                                <input name="name" value="{{ Request::old('name') }}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-4 col-md-2">배지 ID</label>
+                            <div class="col-md-8">
+                                <input name="eng_name" value="{{ Request::old('eng_name') }}" class="form-control" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer text-right">
+                    <button type="submit" class="btn btn-primary btn-lg">추가</button>
                 </div>
             </div>
         </div>

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 .title-label {
 	margin: 0 0 24px 0;
+=======
+.title-rank {
+	margin-bottom: 24px;
+>>>>>>> 57515f2822aff69d91e0120e79bd3f6139f67142
 	font-size: 22px;
 	font-weight: 600;
 	line-height: 36px;
@@ -14,6 +19,7 @@
 	margin-bottom: 32px;
 }
 
+<<<<<<< HEAD
 .list-tab-rank .item-tab-rank {
 	position: relative;
 	margin-right: 38px;
@@ -37,6 +43,16 @@
 }
 
 .list-tab-rank .link-tab-rank {
+=======
+.list-tab-rank .link-tab-rank {
+	font-size: 14px;
+	line-height: 24px;
+	color: rgba(0, 0, 0, 0.5);
+	text-decoration: none;
+}
+
+.list-tab-rank .link-tab-rank:before {
+>>>>>>> 57515f2822aff69d91e0120e79bd3f6139f67142
 	font-size: 14px;
 	line-height: 24px;
 	color: rgba(0, 0, 0, 0.5);

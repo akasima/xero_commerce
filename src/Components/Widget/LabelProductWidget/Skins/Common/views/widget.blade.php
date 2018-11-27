@@ -1,7 +1,11 @@
 {{ XeFrontend::css('plugins/xero_commerce/src/Components/Widget/LabelProductWidget/Skins/Common/assets/style.css')->load() }}
 
 <div class="xe-shop">
+<<<<<<< HEAD
     <h2 class="title-label">{{ $widgetConfig['@attributes']['title'] }}</h2>
+=======
+    <h2 class="title-rank">{{ $widgetConfig['@attributes']['title'] }}</h2>
+>>>>>>> 57515f2822aff69d91e0120e79bd3f6139f67142
     <div class="tab-list">
         <ul class="list-tab-rank reset-list">
             <li class="item-tab-rank active"><a href="#"  class="link-tab-rank" onclick="return false" id="all">ALL</a></li>

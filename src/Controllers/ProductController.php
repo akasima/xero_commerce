@@ -8,6 +8,7 @@ use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
+use Xpressengine\Plugins\XeroCommerce\Services\FeedbackService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
@@ -87,5 +88,17 @@ class ProductController extends XeroCommerceBasicController
     {
         $qnaService = new QnaService();
         return $qnaService->getTargetQna($product);
+    }
+
+    public function feedbackAdd(Product $product, Request $request)
+    {
+        $qnaService = new FeedbackService();
+        $qnaService->store($product, $request);
+    }
+
+    public function feedbackLoad(Product $product)
+    {
+        $qnaService = new FeedbackService();
+        return $qnaService->getTargetFeedback($product);
     }
 }

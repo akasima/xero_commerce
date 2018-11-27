@@ -25,6 +25,7 @@ use Xpressengine\Plugins\XeroCommerce\Components\Widget\SlideWidget\Skins\Common
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\FeedbackHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
@@ -561,7 +562,7 @@ class Resources
             ]);
 
             Route::post('/cart/wish', [
-                'uses'=>'CartController@wishMany',
+                'uses' => 'CartController@wishMany',
                 'as' => 'xero_commerce::cart.wish'
             ]);
 
@@ -601,19 +602,29 @@ class Resources
                 'as' => 'xero_commerce::product.wish.toggle'
             ]);
 
-            Route::get('/qna/product/{product}',[
-                'uses'=>'ProductController@qnaLoad',
-                'as'=>'xero_commerce::product.qna.get'
+            Route::get('/feedback/product/{product}', [
+                'uses' => 'ProductController@feedbackLoad',
+                'as' => 'xero_commerce::product.feedback.get'
             ]);
 
-            Route::post('/qna/product/{product}',[
-                'uses'=>'ProductController@qnaAdd',
-                'as'=>'xero_commerce::product.qna.add'
+            Route::post('/feedback/product/{product}', [
+                'uses' => 'ProductController@feedbackAdd',
+                'as' => 'xero_commerce::product.feedback.add'
             ]);
 
-            Route::post('/qna/answer/{qna}',[
-                'uses'=>'QnaController@answer',
-                'as'=>'xero_commerce::qna.answer'
+            Route::get('/qna/product/{product}', [
+                'uses' => 'ProductController@qnaLoad',
+                'as' => 'xero_commerce::product.qna.get'
+            ]);
+
+            Route::post('/qna/product/{product}', [
+                'uses' => 'ProductController@qnaAdd',
+                'as' => 'xero_commerce::product.qna.add'
+            ]);
+
+            Route::post('/qna/answer/{qna}', [
+                'uses' => 'QnaController@answer',
+                'as' => 'xero_commerce::qna.answer'
             ]);
 
             Route::get('/order', [
@@ -717,48 +728,51 @@ class Resources
                     Route::get('/', ['as' => 'xero_commerce::setting.product.index',
                         'uses' => 'ProductController@index',
                         'settings_menu' => 'xero_commerce.product.list',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
                     Route::get('/create', ['as' => 'xero_commerce::setting.product.create',
                         'uses' => 'ProductController@create',
                         'settings_menu' => 'xero_commerce.product.create',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
                     Route::post('/store', ['as' => 'xero_commerce::setting.product.store',
                         'uses' => 'ProductController@store',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
 
                     Route::post('/option/save', ['as' => 'xero_commerce::setting.product.option.save',
                         'uses' => 'ProductOptionController@save',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
                     Route::post('/option/remove', ['as' => 'xero_commerce::setting.product.option.remove',
                         'uses' => 'ProductOptionController@remove',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
                     Route::get('/option/load/{product}', ['as' => 'xero_commerce::setting.product.option.load',
                         'uses' => 'ProductOptionController@load',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
 
                     Route::get('/{productId}', ['as' => 'xero_commerce::setting.product.show',
                         'uses' => 'ProductController@show',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
                     Route::get('/{productId}/edit', ['as' => 'xero_commerce::setting.product.edit',
                         'uses' => 'ProductController@edit',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
+                    Route::post('/temp', ['as' => 'xero_commerce::setting.product.temp',
+                        'uses' => 'ProductController@tempStore',
+                        'permission' => 'xero_commerce']);
                     Route::post('/{productId}/update', ['as' => 'xero_commerce::setting.product.update',
                         'uses' => 'ProductController@update',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
                     Route::post('/{productId}/remove', ['as' => 'xero_commerce::setting.product.remove',
                         'uses' => 'ProductController@remove',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
 
                     Route::get('/category/child', ['as' => 'xero_commerce:setting.product.category.getChild',
                         'uses' => 'ProductController@getChildCategory',
-                        'permission'=>'xero_commerce']);
+                        'permission' => 'xero_commerce']);
                 });
 
                 //분류 관리
                 Route::get('/category', ['as' => 'xero_commerce::setting.category.index',
                     'uses' => 'CategoryController@index',
                     'settings_menu' => 'xero_commerce.product.category',
-                    'permission'=>'xero_commerce']);
+                    'permission' => 'xero_commerce']);
 
                 //라벨 관리
                 Route::group(['prefix' => 'label'], function () {
@@ -803,42 +817,42 @@ class Resources
                         'as' => 'xero_commerce::setting.order.index',
                         'uses' => 'OrderController@dash',
                         'settings_menu' => 'xero_commerce.order.index',
-                        'permission'=>'xero_commerce'
+                        'permission' => 'xero_commerce'
                     ]);
                     Route::get('/delivery', [
                         'as' => 'xero_commerce::setting.order.delivery',
                         'uses' => 'OrderController@delivery',
                         'settings_menu' => 'xero_commerce.order.delivery',
-                        'permission'=>'xero_commerce'
+                        'permission' => 'xero_commerce'
                     ]);
                     Route::post('/delivery', [
                         'as' => 'xero_commerce::process.order.delivery',
                         'uses' => 'OrderController@processDelivery',
-                        'permission'=>'xero_commerce'
+                        'permission' => 'xero_commerce'
                     ]);
                     Route::post('/delivery/complete', [
                         'as' => 'xero_commerce::complete.order.delivery',
                         'uses' => 'OrderController@completeDelivery',
-                        'permission'=>'xero_commerce'
+                        'permission' => 'xero_commerce'
                     ]);
 
                     Route::get('/as', [
                         'as' => 'xero_commerce::setting.order.as',
                         'uses' => 'OrderController@afterservice',
                         'settings_menu' => 'xero_commerce.order.as',
-                        'permission'=>'xero_commerce'
+                        'permission' => 'xero_commerce'
                     ]);
 
                     Route::get('/as/finish/{type}/{orderItem}', [
                         'as' => 'xero_commerce::setting.order.as.finish',
                         'uses' => 'OrderController@afterserviceEnd',
-                        'permission'=>'xero_commerce'
+                        'permission' => 'xero_commerce'
                     ]);
 
                     Route::get('/as/receive/{orderItem}', [
                         'as' => 'xero_commerce::setting.order.as.receive',
                         'uses' => 'OrderController@afterserviceReceive',
-                        'permission'=>'xero_commerce'
+                        'permission' => 'xero_commerce'
                     ]);
                 });
 
@@ -902,9 +916,9 @@ class Resources
             'index', 'create', 'edit', 'update', 'store', 'show', 'remove', 'slug', 'hasSlug',
             'cart', 'order', Plugin::XERO_COMMERCE_URL_PREFIX
         ]);
-        \XeRegister::push('settings/permission', 'xero_commerce',[
-            'title'=>'쇼핑몰관리',
-            'tab'=>'쇼핑몰관리'
+        \XeRegister::push('settings/permission', 'xero_commerce', [
+            'title' => '쇼핑몰관리',
+            'tab' => '쇼핑몰관리'
         ]);
     }
 
@@ -1007,6 +1021,16 @@ class Resources
 
         $app->alias(QnaHandler::class, 'xero_commerce.qnaHandler');
 
+        $app->singleton(FeedbackHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(FeedbackHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+
+        $app->alias(FeedbackHandler::class, 'xero_commerce.feedbackHandler');
+
         $app->singleton(XeroCommerceImageHandler::class, function ($app) {
             return new XeroCommerceImageHandler();
         });
@@ -1061,7 +1085,7 @@ class Resources
     }
 
     /**
-     * @param string $configKey   configKey
+     * @param string $configKey configKey
      * @param string $configValue configValue
      *
      * @return void
@@ -1294,13 +1318,13 @@ class Resources
 
     private static function isShopManager()
     {
-        if(Auth::check() ===false)return false;
-        return Auth::user()->rating === Rating::MANAGER && ShopUser::where('user_id',Auth::id())->exist();
+        if (Auth::check() === false) return false;
+        return Auth::user()->rating === Rating::MANAGER && ShopUser::where('user_id', Auth::id())->exist();
     }
 
     private static function isSuper()
     {
-        if(Auth::check() ===false)return false;
+        if (Auth::check() === false) return false;
         return Auth::user()->rating === Rating::SUPER;
     }
 
@@ -1440,17 +1464,17 @@ class Resources
                  */
                 $isSystemAdmin = false;
 
-                if($user->rating===Rating::SUPER){
+                if ($user->rating === Rating::SUPER) {
                     $isSystemAdmin = true;
                 }
 
                 // 시스템 관리자가 아니면
                 if ($isSystemAdmin == false) {
-                    $menus->forget(['dashboard','sitemap', 'user', 'contents', 'plugin', 'setting', 'lang','xeropay']);
+                    $menus->forget(['dashboard', 'sitemap', 'user', 'contents', 'plugin', 'setting', 'lang', 'xeropay']);
                     $xero_commerce = $menus->get('xero_commerce')->getChildren();
                     $xero_commerce->forget(['xero_commerce.config']);
                     $xero_commerce_product = $xero_commerce->get('xero_commerce.product')->getChildren();
-                    $xero_commerce_product->forget(['xero_commerce.product.label','xero_commerce.product.badge','xero_commerce.product.category']);
+                    $xero_commerce_product->forget(['xero_commerce.product.label', 'xero_commerce.product.badge', 'xero_commerce.product.category']);
                 }
 
                 return $menus;

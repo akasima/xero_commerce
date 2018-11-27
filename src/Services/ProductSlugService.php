@@ -34,27 +34,29 @@ class ProductSlugService
      */
     public static function storeSlug(Product $product, Request $request)
     {
-        $slug = $product->slug;
+        if($product->name){
+            $slug = $product->slug;
 
-        if ($slug === null) {
-            $newSlug = $request->get('newSlug');
+            if ($slug === null) {
+                $newSlug = $request->get('newSlug');
 
-            if ($newSlug === null) {
-                $newSlug = self::make($product->name, $product->id);
+                if ($newSlug === null) {
+                    $newSlug = self::make($product->name, $product->id);
+                }
+
+                $slug = new ProductSlug([
+                    'slug' => $newSlug,
+                    'product_name' => $product->name,
+                ]);
+            } else {
+                if ($request->has('resetSlug') == true) {
+                    $slug['slug'] = $request->get('newSlug', self::make($product->name, $product->id));
+                }
+                $slug['product_name'] = $product->name;
             }
 
-            $slug = new ProductSlug([
-                'slug' => $newSlug,
-                'product_name' => $product->name,
-            ]);
-        } else {
-            if ($request->has('resetSlug') == true) {
-                $slug['slug'] = $request->get('newSlug', self::make($product->name, $product->id));
-            }
-            $slug['product_name'] = $product->name;
+            $product->productSlug()->save($slug);
         }
-
-        $product->productSlug()->save($slug);
     }
 
     /**
