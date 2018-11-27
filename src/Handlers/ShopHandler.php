@@ -19,7 +19,9 @@ class ShopHandler
 
         $newShop->fill($args);
 
-        $this->saveImage($args['logo'], $newShop);
+        if (isset($args['logo'])) {
+            $this->saveImage($args['logo'], $newShop);
+        }
 
         $newShop->save();
 
@@ -44,7 +46,7 @@ class ShopHandler
 
     /**
      * @param array $conditions searchCondition
-     * @param Shop  $query      shop
+     * @param Shop $query shop
      *
      * @return Shop
      */
@@ -63,7 +65,7 @@ class ShopHandler
 
     /**
      * @param array $args args
-     * @param Shop  $shop shop
+     * @param Shop $shop shop
      *
      * @return void
      */
@@ -75,7 +77,7 @@ class ShopHandler
                 $shop->{$key} = $value;
             }
         }
-        if (isset($args['logo'])){
+        if (isset($args['logo'])) {
             $this->saveImage($args['logo'], $shop);
         }
         $shop->users()->sync($args['user_id']);
@@ -124,7 +126,7 @@ class ShopHandler
         $file = XeStorage::upload($imageParm, 'public/xero_commerce/product');
         $imageFile = XeMedia::make($file);
         XeMedia::createThumbnails($imageFile, 'fit');
-        $shop->logo_path = XeMedia::images()->getThumbnail($imageFile,'fit','S')->id;
+        $shop->logo_path = XeMedia::images()->getThumbnail($imageFile, 'fit', 'S')->id;
 
         return $imageFile;
     }
