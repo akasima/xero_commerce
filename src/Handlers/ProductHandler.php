@@ -297,4 +297,10 @@ class ProductHandler
 
         $revisionProduct->save();
     }
+
+    public function setPublish($productId, boolean $bool){
+        $product=Product::find($productId);
+        $product->publish=$bool;
+        return $product->save();
+    }
 }

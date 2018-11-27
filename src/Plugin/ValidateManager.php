@@ -8,17 +8,17 @@ use Validator;
 class ValidateManager
 {
     public static function getProductValidateRules()
-    {
-        return [
-            'name' => 'required|max:255',
-            'sub_name' => 'required',
-            'original_price' => 'required|numeric',
-            'sell_price' => 'required|numeric',
-            'description' => 'required',
-            'stock' => 'required',
-            'shop_delivery_id' => 'required'
-        ];
-    }
+{
+    return [
+        'name' => 'required|max:255',
+        'sub_name' => 'required',
+        'original_price' => 'required|numeric',
+        'sell_price' => 'required|numeric',
+        'description' => 'required',
+        'stock' => 'required',
+        'shop_delivery_id' => 'required'
+    ];
+}
 
     public function productValidate(Request $request)
     {

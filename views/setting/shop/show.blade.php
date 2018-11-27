@@ -30,7 +30,7 @@
                             <td>{{ $shop->shop_name }}</td>
                         </tr>
                         <tr>
-                            <th>입점몰 영어 이름</th>
+                            <th>입점몰 ID</th>
                             <td>{{ $shop->shop_eng_name }}</td>
                         </tr>
                         <tr>

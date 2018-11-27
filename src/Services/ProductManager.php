@@ -66,6 +66,29 @@ class ProductManager
         return $productId;
     }
 
+    public function temp(Request $request)
+    {
+
+        try {
+            XeDB::beginTransaction();
+            $productId = (is_null($request->get('id'))) ?
+                $this->productSettingService->store($request):
+                $request->get('id');
+            $this->setTag($productId, $request);
+            ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
+            $this->labelService->updateProductLabel($productId, $request);
+            $this->productCategoryService->updateProductCategory($productId, $request);
+        } catch (\Exception $e) {
+            XeDB::rollback();
+
+            throw $e;
+        }
+
+        XeDB::commit();
+
+        return $productId;
+    }
+
     /**
      * @param Request $request   request
      * @param int     $productId productId
