@@ -23,10 +23,10 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 ])}}
 
                                 {{uio('formText', [
-                                'label'=>'입점몰 영어 이름',
+                                'label'=>'입점몰 id',
                                 'name'=>'shop_eng_name',
-                                'description'=>'입점몰 영어표기명입니다',
-                                'data-valid-name' => '입점몰 영어 이름',
+                                'description'=>'영문으로 된 입점몰 id입니다.',
+                                'data-valid-name' => '입점몰 id',
                                 'value'=>Request::old('shop_eng_name')
                                 ])}}
 

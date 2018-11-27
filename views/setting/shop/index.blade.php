@@ -28,7 +28,7 @@
                         <tr>
                             <th>로고</th>
                             <th>한글명</th>
-                            <th>영문명</th>
+                            <th>id</th>
                             <th>형태</th>
                             <th>판매상태</th>
                             <th>등록일</th>
