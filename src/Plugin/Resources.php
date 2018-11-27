@@ -1046,7 +1046,7 @@ class Resources
         \XeEditor::setInstance(Plugin::getId(), CkEditor::getId());
         \XeEditor::setConfig(Plugin::getId(), ['uploadActive' => true]);
 
-        $category = \XeCategory::create([
+        $category = \XeCategory::createCate([
             'name' => '상품 분류'
         ]);
 
