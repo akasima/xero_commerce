@@ -272,8 +272,12 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
             </div>
         </div>
     </div>
-    <button type="submit" class="xe-btn xe-btn-success">등록</button>
-    <button type="button" class="xe-btn xe-btn-success" onclick="tempSubmit()">임시저장</button>
+
+    <div class="xero-settings-control-float">
+        <button type="submit" class="xe-btn xe-btn-success">등록</button>
+        <button type="button" class="xe-btn xe-btn-success" onclick="tempSubmit()">임시저장</button>
+    </div>
+
 </form>
 
 <script>

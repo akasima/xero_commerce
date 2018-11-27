@@ -21,30 +21,30 @@
 <div class="xe-shop">
 
     <!-- header -->
-	<header class="header">
-    	<div class="inner-header">
+    <header class="header">
+        <div class="inner-header">
 
             <!-- area-option -->
             <div class="area-option">
-            	<ul class="list-option">
-                @if(auth()->check())
-                @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || auth()->user()->rating == \Xpressengine\User\Rating::SUPER)
-                    <li class="item-option"><a href="{{ route('xero_commerce::setting.order.index') }}">관리자페이지</a></li>
-                @endif
-                <li class="item-option"><a class="link-option" href="{{ route('logout') }}">로그아웃</a></li>
-                <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
-                @else
-                    <li class="item-option"><a class="link-option" href="{{ route('login') }}">로그인</a></li>
-                    <li class="item-option"><a class="link-option" href="{{route('auth.register') }}">회원가입</a></li>
-                @endif
+                <ul class="list-option">
+                    @if(auth()->check())
+                        @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || auth()->user()->rating == \Xpressengine\User\Rating::SUPER)
+                            <li class="item-option"><a href="{{ route('xero_commerce::setting.order.index') }}">관리자페이지</a></li>
+                        @endif
+                        <li class="item-option"><a class="link-option" href="{{ route('logout') }}">로그아웃</a></li>
+                        <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
+                    @else
+                        <li class="item-option"><a class="link-option" href="{{ route('login') }}">로그인</a></li>
+                        <li class="item-option"><a class="link-option" href="{{route('auth.register') }}">회원가입</a></li>
+                    @endif
                     <li class="item-option"><a class="link-option" href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
                     <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
                 </ul>
             </div>
-        	<!-- // area-option -->
+            <!-- // area-option -->
 
             <!-- area-gnb -->
-        	<div class="area-gnb">
+            <div class="area-gnb">
                 <h1 class="logo">엠엠푸드</h1>
                 <button type="button" class="btn-menu reset-button" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
                 <nav>
@@ -67,9 +67,44 @@
             <!-- // area-gnb -->
 
         </div>
+
+        <div class="area-lnb">
+
+            <div class="inner-header">
+                <ul class="list-lnb">
+                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리1</a></li>
+                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리2</a></li>
+                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리3</a></li>
+                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리4</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="area-category">
+            <div class="inner-header">
+                <ul class="list-category">
+                    <!-- [D] 열림시 open 클래스 추가 -->
+                    @foreach(menu_list($config->get('gnb')) as $menu)
+                        <li @if($menu['selected']) class="open" @endif onclick="toggleSubMenu(this,'{{url($menu['url']) }}')">
+                            <h4 class="xe-shop-category-title"><a href="#">{{ $menu['link'] }}</a><i @if($menu['selected']) class="xi-angle-up-thin" @else class="xi-angle-down-thin" @endif></i></h4>
+                            <ul>
+                                @foreach($menu['children'] as $submenu)
+                                    <li><a href="{{url($submenu['url'])}}">{{ $submenu['link'] }}</a></li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+
     </header>
     <!-- // header -->
 
+
+
+    <!-- 아래부터 위에 개발 붙여주고 지어줘요오오오 시작 -->
     <h1 class="xe-sr-only">xe 쇼핑</h1>
     <!-- 기본 ui
       scss/user/_skin.scss
@@ -79,18 +114,18 @@
       include/default_search.html
       include/default_slider.html
     -->
-    <section class="header">
+    <section class="header" style="display:none;">
         <!-- [D] width를 제어하기 위해 사용하는 클래스입니다. 100% 넓이를 사용하는 위젯은 사용할 필요가 없습니다. -->
         <div class="container">
             <h2 class="xe-sr-only">상단 유틸</h2>
             <article class="xe-shop-notice xe-hidden-xs xe-hidden-sm">
                 {{--<h3>notice</h3>--}}
                 {{--<div class="notice-view">--}}
-                    {{--<ul>--}}
-                        {{--@foreach ($notices as $notice)--}}
-                            {{--<li><a href="{{ $urlHandler->getShow($notice) }}">{{ $notice->title }} </a></li>--}}
-                        {{--@endforeach--}}
-                    {{--</ul>--}}
+                {{--<ul>--}}
+                {{--@foreach ($notices as $notice)--}}
+                {{--<li><a href="{{ $urlHandler->getShow($notice) }}">{{ $notice->title }} </a></li>--}}
+                {{--@endforeach--}}
+                {{--</ul>--}}
                 {{--</div>--}}
                 <div>
                     <img src="{{$config->get('logo_image.path')}}" alt="">
@@ -105,12 +140,13 @@
                         @endif
                         <li><a href="{{ route('logout') }}">로그아웃</a></li>
                         <li><a href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
+                        <li><a href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
+                        <li><a href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
                     @else
                         <li><a href="{{ route('login') }}">로그인</a></li>
                         <li><a href="{{route('auth.register') }}">회원가입</a></li>
                     @endif
-                    <li><a href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
-                    <li><a href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
+
                 </ul>
                 <h2 class="xe-sr-only">검색</h2>
                 <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
@@ -131,10 +167,10 @@
             <h2 class="xe-shop-logo">
                 <a href="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
                     <img alt="쇼핑몰 로고"
-                        @if (app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) != '')
-                            src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id'])}}"
-                        @else
-                            src="{{$theme::asset('img/shop-logo@lg.png')}}"
+                         @if (app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) != '')
+                         src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id'])}}"
+                         @else
+                         src="{{$theme::asset('img/shop-logo@lg.png')}}"
                         @endif
                     >
                 </a>
@@ -224,7 +260,10 @@
             </div><!-- //xe-shop-search  -->
         </div>
     </section>
-    <div class="container" style="margin-top:20px">
+
+    <!-- // 위에부분 개발하고 지어줘요오오오 끝 -->
+
+    <main>
         <div id="sub-container">
             {!! $content !!}
         </div>
@@ -235,56 +274,56 @@
                 <div class="container">
                     <div class="xe-company-info-article">
                         @if(!is_null($shopConfig['companyName']))
-                        <p>
-                            <b>상호명</b>
-                            <span>{{$shopConfig['companyName']}}</span>
-                        </p>
+                            <p>
+                                <b>상호명</b>
+                                <span>{{$shopConfig['companyName']}}</span>
+                            </p>
                         @endif
                         @if(!is_null($shopConfig['ceoName']))
-                        <p>
-                            <b>대표자</b>
-                            <span>{{$shopConfig['ceoName']}}</span>
-                        </p>
+                            <p>
+                                <b>대표자</b>
+                                <span>{{$shopConfig['ceoName']}}</span>
+                            </p>
                         @endif
                         @if(!is_null($shopConfig['companyNumber']))
-                        <p>
-                            <b>사업자등록번호</b>
-                            <span>{{$shopConfig['companyNumber']}}<a href="#">[사업자정보확인]</a></span>
-                        </p>
+                            <p>
+                                <b>사업자등록번호</b>
+                                <span>{{$shopConfig['companyNumber']}}<a href="#">[사업자정보확인]</a></span>
+                            </p>
                         @endif
                         @if(!is_null($shopConfig['communicationMarketingNumber']))
-                        <p>
-                            <b>통신판매업</b>
-                            <span>신고 {{$shopConfig['communicationMarketingNumber']}}</span>
-                        </p>
+                            <p>
+                                <b>통신판매업</b>
+                                <span>신고 {{$shopConfig['communicationMarketingNumber']}}</span>
+                            </p>
                         @endif
                     </div>
                     <div class="xe-company-info-article">
                         @if(!is_null($shopConfig['address']))
-                        <p>
-                            <b>주소</b>
-                            <span>@if(!is_null($shopConfig['zipCode']))({{$shopConfig['zipCode']}})@endif {{$shopConfig['address']}}</span>
-                        </p>
+                            <p>
+                                <b>주소</b>
+                                <span>@if(!is_null($shopConfig['zipCode']))({{$shopConfig['zipCode']}})@endif {{$shopConfig['address']}}</span>
+                            </p>
                         @endif
                         @if(!is_null($shopConfig['telNumber']))
-                        <p>
-                            <b>대표전화</b>
-                            <span>{{$shopConfig['telNumber']}}</span>
-                        </p>
+                            <p>
+                                <b>대표전화</b>
+                                <span>{{$shopConfig['telNumber']}}</span>
+                            </p>
                         @endif
                     </div>
                     <div class="xe-company-info-article">
                         @if(!is_null($shopConfig['informationCharger']))
-                        <p>
-                            <b>개인정보관리책임자</b>
-                            <span>{{$shopConfig['informationCharger']}}</span>
-                        </p>
+                            <p>
+                                <b>개인정보관리책임자</b>
+                                <span>{{$shopConfig['informationCharger']}}</span>
+                            </p>
                         @endif
                         @if(!is_null($shopConfig['email']))
-                        <p>
-                            <b>이메일</b>
-                            <span>{{$shopConfig['email']}}</span>
-                        </p>
+                            <p>
+                                <b>이메일</b>
+                                <span>{{$shopConfig['email']}}</span>
+                            </p>
                         @endif
                     </div>
                 </div>
@@ -295,5 +334,5 @@
                 </div>
             </section>
         </footer>
-    </div>
+    </main>
 </div>
