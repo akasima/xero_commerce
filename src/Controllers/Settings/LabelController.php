@@ -8,7 +8,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use XePresenter;
 use Xpressengine\Plugins\XeroCommerce\Services\LabelService;
 
-class LabelController extends Controller
+class LabelController extends SettingBaseController
 {
     /** @var LabelService $labelService */
     protected $labelService;
@@ -18,6 +18,7 @@ class LabelController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->labelService = new LabelService();
     }
 

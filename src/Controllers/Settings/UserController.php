@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Xpressengine\Permission\Grant;
 use Xpressengine\User\Models\User;
 
-class UserController extends Controller
+class UserController extends SettingBaseController
 {
     public function search($keyword)
     {

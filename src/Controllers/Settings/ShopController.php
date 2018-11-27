@@ -12,7 +12,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin\ValidateManager;
 use Xpressengine\Plugins\XeroCommerce\Services\ShopService;
 use Xpressengine\Plugins\XeroCommerce\Services\ShopUserService;
 
-class ShopController extends Controller
+class ShopController extends SettingBaseController
 {
     /** @var ShopService $shopService */
     protected $shopService;
@@ -25,6 +25,7 @@ class ShopController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->shopService = new ShopService();
         $this->shopUserService = new ShopUserService();
     }

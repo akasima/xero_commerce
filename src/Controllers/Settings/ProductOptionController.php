@@ -8,13 +8,14 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductOptionItemSettingService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSettingService;
 
-class ProductOptionController extends Controller
+class ProductOptionController extends SettingBaseController
 {
     /** @var ProductOptionItemSettingService $optionItemService */
     protected $optionItemService;
 
     public function __construct()
     {
+        parent::__construct();
         $this->optionItemService = new ProductOptionItemSettingService();
     }
 

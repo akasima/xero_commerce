@@ -8,13 +8,14 @@ use Xpressengine\Plugins\XeroCommerce\Models\Badge;
 use XePresenter;
 use Xpressengine\Plugins\XeroCommerce\Services\BadgeService;
 
-class BadgeController extends Controller
+class BadgeController extends SettingBaseController
 {
     /** @var BadgeService $badgeService */
     protected $badgeService;
 
     public function __construct()
     {
+        parent::__construct();
         $this->badgeService = new BadgeService();
     }
 
