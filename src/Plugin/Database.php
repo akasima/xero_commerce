@@ -7,18 +7,17 @@ use Illuminate\Support\Facades\Schema;
 
 class Database
 {
-
     public static function addTable()
     {
 
-        Schema::table('xero_commerce_order_log', function (Blueprint $table) {
-            $table->string('ip');
-            $table->string('url');
-        });
-
-        Schema::table('xero_commerce_pay_log', function (Blueprint $table) {
-            $table->string('ip');
-            $table->string('url');
+        Schema::create('xero_commerce_feedback', function (Blueprint $table) {
+            $table->increments('id');
+            $table->morphs('type');
+            $table->string('title');
+            $table->text('content');
+            $table->integer('score');
+            $table->integer('user_id');
+            $table->timestamps();
         });
     }
 
@@ -156,6 +155,15 @@ class Database
             $table->text('content');
             $table->integer('user_id');
             $table->boolean('privacy')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create('xero_commerce_feedback', function (Blueprint $table) {
+            $table->increments('id');
+            $table->morphs('type');
+            $table->string('title');
+            $table->text('content');
+            $table->integer('user_id');
             $table->timestamps();
         });
 

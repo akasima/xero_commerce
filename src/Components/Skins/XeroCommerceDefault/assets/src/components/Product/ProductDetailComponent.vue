@@ -127,7 +127,8 @@
                             <li :class="(tab===1) ? 'active' : ''"><a href="#" @click.prevent="tab=1">상품정보</a></li>
                             <!--<li><a href="#">구매평</a></li>-->
                             <li :class="(tab===3) ? 'active' : ''"><a href="#" @click.prevent="tab=3">Q&A</a></li>
-                            <li :class="(tab===2) ? 'active' : ''"><a href="#" @click.prevent="tab=2">반품정보</a></li>
+                            <li :class="(tab===4) ? 'active' : ''"><a href="#" @click.prevent="tab=4">상품 후기</a></li>
+                            <li :class="(tab===2) ? 'active' : ''"><a href="#" @click.prevent="tab=2">배송 / 교환 / 환불</a></li>
                         </ul>
                     </div>
                     <div class="detail-container">
@@ -159,6 +160,16 @@
                                 :answer-url="answerUrl"
                                 :auth="auth"
                             ></product-qna-component>
+                        </div>
+                        <div v-if="tab===4" class="detail-qna">
+                            <product-feed-back-component
+                                :default-list="fbList"
+                                :product-id="product.id"
+                                writer="test"
+                                :feedback-add-url="feedbackAddUrl"
+                                :feedback-get-url="feedbackGetUrl"
+                                :auth="auth"
+                            ></product-feed-back-component>
                         </div>
                         <div v-if="tab===2" class="detail-as">
                             <div v-html="product.shop.as_info">
@@ -288,14 +299,15 @@
     import DeliverySelectComponent from '../../../../../../../../assets/src/components/DeliverySelectComponent'
     import ProductCategoryComponent from './ProductCategoryComponent'
     import ProductQnaComponent from './ProductQnaComponent'
+    import ProductFeedBackComponent from './ProductFeedBackComponent'
 
     export default {
         name: "ProductDetailComponent",
         components: {
-            OptionSelectComponent, DeliverySelectComponent, ProductCategoryComponent, ProductQnaComponent
+            OptionSelectComponent, DeliverySelectComponent, ProductCategoryComponent, ProductQnaComponent, ProductFeedBackComponent
         },
         props: [
-            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category', 'qnaAddUrl', 'qnaGetUrl', 'qnaList', 'answerUrl', 'isWish', 'auth'
+            'product', 'orderUrl', 'cartUrl', 'cartPageUrl', 'wishUrl', 'wishListUrl', 'category', 'qnaAddUrl', 'qnaGetUrl', 'qnaList', 'feedbackAddUrl', 'feedbackGetUrl', 'fbList', 'answerUrl', 'isWish', 'auth'
         ],
         computed: {
             mainImg() {

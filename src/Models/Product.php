@@ -239,6 +239,11 @@ class Product extends SellType
         return $this->morphMany(Qna::class,'type');
     }
 
+    public function feedback()
+    {
+        return $this->morphMany(FeedBack::class,'type');
+    }
+
     public function slugUrl()
     {
         return route('xero_commerce::product.show', ['strSlug' => $this->getSlug()]);
