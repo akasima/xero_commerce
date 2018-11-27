@@ -11,7 +11,7 @@
 
 {{
  app('xe.frontend')->meta('my.viewport')->name('viewport')
-->content('width=device-width, initial-scale=1.0')->load()
+->content('width=device-width, height=device-height, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0')->load()
 }}
 
 @php
