@@ -116,4 +116,8 @@ class ProductSettingService
 
         $this->productHandler->destroy($product);
     }
+
+    public function setPublish(bool $bool){
+        $this->productHandler->setPublish($productId, $bool);
+    }
 }

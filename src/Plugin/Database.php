@@ -306,6 +306,13 @@ class Database
         });
     }
 
+    public static function changeTable()
+    {
+        Schema::table('xero_commerce_products', function (Blueprint $table) {
+            $table->boolean('publish')->default(false);
+        });
+    }
+
     /**
      * @param Blueprint $table 상품 테이블 컬럼 정의
      *
@@ -314,21 +321,22 @@ class Database
     private static function setProductTableColumns($table)
     {
         $table->integer('shop_id');
-        $table->string('product_code', 32);
-        $table->string('name');
-        $table->string('sub_name');
-        $table->integer('original_price');
-        $table->integer('sell_price');
-        $table->double('discount_percentage');
+        $table->boolean('publish')->default(false);
+        $table->string('product_code', 32)->nullable();
+        $table->string('name')->nullable();
+        $table->string('sub_name')->nullable();
+        $table->integer('original_price')->nullable();
+        $table->integer('sell_price')->nullable();
+        $table->double('discount_percentage')->nullable();
         $table->integer('min_buy_count')->nullable();
         $table->integer('max_buy_count')->nullable();
-        $table->text('description');
-        $table->text('detail_info');
+        $table->text('description')->nullable();
+        $table->text('detail_info')->nullable();
         $table->integer('badge_id')->nullable();
-        $table->integer('tax_type');
-        $table->integer('state_display');
-        $table->integer('state_deal');
-        $table->integer('shop_delivery_id');
+        $table->integer('tax_type')->nullable();
+        $table->integer('state_display')->nullable();
+        $table->integer('state_deal')->nullable();
+        $table->integer('shop_delivery_id')->nullable();
 
         return $table;
     }

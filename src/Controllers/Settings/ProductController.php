@@ -74,6 +74,13 @@ class ProductController extends SettingBaseController
         return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
 
+    public function tempStore(Request $request)
+    {
+        $productId = $this->productManager->temp($request);
+
+        return redirect()->route('xero_commerce::setting.product.edit', ['productId' =>$productId]);
+    }
+
     public function edit(Request $request, $productId, ProductCategoryService $productCategoryService)
     {
         $product = $this->productSettingService->getProduct($productId);

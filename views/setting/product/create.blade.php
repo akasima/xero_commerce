@@ -273,6 +273,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         </div>
     </div>
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
+    <button type="button" class="xe-btn xe-btn-success" onclick="tempSubmit()">임시저장</button>
 </form>
 
 <script>
@@ -292,6 +293,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
     function removeProductInfo(id) {
         $("#productInfoTable tbody tr#productInfoTr" + id).remove()
+    }
+    function tempSubmit()
+    {
+        $("form").attr("action","{{route("xero_commerce::setting.product.temp")}}")
+        $("form").submit();
     }
 </script>
 

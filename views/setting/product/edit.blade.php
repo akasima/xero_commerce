@@ -20,7 +20,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         <div class="col-lg-4">
             <div class="panel">
                 <div class="panel-body">
-
+                    <input type="hidden" name="id" value="{{$product->id}}">
                     {{uio('formText', [
                     'label'=>'상품 코드',
                     'name'=>'product_code',
@@ -346,6 +346,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         </div>
     </div>
     <button type="submit" class="xe-btn xe-btn-success">등록</button>
+    <button type="submit" class="xe-btn xe-btn-success">임시저장</button>
 </form>
 
 <script>
