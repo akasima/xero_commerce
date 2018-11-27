@@ -40,3 +40,13 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+
+/* color picker */
+.xero-settings .cp-default .picker,
+.xero-settings .cp-default .slide {
+  cursor: crosshair;
+}
+.xero-settings .cp-default .slide {
+  width: 20px;
+}
