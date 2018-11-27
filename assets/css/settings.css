@@ -1,17 +1,42 @@
 /* 관리페이지 공용 스타일 */
 
+/* common */
+@media (min-width: 1068px) {
+}
+
+/* table */
+.xero-settings .table-scrollable {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.xero-settings .table th,
+.xero-settings .table .nowrap {
+  width: 1em;
+  white-space: nowrap;
+}
+.xero-settings .table .full {
+  width: 100%;
+  min-width: 300px;
+}
 
 /* 폼 버튼 area */
 .xero-settings-control-float {
-  z-index: 100;
+  z-index: 1000;
   position: fixed;
   bottom: 0;
   right: 0;
   padding: 15px 20px;
   width: 100%;
   text-align: right;
+  border-top: 1px solid #ddd;
   background: #fff;
 }
 .xero-settings .footer {
   padding-bottom: 100px;
+}
+
+/* panel */
+.xero-settings .panel-footer {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
