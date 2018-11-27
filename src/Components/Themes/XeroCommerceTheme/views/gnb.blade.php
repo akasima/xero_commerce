@@ -2,7 +2,7 @@
     $mainPageId = \XeConfig::get(\Xpressengine\Plugins\XeroCommerce\Plugin::getId())->get('mainPageId');
 @endphp
 
-<section class="menu">
+<section class="menu" style="display: none;">
     <div class="container">
         <h2 class="xe-sr-only">메뉴</h2>
         <ul class="xe-shop-menu">
@@ -93,5 +93,11 @@
         }else{
             $(target).addClass(className);
         }
+    }
+</script>
+
+<script>
+    function toggleMenu () {
+        toggleClass(".area-category", "active")
     }
 </script>

@@ -45,8 +45,7 @@
 
             <!-- area-gnb -->
         	<div class="area-gnb">
-                <h1 class="logo">엠엠푸드</h1>
-                <button type="button" class="btn-menu reset-button" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
+                <h1 class="logo"><a href="/shopping">엠엠푸드</a></h1>
                 <nav>
                     <ul class="list-gnb">
                         <li class="item-gnb active"><a href="#" class="link-gnb" target="">영웅님</a></li>
@@ -67,9 +66,44 @@
             <!-- // area-gnb -->
 
         </div>
+        
+        <div class="area-lnb">
+        	
+            <div class="inner-header">
+                <ul class="list-lnb">
+                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리1</a></li>
+                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리2</a></li>
+                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리3</a></li>
+                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리4</a></li>
+                </ul>
+            </div>
+                
+        </div>
+        
+        <div class="area-category">
+            <div class="inner-header">
+                <ul class="list-category">
+                    <!-- [D] 열림시 open 클래스 추가 -->
+                    @foreach(menu_list($config->get('gnb')) as $menu)
+                        <li @if($menu['selected']) class="open" @endif onclick="toggleSubMenu(this,'{{url($menu['url']) }}')">
+                            <h4 class="xe-shop-category-title"><a href="#">{{ $menu['link'] }}</a><i @if($menu['selected']) class="xi-angle-up-thin" @else class="xi-angle-down-thin" @endif></i></h4>
+                            <ul>
+                                @foreach($menu['children'] as $submenu)
+                                    <li><a href="{{url($submenu['url'])}}">{{ $submenu['link'] }}</a></li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        
     </header>
     <!-- // header -->
 
+
+
+	<!-- 아래부터 위에 개발 붙여주고 지어줘요오오오 시작 -->
     <h1 class="xe-sr-only">xe 쇼핑</h1>
     <!-- 기본 ui
       scss/user/_skin.scss
@@ -79,7 +113,7 @@
       include/default_search.html
       include/default_slider.html
     -->
-    <section class="header">
+    <section class="header" style="display:none;">
         <!-- [D] width를 제어하기 위해 사용하는 클래스입니다. 100% 넓이를 사용하는 위젯은 사용할 필요가 없습니다. -->
         <div class="container">
             <h2 class="xe-sr-only">상단 유틸</h2>
@@ -100,17 +134,18 @@
                 <h2 class="xe-sr-only">관련 링크</h2>
                 <ul class="xe-shop-utilmenu-list">
                     @if(auth()->check())
-                        @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || auth()->user()->rating == \Xpressengine\User\Rating::SUPER)
-                            <li><a style="color:red" href="{{ route('xero_commerce::setting.order.index') }}">관리자페이지</a></li>
-                        @endif
+                    @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || auth()->user()->rating == \Xpressengine\User\Rating::SUPER)
+                        <li><a style="color:red" href="{{ route('xero_commerce::setting.order.index') }}">관리자페이지</a></li>
+                    @endif
                         <li><a href="{{ route('logout') }}">로그아웃</a></li>
                         <li><a href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
+                        <li><a href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
+                        <li><a href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
                     @else
                         <li><a href="{{ route('login') }}">로그인</a></li>
                         <li><a href="{{route('auth.register') }}">회원가입</a></li>
                     @endif
-                    <li><a href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
-                    <li><a href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
+                   
                 </ul>
                 <h2 class="xe-sr-only">검색</h2>
                 <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
@@ -224,7 +259,10 @@
             </div><!-- //xe-shop-search  -->
         </div>
     </section>
-    <div class="container" style="margin-top:20px">
+    
+    <!-- // 위에부분 개발하고 지어줘요오오오 끝 -->
+    
+    <main>
         <div id="sub-container">
             {!! $content !!}
         </div>
@@ -295,5 +333,5 @@
                 </div>
             </section>
         </footer>
-    </div>
+    </main>
 </div>
