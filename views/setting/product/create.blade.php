@@ -9,10 +9,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 {{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 
-<form method="post" action="{{ route('xero_commerce::setting.product.store') }}" enctype="multipart/form-data"
+<form id="save" method="post" action="{{ route('xero_commerce::setting.product.store') }}" enctype="multipart/form-data"
       data-rule="product" data-rule-alert-type="toast">
     {{ csrf_field() }}
-    <button type="submit" class="xe-btn xe-btn-success">등록</button>
     <div class="form-group">
         @if(count($shops)>1)
             <label>입점몰</label>
@@ -181,11 +180,10 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">과세 유형</label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="tax_type">
-                                    @foreach (Product::getTaxTypes() as $key => $type)
-                                        <option value="{{ $key }}" @if (Request::old('tax_type') == $key) selected @endif>{{ $type }}</option>
-                                    @endforeach
-                                </select>
+                                @foreach (Product::getTaxTypes() as $key => $type)
+                                    <input type="radio" name="tax_type" value="{{ $key }}"
+                                           @if (Request::old('tax_type') == $key) checked @endif>{{ $type }}
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -274,9 +272,12 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     </div>
 
     <div class="xero-settings-control-float">
-        <button type="submit" class="xe-btn xe-btn-success">등록</button>
-        <button type="button" class="xe-btn xe-btn-success" onclick="tempSubmit()">임시저장</button>
+        <button type="submit" class="xe-btn xe-btn-success xe-btn-lg">등록</button>
     </div>
+
+</form>
+<form id="temp" method="post" action="{{ route('xero_commerce::setting.product.temp') }}" enctype="multipart/form-data"
+      style="display:none">
 
 </form>
 
@@ -300,8 +301,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     }
     function tempSubmit()
     {
-        $("form").attr("action","{{route("xero_commerce::setting.product.temp")}}")
-        $("form").submit();
+        $("form#temp").html($("form#save").html());
+        $("form#temp").submit();
     }
 </script>
 

@@ -88,12 +88,15 @@ class ProductSettingService
             $productArgs['product_code'] = time();
         }
 
-        if ($productArgs['buy_count_not_use'] == 'on') {
-            unset($productArgs['min_buy_count']);
-            unset($productArgs['max_buy_count']);
+        if(empty($productArgs['buy_count_not_use'])===false){
+
+            if ($productArgs['buy_count_not_use'] == 'on') {
+                unset($productArgs['min_buy_count']);
+                unset($productArgs['max_buy_count']);
+            }
         }
 
-        if (is_null($productArgs['discount_percentage'])) {
+        if (is_null($productArgs['discount_percentage']) && !is_null($productArgs['original_price']) && !is_null($productArgs['sell_price'])) {
             $productArgs['discount_percentage'] = floor(($productArgs['original_price'] - $productArgs['sell_price']) * 10000/ $productArgs['original_price']) / 100;
         }
 

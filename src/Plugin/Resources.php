@@ -742,7 +742,7 @@ class Resources
                     Route::get('/{productId}/edit', ['as' => 'xero_commerce::setting.product.edit',
                         'uses' => 'ProductController@edit',
                         'permission'=>'xero_commerce']);
-                    Route::get('/temp', ['as' => 'xero_commerce::setting.product.temp',
+                    Route::post('/temp', ['as' => 'xero_commerce::setting.product.temp',
                         'uses' => 'ProductController@tempStore',
                         'permission'=>'xero_commerce']);
                     Route::post('/{productId}/update', ['as' => 'xero_commerce::setting.product.update',
