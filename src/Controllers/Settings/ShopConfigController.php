@@ -11,7 +11,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\XeroCommerceImageHandler;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Theme\ThemeHandler;
 
-class ShopConfigController
+class ShopConfigController extends SettingBaseController
 {
     public function create()
     {

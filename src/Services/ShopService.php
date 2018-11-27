@@ -2,9 +2,12 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Services;
 
+use App\Facades\XeMedia;
+use App\Facades\XeStorage;
 use Illuminate\Support\Collection;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Image;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 
 class ShopService
@@ -64,6 +67,8 @@ class ShopService
 
         $args = $request->all();
 
+        $args['logo_path'] = $this->saveImage($request->get('logo'))->id;
+
         $args['state_approval'] = Shop::APPROVAL_WAITING;
 
         $newShop = $this->handler->store($args);
@@ -94,6 +99,8 @@ class ShopService
         $this->validateShop($request);
 
         $args = $request->all();
+        $args['logo_path'] = $this->saveImage($request->get('logo'))->id;
+
         $shop = $this->handler->getShop($shopId);
 
         $this->handler->update($args, $shop);
@@ -132,5 +139,17 @@ class ShopService
     protected function validateShop(Request $request)
     {
         app('xero_commerce.validateManager')->shopValidate($request);
+    }
+
+    public function saveImage($imageParm)
+    {
+        if(is_null($imageParm)){
+            return new Image();
+        }
+        $file = XeStorage::upload($imageParm, 'public/xero_commerce/logo');
+        $imageFile = XeMedia::make($file);
+        XeMedia::createThumbnails($imageFile, 'fit');
+
+        return $imageFile;
     }
 }

@@ -107,6 +107,12 @@
                             </div><!-- //btn-buy-wrap -->
 
                         </div><!-- //options -->
+                        <div class="product-sns-list">
+                            <h3>
+                                <a :target="'_blank'+new Date()" :href="'http://www.facebook.com/sharer/sharer.php?u='+endcodeUri"><i class="xi-facebook"></i><span class="xe-sr-only">페이스북 공유</span></a>
+                                <a :target="'_blank'+new Date()" :href="'http://line.me/R/msg/text/?title='+endcodeUri"><i class="xi-line"></i><span class="xe-sr-only">페이스북 공유</span></a>
+                            </h3>
+                        </div>
                     </div><!-- //product-info  -->
                 </div><!-- //product-wrap  -->
             </div><!-- //container  -->
@@ -305,7 +311,8 @@
                 pay: '선불',
                 tab: 1,
                 mainImageKey: 0,
-                benefit: false
+                benefit: false,
+                endcodeUri: encodeURI(document.location.href)
             }
         },
         methods: {
@@ -471,5 +478,10 @@
         width: 450px;
         height: 603px;
         background: #eee;
+    }
+    .product-sns-list {
+    }
+    .product-sns-list h3 a {
+        color: #666;
     }
 </style>

@@ -16,7 +16,7 @@ use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductManager;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSettingService;
 
-class ProductController extends Controller
+class ProductController extends SettingBaseController
 {
     /** @var ProductManager $productManager */
     protected $productManager;
@@ -26,6 +26,7 @@ class ProductController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
         $this->productManager = new ProductManager();
         $this->productSettingService = new ProductSettingService();
     }

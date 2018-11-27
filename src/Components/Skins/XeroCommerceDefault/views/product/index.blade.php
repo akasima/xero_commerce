@@ -47,8 +47,8 @@
                         <ul class="default-list-sns">
                             <!-- [D] a 클릭시 내부에 xi-heart-o 클래스 명을 xi-heart 로 변경 부탁드립니다. -->
                             <li><a href="#" onclick="event.preventDefault();toggleHeart('{{$product->id}}')"><i id="heart{{$product->id}}" class="{{($product->userWish())? 'xi-heart' : 'xi-heart-o'}}"></i><span class="xe-sr-only">좋아요</span></a></li>
-                            <li><a href="#"><i class="xi-facebook"></i><span class="xe-sr-only">페이스북 공유</span></a></li>
-                            <li><a href="#"><i class="xi-instagram"></i><span class="xe-sr-only">인스타그램 공유</span></a>
+                            <li><a target="_blank{{now()}}" href="http://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('xero_commerce::product.show', ['slug' => $product->getSlug()])) }}"><i class="xi-facebook"></i><span class="xe-sr-only">페이스북 공유</span></a></li>
+                            <li><a target="_blank{{now()}}" href="http://line.me/R/msg/text/?title={{ urlencode(route('xero_commerce::product.show', ['slug' => $product->getSlug()])) }}" href="#"><i class="xi-line"></i><span class="xe-sr-only">인스타그램 공유</span></a>
                             </li>
                         </ul>
                         @if($product->state_deal !== \Xpressengine\Plugins\XeroCommerce\Models\Product::DEAL_ON_SALE)

@@ -7,7 +7,7 @@ use XePresenter;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 
-class CategoryController
+class CategoryController extends SettingBaseController
 {
     public function index()
     {

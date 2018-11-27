@@ -9,12 +9,13 @@ use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderSettingService;
 
-class OrderController extends Controller
+class OrderController extends SettingBaseController
 {
     protected $orderService;
 
     public function __construct()
     {
+        parent::__construct();
         $this->orderService = new OrderSettingService();
     }
 
