@@ -103,6 +103,11 @@
           "class": "Xpressengine\\XePlugin\\XeroPay\\LG\\LG",
           "name": "LG X페이",
           "description": "xero_pay LG U+ X페이 모듈"
+        },
+        "widget/banner@widget/skin/xero_commerce@main_slider": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\MainSlider\\MainSliderSkin",
+          "name": "Main Slider 스킨",
+          "description": "Main Slider 스킨"
         }
       }
     }
