@@ -19,10 +19,6 @@ class ShopHandler
 
         $newShop->fill($args);
 
-        if (isset($args['logo'])) {
-            $this->saveImage($args['logo'], $newShop);
-        }
-
         $newShop->save();
 
         $newShop->users()->sync($args['user_id']);
@@ -77,9 +73,6 @@ class ShopHandler
                 $shop->{$key} = $value;
             }
         }
-        if (isset($args['logo'])) {
-            $this->saveImage($args['logo'], $shop);
-        }
         $shop->users()->sync($args['user_id']);
 
         $shop->save();
@@ -119,15 +112,5 @@ class ShopHandler
     public function removeDelivery(array $args, Shop $shop)
     {
         $shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->detach();
-    }
-
-    public function saveImage($imageParm, Shop $shop)
-    {
-        $file = XeStorage::upload($imageParm, 'public/xero_commerce/product');
-        $imageFile = XeMedia::make($file);
-        XeMedia::createThumbnails($imageFile, 'fit');
-        $shop->logo_path = XeMedia::images()->getThumbnail($imageFile, 'fit', 'S')->id;
-
-        return $imageFile;
     }
 }
