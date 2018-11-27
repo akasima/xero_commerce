@@ -7175,7 +7175,7 @@ body, input, textarea, select, table {
 
 /* xero-main-slider-wrap */
 .xero-main-slider-wrap {
-	
+	margin-bottom: 80px;	
 }
 
 .xero-main-slider-wrap .slider-item {

@@ -1,5 +1,5 @@
-.title-rank {
-	margin-bottom: 24px;
+.title-label {
+	margin: 0 0 24px 0;
 	font-size: 22px;
 	font-weight: 600;
 	line-height: 36px;
@@ -14,14 +14,29 @@
 	margin-bottom: 32px;
 }
 
-.list-tab-rank .link-tab-rank {
-	font-size: 14px;
-	line-height: 24px;
-	color: rgba(0, 0, 0, 0.5);
-	text-decoration: none;
+.list-tab-rank .item-tab-rank {
+	position: relative;
+	margin-right: 38px;
 }
 
-.list-tab-rank .link-tab-rank:before {
+.list-tab-rank .item-tab-rank:last-child {
+	margin-right: 0;
+}
+
+.list-tab-rank .item-tab-rank:after {
+	content: '/';
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	top: 4px;
+	right: -27px;
+}
+
+.list-tab-rank .item-tab-rank:last-child:after {
+	content: '';
+}
+
+.list-tab-rank .link-tab-rank {
 	font-size: 14px;
 	line-height: 24px;
 	color: rgba(0, 0, 0, 0.5);
