@@ -300,6 +300,19 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         </div>
     </div>
     <div class="xero-settings-control-float">
+
+        <label>출력 여부</label>
+        <select name="state_display">
+            @foreach (Product::getDisplayStates() as $key => $type)
+                <option value="{{ $key }}" @if ($product->state_display == $key) selected @endif>{{ $type }}</option>
+            @endforeach
+        </select>
+        <label>거래 여부</label>
+        <select name="state_deal">
+            @foreach (Product::getDealStates() as $key => $type)
+                <option value="{{ $key }}" @if ($product->state_deal == $key) selected @endif>{{ $type }}</option>
+            @endforeach
+        </select>
         <button type="submit" class="xe-btn xe-btn-success xe-btn-lg">등록</button>
     </div>
 </form>
