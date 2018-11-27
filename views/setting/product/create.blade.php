@@ -272,7 +272,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
             </div>
         </div>
     </div>
-    <button type="submit" class="xe-btn xe-btn-success">등록</button>
+
+    <div class="xero-settings-control-float">
+        <button type="submit" class="xe-btn xe-btn-success">등록</button>
+    </div>
+
 </form>
 
 <script>
