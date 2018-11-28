@@ -58,3 +58,27 @@
   padding:8px 5px;
   background: #ddd
 }
+
+/* 주문 요약 카드 (.panel 조합) */
+.xero-summary-card {
+
+}
+.xero-summary-card .panel {
+  border-top: 2px solid #c1c4c5;
+}
+.xero-summary-card small {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #777;
+}
+.xero-summary-card h4 {
+  margin-bottom: 4px;
+  font-size: 23px;
+}
+.xero-summary-card strong {
+  font-size: 23px;
+}
+.xero-summary-card h4 + small {
+  margin-top: 10px;
+}

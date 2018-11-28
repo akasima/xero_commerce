@@ -1,57 +1,92 @@
 
+<div class="xero-summary-card">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <h4>입금대기</h4>
+                    @if($dash['결제대기'])
+                        <strong>{{ $dash['결제대기'] }}건</strong>
+                    @else
+                        <small>교환 요청건이 없네요.</small>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <h4>상품준비</h4>
+                    @if($dash['상품준비'])
+                        <strong>{{ $dash['상품준비'] }}건</strong>
+                    @else
+                        <small>배송해야 할 상품이 없어요</small>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <h4>배송중</h4>
+                    @if($dash['배송중'])
+                        <strong>{{ $dash['배송중'] }}건</strong>
+                    @else
+                        <small>배송중인 상품이 없어요.</small>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <h4>취소처리</h4>
+                    @if($dash['취소중'])
+                        <strong>{{ $dash['취소중'] }}건</strong>
+                    @else
+                        <small>취소 요청건이 없어요!</small>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <h4>환불처리</h4>
+                    @if($dash['환불중'])
+                        <strong>{{ $dash['환불중'] }}건</strong>
+                    @else
+                        <small>환불 요청건이 없어요!</small>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <h4>교환처리</h4>
+                    @if($dash['교환중'])
+                        <strong>{{ $dash['교환중'] }}건</strong>
+                    @else
+                        <small>교환 요청건이 없어요!</small>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="panel">
     <div class="panel-heading">
         <h3>주문 현황</h3>
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-xs-12">
                 <h4>주문 수</h4>
                 <canvas id="orderStat" width="600" height="200">No Canvas</canvas>
-            </div>
-            <div class="col-md-4">
-                <h4>처리 중인 주문</h4>
-                <table class="xe-table xe-table-striped">
-                    <thead>
-                        <tr>
-                            <th>상태변경</th>
-                            <th>건수</th>
-                            <th>금액</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>입금대기</td>
-                            <td>{{$dash['결제대기']}}</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>상품준비</td>
-                            <td>{{$dash['상품준비']}}</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>배송중</td>
-                            <td>{{$dash['배송중']}}</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>취소처리</td>
-                            <td>{{$dash['취소중']}}</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>환불처리</td>
-                            <td>{{$dash['환불중']}}</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>교환처리</td>
-                            <td>{{$dash['교환중']}}</td>
-                            <td>0</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
