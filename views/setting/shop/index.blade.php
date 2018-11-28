@@ -2,26 +2,11 @@
 <h2>입점몰 목록</h2>
 @endsection
 
-<form method="get" action="{{ route('xero_commerce::setting.config.shop.index') }}">
-    <div class="row">
-        <div class="col-sm-3">
-            <div class="input-group">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">검색</button>
-                </span>
-            </div>
-        </div>
-        <div>
-            <a href="{{ route('xero_commerce::setting.config.shop.create') }}" class="xe-btn">새로 등록</a>
-        </div>
-    </div>
-</form>
-
 <div class="row">
     <div class="col-sm-12">
         <div class="panel-group">
             <div class="panel">
-                <div class="panel-body">
+                <div class="panel-body table-scrollable">
                     <table class="table">
                         <thead>
                             <tr>
@@ -39,11 +24,11 @@
                                 <td>
                                     <img src="{!! $shop->logo !!}" alt="">
                                 </td>
-                                <td><a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_name }}</span></a></td>
-                                <td><a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_eng_name }}</span></a></td>
-                                <td>{{ $shop->getShopTypes()[$shop->shop_type] }}</td>
-                                <td></td>
-                                <td>{{$shop->created_at->toDateString()}}</td>
+                                <td class="nowrap"><a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_name }}</span></a></td>
+                                <td class="nowrap"><a href="{{ route('xero_commerce::setting.config.shop.show', ['shopId' => $shop->id]) }}"><span>{{ $shop->shop_eng_name }}</span></a></td>
+                                <td class="nowrap">{{ $shop->getShopTypes()[$shop->shop_type] }}</td>
+                                <td class="nowrap"></td>
+                                <td class="nowrap">{{$shop->created_at->toDateString()}}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -52,4 +37,8 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="xero-settings-control-float">
+    <a href="{{ route('xero_commerce::setting.config.shop.create') }}" class="btn btn-primary btn-lg">입점몰 추가</a>
 </div>
