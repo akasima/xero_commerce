@@ -26,6 +26,8 @@
         @endforeach
         </tbody>
     </table>
-    <p>본 메일은 발신전용으로 수신이 불가합니다.</p>
 </div>
+@endsection
+@section('header')
+    <a href="{{ url('/') }}" target="_blank" style="text-decoration:none;font-family: NanumBarunGothic,'나눔고딕',NanumGothic,dotum,'돋움',Helvetica;line-height:34px;vertical-align:top;color:#6f8dff;font-size:30px;letter-spacing:-1px">{{ XeConfig::getOrNew(\Xpressengine\Plugins\XeroCommerce\Plugin::getId())->get('companyName') }}</a>
 @endsection
