@@ -1,75 +1,70 @@
+{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/colorpicker.min.js')))->appendTo('body')->load() }}
 @section('page_title')
-    <h2>라벨 수정</h2>
+<h2>라벨 수정</h2>
 @endsection
 
-{{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/colorpicker.min.js')))->appendTo('body')->load() }}
-<div class="row" id="component-container">
-    <div class="col-sm-12">
-        <div class="panel-group">
-            <div class="panel">
-                <div class="panel-heading">
-                    <div class="form-group">
-                        <form method="post" action="{{ route('xero_commerce::setting.label.update', ['id'=>$label->id]) }}">
-                            {!! csrf_field() !!}
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>라벨 이름</label>
-                                        <input class="form-control" name="name" value="{{ $label->name }}" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>영어 이름</label>
-                                        <input class="form-control" name="eng_name"
-                                               value="{{ $label->eng_name }}"/>
-                                    </div>
-                                </div>
+<form method="post" action="{{ route('xero_commerce::setting.label.update', ['id'=>$label->id]) }}">
+    {!! csrf_field() !!}
+    <div class="panel">
+        <div class="panel-heading">
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>라벨 이름</label>
+                            <input class="form-control" name="name" value="{{ $label->name }}" />
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>영어 이름</label>
+                            <input class="form-control" name="eng_name"
+                            value="{{ $label->eng_name }}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>배경색</label>
+                            <div style="position:relative">
+                                <div id="background_cp" class="cp-default"></div>
+                                <div id="background_view" style="width:124px;height:124px;position:absolute;top:0px;left:150px;padding:12px;"></div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>배경색</label>
-                                        <div style="position:relative">
-                                            <div id="background_cp" class="cp-default"></div>
-                                            <div id="background_view" style="width:124px;height:124px;position:absolute;top:0px;left:150px;padding:12px;"></div>
-                                        </div>
-                                        <input class="form-control" name="background_color" type="hidden"
-                                               id="background" value="{{$label->background_color}}"/>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>글자색</label>
-                                        <div style="position:relative">
-                                            <div id="text_cp" class="cp-default"></div>
-                                            <div id="text_view" style="width:124px;height:124px;position:absolute;top:0px;left:150px;padding:12px;"></div>
-                                        </div>
-                                        <input class="form-control" name="text_color" type="hidden" id="text"
-                                               value="{{$label->text_color}}"/>
-                                    </div>
-                                </div>
+                            <input class="form-control" name="background_color" type="hidden"
+                            id="background" value="{{$label->background_color}}"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>글자색</label>
+                            <div style="position:relative">
+                                <div id="text_cp" class="cp-default"></div>
+                                <div id="text_view" style="width:124px;height:124px;position:absolute;top:0px;left:150px;padding:12px;"></div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>미리보기</label>
-                                        <span class="xe-shop-tag" id="new"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <button class="btn btn-default btn-block" type="submit"
-                                            class="xe-btn xe-btn-positive">수정
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                            <input class="form-control" name="text_color" type="hidden" id="text"
+                            value="{{$label->text_color}}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>미리보기</label>
+                            <span class="xe-shop-tag" id="new"></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="panel-footer text-right">
+            <button class="btn btn-primary btn-lg" type="submit" class="xe-btn xe-btn-positive">수정</button>
+        </div>
     </div>
-</div>
+</form>
+
 <script>
     $(function () {
         var b_cp = ColorPicker(document.getElementById('background_cp'), function (hex, hsv, rgb) {
