@@ -1,61 +1,59 @@
 <template>
-    <div class="xe-row">
-        <div class="xe-col-lg-12">
-            <div style="float:right">
-                <button class="xe-btn" type="button">엑셀양식다운로드</button>
-                <button class="xe-btn" type="button">엑셀업로드</button>
+    <div class="panel">
+        <div class="panel-body">
+            <div class="table-scrollable">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" v-model="allCheck"></th>
+                        <th>주문번호</th>
+                        <th>상세정보</th>
+                        <th>주소</th>
+                        <th>배송사</th>
+                        <th>송장번호</th>
+                        <th>입력완료</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="order_item in orderItems">
+                        <td>
+                            <input v-model="checked" type="checkbox" :value="order_item.id">
+                        </td>
+                        <td>
+                            {{order_item.order_no}}
+                            <p style="text-align: center; font-weight: bold;">[{{order_item.status}}]</p>
+                        </td>
+                        <td>
+                            <span v-for="html in order_item.info" v-html="html"></span>
+                        </td>
+                        <td>
+                            {{order_item.delivery.recv_addr + ' ' + order_item.delivery.recv_addr_detail}} <br>
+                            수령인 : {{order_item.delivery.recv_name}}
+                        </td>
+                        <td>
+                            {{order_item.delivery.company.name}}
+                        </td>
+                        <td>
+                            <span v-if="order_item.delivery.ship_no !==''">{{order_item.delivery.ship_no}}</span>
+                            <input v-if="order_item.delivery.ship_no ===''" type="text" v-model="texted[order_item.id]">
+                        </td>
+                        <td>
+                            <button v-if="order_item.delivery.ship_no ===''" @click="select(order_item.id)">배송중</button>
+                            <button v-if="order_item.status !=='완료'" @click="selectComplete(order_item.id)">배송완료</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="xe-col-lg-12">
-            <table class="xe-table">
-                <thead>
-                <tr>
-                    <th><input type="checkbox" v-model="allCheck"></th>
-                    <th>주문번호</th>
-                    <th>상세정보</th>
-                    <th>주소</th>
-                    <th>배송사</th>
-                    <th>송장번호</th>
-                    <th>입력완료</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="order_item in orderItems">
-                    <td>
-                        <input v-model="checked" type="checkbox" :value="order_item.id">
-                    </td>
-                    <td>
-                        {{order_item.order_no}}
-                        <p style="text-align: center; font-weight: bold;">[{{order_item.status}}]</p>
-                    </td>
-                    <td>
-                        <span v-for="html in order_item.info" v-html="html"></span>
-                    </td>
-                    <td>
-                         {{order_item.delivery.recv_addr + ' ' + order_item.delivery.recv_addr_detail}} <br>
-                        수령인 : {{order_item.delivery.recv_name}}
-                    </td>
-                    <td>
-                        {{order_item.delivery.company.name}}
-                    </td>
-                    <td>
-                        <span v-if="order_item.delivery.ship_no !==''">{{order_item.delivery.ship_no}}</span>
-                        <input v-if="order_item.delivery.ship_no ===''" type="text" v-model="texted[order_item.id]">
-                    </td>
-                    <td>
-                        <button v-if="order_item.delivery.ship_no ===''" @click="select(order_item.id)">배송중</button>
-                        <button v-if="order_item.status !=='완료'" @click="selectComplete(order_item.id)">배송완료</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="panel-footer text-right">
+            <input type="text" v-model="allNo">
+            <button class="btn btn-black" type="button" @click="submit">일괄 배송중</button>
+            <button class="btn btn-black" type="button" @click="complete">일괄 배송완료</button>
         </div>
-        <div class="xe-col-lg-12">
-            <div style="float:right">
-                <input type="text" v-model="allNo">
-                <button class="xe-btn xe-btn-black" type="button" @click="submit">일괄배송중</button>
-                <button class="xe-btn xe-btn-black" type="button" @click="complete">일괄배송완료</button>
-            </div>
+        <div class="xero-settings-control-float">
+            <button class="btn btn-default" type="button">엑셀양식다운로드</button>
+            <button class="btn btn-default" type="button">엑셀업로드</button>
         </div>
     </div>
 </template>
