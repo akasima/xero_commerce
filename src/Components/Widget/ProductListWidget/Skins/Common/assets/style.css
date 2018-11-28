@@ -2,3 +2,79 @@
     padding-top: 10px;
     text-align: center;
 }
+
+
+
+
+
+.title-basic {
+	margin: 0 0 38px 0;
+	font-size: 22px;
+	font-weight: 600;
+	line-height: 36px;
+	color: rgba(0, 0, 0, 0.87);
+	text-align:center;
+}
+
+.list-basic {
+	display: flex;
+	flex-wrap: wrap;
+	
+	margin: 0 -12px;
+	padding: 0;
+	list-style: none;
+}
+
+.list-basic:after {
+	content: '';
+	display: block;
+	clear: both; 
+}
+
+.list-basic .item-basic {
+	float: left;
+	width: 25%;
+	margin-bottom: 64px; 
+}
+
+.list-basic .link-basic {
+	display: block;
+	margin: 0 12px;
+	text-decoration: none;
+}
+
+.list-basic .thumnail {
+	display: block;
+	width: 100%;
+	padding-top: 100%;
+	background-size: cover;
+	background-position: 50% 50%; 
+}
+
+.list-basic .link-basic strong {
+	display: block;
+	height: 45px;
+	margin: 16px 0 12px 0;
+	line-height: 22px;
+	font-size: 16px;
+	font-weight: 600;
+	color: rgba(0, 0, 0, 0.6);
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical; 
+}
+
+.list-basic .price {
+	font-size: 18px;
+	font-weight: 600;
+	color: rgba(0, 0, 0, 1);
+}
+
+.list-basic .sale {
+	padding-right: 16px;
+	font-weight: 400;
+	line-height: 22px;
+	color: rgba(0, 0, 0, .38);
+	text-decoration: line-through;
+}

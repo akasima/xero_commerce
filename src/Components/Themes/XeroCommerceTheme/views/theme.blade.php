@@ -45,8 +45,8 @@
 
             <!-- area-gnb -->
             <div class="area-gnb">
-                <h1 class="logo">엠엠푸드</h1>
-                <button type="button" class="btn-menu reset-button" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
+                <h1 class="logo"><a href="/shopping">엠엠푸드</a></h1>
+                
                 <nav>
                     <ul class="list-gnb">
                         <li class="item-gnb active"><a href="#" class="link-gnb" target="">영웅님</a></li>
@@ -67,37 +67,40 @@
             <!-- // area-gnb -->
 
         </div>
-
+	
+    	<!-- area-lnb -->
         <div class="area-lnb">
 
             <div class="inner-header">
+            	<button type="button" class="btn-menu reset-button" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
                 <ul class="list-lnb">
-                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리1</a></li>
+                    <li class="item-lnb"><a href="#" class="link-lnb active" target="">카테고리1</a></li>
                     <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리2</a></li>
                     <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리3</a></li>
                     <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리4</a></li>
                 </ul>
+                
+                <div class="area-category">
+                    <div class="inner-header">
+                        <ul class="list-category">
+                            <!-- [D] 열림시 open 클래스 추가 -->
+                            @foreach(menu_list($config->get('gnb')) as $menu)
+                                <li @if($menu['selected']) class="open item-category" @endif onclick="toggleSubMenu(this,'{{url($menu['url']) }}')">
+                                    <h4 class="xe-shop-category-title"><a href="#" class="title-depth2">{{ $menu['link'] }}</a><i @if($menu['selected']) class="xi-angle-up-thin" @else class="xi-angle-down-thin" @endif></i></h4>
+                                    <ul>
+                                        @foreach($menu['children'] as $submenu)
+                                            <li class="item-depth03"><a href="{{url($submenu['url'])}}">{{ $submenu['link'] }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
 
         </div>
-
-        <div class="area-category">
-            <div class="inner-header">
-                <ul class="list-category">
-                    <!-- [D] 열림시 open 클래스 추가 -->
-                    @foreach(menu_list($config->get('gnb')) as $menu)
-                        <li @if($menu['selected']) class="open" @endif onclick="toggleSubMenu(this,'{{url($menu['url']) }}')">
-                            <h4 class="xe-shop-category-title"><a href="#">{{ $menu['link'] }}</a><i @if($menu['selected']) class="xi-angle-up-thin" @else class="xi-angle-down-thin" @endif></i></h4>
-                            <ul>
-                                @foreach($menu['children'] as $submenu)
-                                    <li><a href="{{url($submenu['url'])}}">{{ $submenu['link'] }}</a></li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
+		<!-- // area-lnb -->
 
     </header>
     <!-- // header -->
@@ -267,72 +270,37 @@
         <div id="sub-container">
             {!! $content !!}
         </div>
+	</main>
 
-        <hr>
-        <footer class="footer">
-            <section class="xe-company-info">
-                <div class="container">
-                    <div class="xe-company-info-article">
-                        @if(!is_null($shopConfig['companyName']))
-                            <p>
-                                <b>상호명</b>
-                                <span>{{$shopConfig['companyName']}}</span>
-                            </p>
-                        @endif
-                        @if(!is_null($shopConfig['ceoName']))
-                            <p>
-                                <b>대표자</b>
-                                <span>{{$shopConfig['ceoName']}}</span>
-                            </p>
-                        @endif
-                        @if(!is_null($shopConfig['companyNumber']))
-                            <p>
-                                <b>사업자등록번호</b>
-                                <span>{{$shopConfig['companyNumber']}}<a href="#">[사업자정보확인]</a></span>
-                            </p>
-                        @endif
-                        @if(!is_null($shopConfig['communicationMarketingNumber']))
-                            <p>
-                                <b>통신판매업</b>
-                                <span>신고 {{$shopConfig['communicationMarketingNumber']}}</span>
-                            </p>
-                        @endif
-                    </div>
-                    <div class="xe-company-info-article">
-                        @if(!is_null($shopConfig['address']))
-                            <p>
-                                <b>주소</b>
-                                <span>@if(!is_null($shopConfig['zipCode']))({{$shopConfig['zipCode']}})@endif {{$shopConfig['address']}}</span>
-                            </p>
-                        @endif
-                        @if(!is_null($shopConfig['telNumber']))
-                            <p>
-                                <b>대표전화</b>
-                                <span>{{$shopConfig['telNumber']}}</span>
-                            </p>
-                        @endif
-                    </div>
-                    <div class="xe-company-info-article">
-                        @if(!is_null($shopConfig['informationCharger']))
-                            <p>
-                                <b>개인정보관리책임자</b>
-                                <span>{{$shopConfig['informationCharger']}}</span>
-                            </p>
-                        @endif
-                        @if(!is_null($shopConfig['email']))
-                            <p>
-                                <b>이메일</b>
-                                <span>{{$shopConfig['email']}}</span>
-                            </p>
-                        @endif
-                    </div>
-                </div>
-            </section>
-            <section class="copyright">
-                <div class="container">
-                    <p>Copyright &copy; 2016 {{$shopConfig['companyName']}} All rights reserved.&nbsp;&nbsp;&nbsp;<br class="xe-hidden-md xe-hidden-lg">MADE BY XE</p>
-                </div>
-            </section>
-        </footer>
-    </main>
+    <footer class="footer">
+    	
+        <div class="inner-footer">
+            <dl class="company">
+            @if(!is_null($shopConfig['companyName']))
+                <dt class="item-name">{{$shopConfig['companyName']}}</dt>
+            @endif
+            @if(!is_null($shopConfig['ceoName']))
+                <dd class="item-company">대표 : {{$shopConfig['ceoName']}}</dd>
+            @endif
+            @if(!is_null($shopConfig['address']))
+            	<dd class="item-company">@if(!is_null($shopConfig['zipCode']))({{$shopConfig['zipCode']}})@endif {{$shopConfig['address']}}</dd>
+            @endif
+            @if(!is_null($shopConfig['companyNumber']))
+            	<dd class="item-company">사업자등록번호 : {{$shopConfig['companyNumber']}} <a href="#" class="link-info">사업자정보확인 <i class="xi-angle-right-thin"></i></a></dd>
+            @endif
+            @if(!is_null($shopConfig['communicationMarketingNumber']))    
+                <dd class="item-company">통신판매업신고번호 : {{$shopConfig['communicationMarketingNumber']}}</dd>
+            @endif
+            @if(!is_null($shopConfig['telNumber']))
+                <dd class="item-company">대표전화 : {{$shopConfig['telNumber']}}</dd>
+            @endif
+            @if(!is_null($shopConfig['email']))
+                <dd class="item-company">이메일 :  <a href="{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
+            @endif  
+            </dl>
+            <small>© 2018 XE Factory.com, Inc</small>
+        </div>
+
+    </footer>
+    
 </div>

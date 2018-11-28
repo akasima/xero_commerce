@@ -98,6 +98,7 @@
 
 <script>
     function toggleMenu () {
-        toggleClass(".area-category", "active")
+        toggleClass(".area-category", "active");
+		toggleClass(".btn-menu", "active")
     }
 </script>

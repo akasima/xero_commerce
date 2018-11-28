@@ -1,5 +1,59 @@
 {{ XeFrontend::css('plugins/xero_commerce/src/Components/Widget/EventWidget/Skins/Common/assets/style.css')->load() }}
 
+<section class="section-event">
+ 	<div class="inner-main">
+        <h2 class="title-event">EVENT</h2>
+        <ul class="list-event">
+            <li class="item-event">
+                <a href="{{ route('xero_commerce::product.show', ['slug' => $products['left']->getSlug()]) }}" class="link-event">
+                    <span class="thumnail" style="background-image:url('{{ $products['left']->getThumbnailSrc() }}')"></span>
+                    <div class="box-content">
+                        <strong>{{ $products['left']->name }}</strong>
+                        <span class="info">KNIT 이벤트 내용 KNIT 이벤트 내용 KNIT 이벤 트 내용 KNIT 이벤트 내용 KNIT 이벤트 내용 KNI T 이벤트</span>
+                    </div>
+                </a>
+            </li>
+			<li class="item-event">
+                <a href="{{ route('xero_commerce::product.show', ['slug' => $products['left']->getSlug()]) }}" class="link-event">
+                    <span class="thumnail" style="background-image:url('{{ $products['left']->getThumbnailSrc() }}')"></span>
+                    <div class="box-content">
+                        <strong>{{ $products['left']->name }}</strong>
+                        <span class="info">KNIT 이벤트 내용 KNIT 이벤트 내용 KNIT 이벤 트 내용 KNIT 이벤트 내용 KNIT 이벤트 내용 KNI T 이벤트</span>
+                    </div>
+                </a>
+            </li>
+            <li class="item-event">
+                <a href="{{ route('xero_commerce::product.show', ['slug' => $products['left']->getSlug()]) }}" class="link-event">
+                    <span class="thumnail" style="background-image:url('{{ $products['left']->getThumbnailSrc() }}')"></span>
+                    <div class="box-content">
+                        <strong>{{ $products['left']->name }}</strong>
+                        <span class="info">KNIT 이벤트 내용 KNIT 이벤트 내용 KNIT 이벤 트 내용 KNIT 이벤트 내용 KNIT 이벤트 내용 KNI T 이벤트</span>
+                    </div>
+                </a>
+            </li>
+            <li class="item-event">
+                <a href="{{ route('xero_commerce::product.show', ['slug' => $products['left']->getSlug()]) }}" class="link-event">
+                    <span class="thumnail" style="background-image:url('{{ $products['left']->getThumbnailSrc() }}')"></span>
+                    <div class="box-content">
+                        <strong>{{ $products['left']->name }}</strong>
+                        <span class="info">KNIT 이벤트 내용 KNIT 이벤트 내용 KNIT 이벤 트 내용 KNIT 이벤트 내용 KNIT 이벤트 내용 KNI T 이벤트</span>
+                    </div>
+                </a>
+            </li>
+            <li class="item-event">
+                <a href="{{ route('xero_commerce::product.show', ['slug' => $products['left']->getSlug()]) }}" class="link-event">
+                    <span class="thumnail" style="background-image:url('{{ $products['left']->getThumbnailSrc() }}')"></span>
+                    <div class="box-content">
+                        <strong>{{ $products['left']->name }}</strong>
+                        <span class="info">KNIT 이벤트 내용 KNIT 이벤트 내용 KNIT 이벤 트 내용 KNIT 이벤트 내용 KNIT 이벤트 내용 KNI T 이벤트</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- 기존 소스
 <div class="xe-shop">
     <div class="container">
         <h2 class="xe-shop-wiget-title">EVENT</h2>
@@ -45,3 +99,4 @@
         </div>
     </div>
 </div>
+-->

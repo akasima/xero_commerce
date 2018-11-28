@@ -3,7 +3,55 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 ?>
 {{ XeFrontend::css('plugins/xero_commerce/src/Components/Widget/ProductListWidget/Skins/Common/assets/style.css')->load() }}
 
-<section class="xe-shop list">
+
+
+
+
+<section class="section-basic">
+	<div class="inner-main">
+    	<h2 class="title-event">추천 상품</h2>
+        <ul class="list-basic">
+            @foreach ($products as $key => $product)
+            <li class="item-basic">
+                <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}" class="link-basic">
+                    <span class="thumnail" style="background-image:url('{{$product->getThumbnailSrc()}}')"></span>
+                        <div class="box_content">
+                        <strong>타이틀나오는 영역 두줄까지 나오는데 한줄도 동일이네 또</strong>
+                        <p class="price">
+                            <span class="xe-sr-only">할인 전</span>
+                            <span class="sale">{{ number_format($product->original_price)}}원</span>
+                            <span class="xe-sr-only">할인 후</span>
+                            <span>{{number_format($product->sell_price)}}원</span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+             @endforeach
+        </ul>	
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="xe-shop list" style="display: none;">
+
     <div class="container" style="padding-left:0; padding-right:0">
         <div class="search-results">
             @if ($products->total() == 0)
