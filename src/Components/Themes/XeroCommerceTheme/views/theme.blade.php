@@ -58,7 +58,7 @@
 
                 <div class="area-search">
                     <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
-                        <input type="text" class="input-text">
+                        <input type="text" class="input-text" name="product_name">
                         <button type="button" class="btn-search reset-button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
                     </form>
                 </div>
