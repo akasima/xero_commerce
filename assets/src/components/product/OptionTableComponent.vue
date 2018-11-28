@@ -3,7 +3,73 @@
         <thead>
         <tr>
             <td colspan="9">
-                <a href="#" @click.prevent="add"><i class="xi-plus"></i></a>
+                <a href="#" @click.prevent="add"><i class="xi-plus"></i>추가</a>
+            </td>
+        </tr>
+        <tr v-for="(option, key) in addList">
+            <td colspan="9">
+                <div class="xe-row">
+                    <div class="xe-col-sm-6">
+                        <div class="form-group">
+                            <label class ="control-label col-sm-3">타입</label>
+                            <div class="col-sm-8">
+                                <input type="radio" v-model="option.option_type" value="2" /> 옵션상품
+                                <input type="radio" v-model="option.option_type" value="3" /> 추가상품
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class ="control-label col-sm-3">옵션명</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" v-model="option.name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xe-col-sm-6">
+                        <div class="form-group">
+                            <label class ="control-label col-sm-3">추가금액</label>
+                            <div class="col-sm-8">
+                                <input type="number" v-model="option.addition_price" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class ="control-label col-sm-3">현재재고</label>
+                            <div class="col-sm-8">
+                                <input type="number" v-model="option.stock" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class ="control-label col-sm-3">품절 알림 재고</label>
+                            <div class="col-sm-8">
+                                <input type="number" v-model="option.alert_stock" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="xe-row">
+                    <div class="xe-col-sm-6">
+                        <div class="form-group">
+                            <label class ="control-label col-sm-3">출력상태</label>
+                            <div class="col-sm-8">
+                                <input type="radio" v-model="option.state_display" value="1" />출력
+                                <input type="radio" v-model="option.state_display" value="2" />미출력
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xe-col-sm-6">
+                        <div class="form-group">
+                            <label class ="control-label col-sm-3">판매상태</label>
+                            <div class="col-sm-8">
+                                <input type="radio" v-model="option.state_deal" value="1" />판매중
+                                <input type="radio" v-model="option.state_deal" value="2" />일시 중단
+                                <input type="radio" v-model="option.state_deal" value="3" />중단
+                            </div>
+                        </div>
+                        <div class="form-group" style="text-align: right;">
+                            <button class="btn btn-default" @click="save(option); pop(key)">저장</button>
+                            <button class="btn btn-danger" @click="pop(key)">삭제</button>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
         <tr>
@@ -22,30 +88,6 @@
         <tbody>
         <row-component v-for="(option,key) in optionList" v-bind:optionData="option" :key="key" @save="save"
                        @remove="remove"></row-component>
-        <tr v-for="(option, key) in addList">
-            <td>
-                <input type="radio" v-model="option.option_type" value="2" class="form-control"/> 옵션상품
-                <input type="radio" v-model="option.option_type" value="3" class="form-control"/> 추가상품
-            </td>
-            <td><input type="text" v-model="option.name" class="form-control"></td>
-            <td><input type="number" v-model="option.addition_price" class="form-control"></td>
-            <td>{{(Number(option.addition_price)+Number(productPrice)).toLocaleString()}}</td>
-            <td><input type="number" v-model="option.stock" class="form-control"></td>
-            <td><input type="number" v-model="option.alert_stock" class="form-control"></td>
-            <td>
-                <input type="radio" v-model="option.state_display" value="1" class="form-control"/>출력
-                <input type="radio" v-model="option.state_display" value="2" class="form-control"/>미출력
-            </td>
-            <td>
-                <input type="radio" v-model="option.state_deal" value="1" class="form-control"/>판매중
-                <input type="radio" v-model="option.state_deal" value="2" class="form-control"/>일시 중단
-                <input type="radio" v-model="option.state_deal" value="3" class="form-control"/>중단
-            </td>
-            <td>
-                <button class="btn btn-default" @click="save(option); pop(key)">저장</button>
-                <button class="btn btn-danger" @click="pop(key)">삭제</button>
-            </td>
-        </tr>
         </tbody>
     </table>
 </template>
