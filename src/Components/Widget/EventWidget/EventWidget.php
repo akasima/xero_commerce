@@ -15,10 +15,11 @@ class EventWidget extends AbstractWidget
 
         $productHandler = app('xero_commerce.productHandler');
 
-        $products['left'] = $productHandler->getProduct($widgetConfig['left_product_id']);
-        $products['center_up'] = $productHandler->getProduct($widgetConfig['center_up_product_id']);
-        $products['center_down'] = $productHandler->getProduct($widgetConfig['center_down_product_id']);
-        $products['right'] = $productHandler->getProduct($widgetConfig['right_product_id']);
+        $products['product_id_1'] = $productHandler->getProduct($widgetConfig['product_id_1']);
+        $products['product_id_2'] = $productHandler->getProduct($widgetConfig['product_id_2']);
+        $products['product_id_3'] = $productHandler->getProduct($widgetConfig['product_id_3']);
+        $products['product_id_4'] = $productHandler->getProduct($widgetConfig['product_id_4']);
+        $products['product_id_5'] = $productHandler->getProduct($widgetConfig['product_id_5']);
 
         return $this->renderSkin([
             'widgetConfig' => $widgetConfig,
