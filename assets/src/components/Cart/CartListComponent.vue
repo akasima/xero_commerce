@@ -1,6 +1,6 @@
 <template>
     <div class="xe-shop cart">
-        <div class="container">
+        <div class="xero-container">
             <div class="cart-wrap">
                 <button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>
                 <div class="cart-product">

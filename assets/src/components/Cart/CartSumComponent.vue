@@ -1,6 +1,6 @@
 <template>
     <div class="xe-shop cart-number">
-        <div class="container">
+        <div class="xero-container">
             <section class="cart-number-wrap">
                 <h2 class="xe-sr-only">장바구니 결제 정보</h2>
                 <article class="cart-number-price">

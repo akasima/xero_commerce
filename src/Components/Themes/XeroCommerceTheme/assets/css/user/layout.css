@@ -91,6 +91,11 @@ body, input, textarea, select, table {
   margin: 0 auto;
   padding: 50px 14px 100px 24px;
 }
+@media (max-width: 992px) {
+  .xe-shop .xero-layout-type-sub {
+    width: 100%;
+  }
+}
 
 .xe-shop-notice {
   float: left;
@@ -2476,7 +2481,7 @@ body, input, textarea, select, table {
 }
 
 .cart-product-info {
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 @media (max-width: 992px) {
@@ -2758,7 +2763,7 @@ body, input, textarea, select, table {
     width: 90px;
   }
   .cart .cart-product-num {
-    width: 585px;
+    /* width: 585px; */
   }
   .cart .cart-product-price {
     width: 120px;
@@ -2773,7 +2778,7 @@ body, input, textarea, select, table {
     width: 120px;
   }
   .cart .cart-product-sum {
-    width: 145px;
+    /* width: 145px; */
   }
   .payment .cart-product-num {
     width: 600px;
@@ -2787,7 +2792,6 @@ body, input, textarea, select, table {
 
 @media (min-width: 992px) {
   .cart-number {
-    width: 1140px;
     margin: 30px auto;
   }
 }
