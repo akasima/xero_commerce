@@ -16,7 +16,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
                 <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}" class="link-basic">
                     <span class="thumnail" style="background-image:url('{{$product->getThumbnailSrc()}}')"></span>
                         <div class="box_content">
-                        <strong>타이틀나오는 영역 두줄까지 나오는데 한줄도 동일이네 또</strong>
+                        <strong>{{$product->name}}</strong>
                         <p class="price">
                             <span class="xe-sr-only">할인 전</span>
                             <span class="sale">{{ number_format($product->original_price)}}원</span>
@@ -30,25 +30,6 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
         </ul>	
 	</div>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <section class="xe-shop list" style="display: none;">
 

@@ -218,22 +218,6 @@ class Resources
         $firstFile = \XeStorage::create($sample, 'public/xero_commerce/widget/default', 'default1.jpg');
         $firstImageFile = \XeMedia::make($firstFile);
 
-        $secondFile = \XeStorage::create($sample, 'public/xero_commerce/widget/default', 'default2.jpg');
-        $secondImageFile = \XeMedia::make($secondFile);
-
-        $thirdFile = \XeStorage::create($sample, 'public/xero_commerce/widget/default', 'default3.jpg');
-        $thirdImageFile = \XeMedia::make($thirdFile);
-
-        $defaultWidgetImage[] = $firstImageFile->id;
-        $defaultWidgetImage[] = $secondImageFile->id;
-        $defaultWidgetImage[] = $thirdImageFile->id;
-
-        $defaultWidget['images'] = $defaultWidgetImage;
-        $defaultWidget['@attributes'] = [
-            'id' => 'widget/xero_commerce@default_widget',
-            'title' => 'default',
-            'skin-id' => 'widget/xero_commerce@default_widget/skin/xero_commerce@default_widget_common_skin'
-        ];
 
         //Banner Widget
 
@@ -282,29 +266,6 @@ class Resources
             'skin-id' => 'widget/xero_commerce@event_widget/skin/xero_commerce@event_widget_common_skin'
         ];
 
-        //Slide Widget
-        $sample = file_get_contents(SlideWidgetCommonSkin::asset('img/tmp_slider.jpg'));
-
-        $firstFile = \XeStorage::create($sample, 'public/xero_commerce/widget/slide', 'default1.jpg');
-        $firstImageFile = \XeMedia::make($firstFile);
-
-        $secondFile = \XeStorage::create($sample, 'public/xero_commerce/widget/slide', 'default2.jpg');
-        $secondImageFile = \XeMedia::make($secondFile);
-
-        $thirdFile = \XeStorage::create($sample, 'public/xero_commerce/widget/slide', 'default3.jpg');
-        $thirdImageFile = \XeMedia::make($thirdFile);
-
-        $slideWidgetImage[] = $firstImageFile->id;
-        $slideWidgetImage[] = $secondImageFile->id;
-        $slideWidgetImage[] = $thirdImageFile->id;
-
-        $slideWidget['images'] = $slideWidgetImage;
-        $slideWidget['@attributes'] = [
-            'id' => 'widget/xero_commerce@slide_widget',
-            'title' => 'MD 추천상품',
-            'skin-id' => 'widget/xero_commerce@slide_widget/skin/xero_commerce@slide_widget_common_skin'
-        ];
-
         //ProductListWidget
         $productWidget['@attributes'] = [
             'id' => 'widget/xero_commerce@product_list_widget',
@@ -314,7 +275,7 @@ class Resources
 
         $initValue['grid'] = ['md' => '12'];
         $initValue['rows'] = [];
-        $initValue['widgets'] = [$bannerWidget, $labelWidget, $eventWidget, $slideWidget, $productWidget];
+        $initValue['widgets'] = [$bannerWidget, $labelWidget, $eventWidget, $productWidget];
 
         $value[] = $initValue;
 

@@ -11,7 +11,7 @@
         </ul>
 
         <div class="inner-main">
-            <ul class="list-rank reset-list">
+            <ul class="list-rank reset-list" id="view_all">
                 @foreach (collect($products)->flatten() as $idx => $product)
                     @if ($idx > 2)
                         @break;
@@ -27,37 +27,35 @@
                                 <span class="sale">{{ number_format($product->original_price) }}원</span>
                                 <span class="">{{ number_format($product->sell_price) }}원</span>
                             </p>
-                            
-                            <span class="xe-shop-tag black">new</span><span class="xe-shop-tag">best</span>
+                            @foreach($product->labels as $label)
+                                <span class="xe-shop-tag" @if($label->background_color && $label->text_color)style="background: {{$label->background_color}}; color:{{$label->text_color}}" @endif>{{$label->name}}</span>
+                            @endforeach
                         </a>
                     </li>
                 @endforeach
             </ul>
 
             @foreach ($categories as $category)
-                <ul id={{"view_" . $category->id }} style="display:none;">
+                <ul id="{{"view_" . $category->id }}" class="list-rank reset-list" style="display:none;">
                     @if (isset($products[$category->id]) == true)
                         @foreach ($products[$category->id] as $idx => $product)
                             @if ($idx > 2)
                                 @break;
                             @endif
 
-                            <li>
-                                <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}">
-                                    <div class="tab-list-img">
+                            <li class="item-rank">
+                                <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}" class="link-rank">
+                                    <div class="thumbnail-rank" style="background-image:url('{{ $product->getThumbnailSrc() }}')">
                                         <div class="tab-list-number">{{ $idx + 1 }}</div>
-                                        <img src="{{ $product->getThumbnailSrc() }}" alt="">
                                     </div>
-                                    <div class="tab-list-caption">
-                                        <h3 class="default-list-text-title"><span class="xe-shop-tag black">new</span><span class="xe-shop-tag">best</span> {{ $product->name }}</h3>
-                                        <p class="default-list-text-price">
-                                            <span class="xe-sr-only">할인 전</span>
-                                            <span class="through">{{ number_format($product->original_price) }}원</span>
-                                            <i class="xi-arrow-right"></i>
-                                            <span class="xe-sr-only">할인 후</span>
-                                            <span>{{ number_format($product->sell_price) }}원</span>
-                                        </p>
-                                    </div>
+                                    <strong class="title-rank"> {{ $product->name }}</strong>
+                                    <p class="price">
+                                        <span class="sale">{{ number_format($product->original_price) }}원</span>
+                                        <span class="">{{ number_format($product->sell_price) }}원</span>
+                                    </p>
+                                    @foreach($product->labels as $label)
+                                        <span class="xe-shop-tag" @if($label->background_color && $label->text_color)style="background: {{$label->background_color}}; color:{{$label->text_color}}" @endif>{{$label->name}}</span>
+                                    @endforeach
                                 </a>
                             </li>
                         @endforeach
@@ -71,11 +69,11 @@
 <script>
 
 
-    $('.list-tab-rank a').click(function () {
-        $('.list-tab-rank li').removeClass();
+    $('.item-tab-rank a').click(function () {
+        $('li.item-tab-rank').removeClass("active");
         $(this).parents('li').addClass('active');
 
-        $('.tab-list-container ul').css('display', 'none');
-        $('#view_' + $(this).attr('id')).css('display', 'inline-block');
+        $('ul.list-rank').css('display', 'none');
+        $('#view_' + $(this).attr('id')).css('display', 'flex');
     });
 </script>
