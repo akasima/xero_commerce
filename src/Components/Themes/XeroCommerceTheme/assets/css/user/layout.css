@@ -7283,44 +7283,6 @@ body, input, textarea, select, table {
 	color: rgba(0, 0, 0, .6);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* xero-main-slider-wrap */
 .xero-main-slider-wrap {
 	margin-bottom: 80px;
@@ -7398,6 +7360,27 @@ body, input, textarea, select, table {
 	list-style: none;
 }
 
+.xero-main-slider-wrap .slick-dots li {
+	
+}
+
+.xero-main-slider-wrap .slick-dots button {
+    width: 10px;
+    height: 10px;
+    margin: 0 3px;
+    padding: 0;
+	border: none;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+	font-size: 0;
+}
+
+.xero-main-slider-wrap .slick-active button {
+	border: 2px solid #fff;
+	background: none;
+}
 
 
 
