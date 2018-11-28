@@ -19,8 +19,11 @@ use Xpressengine\Document\ConfigHandler;
 use Xpressengine\Http\Request;
 use Xpressengine\Menu\MenuHandler;
 use Xpressengine\Permission\Grant;
+use Xpressengine\Plugins\Banner\Widgets\Widget;
 use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
+use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
 use Xpressengine\Plugins\XeroCommerce\Components\Widget\DefaultWidget\Skins\Common\CommonSkin as DefaultWidgetCommonSkin;
+use Xpressengine\Plugins\XeroCommerce\Components\Widget\MainSlider\MainSliderSkin;
 use Xpressengine\Plugins\XeroCommerce\Components\Widget\SlideWidget\Skins\Common\CommonSkin as SlideWidgetCommonSkin;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
@@ -232,6 +235,32 @@ class Resources
             'skin-id' => 'widget/xero_commerce@default_widget/skin/xero_commerce@default_widget_common_skin'
         ];
 
+        //Banner Widget
+
+        $arr = [
+            'title' => 'XeroCommerce',
+            'skin' => MainSliderSkin::getId()
+        ];
+        $bannerGroup = app('xe.banner')->createGroup($arr);
+        $img = [
+            'id' => $firstFile->id,
+            'filename' => $firstFile->clientname,
+            'path' => $firstImageFile->url()
+        ];
+        app('xe.banner')->createItem($bannerGroup, [
+            'title' => 'XeroCommerce',
+            'content' => 'XE3가 제공하는 당신이 원하는 쇼핑몰.',
+            'image' => $img,
+            'status' => 'show'
+        ]);
+
+        $bannerWidget['group_id'] = $bannerGroup->id;
+        $bannerWidget['@attributes'] = [
+            'id' => Widget::getId(),
+            'title' => '메인 슬라이더 배너 위젯',
+            'skin-id' => MainSliderSkin::getId()
+        ];
+
         //Label Widget
         $labelWidget['label_id'] = '1';
         $labelWidget['category_item_id'] = $initCategories;
@@ -285,11 +314,16 @@ class Resources
 
         $initValue['grid'] = ['md' => '12'];
         $initValue['rows'] = [];
-        $initValue['widgets'] = [$defaultWidget, $labelWidget, $eventWidget, $slideWidget, $productWidget];
+        $initValue['widgets'] = [$bannerWidget, $labelWidget, $eventWidget, $slideWidget, $productWidget];
 
         $value[] = $initValue;
 
         $widgetboxHandler->update($id, ['content' => [$value]]);
+    }
+
+    public static function widgetTest()
+    {
+        self::settingWidget('8b9d8050');
     }
 
     protected static function createDefaultMenu()
@@ -889,6 +923,14 @@ class Resources
                     Route::post('/shop/update/{shopId}', ['as' => 'xero_commerce::setting.config.shop.update',
                         'uses' => 'ShopController@update']);
 
+                    Route::get('/banner', [
+                        'as' => 'xero_commerce::setting.config.banner',
+                        'uses' => function () {
+                            return redirect()->route('banner::group.index');
+                        },
+                        'settings_menu' => 'xero_commerce.config.banner'
+                    ]);
+
                     Route::get('/user/{keyword}', [
                         'uses' => 'UserController@search',
                         'as' => 'xero_commerce::setting.search.user'
@@ -1442,6 +1484,12 @@ class Resources
                 'description' => '',
                 'ordering' => 100034
             ],
+            'xero_commerce.config.banner' => [
+                'title' => '배너 정보',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100035
+            ]
         ];
     }
 
