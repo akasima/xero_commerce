@@ -50,3 +50,11 @@
 .xero-settings .cp-default .slide {
   width: 20px;
 }
+
+
+/* 주문 목록 */
+#orderList thead tr th {
+  text-align: center;
+  padding:8px 5px;
+  background: #ddd
+}

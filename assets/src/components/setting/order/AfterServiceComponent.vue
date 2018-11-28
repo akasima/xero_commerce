@@ -1,13 +1,7 @@
 <template>
-    <div class="xe-row">
-        <div class="xe-col-lg-12">
-            <div style="float:right">
-                <button class="xe-btn" type="button">엑셀양식다운로드</button>
-                <button class="xe-btn" type="button">엑셀업로드</button>
-            </div>
-        </div>
-        <div class="xe-col-lg-12">
-            <table class="xe-table">
+    <div class="panel">
+        <div class="panel-body table-scrollable">
+            <table class="table">
                 <thead>
                 <tr>
                     <th>주문번호</th>
@@ -49,9 +43,13 @@
                 </tbody>
             </table>
         </div>
-        <div class="xe-col-lg-12">
-            <div style="float:right">
-                <button class="xe-btn xe-btn-black" type="button">입력완료</button>
+        <div class="xero-settings-control-float">
+            <div class="pull-left">
+                <button class="btn btn-sm btn-link" type="button">엑셀양식다운로드</button>
+                <button class="btn btn-sm btn-default" type="button">엑셀업로드</button>
+            </div>
+            <div class="pull-right">
+                <button class="btn btn-primary btn-lg" type="button">입력완료</button>
             </div>
         </div>
     </div>
