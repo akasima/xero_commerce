@@ -46,7 +46,7 @@
             <!-- area-gnb -->
             <div class="area-gnb">
                 <h1 class="logo"><a href="/shopping">엠엠푸드</a></h1>
-                
+
                 <nav>
                     <ul class="list-gnb">
                         <li class="item-gnb active"><a href="#" class="link-gnb" target="">영웅님</a></li>
@@ -67,7 +67,7 @@
             <!-- // area-gnb -->
 
         </div>
-	
+
     	<!-- area-lnb -->
         <div class="area-lnb">
 
@@ -79,7 +79,7 @@
                     <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리3</a></li>
                     <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리4</a></li>
                 </ul>
-                
+
                 <div class="area-category">
                     <div class="inner-header">
                         <ul class="list-category">
@@ -131,7 +131,7 @@
                 {{--</ul>--}}
                 {{--</div>--}}
                 <div>
-                    <img src="{{$config->get('logo_image.path')}}" alt="">
+                    <img src="{{ $config->get('logo_image.path') }}" alt="">
                 </div>
             </article>
             <article class="xe-shop-utilmenu xe-hidden-xs xe-hidden-sm">
@@ -266,14 +266,14 @@
 
     <!-- // 위에부분 개발하고 지어줘요오오오 끝 -->
 
-    <main>
+    <main class="xero-layout-type-{{ $config->get('layout_type') }}">
         <div id="sub-container">
             {!! $content !!}
         </div>
 	</main>
 
     <footer class="footer">
-    	
+
         <div class="inner-footer">
             <dl class="company">
             @if(!is_null($shopConfig['companyName']))
@@ -288,7 +288,7 @@
             @if(!is_null($shopConfig['companyNumber']))
             	<dd class="item-company">사업자등록번호 : {{$shopConfig['companyNumber']}} <a href="#" class="link-info">사업자정보확인 <i class="xi-angle-right-thin"></i></a></dd>
             @endif
-            @if(!is_null($shopConfig['communicationMarketingNumber']))    
+            @if(!is_null($shopConfig['communicationMarketingNumber']))
                 <dd class="item-company">통신판매업신고번호 : {{$shopConfig['communicationMarketingNumber']}}</dd>
             @endif
             @if(!is_null($shopConfig['telNumber']))
@@ -296,11 +296,11 @@
             @endif
             @if(!is_null($shopConfig['email']))
                 <dd class="item-company">이메일 :  <a href="{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
-            @endif  
+            @endif
             </dl>
             <small>© 2018 XE Factory.com, Inc</small>
         </div>
 
     </footer>
-    
+
 </div>
