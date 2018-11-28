@@ -44,11 +44,9 @@
             </table>
         </div>
         <div class="xero-settings-control-float">
-            <div class="pull-left">
-                <button class="btn btn-sm btn-link" type="button">엑셀양식다운로드</button>
-                <button class="btn btn-sm btn-default" type="button">엑셀업로드</button>
-            </div>
             <div class="pull-right">
+                <button class="btn btn-link" type="button">엑셀양식다운로드</button>
+                <button class="btn btn-default" type="button">엑셀업로드</button>
                 <button class="btn btn-primary btn-lg" type="button">입력완료</button>
             </div>
         </div>

@@ -4,20 +4,24 @@
 
 {{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 
-<div>
-    <a href="{{ route('xero_commerce::setting.product.edit', ['productId' => $product->id]) }}" class="xe-btn">수정</a>
-    <form method="post" action="{{ route('xero_commerce::setting.product.remove', ['productId' => $product->id]) }}">
-        {{ csrf_field() }}
-        <button type="submit" class="xe-btn xe-btn-danger">삭제</button>
-    </form>
-    <a href="{{ route('xero_commerce::setting.product.index') }}" class="xe-btn">목록</a>
+<div class="clearfix" style="margin-bottom: 25px;">
+    <div class="pull-left">
+        <a href="{{ route('xero_commerce::setting.product.index') }}" class="btn btn-link"><i class="xi-arrow-left"></i> 목록으로 돌아가기</a>
+    </div>
+    <div class="pull-right">
+        <form method="post" action="{{ route('xero_commerce::setting.product.remove', ['productId' => $product->id]) }}">
+                {{ csrf_field() }}
+            <a href="{{ route('xero_commerce::setting.product.edit', ['productId' => $product->id]) }}" class="btn btn-default">수정</a>
+            <button type="submit" class="btn btn-danger">삭제</button>
+        </form>
+    </div>
 </div>
 
 <div id="component-container" class="row">
     <div class="col-sm-12">
         <div class="panel-group">
             <div class="panel">
-                <div class="panel-body">
+                <div class="panel-body table-responsive">
                     <table class="table">
                         <tr>
                             <th>상품코드</th>
@@ -64,7 +68,7 @@
                     <h3>상품정보</h3>
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body table-responsive">
                     <table class="table detail_info">
                         <tr>
                             @php
@@ -127,9 +131,3 @@
         </div>
     </div>
 </div>
-<style>
-    .detail_info th {
-        background: #ddd;
-        width: 200px
-    }
-</style>

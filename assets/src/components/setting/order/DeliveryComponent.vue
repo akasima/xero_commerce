@@ -46,13 +46,23 @@
                 </table>
             </div>
         </div>
-        <div class="panel-footer text-right">
-            <input type="text" v-model="allNo">
-            <button class="btn btn-black" type="button" @click="submit">일괄 배송중</button>
-            <button class="btn btn-black" type="button" @click="complete">일괄 배송완료</button>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-offset-7 col-md-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" v-model="allNo">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" @click="submit">일괄 배송중</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-default" type="button" @click="complete">일괄 배송완료</button>
+                </div>
+            </div>
         </div>
         <div class="xero-settings-control-float">
-            <button class="btn btn-default" type="button">엑셀양식다운로드</button>
+            <button class="btn btn-link" type="button">엑셀양식다운로드</button>
             <button class="btn btn-default" type="button">엑셀업로드</button>
         </div>
     </div>
