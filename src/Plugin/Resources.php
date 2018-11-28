@@ -294,7 +294,7 @@ class Resources
 
         //TODO 테마 자동 설정 필요
         \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default', []);
-        \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default.0', []);
+        \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default.0', ['layout_type'=>'sub']);
         $desktopTheme = 'theme/xero_commerce@xero_commerce_theme_default.0';
         $mobileTheme = 'theme/xero_commerce@xero_commerce_theme_default.0';
 
@@ -355,7 +355,8 @@ class Resources
         XeDB::beginTransaction();
 
         try {
-            $desktopTheme = null;
+            \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default.1', ['layout_type'=>'main']);
+            $desktopTheme = 'theme/xero_commerce@xero_commerce_theme_default.1';
             $mobileTheme = null;
 
             $itemInput['parent'] = $itemInput['parent'] === $defaultMenu->getKey() ? null : $itemInput['parent'];
