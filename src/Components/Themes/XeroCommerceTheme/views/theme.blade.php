@@ -33,26 +33,34 @@
                         @endif
                         <li class="item-option"><a class="link-option" href="{{ route('logout') }}">로그아웃</a></li>
                         <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
+                        <li class="item-option"><a class="link-option" href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
+                        <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
                     @else
                         <li class="item-option"><a class="link-option" href="{{ route('login') }}">로그인</a></li>
                         <li class="item-option"><a class="link-option" href="{{route('auth.register') }}">회원가입</a></li>
                     @endif
-                    <li class="item-option"><a class="link-option" href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
-                    <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
                 </ul>
             </div>
             <!-- // area-option -->
 
             <!-- area-gnb -->
             <div class="area-gnb">
-                <h1 class="logo"><a href="/shopping">엠엠푸드</a></h1>
+                <h1 class="logo"><a href="/shopping">
+                    @if($shopConfig['logo_id'])
+                            <img id="logoPreview" style="display:inline" name="logo" src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) }}">
+                    @else
+                        {{$shopConfig['companyName']}}
+                    @endif
+                    </a></h1>
                 
                 <nav>
                     <ul class="list-gnb">
-                        <li class="item-gnb active"><a href="#" class="link-gnb" target="">영웅님</a></li>
-                        <li class="item-gnb active"><a href="#" class="link-gnb" target="">미안해요</a></li>
-                        <li class="item-gnb active"><a href="#" class="link-gnb" target="">다시 개발넣어줘요</a></li>
-                        <li class="item-gnb active"><a href="#" class="link-gnb" target="">에러가나요</a></li>
+                        @php
+                        $mainTheme = 'theme.settings.'.\App\Facades\XeConfig::get('theme.setting')->get('siteTheme.desktop');
+                        @endphp
+                        @foreach(menu_list(\App\Facades\XeConfig::get($mainTheme)->get('mainMenu')) as $menu)
+                            <li class="item-gnb @if($menu['selected']) active @endif"><a href="{{url($menu['url'])}}" class="link-gnb" target="">{{ $menu['link'] }}</a></li>
+                        @endforeach
                     </ul>
                 </nav>
 
@@ -74,10 +82,9 @@
             <div class="inner-header">
             	<button type="button" class="btn-menu reset-button" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
                 <ul class="list-lnb">
-                    <li class="item-lnb"><a href="#" class="link-lnb active" target="">카테고리1</a></li>
-                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리2</a></li>
-                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리3</a></li>
-                    <li class="item-lnb"><a href="#" class="link-lnb" target="">카테고리4</a></li>
+                    @foreach(menu_list($config->get('gnb')) as $menu)
+                        <li class="item-lnb"><a href="{{url($menu['url']) }}"  class="link-lnb @if($menu['selected']) active @endif" target="">{{ $menu['link'] }}</a></li>
+                    @endforeach
                 </ul>
                 
                 <div class="area-category">
