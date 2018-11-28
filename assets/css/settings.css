@@ -42,8 +42,14 @@
 /* panel */
 .xero-settings .panel-heading,
 .xero-settings .panel-footer {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 18px 24px;
+}
+.xero-settings .panel-body,
+.xero-settings .panel-collapse {
+  padding-top: 30px;
+}
+.xero-settings .panel-toggle {
+  float: right;
 }
 
 
@@ -85,5 +91,10 @@
   font-size: 23px;
 }
 .xero-summary-card h4 + small {
+  margin-top: 10px;
+}
+
+/* form */
+.xero-settings .form-group .form-control + .form-control {
   margin-top: 10px;
 }

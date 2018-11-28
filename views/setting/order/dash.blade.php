@@ -80,7 +80,7 @@
 
 <div class="panel">
     <div class="panel-heading">
-        <h3>주문 현황</h3>
+        <h3 class="panel-title">주문 현황</h3>
     </div>
     <div class="panel-body">
         <div class="row">

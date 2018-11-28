@@ -34,7 +34,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <h3 class="panel-title">상품정보</h3>
                     </div>
                     <div id="상품정보Section" class="panel-collapse collapse in" role="tabpanel" aria-expanded="false">
-                        <div class="form-group">
+                        <div class="form-group __xe-input-group">
                             <label for="pwd" class ="control-label col-sm-3">상품명</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="name" value="{{ Request::old('name') }}">
@@ -169,8 +169,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             <label class ="control-label col-sm-3">과세 유형</label>
                             <div class="col-sm-8">
                                 @foreach (Product::getTaxTypes() as $key => $type)
-                                    <label class="checkbox-inline">
-                                        <input type="radio" name="tax_type" class="form-control" value="{{ $key }}"
+                                    <label class="radio-inline">
+                                        <input type="radio" name="tax_type" value="{{ $key }}"
                                             @if (Request::old('tax_type') == $key) checked @endif>{{ $type }}
                                     </label>
                                 @endforeach
@@ -187,7 +187,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">상품 정보 추가</label>
                             <div class="col-sm-8">
-                                <button type="button" class="btn btn-sm btn-primary" onclick="addProductInfo()"><i class="xi-plus"></i> 항목 추가</button>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="addProductInfo()"><i class="xi-plus"></i> 항목 추가</button>
+                                </div>
                                 <div class="table-scrollable">
                                     <table class="table table-striped" id="productInfoTable">
                                         <thead>
@@ -225,7 +227,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3"> 사진업로드 </label>
                             <div class="col-sm-8">
-                                <button type="button" class="btn btn-primary" onclick="event.preventDefault();addImage()"><i class="xi-plus"></i> 이미지 추가</button>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" onclick="event.preventDefault();addImage()"><i class="xi-plus"></i>이미지 추가</button>
+                                </div>
                                 @for($i=1; $i<=10; $i++)
                                     <div class="row">
                                         <div class="col-lg-12 form-image @if($i==1) open @endif" id="form-image-{{$i}}">
