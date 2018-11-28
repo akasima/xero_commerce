@@ -74,7 +74,7 @@ class InicisHandler implements PaymentHandler
      */
     public function getResult(Request $request)
     {
-        $payment = Payment::find($request->get('orderNumber'));
+        $payment = Payment::where('payable_unique_id',$request->get('orderNumber'))->first();
         $form = [
             'mid'=>XeConfig::getOrNew('xero_pay')->get('pg.xero_pay/xero_pay@inicis.mid'),
             'authToken'=>$request->get('authToken'),
