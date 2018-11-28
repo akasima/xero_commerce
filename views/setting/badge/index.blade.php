@@ -36,7 +36,7 @@
 
             <div class="panel">
                 <div class="panel-heading">
-                    <h3>배지 추가</h3>
+                    <h3 class="panel-title">배지 추가</h3>
                 </div>
                 <div class="panel-body">
                     <form method="post" action="{{ route('xero_commerce::setting.badge.store') }}">

@@ -5,8 +5,6 @@
 <form action="{{route('xero_commerce::setting.badge.update', ['badge'=>$badge->id])}}" method="post">
     {{csrf_field()}}
     <div class="panel">
-        <div class="panel-heading">
-        </div>
         <div class="panel-body">
             {{uio('formText', [
             'name'=>'name',

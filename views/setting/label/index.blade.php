@@ -55,7 +55,7 @@
             {{-- 등록 폼 --}}
             <div class="panel">
                 <div class="panel-heading">
-                    <h3>라벨 추가</h3>
+                    <h3 class="panel-title">라벨 추가</h3>
                 </div>
                 <div class="panel-body">
                     <form method="post" action="{{ route('xero_commerce::setting.label.store') }}">

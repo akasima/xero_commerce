@@ -6,8 +6,6 @@
 <form method="post" action="{{ route('xero_commerce::setting.label.update', ['id'=>$label->id]) }}">
     {!! csrf_field() !!}
     <div class="panel">
-        <div class="panel-heading">
-        </div>
         <div class="panel-body">
             <div class="form-group">
                 <div class="row">
