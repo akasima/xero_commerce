@@ -45,9 +45,6 @@
 
             <!-- area-gnb -->
             <div class="area-gnb">
-<<<<<<< HEAD
-                <h1 class="logo"><a href="/shopping" class="logo">엠엠푸드</a></h1>
-=======
                 <h1 class="logo"><a href="/shopping">
                     @if($shopConfig['logo_id'])
                             <img id="logoPreview" style="display:inline" name="logo" src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) }}">
@@ -55,7 +52,6 @@
                         {{$shopConfig['companyName']}}
                     @endif
                     </a></h1>
->>>>>>> 80df93473e88e1154877f5ac333440797c9a9091
                 
                 <nav>
                     <ul class="list-gnb">
