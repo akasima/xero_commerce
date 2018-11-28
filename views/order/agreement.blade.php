@@ -3,7 +3,7 @@
         <h3>주문자 정보 입력</h3>
         <p>주문을 하기위해서는 주문자정보가 필요합니다.</p>
     </div>
-    <form action="{{route('xero_commerce::agreement.contacts.save')}}" method="post">
+    <form id="agreement" action="{{route('xero_commerce::agreement.contacts.save')}}" method="post">
         {{csrf_field()}}
         <div class="xe-form-group">
             <label for="">이름</label>
@@ -43,7 +43,7 @@
             alert(validation.msg);
             return false;
         }
-        $('form').submit();
+        $('#agreement').submit();
     }
 </script>
 <style>
