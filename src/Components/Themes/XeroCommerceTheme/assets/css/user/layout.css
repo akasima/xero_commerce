@@ -5296,7 +5296,7 @@ body, input, textarea, select, table {
 
 @media (min-width: 992px) {
   .xe-shop .mypage-util ul li {
-    flex: 1 1 32%;
+    flex: 1 1 33.3%;
     border: 1px solid #d1d1d1;
     margin: 0 0 15px;
   }
@@ -5311,7 +5311,7 @@ body, input, textarea, select, table {
 
 @media (min-width: 992px) {
   .xe-shop .mypage-util ul li:nth-child(2), .xe-shop .mypage-util ul li:nth-child(5) {
-    margin: 0 14px 15px;
+    margin: 0 0 14px 15px;
   }
 }
 
@@ -6973,7 +6973,7 @@ body, input, textarea, select, table {
 }
 
 /* header */
-.header {
+header.header {
 	position: relative;
 	height: 156px;
 	box-sizing: border-box;

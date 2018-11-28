@@ -1,6 +1,6 @@
 <template>
     <div class="xe-shop wishlist" id="component-container">
-        <div class="container">
+        <div class="xero-container">
             <div class="wishlist-wrap">
                 <h1 class="page-title">찜한 상품</h1>
                 <div class="table-wrap">
