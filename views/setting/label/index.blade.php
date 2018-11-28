@@ -54,11 +54,11 @@
 
             {{-- 등록 폼 --}}
             <div class="panel">
+                <form method="post" action="{{ route('xero_commerce::setting.label.store') }}">
                 <div class="panel-heading">
                     <h3 class="panel-title">라벨 추가</h3>
                 </div>
                 <div class="panel-body">
-                    <form method="post" action="{{ route('xero_commerce::setting.label.store') }}">
                         {!! csrf_field() !!}
                         <div class="row">
                             <div class="col-sm-12">
@@ -104,13 +104,13 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
                 </div>
                 <div class="panel-footer">
                     <div class="text-right">
                         <button class="btn btn-primary btn-lg" type="submit" class="xe-btn xe-btn-positive">추가</button>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
