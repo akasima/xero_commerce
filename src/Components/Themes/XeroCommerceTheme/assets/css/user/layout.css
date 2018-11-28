@@ -85,6 +85,13 @@ body, input, textarea, select, table {
   clear: both;
 }
 
+.xe-shop .xero-layout-type-sub {
+  position: relative;
+  width: 1140px;
+  margin: 0 auto;
+  padding: 50px 14px 100px 24px;
+}
+
 .xe-shop-notice {
   float: left;
   font-size: 12px;
@@ -7014,7 +7021,7 @@ body, input, textarea, select, table {
 .header .item-option:first-child:before {
 	content: "";
 }
-	
+
 .header .link-option {
 	display: block;
 	font-size: 13px;
@@ -7028,10 +7035,10 @@ body, input, textarea, select, table {
 	top: 50px;
 	display: flex;
 	justify-content: space-between;
-}	
+}
 
 .header .list-gnb {
-	display: flex;	
+	display: flex;
 }
 
 .header .item-gnb {
@@ -7081,7 +7088,7 @@ body, input, textarea, select, table {
 .header .area-lnb {
 	position: absolute;
 	bottom: 0;
-	
+
 	width: 100%;
 	height: 56px;
 	border-top: 1px solid rgba(0, 0, 0, .15);
@@ -7289,7 +7296,7 @@ body, input, textarea, select, table {
 }
 
 .xero-main-slider-wrap .slider-item {
-	
+
 	display: block;
 	width: 100%;
 	height: 500px;

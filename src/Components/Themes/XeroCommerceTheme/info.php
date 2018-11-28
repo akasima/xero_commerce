@@ -16,6 +16,15 @@ return [
             'placeholder' => '쇼핑몰 메인에 적용할 로고이미지를 등록하세요.',
             'description' => '쇼핑몰 메인에 적용할 로고이미지를 등록하세요.'
         ],
+        'layout_type' => [
+            '_type' => 'select',
+            '_section' => '레이아웃',
+            'label' => '레이아웃 형태',
+            'options' => [
+                'sub' => 'Sub 페이지용 레이아웃',
+                'main' => 'Main 페이지용 레이아웃'
+            ]
+        ],
         'show_spot' => [
             '_type' => 'select',
             '_section' => '스팟 설정',

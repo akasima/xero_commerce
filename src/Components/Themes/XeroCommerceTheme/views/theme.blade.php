@@ -66,7 +66,7 @@
 
                 <div class="area-search">
                     <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX) }}">
-                        <input type="text" class="input-text">
+                        <input type="text" class="input-text" name="product_name">
                         <button type="button" class="btn-search reset-button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
                     </form>
                 </div>
@@ -75,7 +75,7 @@
             <!-- // area-gnb -->
 
         </div>
-	
+
     	<!-- area-lnb -->
         <div class="area-lnb">
 
@@ -86,7 +86,7 @@
                         <li class="item-lnb"><a href="{{url($menu['url']) }}"  class="link-lnb @if($menu['selected']) active @endif" target="">{{ $menu['link'] }}</a></li>
                     @endforeach
                 </ul>
-                
+
                 <div class="area-category">
                     <div class="inner-header">
                         <ul class="list-category">
@@ -138,7 +138,7 @@
                 {{--</ul>--}}
                 {{--</div>--}}
                 <div>
-                    <img src="{{$config->get('logo_image.path')}}" alt="">
+                    <img src="{{ $config->get('logo_image.path') }}" alt="">
                 </div>
             </article>
             <article class="xe-shop-utilmenu xe-hidden-xs xe-hidden-sm">
@@ -273,14 +273,14 @@
 
     <!-- // 위에부분 개발하고 지어줘요오오오 끝 -->
 
-    <main>
+    <main class="xero-layout-type-{{ $config->get('layout_type') }}">
         <div id="sub-container">
             {!! $content !!}
         </div>
 	</main>
 
     <footer class="footer">
-    	
+
         <div class="inner-footer">
             <dl class="company">
             @if(!is_null($shopConfig['companyName']))
@@ -295,7 +295,7 @@
             @if(!is_null($shopConfig['companyNumber']))
             	<dd class="item-company">사업자등록번호 : {{$shopConfig['companyNumber']}} <a href="#" class="link-info">사업자정보확인 <i class="xi-angle-right-thin"></i></a></dd>
             @endif
-            @if(!is_null($shopConfig['communicationMarketingNumber']))    
+            @if(!is_null($shopConfig['communicationMarketingNumber']))
                 <dd class="item-company">통신판매업신고번호 : {{$shopConfig['communicationMarketingNumber']}}</dd>
             @endif
             @if(!is_null($shopConfig['telNumber']))
@@ -303,11 +303,11 @@
             @endif
             @if(!is_null($shopConfig['email']))
                 <dd class="item-company">이메일 :  <a href="{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
-            @endif  
+            @endif
             </dl>
             <small>© 2018 XE Factory.com, Inc</small>
         </div>
 
     </footer>
-    
+
 </div>
