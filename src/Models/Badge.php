@@ -10,5 +10,5 @@ class Badge extends DynamicModel
 
     public $timestamps = false;
 
-    protected $fillable = ['name', 'eng_name'];
+    protected $fillable = ['name', 'eng_name', 'background_color', 'text_color'];
 }

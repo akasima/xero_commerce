@@ -10,14 +10,9 @@ class Database
     public static function addTable()
     {
 
-        Schema::create('xero_commerce_feedback', function (Blueprint $table) {
-            $table->increments('id');
-            $table->morphs('type');
-            $table->string('title');
-            $table->text('content');
-            $table->integer('score');
-            $table->integer('user_id');
-            $table->timestamps();
+        Schema::table('xero_commerce_badge', function (Blueprint $table) {
+            $table->string('background_color')->nullable();
+            $table->string('text_color')->nullable();
         });
     }
 
@@ -123,6 +118,8 @@ class Database
             $table->increments('id');
             $table->string('name');
             $table->string('eng_name');
+            $table->string('background_color')->nullable();
+            $table->string('text_color')->nullable();
         });
 
         Schema::create('xero_commerce_product_label', function (Blueprint $table) {
