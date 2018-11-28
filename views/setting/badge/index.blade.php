@@ -23,8 +23,8 @@
                                 <td>
                                     <form method="post" action="{{ route('xero_commerce::setting.badge.remove', ['id' => $badge->id]) }}">
                                         {!! csrf_field() !!}
-                                        <a href="{{ route('xero_commerce::setting.badge.edit', ['badge' => $badge->id]) }}" class="xe-btn">수정</a>
-                                        <button type="submit" class="xe-btn xe-btn-sm xe-btn-danger">삭제</button>
+                                        <a href="{{ route('xero_commerce::setting.badge.edit', ['badge' => $badge->id]) }}" class="btn btn-default btn-sm">수정</a>
+                                        <button type="submit" class="btn btn-sm btn-danger">삭제</button>
                                     </form>
                                 </td>
                             </tr>

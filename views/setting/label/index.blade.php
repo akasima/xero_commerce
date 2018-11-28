@@ -41,8 +41,8 @@
                                 <td>
                                     <form method="post" action="{{ route('xero_commerce::setting.label.remove', ['id' => $label->id]) }}">
                                         {!! csrf_field() !!}
-                                        <a href="{{ route('xero_commerce::setting.label.edit', ['id' => $label->id]) }}" class="xe-btn">수정</a>
-                                        <button type="submit" class="xe-btn xe-btn-danger">삭제</button>
+                                        <a href="{{ route('xero_commerce::setting.label.edit', ['id' => $label->id]) }}" class="btn btn-default btn-sm">수정</a>
+                                        <button type="submit" class="btn btn-danger btn-sm">삭제</button>
                                     </form>
                                 </td>
                             </tr>
