@@ -19,6 +19,9 @@ class SettingBaseController extends Controller
         XeFrontend::css(
             \Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/css/settings.css')
         )->load();
+        XeFrontend::js(
+            \Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/settings.js')
+        )->load();
         XeFrontend::bodyClass('xero-settings')->load();
     }
 }

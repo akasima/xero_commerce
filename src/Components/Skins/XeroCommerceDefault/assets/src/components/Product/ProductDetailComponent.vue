@@ -13,7 +13,10 @@
                     <h2 class="xe-sr-only">상품 관련 정보</h2>
                     <div class="product-img">
                         <h3 class="xe-sr-only">상품 이미지</h3>
-                        <div class="product-img-view">
+                        <div class="product-img-view" style="overflow: hidden">
+                            <div v-if="product.badge" class="badge" :style="{background: product.badge.background_color}">
+                                <span  :style="{color: product.badge.text_color}">{{product.badge.name}}</span>
+                            </div>
                             <div class="box-img">
                             <img :src="mainImg"  alt="" width="100%" height="auto" >
                             <button class="xe-btn left" @click="beforeMainImage"><i class="xi-angle-left-thin"><span
@@ -495,5 +498,27 @@
     }
     .product-sns-list h3 a {
         color: #666;
+    }
+    .badge {
+        z-index:1;
+        background-color: #444;
+        box-shadow: 0 0 3px 2px rgba(0,0,0,0.8);
+        height: 100px;
+        left: -50px;
+        position: absolute;
+        top: -50px;
+        width: 100px;
+
+        -webkit-transform: rotate(-45deg);
+    }
+
+    .badge span {
+        color: #f5f5f5;
+        font-family: sans-serif;
+        font-size: 1.005em;
+        left: 12px;
+        top: 78px;
+        position: absolute;
+        width: 80px;
     }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="table-responsive">
-        <div>
+        <div class="form-group">
             <a href="#add" class="btn btn-sm btn-primary" @click.prevent="add"><i class="xi-plus"></i> 옵션 추가</a>
         </div>
         <table class="table">

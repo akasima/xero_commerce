@@ -41,6 +41,11 @@
             @foreach ($products as $key => $product)
                 <li>
                     <div class="default-list-img">
+                        @if($badge = $product->badge)
+                        <div class="badge" style="background: {{$badge->background_color}};">
+                            <span style="color: {{$badge->text_color}};">{{$badge->name}}</span>
+                        </div>
+                        @endif
                         <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}"><img
                                 src="{{$product->getThumbnailSrc()}}" alt=""></a>
                         <h4 class="xe-sr-only">sns 공유</h4>
@@ -121,3 +126,26 @@
 </script>
 
 {{ uio('widgetbox', ['id' => \Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-bottom', 'link'=>'하단 위젯 편집하기']) }}
+<style>
+    .badge {
+        background-color: #444;
+        box-shadow: 0 0 3px 2px rgba(0,0,0,0.8);
+        height: 100px;
+        left: -50px;
+        position: absolute;
+        top: -50px;
+        width: 100px;
+
+        -webkit-transform: rotate(-45deg);
+    }
+
+    .badge span {
+        color: #f5f5f5;
+        font-family: sans-serif;
+        font-size: 1.005em;
+        left: 12px;
+        top: 78px;
+        position: absolute;
+        width: 80px;
+    }
+</style>

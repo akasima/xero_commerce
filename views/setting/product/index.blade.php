@@ -12,7 +12,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
             <div class="panel-group">
                 <div class="panel">
                     <div class="panel-body">
-                        <div class="row">
+                        <div class="row form-group">
                             <div class="col-md-4">
                                 <label>상품 이름</label>
                                 <input type="text" name="product_name" class="form-control" value="{{ Request::get('product_name') }}">
@@ -22,7 +22,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                                 <input type="text" name="product_code" class="form-control" value="{{ Request::get('product_code') }}">
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row form-group">
                             <div class="col-md-4">
                                 <label>판매 상태</label>
                                 <select name="product_deal_state" class="form-control">
@@ -41,6 +41,8 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                        <div class="row form-group">
                             <div class="col-md-4">
                                 <label>과세 유형</label>
                                 <select name="product_tax_type" class="form-control">
