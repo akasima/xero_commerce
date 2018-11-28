@@ -108,6 +108,11 @@
           "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\MainSlider\\MainSliderSkin",
           "name": "Main Slider 스킨",
           "description": "Main Slider 스킨"
+        },
+        "widget/banner@widget/skin/xero_commerce@recommend_slider": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\RecommendSlider\\RecommendSliderSkin",
+          "name": "MD 추천상품 스킨",
+          "description": "MD 추천상품 스킨"
         }
       }
     }
