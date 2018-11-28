@@ -234,12 +234,14 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">사진업로드 </label>
+                            <label class ="control-label col-sm-3"> 사진업로드 </label>
                             <div class="col-sm-8">
+                                <a href="#" onclick="event.preventDefault();addImage()">이미지추가</a>
                                 @for($i=1; $i<=10; $i++)
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-12 form-image @if($i==1) open @endif" id="form-image-{{$i}}">
+                                        @if($i!=1) <a href="#" onclick="event.preventDefault();removeImage({{$i}})">닫기</a> @endif
                                         {{ uio('formImage',
-                                              ['label'=>'사진업로드 #'.$i,
+                                              ['label'=>($i===1) ? '메인이미지' :'추가이미지 #'.($i-1),
                                                'name'=>'images[]',
                                                'id'=>'image'.$i,
                                                'maxSize'=>\Xpressengine\Plugins\XeroCommerce\Models\Product::IMG_MAXSIZE
@@ -317,6 +319,23 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         $("form#temp").html($("form#save").html());
         $("form#temp").submit();
     }
+
+    function addImage(event)
+    {
+        if($(".form-image").not(".open").length === 0) {
+            alert('메인 페이지를 포함 최대 10개까지 업로드할 수 있습니다.')
+            return
+        }
+        $(".form-image").not(".open").first().find("input[type=file]").prop("disabled",false)
+        $(".form-image").not(".open").first().addClass("open")
+
+    }
+
+    function removeImage(targetId)
+    {
+        $("#form-image-"+targetId).find("input[type=file]").prop("disabled",true)
+        $("#form-image-"+targetId).removeClass("open")
+    }
 </script>
 
 <script>
@@ -345,5 +364,12 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     }
     .panel-collapse{
         padding:10px;
+    }
+    .form-image{
+        display: none;
+    }
+
+    .form-image.open{
+        display: block;
     }
 </style>

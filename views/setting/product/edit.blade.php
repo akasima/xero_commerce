@@ -233,47 +233,18 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">사진업로드 </label>
                             <div class="col-sm-8">
+                                <a href="#" onclick="event.preventDefault();addImage()">이미지추가</a>
                                 @for($i=1; $i<=10; $i++)
-                                    <div class="col-lg-4">
-                                        @if($product->images->count()>=$i)
-                                            <div id="shownImage{{$i}}" class="show">
-                                                <b style="color:blue; cursor:pointer" href="#"
-                                                   onclick="editImages.edit({{$i}})">수정</b>
-                                                <div class="form-group">
-                                                    <label>사진업로드 #{{$i}}</label> <br>
-                                                    <img
-                                                        src="{{XeMedia::image()->getThumbNail($product->images->get($i-1),'widen','M')->url()}}"
-                                                        alt="">
-                                                    <input type="hidden" name="nonEditImage[]"
-                                                           value="{{$product->images->get($i-1)->id}}">
-                                                </div>
-                                            </div>
-                                            <div id="editImage{{$i}}" class="editImages hide">
-                                                <b style="color:blue; cursor:pointer" href="#"
-                                                   onclick="editImages.reset({{$i}})">초기화</b>
-                                                {{ uio('formImage',
-                                              ['label'=>'사진업로드 #'.$i,
-                                               'name'=>'editImages[]',
+                                    <div class="col-lg-12 form-image @if($product->images->count()>=$i) open @endif" id="form-image-{{$i}}">
+                                        @if($i!=1) <a href="#" onclick="event.preventDefault();removeImage({{$i}})">닫기</a> @endif
+                                        {{ uio('formImage',
+                                              ['label'=>($i===1) ? '메인이미지' :'추가이미지 #'.($i-1),
+                                               'name'=>'images[]',
+                                               'value'=>($product->images->get($i-1))?['path'=>$product->images->get($i-1)->url()]:[],
                                                'id'=>'image'.$i,
-                                               'maxSize'=>\Xpressengine\Plugins\XeroCommerce\Models\Product::IMG_MAXSIZE,
-                                               'description'=> '휴대폰 사용하여 입력하세요',
-                                               'disabled'=>true
+                                               'maxSize'=>\Xpressengine\Plugins\XeroCommerce\Models\Product::IMG_MAXSIZE
                                         ]) }}
-                                            </div>
-                                        @else
-                                            {{ uio('formImage',
-                                                  ['label'=>'사진업로드 #'.$i,
-                                                   'name'=>'addImages[]',
-                                                   'id'=>'image'.$i,
-                                                   'maxSize'=>\Xpressengine\Plugins\XeroCommerce\Models\Product::IMG_MAXSIZE,
-                                                   'description'=> '휴대폰 사용하여 입력하세요'
-                                            ]) }}
-                                        @endif
                                     </div>
-                                    @if($i%3 === 0)
-                            </div>
-                            <div class="row">
-                                @endif
                                 @endfor
                             </div>
                         </div>
@@ -363,6 +334,23 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         $("form#temp").html($("form#save").html());
         $("form#temp").submit();
     }
+
+    function addImage(event)
+    {
+        if($(".form-image").not(".open").length === 0) {
+            alert('메인 페이지를 포함 최대 10개까지 업로드할 수 있습니다.')
+            return
+        }
+        $(".form-image").not(".open").first().find("input[type=file]").prop("disabled",false)
+        $(".form-image").not(".open").first().addClass("open")
+
+    }
+
+    function removeImage(targetId)
+    {
+        $("#form-image-"+targetId).find("input[type=file]").prop("disabled",true)
+        $("#form-image-"+targetId).removeClass("open")
+    }
 </script>
 <script>
     $(function () {
@@ -383,7 +371,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 </script>
 
 <style>
-    .col-lg-4:nth-child(3n+1) {
-        clear: both;
+    .form-image{
+        display: none;
+    }
+
+    .form-image.open{
+        display: block;
     }
 </style>

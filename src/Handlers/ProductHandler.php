@@ -219,14 +219,26 @@ class ProductHandler
         return $newProduct->id;
     }
 
-    public function saveImage($imageParm, Product $newProduct)
+    public function saveImage($imageParm, Product $newProduct, $key = null)
     {
         $file = XeStorage::upload($imageParm, 'public/xero_commerce/product');
         $imageFile = XeMedia::make($file);
         XeMedia::createThumbnails($imageFile, 'widen', config('xe.media.thumbnail.dimensions'));
-        $newProduct->images()->attach($imageFile->id);
+        if (is_null($key)) {
+            $newProduct->images()->attach($imageFile->id);
+        } else {
+            if ($existImage = $newProduct->images->get($key)) {
+                $newProduct->images()->updateExistingPivot($existImage->id, ['image_id' => $imageFile->id]);
+            }
+        }
 
         return $imageFile;
+    }
+
+    public function removeImage(Product $product, $key)
+    {
+        $image = $product->images->get($key);
+        $product->images()->detach($image->id);
     }
 
     public function update(Product $product, $args)
@@ -242,25 +254,14 @@ class ProductHandler
         $info = array_combine(key_exists('infoKeys', $args) ? $args['infoKeys'] : [], key_exists('infoValues', $args) ? $args['infoValues'] : []);
 
         $product->detail_info = json_encode($info);
-        $nonEditImage = key_exists('nonEditImage', $args) ? $args['nonEditImage'] : [];
-        $editImages = $product->images()->whereNotIn('files.id', $nonEditImage)->get();
 
-        $editImages->each(function (Image $originImage, $key) use ($args, $product) {
-            if (count($args['editImages']) > 0) {
-                if (isset($args['editImages'][$key])) {
-                    if (!is_null($args['editImages'][$key])) {
-                        $editImage = $this->saveImage($args['editImages'][$key], $product);
-                        $product->images()->updateExistingPivot($originImage->id, ['image_id' => $editImage->id]);
-                    }
-                }
-            } else {
-                $originImage->delete();
-            }
-        });
-
-        foreach ($args['addImages'] as $image) {
+        foreach ($args['images'] as $key => $image) {
             if ($image != null) {
-                $this->saveImage($image, $product);
+                if ($image == '__delete_file__') {
+                    $this->removeImage($product, $key);
+                } else {
+                    $this->saveImage($image, $product, $key);
+                }
             }
         }
 
@@ -298,9 +299,10 @@ class ProductHandler
         $revisionProduct->save();
     }
 
-    public function setPublish($productId, boolean $bool){
-        $product=Product::find($productId);
-        $product->publish=$bool;
+    public function setPublish($productId, boolean $bool)
+    {
+        $product = Product::find($productId);
+        $product->publish = $bool;
         return $product->save();
     }
 }
