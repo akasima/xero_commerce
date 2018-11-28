@@ -20,8 +20,7 @@ $(document).ready(function(){
                 breakpoint: 768,
                 settings: {
                     dots: false,
-                    arrows: false,
-                    centerMode: true
+                    arrows: false
                 }
             }
         ]
