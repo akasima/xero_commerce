@@ -10,7 +10,7 @@
             <td v-if="isShowState">{{ (Number(optionList.state_display)==1)?'출력':'미출력' }}</td>
             <td v-if="isShowState">{{ (Number(optionList.state_deal)==1)?'판매':((Number(optionList.state_deal)==2)?'일시중단':'중단' )}}</td>
             <td v-if="isShowState">
-                <button type="button" v-on:click="toggleShowState" class="xe-btn">수정</button>
+                <button type="button" v-on:click="toggleShowState" class="btn btn-sm btn-default">수정</button>
             </td>
 
             <td v-if="!isShowState">
@@ -18,8 +18,12 @@
                     기본
                 </div>
                 <div v-if="optionList.data.option_type!==1">
-                    <input type="radio" class="form-control" v-model="optionList.data.option_type" name="type" value="2"> 옵션
-                    <input type="radio" class="form-control" v-model="optionList.data.option_type" name="type" value="3"> 추가
+                    <div class="radio">
+                        <label><input type="radio" v-model="optionList.data.option_type" name="type" value="2"> 기본</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" v-model="optionList.data.option_type" name="type" value="3"> 추가</label>
+                    </div>
                 </div>
             </td>
             <td v-if="!isShowState"><input type="text" class="form-control" v-model="optionList.data.name"></td>
@@ -27,15 +31,18 @@
             <td v-if="!isShowState">{{(Number(optionList.data.addition_price) + Number(optionList.data.product.sell_price)).toLocaleString()}}</td>
             <td v-if="!isShowState"><input type="text" class="form-control" v-model="optionList.data.stock"></td>
             <td v-if="!isShowState"><input type="text" class="form-control" v-model="optionList.data.alert_stock"></td>
-            <td v-if="!isShowState"><input type="radio" class="form-control" v-model="optionList.data.state_display" value="1" name="display">출력  <input type="radio" class="form-control" v-model="optionList.data.state_display" name="display" value="2">미출력</td>
             <td v-if="!isShowState">
-                <input type="radio" class="form-control" v-model="optionList.data.state_deal" value="1" name="deal">판매
-                <input type="radio" class="form-control" v-model="optionList.data.state_deal" value="2" name="deal">일시중단
-                <input type="radio" class="form-control" v-model="optionList.data.state_deal" value="3" name="deal">중단
+                <div class="radio"><label><input type="radio" v-model="optionList.data.state_display" value="1" name="display">출력</label></div>
+                <div class="radio"><label><input type="radio" v-model="optionList.data.state_display" name="display" value="2">미출력</label></div>
             </td>
-            <td v-if="!isShowState">
-                <button type="button" v-on:click="toggleShowState();save(optionList)" class="xe-btn">수정</button>
-                <button type="button" v-on:click="toggleShowState();remove(optionList)" class="xe-btn xe-btn-danger">삭제</button>
+            <td class="nowrap" v-if="!isShowState">
+                <div class="radio"><label><input type="radio" v-model="optionList.data.state_deal" value="1" name="deal">판매</label></div>
+                <div class="radio"><label><input type="radio" v-model="optionList.data.state_deal" value="2" name="deal">일시중단</label></div>
+                <div class="radio"><label><input type="radio" v-model="optionList.data.state_deal" value="3" name="deal">중단</label></div>
+            </td>
+            <td class="nowrap" v-if="!isShowState">
+                <button type="button" v-on:click="toggleShowState();save(optionList)" class="btn btn-sm btn-default">저장</button>
+                <button type="button" v-on:click="toggleShowState();remove(optionList)" class="btn btn-sm btn-danger">삭제</button>
             </td>
         </template>
         <td colspan="9" style="text-align: center" v-if="loading">

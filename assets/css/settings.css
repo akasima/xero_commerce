@@ -18,6 +18,9 @@
   width: 100%;
   min-width: 300px;
 }
+.xero-settings .table tbody th {
+  background-color: #eee;
+}
 
 /* 폼 버튼 area */
 .xero-settings-control-float {
@@ -36,6 +39,7 @@
 }
 
 /* panel */
+.xero-settings .panel-heading,
 .xero-settings .panel-footer {
   padding-top: 10px;
   padding-bottom: 10px;

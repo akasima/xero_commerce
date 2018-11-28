@@ -2,7 +2,7 @@
     <div>
         <input type="hidden" name="newCategory" v-model="categoryString">
         <div v-if="!loading" v-for="(component, index) in createComponents" style="display: flex">
-            <div style="flex-grow: 10">
+            <div style="flex-grow: 10;margin-botom:4px;">
                 <select class="form-control components" :id="'select'+index" v-model="component.category_id" @change="updateChild(component.category_id, index)">
                     <option>선택</option>
                     <option :value="item.value" v-for="item in componentCategoryOptions[index]">{{item.text}}</option>
