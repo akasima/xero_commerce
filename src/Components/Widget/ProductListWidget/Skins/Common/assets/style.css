@@ -43,12 +43,18 @@
 	text-decoration: none;
 }
 
+.list-basic .link-basic:hover .thumnail {
+	opacity: .7;
+	transition: opacity .4s ease-out;
+}
+
 .list-basic .thumnail {
 	display: block;
 	width: 100%;
 	padding-top: 100%;
 	background-size: cover;
 	background-position: 50% 50%; 
+	opacity: 1;
 }
 
 .list-basic .link-basic strong {

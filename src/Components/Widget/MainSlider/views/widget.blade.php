@@ -1,12 +1,14 @@
 <section class="xero-main-slider-wrap">
     <div class="xero-main-slider">
         @foreach($items as $item)
-            <div class="slider-item" style="background-image:url('{{ $item->imageUrl() }}')">
-                <a href="{{ url($item->link) }}" target="{{ $item->link_target }}">
+        <a class="slider-item" href="{{ url($item->link) }}" target="{{ $item->link_target }}" style="background-image:url('{{ $item->imageUrl() }}')">
+            <div class="inner-main">
+             	<div class="text_slide">
                     <strong class="title"><span>{{ $item->title }}</span></strong>
-                    <p class="content">{!! nl2br($item->content) !!}</p>
-                </a>
+                    <p class="text">{!! nl2br($item->content) !!}</p>
+                </div>
             </div>
+        </a>
         @endforeach
     </div>
 </section>
@@ -15,6 +17,8 @@
 $(document).ready(function(){
     $('.xero-main-slider').slick({
         dots: true,
+		prevArrow: '<button type="button" class="slick-prev"><i class="xi-angle-left"></i></button>',
+    	nextArrow: '<button type="button" class="slick-next"><i class="xi-angle-right"></i></button>',
         responsive: [
             {
                 breakpoint: 768,

@@ -1,6 +1,6 @@
 {{ XeFrontend::css('plugins/xero_commerce/src/Components/Widget/LabelProductWidget/Skins/Common/assets/style.css')->load() }}
 
-<div class="xe-shop">
+<section class="section-label">
     <h2 class="title-label">{{ $widgetConfig['@attributes']['title'] }}</h2>
     <div class="tab-list">
         <ul class="list-tab-rank reset-list">
@@ -66,7 +66,7 @@
             @endforeach
         </div><!-- //container  -->
     </div><!-- //tab-list -->
-</div><!-- //xe-shop  -->
+</section>
 
 <script>
 

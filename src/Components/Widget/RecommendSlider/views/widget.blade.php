@@ -1,14 +1,15 @@
-<section class="xero-recommend-slider-wrap">
-    <h3 class="xero-recommend-title">MD 추천상품</h3>
+<section class="section-recommend">
+    <h3 class="title-recommend">MD 추천상품</h3>
 
-    <div class="xero-recommend-slider">
+    <div class="recommend-slider">
         @foreach($items as $item)
-            <div class="slider-item" style="background-image:url('{{ $item->imageUrl() }}')">
-                <a href="{{ url($item->link) }}" target="{{ $item->link_target }}">
-                    <strong class="title"><span>{{ $item->title }}</span></strong>
-                    <p class="content">{!! nl2br($item->content) !!}</p>
-                </a>
+        <a class="slider-item" href="{{ url($item->link) }}" target="{{ $item->link_target }}">
+        	<span class="thumbnail" style="background-image:url('{{ $item->imageUrl() }}')"></span>
+            <div class="text_slide">
+                <strong class="title"><span>{{ $item->title }}</span></strong>
+                <p class="text">{!! nl2br($item->content) !!}</p>
             </div>
+        </a>
         @endforeach
     </div>
 </section>
@@ -16,8 +17,10 @@
 {{ XeFrontend::css('plugins/xero_commerce/src/Components/Widget/RecommendSlider/assets/recommendSlider.css')->load() }}
 <script>
 $(document).ready(function(){
-    $('.xero-recommend-slider').slick({
+    $('.recommend-slider').slick({
         dots: true,
+		prevArrow: '<button type="button" class="slick-prev"><i class="xi-angle-left"></i></button>',
+    	nextArrow: '<button type="button" class="slick-next"><i class="xi-angle-right"></i></button>',
         responsive: [
             {
                 breakpoint: 768,

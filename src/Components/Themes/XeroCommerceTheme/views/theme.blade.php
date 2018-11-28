@@ -45,7 +45,7 @@
 
             <!-- area-gnb -->
             <div class="area-gnb">
-                <h1 class="logo"><a href="/shopping">엠엠푸드</a></h1>
+                <h1 class="logo"><a href="/shopping" class="logo">엠엠푸드</a></h1>
                 
                 <nav>
                     <ul class="list-gnb">
@@ -298,7 +298,7 @@
                 <dd class="item-company">이메일 :  <a href="{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
             @endif  
             </dl>
-            <small>© 2018 XE Factory.com, Inc</small>
+            <small>Copyright © 2016 (주)엠엠푸드 All rights reserved.   MADE BY XE</small>
         </div>
 
     </footer>
