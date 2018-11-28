@@ -27,8 +27,9 @@
                                 <span class="sale">{{ number_format($product->original_price) }}원</span>
                                 <span class="">{{ number_format($product->sell_price) }}원</span>
                             </p>
-                            
-                            <span class="xe-shop-tag black">new</span><span class="xe-shop-tag">best</span>
+                            @foreach($product->labels as $label)
+                                <span class="xe-shop-tag" @if($label->background_color && $label->text_color)style="background: {{$label->background_color}}; color:{{$label->text_color}}" @endif>{{$label->name}}</span>
+                            @endforeach
                         </a>
                     </li>
                 @endforeach
