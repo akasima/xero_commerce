@@ -56,8 +56,13 @@ return [
         ],
         'gnb' => [
             '_type' => 'menu',
-            '_section' => '메뉴 설정',
+            '_section' => '메인 메뉴 설정',
             'label' => '메인메뉴',
+        ],
+        'gnb_sub' => [
+            '_type' => 'menu',
+            '_section' => '상품 메뉴 설정',
+            'label' => '상품메뉴',
         ]
     ],
     'support' => [

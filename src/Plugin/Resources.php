@@ -459,7 +459,7 @@ class Resources
     public static function setDefaultThemeConfig($defaultMenu)
     {
         $config['logo_title'] = 'XeroCommerce';
-        $config['gnb'] = $defaultMenu['id'];
+        $config['gnb_sub'] = $defaultMenu['id'];
 
         app('xe.theme')->setThemeConfig('theme/xero_commerce@xero_commerce_theme_default.0', $config);
     }

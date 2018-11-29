@@ -45,14 +45,18 @@
 
             <!-- area-gnb -->
             <div class="area-gnb">
-                <h1 class="logo"><a href="/shopping" class="logo">엠엠푸드</a></h1>
+                <h1 class="logo"><a href="/shopping" class="logo">
+
+                        @if($shopConfig['logo_id'])
+                            <img id="logoPreview" style="display:inline" name="logo" src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) }}">
+                        @else
+                            {{$shopConfig['companyName']}}
+                        @endif
+                    </a></h1>
                 
                 <nav>
                     <ul class="list-gnb">
-                        @php
-                        $mainTheme = 'theme.settings.'.\App\Facades\XeConfig::get('theme.setting')->get('siteTheme.desktop');
-                        @endphp
-                        @foreach(menu_list(\App\Facades\XeConfig::get($mainTheme)->get('mainMenu')) as $menu)
+                        @foreach(menu_list($config->get('gnb')) as $menu)
                             <li class="item-gnb @if($menu['selected']) active @endif"><a href="{{url($menu['url'])}}" class="link-gnb" target="">{{ $menu['link'] }}</a></li>
                         @endforeach
                     </ul>
@@ -76,7 +80,7 @@
             <div class="inner-header">
             	<button type="button" class="btn-menu reset-button" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
                 <ul class="list-lnb">
-                    @foreach(menu_list($config->get('gnb')) as $menu)
+                    @foreach(menu_list($config->get('gnb_sub')) as $menu)
                         <li class="item-lnb"><a href="{{url($menu['url']) }}"  class="link-lnb @if($menu['selected']) active @endif" target="">{{ $menu['link'] }}</a></li>
                     @endforeach
                 </ul>
