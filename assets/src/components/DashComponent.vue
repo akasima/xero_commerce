@@ -86,7 +86,7 @@
                                 <a href="#" @click.prevent="url(wishUrl)">
                                     <p>
                                         <i class="xi-basket"></i> <br class="xe-hidden-lg xe-hidden-md">
-                                        관심상품
+                                        찜한 상품
                                     </p>
                                     <div class="mypage-util-caption xe-hidden-sm xe-hidden-xs">관심상품으로 등록하신 상품의 목록을 보여드립니다.</div>
                                 </a>
