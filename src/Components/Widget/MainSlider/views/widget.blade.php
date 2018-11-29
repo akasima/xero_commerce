@@ -29,6 +29,10 @@ $(document).ready(function(){
             }
         ]
     });
+    @if(count($items)==1){
+        $(".xero-main-slider ul.slick-dots").css("display","none")
+    }
+    @endif
 });
 </script>
 

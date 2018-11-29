@@ -31,6 +31,10 @@ $(document).ready(function(){
             }
         ]
     });
+    @if(count($items)==1){
+        $(".recommend-slider ul.slick-dots").css("display","none")
+        }
+    @endif
 });
 </script>
 
