@@ -24,6 +24,7 @@ use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
 use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
 use Xpressengine\Plugins\XeroCommerce\Components\Widget\DefaultWidget\Skins\Common\CommonSkin as DefaultWidgetCommonSkin;
 use Xpressengine\Plugins\XeroCommerce\Components\Widget\MainSlider\MainSliderSkin;
+use Xpressengine\Plugins\XeroCommerce\Components\Widget\RecommendSlider\RecommendSliderSkin;
 use Xpressengine\Plugins\XeroCommerce\Components\Widget\SlideWidget\Skins\Common\CommonSkin as SlideWidgetCommonSkin;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
@@ -222,7 +223,7 @@ class Resources
         //Banner Widget
 
         $arr = [
-            'title' => 'XeroCommerce',
+            'title' => 'XeroCommerce배너',
             'skin' => MainSliderSkin::getId()
         ];
         $bannerGroup = app('xe.banner')->createGroup($arr);
@@ -255,11 +256,38 @@ class Resources
             'skin-id' => 'widget/xero_commerce@label_product_widget/skin/xero_commerce@label_widget_common_skin'
         ];
 
+        //sedcondBannerWidget
+
+        $secondArr = [
+            'title' => 'XeroCommerce추천',
+            'skin' => RecommendSliderSkin::getId()
+        ];
+        $secondBannerGroup = app('xe.banner')->createGroup($secondArr);
+        $img = [
+            'id' => $firstFile->id,
+            'filename' => $firstFile->clientname,
+            'path' => $firstImageFile->url()
+        ];
+        app('xe.banner')->createItem($secondBannerGroup, [
+            'title' => 'XeroCommerce추천상품',
+            'content' => 'MD가 직접 선별할 수 있는 추천상품목록',
+            'image' => $img,
+            'status' => 'show'
+        ]);
+
+        $secondBannerWidget['group_id'] = $secondBannerGroup->id;
+        $secondBannerWidget['@attributes'] = [
+            'id' => Widget::getId(),
+            'title' => 'MD 추천 상품',
+            'skin-id' => MainSliderSkin::getId()
+        ];
+
         //Event Widget
-        $eventWidget['left_product_id'] = '12';
-        $eventWidget['center_up_product_id'] = '8';
-        $eventWidget['center_down_product_id'] = '8';
-        $eventWidget['right_product_id'] = '12';
+        $eventWidget['product_id_1'] = '1';
+        $eventWidget['product_id_2'] = '4';
+        $eventWidget['product_id_3'] = '8';
+        $eventWidget['product_id_4'] = '12';
+        $eventWidget['product_id_5'] = '1';
         $eventWidget['@attributes'] = [
             'id' => 'widget/xero_commerce@event_widget',
             'title' => 'Event',
@@ -275,7 +303,7 @@ class Resources
 
         $initValue['grid'] = ['md' => '12'];
         $initValue['rows'] = [];
-        $initValue['widgets'] = [$bannerWidget, $labelWidget, $eventWidget, $productWidget];
+        $initValue['widgets'] = [$bannerWidget, $labelWidget, $secondBannerWidget, $eventWidget, $productWidget];
 
         $value[] = $initValue;
 
