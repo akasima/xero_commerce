@@ -70,7 +70,7 @@ class ProductCategoryService
             return instance_route('xero_commerce::product.index', [], $instance);
         }
 
-        return url(Plugin::XERO_COMMERCE_URL_PREFIX);
+        return url(Plugin::XERO_COMMERCE_MAIN_PAGE_URL);
     }
 
     public function getCategoryTree()

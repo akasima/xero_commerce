@@ -2753,7 +2753,7 @@ body {
   }
 
   .cart .cart-product-num {
-    width: 585px;
+    /* width: 585px; */
   }
 
   .cart .cart-product-price {
@@ -2773,7 +2773,7 @@ body {
   }
 
   .cart .cart-product-sum {
-    width: 145px;
+    /* width: 145px; */
   }
 
   .payment .cart-product-num {
@@ -2788,7 +2788,7 @@ body {
 
 @media (min-width: 992px) {
   .cart-number {
-    width: 1140px;
+    /* width: 1140px; */
     margin: 30px auto;
   }
 }
@@ -7069,7 +7069,7 @@ body {
 }
 
 /* header */
-.header {
+header.header {
   position: relative;
   height: 156px;
   box-sizing: border-box;
