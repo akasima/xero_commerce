@@ -355,7 +355,7 @@ class Resources
         $inputs['parent'] = $defaultMenu['id'];
         $inputs['siteKey'] = $defaultMenu['siteKey'];
         $inputs['itemTitle'] = self::getTranslationKey('MainPage');
-        $inputs['itemUrl'] = Plugin::XERO_COMMERCE_URL_PREFIX;
+        $inputs['itemUrl'] = Plugin::XERO_COMMERCE_MAIN_PAGE_URL;
         $inputs['itemDescription'] = '메인 페이지에 출력될 위젯을 설정할 수 있습니다.';
         $inputs['itemTarget'] = '_self';
         $inputs['selectedType'] = 'widgetpage@widgetpage';
@@ -510,7 +510,7 @@ class Resources
         $inputs['parent'] = $menuId;
         $inputs['siteKey'] = $defaultMenu['siteKey'];
         $inputs['itemTitle'] = self::getTranslationKey('XeroCommerce');
-        $inputs['itemUrl'] = Plugin::XERO_COMMERCE_URL_PREFIX;
+        $inputs['itemUrl'] = Plugin::XERO_COMMERCE_MAIN_PAGE_URL;
         $inputs['itemDescription'] = '메인 페이지에 추가된 쇼핑몰 링크입니다.';
         $inputs['itemTarget'] = '_self';
         $inputs['selectedType'] = 'xpressengine@directLink';
@@ -571,6 +571,7 @@ class Resources
     {
         Route::group([
             'namespace' => 'Xpressengine\\Plugins\\XeroCommerce\\Controllers',
+            //TODO config 변경
             'prefix' => Plugin::XERO_COMMERCE_URL_PREFIX,
             'middleware' => ['web']
         ], function () {

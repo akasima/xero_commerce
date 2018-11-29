@@ -112,7 +112,7 @@
             <section class="page-btn">
                 <h2 class="xe-sr-only">주문 완료 버튼</h2>
                 <button type="button" class="page-btn-black" onclick="document.location.href='{{route('xero_commerce::order.index')}}'">구매내역 확인</button>
-                <button type="button" class="page-btn-white" onclick="document.location.href='{{url(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_URL_PREFIX)}}'">쇼핑 계속하기</button>
+                <button type="button" class="page-btn-white" onclick="document.location.href='{{url(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_MAIN_PAGE_URL)}}'">쇼핑 계속하기</button>
             </section>
 
         </div><!-- //order-wrap -->
