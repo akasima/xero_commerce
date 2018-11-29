@@ -38,7 +38,6 @@
                     @else
                         <li class="item-option"><a class="link-option" href="{{ route('login') }}">로그인</a></li>
                         <li class="item-option"><a class="link-option" href="{{route('auth.register') }}">회원가입</a></li>
-                        <li class="item-option"><a class="link-option" href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
                     @endif
                 </ul>
             </div>
@@ -46,15 +45,18 @@
 
             <!-- area-gnb -->
             <div class="area-gnb">
-                <h1 class="logo"><a href="/shopping" class="logo">
-
-                        @if($shopConfig['logo_id'])
-                            <img id="logoPreview" style="display:inline" name="logo" src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) }}">
-                        @else
+                <h1 class="logo">
+                    @if($shopConfig['logo_id'])
+                        <a href="/shopping" class="img-logo">
+                            <img id="logoPreview" name="logo" src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) }}">
+                        </a>
+                    @else
+                        <a href="/shopping" class="text-logo">
                             {{$shopConfig['companyName']}}
-                        @endif
-                    </a></h1>
-                
+                        </a>
+                    @endif
+                </h1>
+
                 <nav>
                     <ul class="list-gnb">
                         @foreach(menu_list($config->get('gnb')) as $menu)
@@ -75,11 +77,11 @@
 
         </div>
 
-    	<!-- area-lnb -->
+        <!-- area-lnb -->
         <div class="area-lnb">
 
             <div class="inner-header">
-            	<button type="button" class="btn-menu reset-button" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
+                <button type="button" class="btn-menu reset-button" onclick="toggleMenu()"><i class="xi-bars"></i><span class="xe-sr-only">전체 카테고리 열기</span></button>
                 <ul class="list-lnb">
                     @foreach(menu_list($config->get('gnb_sub')) as $menu)
                         <li class="item-lnb"><a href="{{url($menu['url']) }}"  class="link-lnb @if($menu['selected']) active @endif" target="">{{ $menu['link'] }}</a></li>
@@ -106,7 +108,7 @@
             </div>
 
         </div>
-		<!-- // area-lnb -->
+        <!-- // area-lnb -->
 
     </header>
     <!-- // header -->
@@ -116,33 +118,33 @@
         <div id="sub-container">
             {!! $content !!}
         </div>
-	</main>
+    </main>
 
     <footer class="footer">
 
         <div class="inner-footer">
             <dl class="company">
-            @if(!is_null($shopConfig['companyName']))
-                <dt class="item-name">{{$shopConfig['companyName']}}</dt>
-            @endif
-            @if(!is_null($shopConfig['ceoName']))
-                <dd class="item-company">대표 : {{$shopConfig['ceoName']}}</dd>
-            @endif
-            @if(!is_null($shopConfig['address']))
-            	<dd class="item-company">@if(!is_null($shopConfig['zipCode']))({{$shopConfig['zipCode']}})@endif {{$shopConfig['address']}}</dd>
-            @endif
-            @if(!is_null($shopConfig['companyNumber']))
-            	<dd class="item-company">사업자등록번호 : {{$shopConfig['companyNumber']}} <a href="#" class="link-info">사업자정보확인 <i class="xi-angle-right-thin"></i></a></dd>
-            @endif
-            @if(!is_null($shopConfig['communicationMarketingNumber']))
-                <dd class="item-company">통신판매업신고번호 : {{$shopConfig['communicationMarketingNumber']}}</dd>
-            @endif
-            @if(!is_null($shopConfig['telNumber']))
-                <dd class="item-company">대표전화 : {{$shopConfig['telNumber']}}</dd>
-            @endif
-            @if(!is_null($shopConfig['email']))
-                <dd class="item-company">이메일 :  <a href="{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
-            @endif
+                @if(!is_null($shopConfig['companyName']))
+                    <dt class="item-name">{{$shopConfig['companyName']}}</dt>
+                @endif
+                @if(!is_null($shopConfig['ceoName']))
+                    <dd class="item-company">대표 : {{$shopConfig['ceoName']}}</dd>
+                @endif
+                @if(!is_null($shopConfig['address']))
+                    <dd class="item-company">@if(!is_null($shopConfig['zipCode']))({{$shopConfig['zipCode']}})@endif {{$shopConfig['address']}}</dd>
+                @endif
+                @if(!is_null($shopConfig['companyNumber']))
+                    <dd class="item-company">사업자등록번호 : {{$shopConfig['companyNumber']}} <a href="#" class="link-info">사업자정보확인 <i class="xi-angle-right-thin"></i></a></dd>
+                @endif
+                @if(!is_null($shopConfig['communicationMarketingNumber']))
+                    <dd class="item-company">통신판매업신고번호 : {{$shopConfig['communicationMarketingNumber']}}</dd>
+                @endif
+                @if(!is_null($shopConfig['telNumber']))
+                    <dd class="item-company">대표전화 : {{$shopConfig['telNumber']}}</dd>
+                @endif
+                @if(!is_null($shopConfig['email']))
+                    <dd class="item-company">이메일 :  <a href="{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
+                @endif
             </dl>
             <small>Copyright © 2016 (주)엠엠푸드 All rights reserved.   MADE BY XE</small>
         </div>
