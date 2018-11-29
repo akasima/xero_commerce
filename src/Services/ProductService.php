@@ -24,6 +24,8 @@ class ProductService
     {
         $query = $this->handler->getProductsQueryForWidget($request);
 
+        $query = $query->limit(8);
+
         $items = $query->paginate($paginationCount, ['*'], 'product_page')->appends($request->except('product_page'));
 
         return $items;
