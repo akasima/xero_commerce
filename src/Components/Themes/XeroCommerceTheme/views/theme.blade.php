@@ -38,6 +38,7 @@
                     @else
                         <li class="item-option"><a class="link-option" href="{{ route('login') }}">로그인</a></li>
                         <li class="item-option"><a class="link-option" href="{{route('auth.register') }}">회원가입</a></li>
+                        <li class="item-option"><a class="link-option" href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
                     @endif
                 </ul>
             </div>
