@@ -15,7 +15,7 @@
                 }
                 @endphp
                 <label>쇼핑몰 로고</label>
-                <small>(108px * 78px)</small>
+                <small>(200px * 48px)</small>
                 <br>
                 <img id="logoPreview" style="display:inline" name="logo" src="{{ $logoUrl }}">
                 <input id="delLogo" type="hidden" name="logo" value="del" disabled>

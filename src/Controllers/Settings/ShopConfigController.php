@@ -34,7 +34,7 @@ class ShopConfigController extends SettingBaseController
 
             $config->set('logo_id', '');
         } elseif ($logo = $request->file('logo')) {
-            $image = $imageHandler->resizeAfterSave($logo, 110, 26, 'logo', 'logo.'. $logo->getClientOriginalExtension());
+            $image = $imageHandler->resizeAfterSave($logo, 200, 48, 'logo', 'logo.'. $logo->getClientOriginalExtension());
 
             $inputs['logo_id'] = $image->id;
         }
