@@ -37,13 +37,13 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group __xe-input-group">
                             <label for="pwd" class ="control-label col-sm-3">상품명</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="name" value="{{ Request::old('name') }}">
+                                <input type="text" class="form-control" name="name" data-valid-name="상품명" value="{{ Request::old('name') }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">간략 소개</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="sub_name" value="{{ Request::old('sub_name') }}">
+                                <input type="text" class="form-control" name="sub_name" data-valid-name="간략 소개" value="{{ Request::old('sub_name') }}">
                             </div>
                         </div>
                         <div id="component-container" class="form-group">
@@ -60,7 +60,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             <div class="col-sm-8">
                                 @foreach ($labels as $label)
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="labels[]" value="{{ $label->id }}" @if (in_array($label->id, Request::old('labels', [])) == true) checked @endif>{{ $label->name }}
+                                        <input type="checkbox" name="labels[]" data-valid-name="라벨" value="{{ $label->id }}" @if (in_array($label->id, Request::old('labels', [])) == true) checked @endif>{{ $label->name }}
                                     </label>
                                 @endforeach
                             </div>
@@ -73,7 +73,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 </label>
                                 @foreach ($badges as $badge)
                                     <label class="radio-inline">
-                                        <input type="radio" name="badge_id" value="{{ $badge->id }}" @if (Request::old('badge_id') == $badge->id) checked @endif>{{ $badge->name }}
+                                        <input type="radio" name="badge_id" data-valid-name="배지" value="{{ $badge->id }}" @if (Request::old('badge_id') == $badge->id) checked @endif>{{ $badge->name }}
                                     </label>
                                 @endforeach
                             </div>
@@ -81,7 +81,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">상품 코드</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="product_code" value="{{ Request::old('product_code') }}">
+                                <input type="text" class="form-control" name="product_code" data-valid-name="상품 코드" value="{{ Request::old('product_code') }}">
                             </div>
                         </div>
                     </div>
@@ -95,19 +95,19 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">정상 가격</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="original_price" value="{{ Request::old('original_price') }}">
+                                <input type="text" class="form-control" name="original_price" data-valid-name="정상 가격" value="{{ Request::old('original_price') }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">판매 가격</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="sell_price" value="{{ Request::old('sell_price') }}">
+                                <input type="text" class="form-control" name="sell_price" data-valid-name="판매 가격" value="{{ Request::old('sell_price') }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">할인율</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="discount_percentage" value="{{ Request::old('discount_percentage') }}">
+                                <input type="text" class="form-control" name="discount_percentage" data-valid-name="할인율" value="{{ Request::old('discount_percentage') }}">
                             </div>
                         </div>
                     </div>
@@ -144,25 +144,25 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">초기 재고</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="stock" value="{{ Request::old('stock') }}">
+                                <input type="text" class="form-control" name="stock" data-valid-name="초기 재고" value="{{ Request::old('stock') }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">품절 알림 재고</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="alert_stock" value="{{ Request::old('alert_stock') }}">
+                                <input type="text" class="form-control" name="alert_stock" data-valid-name="품절 알림 재고" value="{{ Request::old('alert_stock') }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">최소 구매 수량</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="min_buy_count" value="{{ Request::old('min_buy_count') }}">
+                                <input type="text" class="form-control" name="min_buy_count" data-valid-name="최소 구매 수량" value="{{ Request::old('min_buy_count') }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">최대 구매 수량</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="max_buy_count" value="{{ Request::old('max_buy_count') }}">
+                                <input type="text" class="form-control" name="max_buy_count" data-valid-name="최대 구매 수량" value="{{ Request::old('max_buy_count') }}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -170,7 +170,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             <div class="col-sm-8">
                                 @foreach (Product::getTaxTypes() as $key => $type)
                                     <label class="radio-inline">
-                                        <input type="radio" name="tax_type" value="{{ $key }}"
+                                        <input type="radio" name="tax_type" data-valid-name="과세 유형" value="{{ $key }}"
                                             @if (Request::old('tax_type') == $key) checked @endif>{{ $type }}
                                     </label>
                                 @endforeach
@@ -245,7 +245,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">상세설명 </label>
+                            <label class ="control-label col-sm-3">상품 소개</label>
                             <div class="col-sm-8">
                                 {!! editor(Plugin::getId(), [
                                    'content' => Request::old('description'),
@@ -269,13 +269,13 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
     <div class="xero-settings-control-float">
             <label>출력 여부</label>
-            <select name="state_display">
+            <select name="state_display" data-valid-name="출력 여부">
                 @foreach (Product::getDisplayStates() as $key => $type)
                     <option value="{{ $key }}" @if (Request::old('state_display') == $key) selected @endif>{{ $type }}</option>
                 @endforeach
             </select>
             <label>거래 여부</label>
-            <select name="state_deal">
+            <select name="state_deal" data-valid-name="거래 여부">
                 @foreach (Product::getDealStates() as $key => $type)
                     <option value="{{ $key }}" @if (Request::old('state_deal') == $key) selected @endif>{{ $type }}</option>
                 @endforeach

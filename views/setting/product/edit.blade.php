@@ -27,13 +27,13 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label for="pwd" class ="control-label col-sm-3">상품명</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="name" value="{{ $product->name }}">
+                                <input type="text" class="form-control" name="name" data-valid-name="상품명" value="{{ $product->name }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">간략 소개</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="sub_name" value="{{ $product->sub_name }}">
+                                <input type="text" class="form-control" name="sub_name" data-valid-name="간략 소개" value="{{ $product->sub_name }}">
                             </div>
                         </div>
                         <div id="component-container" class="form-group">
@@ -75,7 +75,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">상품 코드</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="product_code" value="{{ $product->product_code }}">
+                                <input type="text" class="form-control" name="product_code" data-valid-name="상품 코드" value="{{ $product->product_code }}">
                             </div>
                         </div>
                     </div>
@@ -90,19 +90,19 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">정상 가격</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="original_price" value="{{ $product->original_price }}">
+                                <input type="text" class="form-control" name="original_price" data-valid-name="정상 가격" value="{{ $product->original_price }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">판매 가격</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="sell_price" value="{{ $product->sell_price }}">
+                                <input type="text" class="form-control" name="sell_price" data-valid-name="판매 가격" value="{{ $product->sell_price }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">할인율</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="discount_percentage" value="{{ $product->discount_percentage }}">
+                                <input type="text" class="form-control" name="discount_percentage" data-valid-name="할인율" value="{{ $product->discount_percentage }}">
                             </div>
                         </div>
                     </div>
@@ -141,25 +141,25 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">초기 재고</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="stock" value="{{ $product->getStock() }}">
+                                <input type="text" class="form-control" name="stock" data-valid-name="초기 재고" value="{{ $product->getStock() }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">품절 알림 재고</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="alert_stock" value="{{ $product->alert_stock }}">
+                                <input type="text" class="form-control" name="alert_stock" data-valid-name="품절 알림 재고" value="{{ $product->alert_stock }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">최소 구매 수량</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="min_buy_count" value="{{ $product->min_buy_count }}">
+                                <input type="text" class="form-control" name="min_buy_count" data-valid-name="최소 구매 수량" value="{{ $product->min_buy_count }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class ="control-label col-sm-3">최대 구매 수량</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="max_buy_count" value="{{ $product->max_buy_count }}">
+                                <input type="text" class="form-control" name="max_buy_count" data-valid-name="최대 구매 수량" value="{{ $product->max_buy_count }}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -236,7 +236,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">상세설명 </label>
+                            <label class ="control-label col-sm-3">상품 소개</label>
                             <div class="col-sm-8">
                                 {!! editor(Plugin::getId(), [
                                    'content' => $product->description,
