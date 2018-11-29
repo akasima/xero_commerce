@@ -92,7 +92,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                                 <td><img src="{{$product->getThumbnailSrc()}}" alt="" style="width:80px; height:60px;"></td>
                                 <td class="nowrap">{{ $product->product_code }}</td>
                                 <td class="full"><a href="{{ route('xero_commerce::setting.product.show', ['productId' => $product->id]) }}"><span>{{ $product->name }}</span></a></td>
-                                <td>{{$product->sub_name}}</td>
+                                <td class="full">{{$product->sub_name}}</td>
                                 <td class="nowrap">{{ $product->getStock() }}</td>
                                 <td class="nowrap">{{ number_format($product->sell_price)}}</td>
                                 <td class="nowrap">{{$product->created_at->toDateString()}}</td>
