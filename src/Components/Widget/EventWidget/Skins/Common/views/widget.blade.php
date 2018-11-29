@@ -1,7 +1,7 @@
 {{ XeFrontend::css('plugins/xero_commerce/src/Components/Widget/EventWidget/Skins/Common/assets/style.css')->load() }}
 
 <section class="section-event">
- 	<div class="inner-main">
+ 	<div>
         <h2 class="title-event">EVENT</h2>
         <ul class="list-event">
             <li class="item-event">

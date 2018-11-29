@@ -10,7 +10,7 @@
             @endforeach
         </ul>
 
-        <div class="inner-main">
+        <div>
             <ul class="list-rank reset-list" id="view_all">
                 @foreach (collect($products)->flatten() as $idx => $product)
                     @if ($idx > 2)

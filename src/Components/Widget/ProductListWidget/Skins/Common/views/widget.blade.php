@@ -8,7 +8,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 
 
 <section class="section-basic">
-	<div class="inner-main">
+	<div>
     	<h2 class="title-event">추천 상품</h2>
         <ul class="list-basic">
             @foreach ($products as $key => $product)

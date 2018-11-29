@@ -1,6 +1,10 @@
 
 /* xero-main-slider-wrap */
 .xero-main-slider-wrap {
+	position: relative;
+	width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
 	margin-bottom: 80px;
 }
 
