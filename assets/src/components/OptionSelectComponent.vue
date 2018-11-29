@@ -1,25 +1,15 @@
 <template>
+
     <div>
-        <h3 class="xe-sr-only">상품 구매 옵션</h3>
-
-        <!-- [D] 클릭시  on 클래스 토글  -->
-        <button type="button" class="btn-option-toggle xe-visible-xs xe-visible-sm" @click="toggleButton">
-            <i class="xi-angle-down-thin"></i>
-            <span class="xe-sr-only">상품 옵션 패널 열기 / 닫기</span>
-        </button>
-        <slot></slot>
-        <div class="product-info-select" v-if="!onlyOneOption">
-            <div class="xe-select-box xe-btn">
-                <label>선택</label>
-                <select v-model="selectOption">
-                    <option disabled="">Master</option>
-                    <option v-for="option in options" :value="option" :disabled="option.state!=='판매중'">{{option.name}}
-                        (+{{Number(option.add_price).toLocaleString()}} ) {{(option.state!=='판매중')? '-'+ option.state: ''}}
-                    </option>
-                </select>
-            </div>
+        <div class="box-option">
+            <strong>선택항목</strong>
+            <select v-model="selectOption" class="form-select">
+                <option disabled="">선택</option>
+                <option v-for="option in options" :value="option" :disabled="option.state!=='판매중'">{{option.name}}
+                    (+{{Number(option.add_price).toLocaleString()}} ) {{(option.state!=='판매중')? '-'+ option.state: ''}}
+                </option>
+            </select>
         </div>
-
         <div class="product-info-counter">
             <div v-if="!onlyOneOption" class="product-info-cell" v-for="(selectedOption, key) in select">
                 <div class="product-info-counter-title">{{selectedOption.unit.name}} </div>
@@ -44,12 +34,7 @@
 
         </div> <!-- //product-info-counter -->
 
-        <div class="product-info-sum">
-            <div class="product-info-sum-title">총 합계 금액</div>
-            <div class="product-info-sum-num">
-                <p>{{totalChoosePrice.toLocaleString()}}</p><span>원</span>
-            </div>
-        </div>
+        <p class="price-sum"><span class="text">총 상품금액</span> {{totalChoosePrice.toLocaleString()}}<i>원</i></p>
     </div>
 </template>
 
