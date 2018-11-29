@@ -115,10 +115,8 @@
 
 
     <main class="xero-layout-type-{{ $config->get('layout_type') }}">
-        <div class="inner-main">
-            <div id="sub-container">
-                {!! $content !!}
-            </div>
+        <div id="sub-container">
+            {!! $content !!}
         </div>
     </main>
 
