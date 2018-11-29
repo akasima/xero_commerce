@@ -23,11 +23,14 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
                             <span class="xe-sr-only">할인 후</span>
                             <span>{{number_format($product->sell_price)}}원</span>
                         </p>
+                        @foreach($product->labels as $label)
+                            <span class="xe-shop-tag" @if($label->background_color && $label->text_color)style="background: {{$label->background_color}}; color:{{$label->text_color}}" @endif>{{$label->name}}</span>
+                        @endforeach
                     </div>
                 </a>
             </li>
              @endforeach
-        </ul>	
+        </ul>
 	</div>
 </section>
 
@@ -93,6 +96,9 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
                                 <span class="xe-sr-only">할인 후</span>
                                 <span>{{number_format($product->sell_price)}}원</span>
                             </p>
+                            @foreach($product->labels as $label)
+                                <span class="xe-shop-tag" @if($label->background_color && $label->text_color)style="background: {{$label->background_color}}; color:{{$label->text_color}}" @endif>{{$label->name}}</span>
+                            @endforeach
                         </a>
                     </div>
                 </li>
