@@ -4,7 +4,7 @@
     <h2 class="title-label">{{ $widgetConfig['@attributes']['title'] }}</h2>
     <div class="tab-list">
         <ul class="list-tab-rank reset-list">
-            <li class="item-tab-rank active"><a href="#"  class="link-tab-rank" onclick="return false" id="all">ALL</a></li>
+            <li class="item-tab-rank active"><a href="#"  class="link-tab-rank" onclick="return false" id="all">TOP3</a></li>
             @foreach ($categories as $category)
                 <li class="item-tab-rank"><a href="#" class="link-tab-rank" onclick="return false" id="{{ $category->id }}">{{ xe_trans($category->word) }}</a></li>
             @endforeach
