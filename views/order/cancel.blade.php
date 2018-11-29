@@ -22,7 +22,7 @@
 <form method="post" action="{{route('xero_commerce::order.cancel.register',['order'=>$order])}}">
     {{csrf_field()}}
     <div class="xe-shop status">
-        <div class="container">
+        <div class="xero-container">
             <div class="status-wrap">
 
                 <h1 class="page-title">취소요청</h1>
