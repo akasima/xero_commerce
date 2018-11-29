@@ -6,6 +6,7 @@ namespace Xpressengine\XePlugin\XeroPay;
 
 use App\Facades\XeConfig;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Xpressengine\Http\Request;
 use Xpressengine\User\Rating;
 use Xpressengine\XePlugin\XeroPay\Models\PayLog;
@@ -80,6 +81,7 @@ class PaymentService
     public function execute(Request $request)
     {
         //거래요청(고객->pg)
+        if($request->all())
         $response = $this->handler->getResponse($request);
         $payment = $response->getPayment();
         $this->logPayment($payment, Payment::REQ, $request->all(), []);
@@ -132,8 +134,13 @@ class PaymentService
         return $pay;
     }
 
-    private function logPayment(Payment $payment, $status, $req = [], $res = [])
+    private function logPayment(Payment $payment = null, $status, $req = [], $res = [])
     {
+        if(is_null($payment)){
+            Log::error('payment_error_info:');
+            Log::error($req);
+            Log::error($res);
+        }
         $log = new PayLog();
         $log->req = json_encode($req);
         $log->res = json_encode($res);
