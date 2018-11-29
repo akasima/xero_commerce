@@ -63,7 +63,9 @@ body {
 
 .xe-shop .container {
   position: relative;
+  width: auto;
   margin: 0 auto;
+  padding: 0;
 }
 
 .xe-shop .container:after {
@@ -72,11 +74,27 @@ body {
   clear: both;
 }
 
+.xe-row {
+  margin: 0;
+}
+
+#sub-container {
+  position: relative;
+  width: 1140px;
+  margin: 0 auto;
+}
+
+#sub-container h2 {
+  margin-top: 40px;
+}
+
 .xe-shop-notice {
   float: left;
   font-size: 12px;
   line-height: 15px;
 }
+
+
 
 @media (min-width: 992px) and (max-width: 1200px) {
   .xe-shop-notice {
@@ -1581,14 +1599,14 @@ body {
 
 .product-info-counter .product-info-cell {
   position: relative;
-  border-bottom: 2px solid #fff;
-  margin: 15px 10px 18px;
-  background-color: #d1d1d1;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  margin-bottom: 20px;
+  padding-bottom: 40px;
   color: #333;
 }
 
 .product-info-counter-title {
-  padding: 10px 40px 10px 10px;
+  padding: 10px;
   font-size: 14px;
   font-weight: bold;
   color: #333;
@@ -1599,8 +1617,6 @@ body {
 @media (min-width: 992px) {
   .product-info-counter-title {
     display: inline-block;
-    width: 350px;
-    padding: 22px 0 22px 20px;
   }
 }
 
@@ -1634,7 +1650,7 @@ body {
 @media (min-width: 992px) {
   .product-info-counter .xe-spin-box {
     position: absolute;
-    right: 150px;
+    right: 0;
     bottom: 0;
     margin: 0;
     transform: translateY(-50%);
@@ -1645,7 +1661,7 @@ body {
   float: right;
   margin: 0;
   padding-right: 10px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   color: #333;
 }
@@ -1653,8 +1669,8 @@ body {
 @media (min-width: 992px) {
   .product-info-counter-sum {
     position: absolute;
-    right: 40px;
-    top: 50%;
+    right: 94px;
+    bottom: 0;
     padding-right: 0;
     transform: translateY(-50%);
   }
@@ -1979,16 +1995,6 @@ body {
     min-width: 128px;
     padding: 28px 44px;
     font-size: 16px;
-  }
-}
-
-.xe-shop .detail-information {
-  padding: 15px 0;
-}
-
-@media (min-width: 992px) {
-  .xe-shop .detail-information {
-    padding: 30px 30px;
   }
 }
 
@@ -2504,16 +2510,16 @@ body {
 }
 
 .cart-product-img img {
-  vertical-align: inherit;
-  width: 100%;
-  height: auto;
+  width: 90px;
+  height: 90px;
 }
 
 .cart-product-name {
   display: inline-block;
   width: calc(100% - 74px);
   padding: 34px 10px 0 11px;
-  line-height: 17px;
+  font-size: 16px;
+  line-height: 22px;
   white-space: normal;
   color: #666;
 }
@@ -2552,13 +2558,12 @@ body {
 
 .cart-product .xe-btn-secondary {
   width: calc(100% - 10px);
-  height: 30px;
+  padding: 4px 12px;
 }
 
 @media (min-width: 992px) {
   .cart-product .xe-btn-secondary {
     width: auto;
-    line-height: 1;
   }
 }
 
@@ -2881,7 +2886,7 @@ body {
 
 .cart-number-sum {
   position: relative;
-  background-color: #666;
+  background-color: #7c8288;
   color: #fff;
 }
 
@@ -4611,7 +4616,7 @@ body {
 
 @media (min-width: 992px) {
   .xe-shop .shipping-search {
-    margin-bottom: 50px;
+    margin-top: 50px;
     padding: 15px 0;
   }
 }
@@ -5048,7 +5053,7 @@ body {
 }
 
 .xe-shop .mypage-membership-title {
-  margin: 0;
+  margin: 0!important;
   padding: 18px 0;
   font-size: 20px;
   font-weight: bold;
@@ -7081,7 +7086,6 @@ header.header {
   position: relative;
   width: 1140px;
   margin: 0 auto;
-  padding: 0 24px;
 }
 
 .header .img-logo {
@@ -7113,7 +7117,7 @@ header.header {
 .header .area-option {
   position: absolute;
   top: 8px;
-  right: -24px;
+  right: 0;
 }
 
 .header .list-option {
@@ -7341,7 +7345,6 @@ header.header {
   position: relative;
   width: 1140px;
   margin: 0 auto;
-  padding: 0 24px;
 }
 
 /* footer */
@@ -7432,6 +7435,7 @@ header.header {
 /* view-header */
 .view-header {
   display: flex;
+  margin-top: 20px;
   margin-bottom: 64px;
   border: 1px solid #e5e5e5;
 }
@@ -7592,6 +7596,7 @@ header.header {
   margin: 0;
   font-size: 14px;
   line-height: 34px;
+  text-transform:uppercase;
 }
 
 .view-header .list-delivery dt {
@@ -7681,7 +7686,8 @@ header.header {
 .area-view .tab-view {
   display: flex;
   flex-wrap: wrap;
-  height: 65px;
+  height: 66px;
+  margin-bottom: 30px;
   border-bottom: 1px solid #666;
 }
 
@@ -7728,8 +7734,8 @@ header.header {
 }
 
 .widget-controll button {
-  width: 117px;
   height: 44px;
+  padding: 0 20px;
   border: none;
   border-radius: 4px;
   background-color: #7c8288;
@@ -7738,6 +7744,8 @@ header.header {
   text-align: center;
 }
 
+.pagination {
+}
 
 
 /* form */

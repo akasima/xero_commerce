@@ -47,7 +47,7 @@
             <div class="area-gnb">
                 <h1 class="logo">
                     @if($shopConfig['logo_id'])
-                        <a href="/shopping" class="img-logo">
+                        <a href="/leaflet" class="img-logo">
                             <img id="logoPreview" name="logo" src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) }}">
                         </a>
                     @else
