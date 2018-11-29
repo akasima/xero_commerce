@@ -115,13 +115,9 @@
 
 
     <main class="xero-layout-type-{{ $config->get('layout_type') }}">
-        @if($config->get('layout_type')=='main')
-            {!! $content !!}
-        @else
         <div id="sub-container">
             {!! $content !!}
         </div>
-        @endif
     </main>
 
     <footer class="footer">
