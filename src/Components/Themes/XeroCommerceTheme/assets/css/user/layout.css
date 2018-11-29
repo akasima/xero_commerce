@@ -3644,6 +3644,7 @@ body {
 @media (min-width: 992px) {
   .table-type3 .table-body {
     display: table;
+    width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
   }
