@@ -36,10 +36,18 @@ class Qna extends DynamicModel
 
     public function hasGrant()
     {
-        return !$this->privacy ||
-            $this->user->id==Auth::id() ||
+        if($this->privacy){
+            if(Auth::check()){
+                return $this->user->id==Auth::id() ||
                 Auth::user()->rating===Rating::SUPER ||
                 Auth::user()->rating===Rating::MANAGER;
+            }else{
+                return false;
+            }
+        }else{
+            return true;
+        }
+
     }
 
     public function jsonSerialize()
