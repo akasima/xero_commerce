@@ -41,7 +41,7 @@ class Database
 
         Schema::create('xero_commerce_user_agreement', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id');
+            $table->string('user_id',36);
             $table->integer('agreement_id');
             $table->timestamps();
         });
@@ -150,7 +150,7 @@ class Database
             $table->morphs('type');
             $table->string('title');
             $table->text('content');
-            $table->integer('user_id');
+            $table->string('user_id',36);
             $table->boolean('privacy')->default(false);
             $table->timestamps();
         });
@@ -160,7 +160,7 @@ class Database
             $table->morphs('type');
             $table->string('title');
             $table->text('content');
-            $table->integer('user_id');
+            $table->string('user_id',36);
             $table->timestamps();
         });
 
