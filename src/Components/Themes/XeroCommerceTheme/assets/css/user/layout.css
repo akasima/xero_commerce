@@ -2098,7 +2098,6 @@ body {
 .xe-shop .default-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
   margin: 0 0 -40px 0;
   padding: 0;
   list-style-type: none;
@@ -4009,8 +4008,8 @@ body {
 }
 
 .xe-shop .table-wrap .cell-btn .btn-black {
-  border: 1px solid #333;
-  background-color: #333;
+  border: none;
+  background-color: #7c8288;;
   color: #fff;
 }
 
@@ -6196,7 +6195,7 @@ body {
 @media (min-width: 992px) {
   .xe-shop .calc {
     display: flex;
-    align-items: stretch;
+    flex-wrap: wrap;
   }
 }
 
