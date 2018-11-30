@@ -85,7 +85,7 @@ class PaymentService
         $response = $this->handler->getResponse($request);
         $payment = $response->getPayment();
         $this->logPayment($payment, Payment::REQ, $request->all(), []);
-        if ($response->fail()) return view('xero_commerce::payment.views.fail', ['msg' => $response->msg()]);
+        if ($response->fail()) return view('xero_commerce::payment.views.fail', ['msg' => ‌‌addslashes(strip_tags($response->msg()))]);
 
 
         //거래요청 후 승인 요청(상점->pg)
@@ -140,6 +140,7 @@ class PaymentService
             Log::error('payment_error_info:');
             Log::error($req);
             Log::error($res);
+            return;
         }
         $log = new PayLog();
         $log->req = json_encode($req);
