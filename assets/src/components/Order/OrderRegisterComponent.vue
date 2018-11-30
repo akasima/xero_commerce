@@ -29,70 +29,72 @@
             </ul>
         </div><!-- //cart-step -->
         <order-item-list-component :order-item-list="orderItemList"></order-item-list-component>
-        <div class="payment-bottom">
-            <div class="table-wrap">
-                <h4 class="table-type-title">주문고객 정보</h4>
-                <button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>
-                <div class="table-type">
-                    <div class="table-row">
-                        <div class="table-cell header">
-                            이름
+        <div class="payment-bottom add-layout">
+            <div class="order-info">
+                <div class="table-wrap">
+                    <h4 class="table-type-title">주문고객 정보</h4>
+                    <button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>
+                    <div class="table-type">
+                        <div class="table-row">
+                            <div class="table-cell header">
+                                이름
+                            </div>
+                            <div class="table-cell">
+                                {{userInfo.name}}
+                            </div>
                         </div>
-                        <div class="table-cell">
-                            {{userInfo.name}}
+                        <div class="table-row">
+                            <div class="table-cell header">
+                                연락처
+                            </div>
+                            <div class="table-cell">
+                                {{userInfo.phone}}
+                            </div>
                         </div>
-                    </div>
-                    <div class="table-row">
-                        <div class="table-cell header">
-                            연락처
+                        <div class="table-row">
+                            <div class="table-cell header">
+                                이메일
+                            </div>
+                            <div class="table-cell">
+                                {{user.email}}
+                            </div>
                         </div>
-                        <div class="table-cell">
-                            {{userInfo.phone}}
-                        </div>
-                    </div>
-                    <div class="table-row">
-                        <div class="table-cell header">
-                            이메일
-                        </div>
-                        <div class="table-cell">
-                            {{user.email}}
-                        </div>
-                    </div>
-                </div><!-- //table-type -->
-            </div><!-- //table-wrap -->
-            <order-delivery-component :user-info="userInfo" v-model="delivery"></order-delivery-component>
-            <!--<div class="table-wrap">-->
+                    </div><!-- //table-type -->
+                </div><!-- //table-wrap -->
+                <order-delivery-component :user-info="userInfo" v-model="delivery"></order-delivery-component>
+                <!--<div class="table-wrap">-->
                 <!--<h4 class="table-type-title">할인 정보</h4>-->
                 <!--<button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>-->
                 <!--<div class="table-type">-->
-                    <!--<div class="table-row">-->
-                        <!--<div class="table-cell header">-->
-                            <!--할인 쿠폰-->
-                        <!--</div>-->
-                        <!--<div class="table-cell">-->
-                            <!--<input type="text" class="xe-form-control table-input table-input-sale" value="1,000">-->
-                            <!--원-->
-                            <!--<button type="button" class="xe-btn xe-btn-secondary table-btn-sale">쿠폰사용</button>-->
-                            <!--<span class="xe-hidden-xs xe-hidden-sm">(사용가능쿠폰 1장 / 보유쿠폰 2장)</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div class="table-row">-->
+                <!--<div class="table-cell header">-->
+                <!--할인 쿠폰-->
+                <!--</div>-->
+                <!--<div class="table-cell">-->
+                <!--<input type="text" class="xe-form-control table-input table-input-sale" value="1,000">-->
+                <!--원-->
+                <!--<button type="button" class="xe-btn xe-btn-secondary table-btn-sale">쿠폰사용</button>-->
+                <!--<span class="xe-hidden-xs xe-hidden-sm">(사용가능쿠폰 1장 / 보유쿠폰 2장)</span>-->
+                <!--</div>-->
+                <!--</div>-->
 
-                    <!--<div class="table-row">-->
-                        <!--<div class="table-cell header">-->
-                            <!--적립금 사용-->
-                        <!--</div>-->
-                        <!--<div class="table-cell">-->
-                            <!--<input type="text" class="xe-form-control table-input table-input-sale" value="1,000">-->
-                            <!--원-->
-                            <!--<button type="button" class="xe-btn xe-btn-secondary table-btn-sale">쿠폰사용</button>-->
-                            <!--<span class="xe-hidden-xs xe-hidden-sm">(사용가능적립금 : 10,000원)</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div class="table-row">-->
+                <!--<div class="table-cell header">-->
+                <!--적립금 사용-->
+                <!--</div>-->
+                <!--<div class="table-cell">-->
+                <!--<input type="text" class="xe-form-control table-input table-input-sale" value="1,000">-->
+                <!--원-->
+                <!--<button type="button" class="xe-btn xe-btn-secondary table-btn-sale">쿠폰사용</button>-->
+                <!--<span class="xe-hidden-xs xe-hidden-sm">(사용가능적립금 : 10,000원)</span>-->
+                <!--</div>-->
+                <!--</div>-->
 
                 <!--</div>&lt;!&ndash; //table-type &ndash;&gt;-->
-            <!--</div>&lt;!&ndash; //table-wrap &ndash;&gt;-->
-            <pay-component :pay-methods="payMethods" v-model="payMethod"></pay-component>
-            <aside class="payment-aside">
+                <!--</div>&lt;!&ndash; //table-wrap &ndash;&gt;-->
+                <pay-component :pay-methods="payMethods" v-model="payMethod"></pay-component>
+            </div>
+            <aside class="payment-aside area-aside">
                 <order-bill-component :summary="orderSummary"
                                       :validate="validate"
                                       :method="payMethod"
