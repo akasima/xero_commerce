@@ -4,7 +4,7 @@
         <div class="box-option">
             <strong>선택항목</strong>
             <select v-model="selectOption" class="form-select">
-                <option disabled="">선택</option>
+                <option disabled="" selected value="null">선택</option>
                 <option v-for="option in options" :value="option" :disabled="option.state!=='판매중'">{{option.name}}
                     (+{{Number(option.add_price).toLocaleString()}} ) {{(option.state!=='판매중')? '-'+ option.state: ''}}
                 </option>
