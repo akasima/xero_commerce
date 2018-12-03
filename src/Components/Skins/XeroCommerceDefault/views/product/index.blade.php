@@ -2,10 +2,11 @@
     use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 ?>
 {{ XeFrontend::css('plugins/xero_commerce/src/Components/Skins/XeroCommerceDefault/assets/css/skin.css')->load() }}
+{{ XeFrontend::css('plugins/xero_commerce/src/Components/Widget/ProductListWidget/Skins/Common/assets/style.css')->load() }}
 {{ uio('widgetbox', ['id' => \Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_PREFIX . '-' . $instanceId . '-top', 'link'=>'상단 위젯 편집하기']) }}
 
-<section class="xe-shop list">
-    <div class="container" style="padding-left:0; padding-right:0">
+<section class="section-basic">
+    <div>
         <div class="search-results">
             @if($products->total() == 0)
                 <p class="search-results-text">검색된 상품이 존재하지 않습니다.</p>
@@ -36,49 +37,34 @@
                 </div>
             </div>
         </form>
-
-        <ul class="default-list">
+        <ul class="list-basic">
             @foreach ($products as $key => $product)
-                <li>
-                    <div class="default-list-img">
+                <li class="item-basic" style="position: relative;">
+                    <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}" style="overflow: hidden; position:relative;" class="link-basic">
                         @if($badge = $product->badge)
-                        <div class="badge" style="background: {{$badge->background_color}};">
-                            <span style="color: {{$badge->text_color}};">{{$badge->name}}</span>
-                        </div>
+                            <div class="badge" style="background: {{$badge->background_color}};">
+                                <span style="color: {{$badge->text_color}};">{{$badge->name}}</span>
+                            </div>
                         @endif
-                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}"><img
-                                src="{{$product->getThumbnailSrc()}}" alt=""></a>
-                        <h4 class="xe-sr-only">sns 공유</h4>
-                        <ul class="default-list-sns">
-                            <!-- [D] a 클릭시 내부에 xi-heart-o 클래스 명을 xi-heart 로 변경 부탁드립니다. -->
-                            <li><a href="#" onclick="event.preventDefault();toggleHeart('{{$product->id}}')"><i id="heart{{$product->id}}" class="{{($product->userWish())? 'xi-heart' : 'xi-heart-o'}}"></i><span class="xe-sr-only">좋아요</span></a></li>
-                            <li><a target="_blank{{now()}}" href="http://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('xero_commerce::product.show', ['slug' => $product->getSlug()])) }}"><i class="xi-facebook"></i><span class="xe-sr-only">페이스북 공유</span></a></li>
-                            <li><a target="_blank{{now()}}" href="http://line.me/R/msg/text/?title={{ urlencode(route('xero_commerce::product.show', ['slug' => $product->getSlug()])) }}" href="#"><i class="xi-line"></i><span class="xe-sr-only">인스타그램 공유</span></a>
-                            </li>
-                        </ul>
-                        @if($product->state_deal !== \Xpressengine\Plugins\XeroCommerce\Models\Product::DEAL_ON_SALE)
-                        <div style="background: rgba(255,255,255,0.5); position: absolute; width: 100%; height:100%; color:black; font-weight: bold; padding-top:70%; text-align: center">
-                            {{$product->getDealStates()[$product->state_deal]}}
-                        </div>
-                        @endif
-                    </div>
-                    <div class="default-list-text">
-                        <a href="{{ ($product->state_deal === \Xpressengine\Plugins\XeroCommerce\Models\Product::DEAL_ON_SALE)?route('xero_commerce::product.show', ['slug' => $product->getSlug()]):'#' }}">
-                            <h3 class="default-list-text-title">
-
-                                @foreach($product->labels as $label)
-                                <span class="xe-shop-tag" @if($label->background_color && $label->text_color)style="background: {{$label->background_color}}; color:{{$label->text_color}}" @endif>{{$label->name}}</span>
-                                @endforeach
-                                {{$product->name}}</h3>
-                            <p class="default-list-text-price">
+                        <span class="thumnail" style="background-image:url('{{$product->getThumbnailSrc()}}')"></span>
+                        <div class="box_content">
+                            <strong>{{$product->name}}</strong>
+                            <p class="price">
                                 <span class="xe-sr-only">할인 전</span>
-                                <span class="through">{{ number_format($product->original_price)}}원</span>
-                                <i class="xi-arrow-right"></i>
+                                <span class="sale">{{ number_format($product->original_price)}}원</span>
                                 <span class="xe-sr-only">할인 후</span>
                                 <span>{{number_format($product->sell_price)}}원</span>
                             </p>
-                        </a>
-                    </div>
+                            @foreach($product->labels as $label)
+                                <span class="xe-shop-tag" @if($label->background_color && $label->text_color)style="background: {{$label->background_color}}; color:{{$label->text_color}}" @endif>{{$label->name}}</span>
+                            @endforeach
+                        </div>
+                    </a>
+                    @if($product->state_deal !== \Xpressengine\Plugins\XeroCommerce\Models\Product::DEAL_ON_SALE)
+                        <div style="background: rgba(255,255,255,0.5); top:0; position: absolute; width: 100%; height:100%; color:black; font-weight: bold; padding-top:70%; text-align: center">
+                            {{$product->getDealStates()[$product->state_deal]}}
+                        </div>
+                    @endif
                 </li>
             @endforeach
         </ul>

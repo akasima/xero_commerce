@@ -7,7 +7,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 
 class ProductService
 {
-    const DEFAULT_PAGINATION_COUNT = 9;
+    const DEFAULT_PAGINATION_COUNT = 8;
 
     /** @var ProductHandler $handler */
     protected $handler;
