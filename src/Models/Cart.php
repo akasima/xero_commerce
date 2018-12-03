@@ -17,13 +17,13 @@ class Cart extends SellSet
     public function renderInformation()
     {
         $row = [];
-        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->sellType->getSlug()]) . '">' . $this->renderSpanBr($this->sellType->getName()) . '</a>';
-        $row [] = $this->renderSpanBr($this->sellType->getInfo());
+        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->forcedSellType()->getSlug()]) . '">' . $this->renderSpanBr($this->forcedSellType()->getName()) . '</a>';
+        $row [] = $this->renderSpanBr($this->forcedSellType()->getInfo());
         $this->sellGroups->each(function (SellGroup $group) use (&$row) {
-            $row [] = $this->renderSpanBr($group->sellUnit->getName() . ' / ' . $group->getCount() . '개', "color: grey");
+            $row [] = $this->renderSpanBr($group->forcedSellUnit()->getName() . ' / ' . $group->getCount() . '개', "color: grey");
         });
 
-        $row [] = $this->renderSpanBr($this->sellType->shop->shop_name);
+        $row [] = $this->renderSpanBr($this->forcedSellType()->shop->shop_name);
 
         return $row;
     }
@@ -39,18 +39,18 @@ class Cart extends SellSet
             'fare' => $this->getFare(),
             'count' => $this->getCount(),
             'src' => $this->getThumbnailSrc(),
-            'url'=> route('xero_commerce::product.show', ['strSlug' => $this->sellType->getSlug()]),
-            'option_list' => $this->sellType->sellUnits->map(function (sellUnit $sellUnit) {
+            'url'=> route('xero_commerce::product.show', ['strSlug' => $this->forcedSellType()->getSlug()]),
+            'option_list' => $this->forcedSellType()->sellUnits->map(function (sellUnit $sellUnit) {
                 return $sellUnit->getJsonFormat();
             }),
             'choose' => $this->sellGroups->map(function (SellGroup $sellGroup) {
                 return $sellGroup->getJsonFormat();
             }),
-            'name' => $this->sellType->getName(),
-            'delivery' => $this->sellType->getDelivery(),
+            'name' => $this->forcedSellType()->getName(),
+            'delivery' => $this->forcedSellType()->getDelivery(),
             'pay' => $this->getDeliveryPay(),
-            'min'=>$this->sellType->min_buy_count,
-            'max'=>$this->sellType->max_buy_count
+            'min'=>$this->forcedSellType()->min_buy_count,
+            'max'=>$this->forcedSellType()->max_buy_count
         ];
     }
 }

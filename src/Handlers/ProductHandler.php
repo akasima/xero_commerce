@@ -42,6 +42,10 @@ class ProductHandler
     {
         $item = Product::where('id', $productId)->first();
 
+        if(is_null($item)) {
+            abort(500, '해당 상품이 존재하지 않습니다.');
+        }
+
         return $item;
     }
 

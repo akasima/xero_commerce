@@ -65,12 +65,12 @@
                                                     </div><!-- //cart-product-img -->
                                                     <div class="cell-product-text">
                                                         <div class="cell-product-name">
-                                                            {{$orderItem->sellType->getName()}}
+                                                            {{$orderItem->forcedSellType()->getName()}}
                                                         </div><!-- //cart-product-name -->
                                                         <ul class="cell-product-option">
                                                             @foreach($orderItem->sellGroups as $group)
                                                                 <li>
-                                                                    <span>{{$group->sellUnit->getName()}} / {{$group->getCount()}} 개</span>
+                                                                    <span>{{$group->forcedSellUnit()->getName()}} / {{$group->getCount()}} 개</span>
                                                                 </li>
                                                             @endforeach
                                                         </ul><!-- //cell-product-option -->

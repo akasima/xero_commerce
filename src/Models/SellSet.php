@@ -18,6 +18,11 @@ abstract class SellSet extends DynamicModel
         return $this->morphTo('type');
     }
 
+    public function forcedSellType()
+    {
+        return $this->sellType()->withTrashed()->first();
+    }
+
     /**
      * @return array
      */
@@ -25,7 +30,7 @@ abstract class SellSet extends DynamicModel
 
     function getCount()
     {
-        $method = $this->sellType->getCountMethod();
+        $method = $this->forcedSellType()->getCountMethod();
 
         return $method($this->sellGroups);
     }
@@ -37,21 +42,21 @@ abstract class SellSet extends DynamicModel
 
     function getOriginalPrice()
     {
-        $method = $this->sellType->getOriginalPriceMethod();
+        $method = $this->forcedSellType()->getOriginalPriceMethod();
 
         return $method($this->sellGroups);
     }
 
     function getSellPrice()
     {
-        $method = $this->sellType->getSellPriceMethod();
+        $method = $this->forcedSellType()->getSellPriceMethod();
 
         return $method($this->sellGroups);
     }
 
     function getThumbnailSrc()
     {
-        return $this->sellType->getThumbnailSrc();
+        return $this->forcedSellType()->getThumbnailSrc();
     }
 
     public function getDiscountPrice()
@@ -65,7 +70,7 @@ abstract class SellSet extends DynamicModel
             return 0;
         }
 
-        return $this->sellType->getFare();
+        return $this->forcedSellType()->getFare();
     }
 
     protected function renderSpanBr($var, $style = "")

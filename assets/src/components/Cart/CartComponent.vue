@@ -107,7 +107,9 @@
                     order_id.setAttribute('value', res.order_id)
                     form.appendChild(order_id)
                     form.submit()
-                })
+                }).fail(res=>{
+                    console.log(res)
+                });
             },
             onlyOrder(order_id) {
                 this.checkedList = [order_id]

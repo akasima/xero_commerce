@@ -102,7 +102,10 @@ class OrderController extends SettingBaseController
             $this->orderService->endRefundOrderItem($orderItem);
         }
 
-        if (get_class($orderItem->sellType) == 'Xpressengine\Plugins\XeroCommerce\Models\Product') {
+        if (get_class($orderItem->forcedSellType()) == 'Xpressengine\Plugins\XeroCommerce\Models\Product') {
+            if($orderItem->forcedSellType()->trashed()){
+                return route('xero_commerce::setting.product.index');
+            }
             return route('xero_commerce::setting.product.show', [
                 'productId' => $orderItem->sellType->id
             ]);

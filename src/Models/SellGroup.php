@@ -15,28 +15,33 @@ abstract class SellGroup extends DynamicModel
         return $this->morphTo('unit');
     }
 
+    public function forcedSellUnit()
+    {
+        return $this->sellUnit()->withTrashed()->first();
+    }
+
     abstract public function sellSet();
 
     public function getOriginalPrice()
     {
-        return $this->getCount() * $this->sellUnit->getOriginalPrice();
+        return $this->getCount() * $this->forcedSellUnit()->getOriginalPrice();
     }
 
     public function getSellPrice()
     {
-        return $this->getCount() * $this->sellUnit->getSellPrice();
+        return $this->getCount() * $this->forcedSellUnit()->getSellPrice();
     }
 
     public function getDiscountPrice()
     {
-        return $this->getCount() * $this->sellUnit->getDiscountPrice();
+        return $this->getCount() * $this->forcedSellUnit()->getDiscountPrice();
     }
 
     public function getJsonFormat()
     {
         return [
             'id' => $this->id,
-            'unit' => $this->sellUnit->getJsonFormat(),
+            'unit' => $this->forcedSellUnit()->getJsonFormat(),
             'count' => $this->getCount(),
         ];
     }

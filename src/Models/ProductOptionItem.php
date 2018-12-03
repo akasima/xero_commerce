@@ -104,6 +104,11 @@ class ProductOptionItem extends SellUnit
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
+    public function forcedSellType()
+    {
+        return $this->sellType()->withTrashed()->first();
+    }
+
     public function getName()
     {
         return $this->name;
@@ -116,12 +121,12 @@ class ProductOptionItem extends SellUnit
 
     public function getOriginalPrice()
     {
-        return $this->product->original_price + $this->addition_price;
+        return $this->forcedSellType()->original_price + $this->addition_price;
     }
 
     public function getSellPrice()
     {
-        return $this->product->sell_price + $this->addition_price;
+        return $this->forcedSellType()->sell_price + $this->addition_price;
     }
 
     public function getDealState()

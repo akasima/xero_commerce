@@ -11,6 +11,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItemGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\Payment;
+use Xpressengine\Plugins\XeroCommerce\Models\SellGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\UserDelivery;
 
 class OrderHandler extends SellSetHandler
@@ -27,6 +28,18 @@ class OrderHandler extends SellSetHandler
         if (!$order = $this->whereUser()->where('code', Order::TEMP)->find($id)) {
             abort(500, '잘못된 주문 요청입니다.');
         }
+        $order->orderItems->each(function(OrderItem $orderItem)use($order){
+            if($orderItem->forcedSellType()->trashed()){
+                $order->delete();
+                abort('500','현재 제공하지 않는 상품입니다. <br> 상품정보 : '.$orderItem->forcedSellType()->getName());
+            }
+            $orderItem->sellGroups->each(function(SellGroup $sellGroup)use($order){
+                if($sellGroup->forcedSellUnit()->trashed()){
+                    $order->delete();
+                    abort('500','현재 제공하지 않는 상품옵션입니다. <br> 상품정보 : '.$sellGroup->forcedSellUnit()->getName());
+                }
+            });
+        });
 
         return $order;
     }
@@ -40,14 +53,14 @@ class OrderHandler extends SellSetHandler
 
             $orderItem->order_id = $order->id;
             $orderItem->delivery_pay = $cart->delivery_pay;
-            $cart->sellType->orderItems()->save($orderItem);
+            $cart->forcedSellType()->orderItems()->save($orderItem);
 
             $orderItem->save();
 
             $cart->sellGroups->each(function (CartGroup $cartGroup) use (&$orderItem) {
                 $orderItemGroup = new OrderItemGroup();
 
-                $cartGroup->sellUnit->orderItemGroup()->save($orderItemGroup);
+                $cartGroup->forcedSellUnit()->orderItemGroup()->save($orderItemGroup);
                 $orderItemGroup->setCount($cartGroup->getCount());
 
                 $orderItem->sellGroups()->save($orderItemGroup);

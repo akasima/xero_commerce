@@ -29,11 +29,11 @@ class OrderItem extends SellSet
     public function renderInformation()
     {
         $row = [];
-        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->sellType->getSlug()]) . '">' . $this->renderSpanBr($this->sellType->getName()) . '</a>';
+        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->forcedSellType()->getSlug()]) . '">' . $this->renderSpanBr($this->forcedSellType()->getName()) . '</a>';
         $this->sellGroups->each(function (SellGroup $group) use (&$row) {
-            $row [] = $this->renderSpanBr($group->sellUnit->getName() . ' / ' . $group->getCount() . '개', "color: grey");
+            $row [] = $this->renderSpanBr($group->forcedSellUnit()->getName() . ' / ' . $group->getCount() . '개', "color: grey");
         });
-        $row [] = $this->renderSpanBr($this->sellType->shop->shop_name);
+        $row [] = $this->renderSpanBr($this->forcedSellType()->shop->shop_name);
 
         return $row;
     }
@@ -48,7 +48,7 @@ class OrderItem extends SellSet
             'options' => $this->sellGroups->map(function (SellGroup $sellGroup) {
                 return $sellGroup->getJsonFormat();
             }),
-            'name' => $this->sellType->getName(),
+            'name' => $this->forcedSellType()->getName(),
             'original_price' => $this->getOriginalPrice(),
             'sell_price' => $this->getSellPrice(),
             'discount_price' => $this->getDiscountPrice(),
