@@ -28,7 +28,7 @@
             </td>
             <td v-if="!isShowState"><input type="text" class="form-control" v-model="optionList.data.name"></td>
             <td v-if="!isShowState"><input type="text" class="form-control" v-model="optionList.data.addition_price"></td>
-            <td v-if="!isShowState">{{(Number(optionList.data.addition_price) + Number(optionList.data.product.sell_price)).toLocaleString()}}</td>
+            <td v-if="!isShowState">{{(Number(optionList.data.addition_price) + Number(optionList.product_price)).toLocaleString()}}</td>
             <td v-if="!isShowState"><input type="text" class="form-control" v-model="optionList.data.stock"></td>
             <td v-if="!isShowState"><input type="text" class="form-control" v-model="optionList.data.alert_stock"></td>
             <td v-if="!isShowState">

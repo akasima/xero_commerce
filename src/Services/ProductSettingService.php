@@ -49,6 +49,7 @@ class ProductSettingService
             $optionData['name'] = $option->name;
             $optionData['addition_price'] = $option->addition_price;
             $optionData['sell_price'] = $option->getSellPrice();
+            $optionData['product_price']=$product->sell_price;
             $optionData['stock'] = $option->stock;
             $optionData['alert_stock'] = $option->alert_stock;
             $optionData['state_display'] = $option->state_display;
