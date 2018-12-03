@@ -21,8 +21,10 @@ class OrderObserver
                     $orderGroups = $order->orderGroup;
                     $orderGroups->each(function (OrderItemGroup $group) {
                         $unit = $group->sellUnit;
-                        $unit->stock = $unit->stock - $group->getCount();
-                        $unit->save();
+                        if($unit){
+                            $unit->stock = $unit->stock - $group->getCount();
+                            $unit->save();
+                        }
                     });
                     break;
                 case Order::ORDERED:
