@@ -120,6 +120,9 @@
                             ></product-feed-back-component>
                         </div>
                         <div v-if="tab===4" class="detail-as">
+                            <div v-html="product.shop.delivery_info">
+
+                            </div>
                             <div v-html="product.shop.as_info">
 
                             </div>
