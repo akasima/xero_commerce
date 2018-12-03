@@ -134,7 +134,7 @@
                     <dd class="item-company">@if(!is_null($shopConfig['zipCode']))({{$shopConfig['zipCode']}})@endif {{$shopConfig['address']}}</dd>
                 @endif
                 @if(!is_null($shopConfig['companyNumber']))
-                    <dd class="item-company">사업자등록번호 : {{$shopConfig['companyNumber']}} <a href="#" class="link-info">사업자정보확인 <i class="xi-angle-right-thin"></i></a></dd>
+                    <dd class="item-company">사업자등록번호 : {{$shopConfig['companyNumber']}} <a href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no={{str_replace('-','',$shopConfig['companyNumber'])}}" class="link-info">사업자정보확인 <i class="xi-angle-right-thin"></i></a></dd>
                 @endif
                 @if(!is_null($shopConfig['communicationMarketingNumber']))
                     <dd class="item-company">통신판매업신고번호 : {{$shopConfig['communicationMarketingNumber']}}</dd>
@@ -143,7 +143,7 @@
                     <dd class="item-company">대표전화 : {{$shopConfig['telNumber']}}</dd>
                 @endif
                 @if(!is_null($shopConfig['email']))
-                    <dd class="item-company">이메일 :  <a href="{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
+                    <dd class="item-company">이메일 :  <a href="mailto:{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
                 @endif
             </dl>
             <small>Copyright © 2016 (주)엠엠푸드 All rights reserved.   MADE BY XE</small>
