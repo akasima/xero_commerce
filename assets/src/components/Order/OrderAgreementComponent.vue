@@ -19,8 +19,7 @@
                 </label>
                 <button type="button" class="btn-toggle" @click="opened[agreement.type]=!opened[agreement.type]"><i :class="(opened[agreement.type])?'xi-angle-up-thin':'xi-angle-down-thin'"></i></button>
             </div><!-- //payment-aside-agree-header -->
-            <div class="payment-aside-agree-content color" v-show="opened[agreement.type]">
-                {{ agreement.contents }}
+            <div class="payment-aside-agree-content color" v-show="opened[agreement.type]" v-html="makeBr(agreement.contents)">
             </div><!-- //payment-aside-agree-content -->
         </div><!-- //payment-aside-agree -->
     </div><!-- //payment-aside-agree -->
@@ -93,6 +92,9 @@
                         _token: document.getElementById('csrf_token').value
                     }
                 })
+            },
+            makeBr (string) {
+                return string.replace(/(?:\r\n|\r|\n)/g, '<br>');
             }
         }
     }

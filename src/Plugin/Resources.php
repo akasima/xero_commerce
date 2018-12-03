@@ -793,6 +793,26 @@ class Resources
                         'permission' => 'xero_commerce']);
                 });
 
+                //약관 관리
+                Route::get('/agreement', [
+                    'as' => 'xero_commerce::setting.agreement.index',
+                    'uses' => 'AgreementController@index',
+                    'settings_menu' => 'xero_commerce.config.agreement',
+                    'permission' => 'xero_commerce'
+                ]);
+
+                Route::get('/agreement/{type}', [
+                    'as' => 'xero_commerce::setting.agreement.edit',
+                    'uses' => 'AgreementController@edit',
+                    'permission' => 'xero_commerce'
+                ]);
+
+                Route::post('/agreement/{type}', [
+                    'as' => 'xero_commerce::setting.agreement.update',
+                    'uses' => 'AgreementController@update',
+                    'permission' => 'xero_commerce'
+                ]);
+
                 //분류 관리
                 Route::get('/category', ['as' => 'xero_commerce::setting.category.index',
                     'uses' => 'CategoryController@index',
@@ -1469,17 +1489,23 @@ class Resources
                 'description' => '',
                 'ordering' => 100033
             ],
+            'xero_commerce.config.agreement' => [
+                'title' => '약관 설정',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100034
+            ],
             'xero_commerce.config.storeInfo' => [
                 'title' => '입점몰 정보',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100034
+                'ordering' => 100035
             ],
             'xero_commerce.config.banner' => [
                 'title' => '배너 정보',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100035
+                'ordering' => 100036
             ]
         ];
     }

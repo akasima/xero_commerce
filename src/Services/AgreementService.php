@@ -53,4 +53,17 @@ class AgreementService
     {
         OrderAgreement::where('order_id', $order->id)->where('agreement_id', $agree_id)->delete();
     }
+
+    static function updateAgreement($args, $type)
+    {
+        $last_version = self::get($type)->version;
+        $new_version_int = (int)str_replace('.','',$last_version) +1;
+        $new_version = substr($new_version_int, 0,-2).'.'.substr($new_version_int, -2,1).'.'.substr($new_version_int, -1,1);
+        $agreement = new Agreement();
+        $agreement->type=$type;
+        $agreement->contents=$args['contents'];
+        $agreement->name=$args['name'];
+        $agreement->version=$new_version;
+        $agreement->save();
+    }
 }
