@@ -21,7 +21,12 @@ class LGCancel implements PaymentResponse
 
     public function success()
     {
-        return $this->data->LGD_RESPCODE=='0000' || $this->data->LGD_RESPCODE=='RF00' || $this->data->LGD_RESPCODE=='RF24';
+        return in_array($this->data->LGD_RESPCODE, [
+            '0000',
+            'RF00',
+            'RF24',
+            'XC01'
+        ]);
     }
 
     public function fail()
