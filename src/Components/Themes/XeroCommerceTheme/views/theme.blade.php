@@ -65,12 +65,12 @@
                     </ul>
                 </nav>
 
-                <div class="area-search">
-                    <form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_MAIN_PAGE_URL) }}">
-                        <input type="text" class="input-text" name="product_name">
-                        <button type="button" class="btn-search reset-button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>
-                    </form>
-                </div>
+                {{--<div class="area-search">--}}
+                    {{--<form method="get" action="{{ url()->to(\Xpressengine\Plugins\XeroCommerce\Plugin::XERO_COMMERCE_MAIN_PAGE_URL) }}">--}}
+                        {{--<input type="text" class="input-text" name="product_name">--}}
+                        {{--<button type="button" class="btn-search reset-button"><i class="xi-search"></i><span class="xe-sr-only">검색</span></button>--}}
+                    {{--</form>--}}
+                {{--</div>--}}
 
             </div>
             <!-- // area-gnb -->
