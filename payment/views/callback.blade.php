@@ -5,7 +5,7 @@ test
 <script>
     function func (){
         console.log('load!')
-        setTimeout(()=>{
+        setTimeout(function(){
             var ev = new Event('complete')
             document.dispatchEvent(ev)
         },1000)

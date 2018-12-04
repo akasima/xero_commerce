@@ -3,7 +3,7 @@
 </body>
 <script>
     function func (){
-        setTimeout(()=>{
+        setTimeout(function(){
             var ev = new CustomEvent('fail',{
                 detail: {
                     msg: "{{$msg}}"
