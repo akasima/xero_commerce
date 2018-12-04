@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@babel/preset-es2015": "^7.0.0-beta.53",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.1.3",
     "bootstrap-vue": "^2.0.0-rc.11",
