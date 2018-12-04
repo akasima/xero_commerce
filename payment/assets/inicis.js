@@ -1,6 +1,6 @@
 const inicis = {
   name: 'test',
-  submit (success, fail) {
+  submit: function (success, fail) {
     INIStdPay.pay('xero_pay');
     setTimeout(function () {
       // INIStdPay.boolInitDone = true

@@ -1,6 +1,6 @@
 const lg = {
   name: 'test',
-  submit(success, fail) {
+  submit: function (success, fail) {
     var result = openXpay(document.getElementById('xero_pay'), 'test', 'iframe', null, "", "");
     $(result).on("load", function () {
       var iframe = result.contentWindow || result.contentDocument;
