@@ -26,7 +26,7 @@ const payment = {
     }
     var initialForm =document.getElementById('xero_pay');
     if(initialForm !== null){
-      initialForm.remove()
+      initialForm.parentNode.removeChild(initialForm);
     }
     $.ajax({
       url: '/payment/form',
