@@ -3,7 +3,7 @@ const VueLoader = require('vue-loader/lib/plugin')
 
 module.exports = [{
   mode: 'development',
-  entry: ['babel-polyfill','./src/app.js'],
+  entry: './src/app.js',
   output: {
     path: path.resolve(__dirname, './js'),
     filename: 'index.js'
@@ -13,6 +13,10 @@ module.exports = [{
       {
         test: /\.vue$/,
         loader: 'vue-loader'
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader'
       },
       {
         test: /\.css$/,
