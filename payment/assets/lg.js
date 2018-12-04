@@ -2,18 +2,18 @@ const lg = {
   name: 'test',
   submit(success, fail) {
     var result = openXpay(document.getElementById('xero_pay'), 'test', 'iframe', null, "", "");
-    $(result).on("load", () => {
+    $(result).on("load", function () {
       var iframe = result.contentWindow || result.contentDocument;
       console.log('load');
       if(iframe.document){
-        $(iframe.document).on("complete", () => {
+        $(iframe.document).on("complete", function () {
           success(
             {
               status: true
             }
           )
         })
-        $(iframe.document).on("fail", err => {
+        $(iframe.document).on("fail", function (err) {
           fail(err.detail.msg)
           parent.closeIframe()
         })

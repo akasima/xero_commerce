@@ -2,20 +2,20 @@ const inicis = {
   name: 'test',
   submit (success, fail) {
     INIStdPay.pay('xero_pay');
-    setTimeout(()=>{
+    setTimeout(function () {
       // INIStdPay.boolInitDone = true
       $('#inicisModalDiv').css('opacity',1);
     },500)
-    $(INIStdPay.$iframe[0]).on("load", () => {
+    $(INIStdPay.$iframe[0]).on("load",function () {
       var iframe = INIStdPay.$iframe[0].contentWindow || INIStdPay.$iframe[0].contentDocument;
-      $(iframe.document).on("complete", () => {
+      $(iframe.document).on("complete", function ()  {
         success(
           {
             status: true
           }
         )
       })
-      $(iframe.document).on("fail", (err, data) => {
+      $(iframe.document).on("fail", function(err, data) {
         fail(err.detail.msg)
         INIStdPay.viewOff()
       })
@@ -27,7 +27,7 @@ $(function(){
   payment.init(inicis)
   // console.log(INIStdPay)
   INIStdPay.init()
-  setTimeout(()=>{
+  setTimeout(function () {
 
     $jINICSSLoader.loadDefault();
 
