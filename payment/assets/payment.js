@@ -45,6 +45,6 @@ const payment = {
       }
       document.body.appendChild(form)
       this.gateway.submit(success, fail);
-    }).fail(fail);
+    }.bind(this)).fail(fail());
   }
 }
