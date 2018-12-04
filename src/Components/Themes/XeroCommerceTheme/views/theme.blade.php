@@ -134,7 +134,7 @@
                     <dd class="item-company">@if(!is_null($shopConfig['zipCode']))({{$shopConfig['zipCode']}})@endif {{$shopConfig['address']}}</dd>
                 @endif
                 @if(!is_null($shopConfig['companyNumber']))
-                    <dd class="item-company">사업자등록번호 : {{$shopConfig['companyNumber']}} <a href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no={{str_replace('-','',$shopConfig['companyNumber'])}}" class="link-info">사업자정보확인 <i class="xi-angle-right-thin"></i></a></dd>
+                    <dd class="item-company">사업자등록번호 : {{$shopConfig['companyNumber']}} <a target="_blank" href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no={{str_replace('-','',$shopConfig['companyNumber'])}}" class="link-info">사업자정보확인 <i class="xi-angle-right-thin"></i></a></dd>
                 @endif
                 @if(!is_null($shopConfig['communicationMarketingNumber']))
                     <dd class="item-company">통신판매업신고번호 : {{$shopConfig['communicationMarketingNumber']}}</dd>
