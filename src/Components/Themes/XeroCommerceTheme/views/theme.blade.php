@@ -146,7 +146,7 @@
                     <dd class="item-company">이메일 :  <a href="mailto:{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
                 @endif
             </dl>
-            <small>Copyright © 2016 (주)엠엠푸드 All rights reserved.   MADE BY XE</small>
+            <small>Copyright © {{date('Y')}} (주)엠엠푸드 All rights reserved.   <a target="_blank" href="https://www.xpressengine.io/">MADE BY XE</a></small>
         </div>
 
     </footer>
