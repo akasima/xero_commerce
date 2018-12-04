@@ -44,7 +44,7 @@ class CartHandler extends SellSetHandler
 
     public function drawCart($cart_id)
     {
-        if (is_iterable($cart_id)) {
+        if (is_array( $cart_id ) || ( is_object( $cart_id ) && ( $cart_id instanceof \Traversable ))) {
             CartGroup::whereIn('cart_id', $cart_id)->delete();
 
             return Cart::whereIn('id', $cart_id)->delete();
