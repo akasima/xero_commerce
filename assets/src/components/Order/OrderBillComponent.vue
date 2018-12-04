@@ -77,7 +77,9 @@
                 }, res => {
                     this.$emit('pay', res)
                 }, err => {
-                    alert('결제 실패!!' + err)
+                    if(typeof err !== 'undefined'){
+                        alert('결제 실패!!' + err)
+                    }
                 })
             }
         }
