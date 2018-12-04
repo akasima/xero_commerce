@@ -286,13 +286,13 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 </script>
 <script>
     var editImages = {
-        edit(i) {
+        edit: function (i) {
             $("#shownImage" + i).addClass('hide').removeClass('show');
             $("#editImage" + i).addClass('show').removeClass('hide');
             $("#shownImage" + i + " input").prop('disabled', true)
             $("#editImage" + i + " input").prop('disabled', false)
         },
-        reset(i) {
+        reset: function (i) {
             $("#editImage" + i).addClass('hide').removeClass('show');
             $("#shownImage" + i).addClass('show').removeClass('hide');
             $("#shownImage" + i + " input").prop('disabled', false)
