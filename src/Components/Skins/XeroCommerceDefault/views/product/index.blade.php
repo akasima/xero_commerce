@@ -81,7 +81,7 @@
         @if(\Illuminate\Support\Facades\Auth::check())
         $.ajax({
             url: '{{route('xero_commerce::product.wish.toggle',['product'=>''])}}/'+id
-        }).done(()=>{
+        }).done(function(){
             toggleClass('#heart'+id,'xi-heart-o')
             toggleClass('#heart'+id,'xi-heart')
         })
