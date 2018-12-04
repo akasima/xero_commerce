@@ -325,7 +325,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     function addImage(event)
     {
         if($(".form-image").not(".open").length === 0) {
-            alert('메인 페이지를 포함 최대 10개까지 업로드할 수 있습니다.')
+            alert('메인 페이지를 포함 최대 10개까지 업로드할 수 있습니다.');
             return
         }
         $(".form-image").not(".open").first().find("input[type=file]").prop("disabled",false)
@@ -346,11 +346,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
             $("[name=delivery_id] option").not(':selected').remove();
             $.ajax({
                 url: '{{route('xero_commerce::setting.config.shop.delivery',['shop'=>''])}}/' + $("[name=shop_id]").val(),
-            }).done(res => {
-                $.each(res, (k, v) => {
+            }).done(function(res) {
+                $.each(res, function (k, v){
                     $("[name=delivery_id]").append('<option value="' + v.pivot.id + '">' + v.name + '(' + Number(v.pivot.delivery_fare).toLocaleString() + ')</option>');
                 })
-            }).fail(res => {
+            }).fail(function(res) {
 
             })
         })
