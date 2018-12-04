@@ -32,7 +32,7 @@ const payment = {
       url: '/payment/form',
       method: 'post',
       data: data
-    }).done(res => {
+    }).done(function(res) {
       var form = document.createElement('form')
       form.setAttribute('id','xero_pay')
       form.setAttribute('method','post')
