@@ -139,9 +139,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     </div>
                     <div id="재고정보Section" class="panel-body panel-collapse collapse" role="tabpanel" aria-expanded="false">
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">초기 재고</label>
+                            <label class ="control-label col-sm-3">현재 재고</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="stock" data-valid-name="초기 재고" value="{{ $product->getStock() }}">
+                                <input type="text" class="form-control" name="stock" data-valid-name="현재 재고" value="{{ $product->getStock() }}" readonly>
                             </div>
                         </div>
                         <div class="form-group">
