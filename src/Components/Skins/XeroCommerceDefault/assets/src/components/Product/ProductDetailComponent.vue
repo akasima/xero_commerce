@@ -72,7 +72,7 @@
 
                 <div class="area-view">
                     <ul class="tab-view reset-list">
-                        <li class="item-view"><a href="#" @click.prevent="tab=1" :class="(tab===1) ? 'active' : ''" class="link-view active">상품정보</a></li>
+                        <li class="item-view"><a href="#" @click.prevent="tab=1" :class="(tab===1) ? 'active' : ''" class="link-view">상품정보</a></li>
                         <li class="item-view"><a href="#" @click.prevent="tab=2" :class="(tab===2) ? 'active' : ''" class="link-view">Q&A</a></li>
                         <li class="item-view"><a href="#" @click.prevent="tab=3" :class="(tab===3) ? 'active' : ''" class="link-view">상품후기</a></li>
                         <li class="item-view"><a href="#" @click.prevent="tab=4" :class="(tab===4) ? 'active' : ''" class="link-view">배송/교환/환불</a></li>

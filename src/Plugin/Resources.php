@@ -297,7 +297,7 @@ class Resources
         //ProductListWidget
         $productWidget['@attributes'] = [
             'id' => 'widget/xero_commerce@product_list_widget',
-            'title' => 'Label',
+            'title' => '추천상품목록',
             'skin-id' => 'widget/xero_commerce@product_list_widget/skin/xero_commerce@product_list_widget_common_skin'
         ];
 
@@ -322,7 +322,7 @@ class Resources
 
         //TODO 테마 자동 설정 필요
         \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default', []);
-        \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default.0', ['layout_type'=>'sub']);
+        \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default.0', ['layout_type' => 'sub']);
         $desktopTheme = 'theme/xero_commerce@xero_commerce_theme_default.0';
         $mobileTheme = 'theme/xero_commerce@xero_commerce_theme_default.0';
 
@@ -383,7 +383,10 @@ class Resources
         XeDB::beginTransaction();
 
         try {
-            \XeConfig::add('theme.settings.theme/xero_commerce@xero_commerce_theme_default.1', ['layout_type'=>'main']);
+            \XeConfig::add(
+                'theme.settings.theme/xero_commerce@xero_commerce_theme_default.1',
+                ['layout_type' => 'main', 'gnb_sub' => $defaultMenu['id']]
+            );
             $desktopTheme = 'theme/xero_commerce@xero_commerce_theme_default.1';
             $mobileTheme = null;
 
@@ -1418,7 +1421,7 @@ class Resources
                 'ordering' => 100014
             ],
             'xero_commerce.product.badge' => [
-                'title' => '배지 관리',
+                'title' => '뱃지 관리',
                 'display' => true,
                 'description' => '',
                 'ordering' => 100015

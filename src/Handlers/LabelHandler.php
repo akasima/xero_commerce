@@ -27,6 +27,7 @@ class LabelHandler
     public function destroy($id)
     {
         Label::where('id', $id)->delete();
+        ProductLabel::where('label_id', $id)->delete();
     }
 
     public function getLabel($id)

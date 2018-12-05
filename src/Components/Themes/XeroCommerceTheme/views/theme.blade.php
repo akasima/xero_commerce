@@ -92,7 +92,7 @@
                     <div class="inner-header">
                         <ul class="list-category">
                             <!-- [D] 열림시 open 클래스 추가 -->
-                            @foreach(menu_list($config->get('gnb')) as $menu)
+                            @foreach(menu_list($config->get('gnb_sub')) as $menu)
                                 <li @if($menu['selected']) class="open item-category" @endif onclick="toggleSubMenu(this,'{{url($menu['url']) }}')">
                                     <h4 class="xe-shop-category-title"><a href="#" class="title-depth2">{{ $menu['link'] }}</a><i @if($menu['selected']) class="xi-angle-up-thin" @else class="xi-angle-down-thin" @endif></i></h4>
                                     <ul>
