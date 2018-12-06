@@ -28,6 +28,7 @@ class Plugin extends AbstractPlugin
 
     public function boot()
     {
+        class_exists(\Xpressengine\Plugins\Banner\Plugin::class);
         self::registerXeroCommerceLogger();
         Resources::bindClasses();
         Resources::setCanNotUseXeroCommercePrefixRoute();
@@ -68,6 +69,10 @@ class Plugin extends AbstractPlugin
     {
         if (Resources::isUsedXeroCommercePrefix() === true) {
             throw new XeroCommercePrefixUsedException;
+        }
+
+        if(!class_exists(\Xpressengine\Plugins\Banner\Plugin::class)){
+            abort(500, 'XE 배너플러그인을 필요로 합니다.');
         }
 
         Database::create();
