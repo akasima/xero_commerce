@@ -63,7 +63,7 @@ body {
 
 .xe-shop .container {
   position: relative;
-  width: 1140px;
+  max-width: 1140px;
   margin: 0 auto;
   padding: 0;
 }
@@ -80,7 +80,7 @@ body {
 
 #sub-container {
   position: relative;
-  width: 1140px;
+  max-width: 1140px;
   margin: 0 auto;
 }
 
@@ -7086,7 +7086,7 @@ header.header {
 
 .header .inner-header {
   position: relative;
-  width: 1140px;
+  max-width: 1140px;
   margin: 0 auto;
 }
 
@@ -7356,7 +7356,7 @@ header.header {
 
 .inner-main {
   position: relative;
-  width: 1140px;
+  max-width: 1140px;
   margin: 0 auto;
 }
 
@@ -7368,7 +7368,7 @@ header.header {
 
 .inner-footer {
   position: relative;
-  width: 1140px;
+  max-width: 1140px;
   margin: 0 auto;
   padding: 0 24px;
   text-align: center;
