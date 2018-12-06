@@ -214,7 +214,7 @@ class Resources
         }
 
         //Default Widget
-        $sample = file_get_contents(DefaultWidgetCommonSkin::asset('img/tmp_spot.jpg'));
+        $sample = file_get_contents(DefaultWidgetCommonSkin::getPath().'/assets/img/tmp_spot.jpg');
 
         $firstFile = \XeStorage::create($sample, 'public/xero_commerce/widget/default', 'default1.jpg');
         $firstImageFile = \XeMedia::make($firstFile);
@@ -1283,13 +1283,13 @@ class Resources
             $product->save();
 
             if (Product::count() == 4) {
-                $url = file_get_contents(Plugin::asset('assets/sample/tmp_tablist.jpg'));
+                $url = file_get_contents(Plugin::path('assets/sample/tmp_tablist.jpg'));
             } elseif (Product::count() == 8) {
-                $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross2.jpg'));
+                $url = file_get_contents(Plugin::path('assets/sample/tmp_cross2.jpg'));
             } elseif (Product::count() == 12) {
-                $url = file_get_contents(Plugin::asset('assets/sample/tmp_cross.jpg'));
+                $url = file_get_contents(Plugin::path('assets/sample/tmp_cross.jpg'));
             } else {
-                $url = file_get_contents(Plugin::asset('assets/sample/tmp_product.jpg'));
+                $url = file_get_contents(Plugin::path('assets/sample/tmp_product.jpg'));
             }
 
             $file = XeStorage::create($url, 'public/xero_commerce/product', 'default.jpg');

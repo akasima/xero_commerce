@@ -97,7 +97,15 @@
       }
     }
   },
-  "require": {},
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://store.xpressengine.io"
+    }
+  ],
+  "require": {
+    "xpressengine-plugin/banner": "0.9.4"
+  },
   "autoload": {
     "psr-4": {
       "Xpressengine\\Plugins\\XeroCommerce\\": "src/",
