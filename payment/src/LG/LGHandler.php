@@ -38,7 +38,8 @@ class LGHandler implements PaymentHandler
         XeFrontend::js([
             Plugin::asset('assets/payment.js'),
             Plugin::asset('assets/lg.js'),
-            'https://pretest.uplus.co.kr:9443/xpay/js/xpay_crossplatform.js'
+            (LG::isTest()) ? 'https://pretest.uplus.co.kr:9443/xpay/js/xpay_crossplatform.js'
+                : 'https://xpayvvip.uplus.co.kr/xpay/js/xpay_crossplatform.js'
         ])->appendTo('head')->load();
     }
 
