@@ -1639,7 +1639,6 @@ body {
 
 @media (min-width: 992px) {
   .product-info-counter .xe-btn-remove {
-    top: 50%;
     transform: translateY(-50%);
   }
 }
