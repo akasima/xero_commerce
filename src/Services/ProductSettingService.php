@@ -97,6 +97,10 @@ class ProductSettingService
             }
         }
 
+        if (empty($productArgs['original_price'])===true) {
+            $productArgs['original_price'] = $productArgs['sell_price'];
+        }
+
         if (is_null($productArgs['discount_percentage']) && !is_null($productArgs['original_price']) && !is_null($productArgs['sell_price'])) {
             $productArgs['discount_percentage'] = floor(($productArgs['original_price'] - $productArgs['sell_price']) * 10000/ $productArgs['original_price']) / 100;
         }
