@@ -159,6 +159,7 @@ class Database
             $table->increments('id');
             $table->morphs('type');
             $table->string('title');
+            $table->integer('score');
             $table->text('content');
             $table->string('user_id',36);
             $table->timestamps();
