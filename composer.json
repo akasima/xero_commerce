@@ -108,11 +108,15 @@
   },
   "autoload": {
     "psr-4": {
-      "Xpressengine\\Plugins\\XeroCommerce\\": "src/",
+      "Xpressengine\\Plugins\\XeroCommerce\\": [
+        "src/",
+        "./"
+      ],
       "Xpressengine\\XePlugin\\XeroPay\\": [
         "payment/src/",
         "payment/"
-      ]
+      ],
+      "Xpressengine\\Plugins\\XeroCommerce\\Test\\": "tests/"
     }
   },
   "config": {

@@ -1232,7 +1232,7 @@ class Resources
      */
     public static function storeDefaultShop()
     {
-        $userId = \Auth::user()->getId();
+        $userId = Auth::id();
 
         if (Shop::where('shop_name', Shop::BASIC_SHOP_NAME)->first() == null) {
             $args['user_id'] = $userId;
@@ -1242,7 +1242,11 @@ class Resources
             $storeHandler = new ShopHandler();
             $store = $storeHandler->store($args);
 
-            $store->deliveryCompanys()->attach(DeliveryCompany::pluck('id'));
+            $store->deliveryCompanys()->attach(DeliveryCompany::pluck('id'), [
+                'delivery_fare'=>0,
+                'up_to_free'=>0,
+                'is_default'=>0
+            ]);
         }
     }
 

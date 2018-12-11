@@ -73,6 +73,8 @@ class ShopService
 
         $newShop = $this->handler->store($args);
 
+        $newShop->users()->sync($args['user_id']);
+
         return $newShop;
     }
 
@@ -104,6 +106,7 @@ class ShopService
         $shop = $this->handler->getShop($shopId);
 
         $this->handler->update($args, $shop);
+        $shop->users()->sync($args['user_id']);
     }
 
     /**

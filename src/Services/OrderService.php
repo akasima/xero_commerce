@@ -50,7 +50,8 @@ class OrderService
     public function complete(Order $order, Request $request)
     {
         $this->orderHandler->idUpdate($order);
-        return $this->orderHandler->makeDelivery($order, $request);
+        $args = $request->all();
+        return $this->orderHandler->makeDelivery($order, $args);
     }
 
     public function orderItemList(Order $order)

@@ -3,7 +3,9 @@
 namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
 
 class Database
 {
@@ -41,7 +43,7 @@ class Database
 
         Schema::create('xero_commerce_user_agreement', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id',36);
+            $table->string('user_id', 36);
             $table->integer('agreement_id');
             $table->timestamps();
         });
@@ -58,13 +60,13 @@ class Database
         Schema::create('xero_commerce_shop', function (Blueprint $table) {
             $table->increments('id');
             $table->string('shop_name');
-            $table->string('shop_eng_name');
+            $table->string('shop_eng_name')->nullable();
             $table->string('logo_path')->nullable();
             $table->string('background_path')->nullable();
             $table->integer('shop_type');
-            $table->integer('state_approval');
-            $table->text('delivery_info');
-            $table->text('as_info');
+            $table->integer('state_approval')->default(0);
+            $table->text('delivery_info')->nullable();
+            $table->text('as_info')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -150,7 +152,7 @@ class Database
             $table->morphs('type');
             $table->string('title');
             $table->text('content');
-            $table->string('user_id',36);
+            $table->string('user_id', 36);
             $table->boolean('privacy')->default(false);
             $table->timestamps();
         });
@@ -161,7 +163,7 @@ class Database
             $table->string('title');
             $table->integer('score');
             $table->text('content');
-            $table->string('user_id',36);
+            $table->string('user_id', 36);
             $table->timestamps();
         });
 
@@ -192,7 +194,7 @@ class Database
             $table->increments('id');
             $table->string('order_id');
             $table->smallInteger('delivery_pay');
-            $table->integer('delivery_id');
+            $table->integer('delivery_id')->nullable();
             $table->morphs('type');
             $table->integer('original_price');
             $table->integer('sell_price');
@@ -252,8 +254,8 @@ class Database
             $table->integer('discount');
             $table->integer('millage');
             $table->integer('fare');
-            $table->boolean('is_paid');
-            $table->text('receipt');
+            $table->boolean('is_paid')->default(false);
+            $table->text('receipt')->nullable();
             $table->timestamps();
         });
 
@@ -277,11 +279,77 @@ class Database
 
         \Xpressengine\XePlugin\XeroPay\Resources::makeDataTable();
     }
+    public static function drop()
+    {
+        Schema::dropIfExists('xero_commerce_user');
+
+        Schema::dropIfExists('xero_commerce_user_delivery');
+
+        Schema::dropIfExists('xero_commerce_user_agreement');
+
+        Schema::dropIfExists('xero_commerce_agreement');
+
+        Schema::dropIfExists('xero_commerce_shop');
+
+        Schema::dropIfExists('xero_commerce_shop_user');
+
+        Schema::dropIfExists('xero_commerce_shop_delivery');
+
+        self::dropIfExistsProductTables();
+        self::dropIfExistsProductOptionTables();
+
+        Schema::dropIfExists('xero_commerce_images');
+
+        Schema::dropIfExists('xero_commerce_product_slug');
+
+        Schema::dropIfExists('xero_commerce_product_category');
+
+        Schema::dropIfExists('xero_commerce_label');
+
+        Schema::dropIfExists('xero_commerce_badge');
+
+        Schema::dropIfExists('xero_commerce_product_label');
+
+        Schema::dropIfExists('xero_commerce_order');
+
+        Schema::dropIfExists('xero_commerce_order_agreement');
+
+        Schema::dropIfExists('xero_commerce_qna');
+
+        Schema::dropIfExists('xero_commerce_feedback');
+
+        Schema::dropIfExists('xero_commerce_cart');
+
+        Schema::dropIfExists('xero_commerce_wish');
+
+        Schema::dropIfExists('xero_commerce_cart_group');
+
+        Schema::dropIfExists('xero_commerce_order_item');
+
+
+        Schema::dropIfExists('xero_commerce_order_item_group');
+
+        Schema::dropIfExists('xero_commerce_order_delivery');
+
+        Schema::dropIfExists('xero_commerce_order_afterservice');
+
+        Schema::dropIfExists('xero_commerce_delivery_company');
+
+        Schema::dropIfExists('xero_commerce_payment');
+
+        Schema::dropIfExists('xero_commerce_order_log');
+
+        Schema::dropIfExists('xero_commerce_pay_log');
+
+        \Xpressengine\XePlugin\XeroPay\Resources::deleteDataTable();
+    }
+
 
     /**
      * @return void
      */
-    private static function createProductTables()
+    private
+    static function createProductTables()
     {
         //상품 테이블 생성
         Schema::create('xero_commerce_products', function (Blueprint $table) {
@@ -312,7 +380,22 @@ class Database
         });
     }
 
-    public static function changeTable()
+
+    /**
+     * @return void
+     */
+    private
+    static function dropIfExistsProductTables()
+    {
+        //상품 테이블 생성
+        Schema::dropIfExists('xero_commerce_products');
+
+        //상품 Revision 테이블 생성
+        Schema::dropIfExists('xero_commerce_products_revision');
+    }
+
+    public
+    static function changeTable()
     {
         Schema::table('xero_commerce_products', function (Blueprint $table) {
             $table->boolean('publish')->default(false);
@@ -324,7 +407,8 @@ class Database
      *
      * @return Blueprint
      */
-    private static function setProductTableColumns($table)
+    private
+    static function setProductTableColumns($table)
     {
         $table->integer('shop_id');
         $table->boolean('publish')->default(false);
@@ -347,7 +431,8 @@ class Database
         return $table;
     }
 
-    private static function createProductOptionTables()
+    private
+    static function createProductOptionTables()
     {
         Schema::create('xero_commerce_product_option_item', function (Blueprint $table) {
             $table->increments('id');
@@ -376,7 +461,17 @@ class Database
         });
     }
 
-    private static function setProductOptionTableColumns($table)
+
+    private
+    static function dropIfExistsProductOptionTables()
+    {
+        Schema::dropIfExists('xero_commerce_product_option_item');
+
+        Schema::dropIfExists('xero_commerce_product_option_item_revision');
+    }
+
+    private
+    static function setProductOptionTableColumns($table)
     {
         $table->integer('product_id')->index();
         $table->integer('option_type');

@@ -21,8 +21,6 @@ class ShopHandler
 
         $newShop->save();
 
-        $newShop->users()->sync($args['user_id']);
-
         return $newShop;
     }
 
@@ -73,7 +71,6 @@ class ShopHandler
                 $shop->{$key} = $value;
             }
         }
-        $shop->users()->sync($args['user_id']);
 
         $shop->save();
     }

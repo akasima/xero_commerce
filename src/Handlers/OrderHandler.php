@@ -53,14 +53,17 @@ class OrderHandler extends SellSetHandler
 
             $orderItem->order_id = $order->id;
             $orderItem->delivery_pay = $cart->delivery_pay;
-            $cart->forcedSellType()->orderItems()->save($orderItem);
+            $orderItem->sellType()->associate($cart->forcedSellType());
+            $orderItem->original_price = $orderItem->getOriginalPrice();
+            $orderItem->sell_price = $orderItem->getSellPrice();
+            $orderItem->code = 0;
 
             $orderItem->save();
 
             $cart->sellGroups->each(function (CartGroup $cartGroup) use (&$orderItem) {
                 $orderItemGroup = new OrderItemGroup();
 
-                $cartGroup->forcedSellUnit()->orderItemGroup()->save($orderItemGroup);
+                $orderItemGroup->sellUnit()->associate($cartGroup->forcedSellUnit());
                 $orderItemGroup->setCount($cartGroup->getCount());
 
                 $orderItem->sellGroups()->save($orderItemGroup);
@@ -102,7 +105,7 @@ class OrderHandler extends SellSetHandler
 
     public function paidCheck(Order $order)
     {
-        $payment = $order->payment;
+        $payment = $order->payment()->first();
 
         if ($payment) {
             if ($payment->is_paid) {
@@ -158,11 +161,6 @@ class OrderHandler extends SellSetHandler
         }
     }
 
-    public function updateOrder()
-    {
-
-    }
-
     public function makeOrder()
     {
         $now = now();
@@ -216,6 +214,7 @@ class OrderHandler extends SellSetHandler
         $payment->discount = $summary['discount_price'];
         $payment->millage = 0;
         $payment->fare = $summary['fare'];
+        $payment->is_paid=false;
 
         if ($pay = $order->xeropay) {
             $payment->method = $pay->method;
@@ -235,31 +234,31 @@ class OrderHandler extends SellSetHandler
         $this->update($order);
     }
 
-    public function makeDelivery(Order $order, Request $request)
+    public function makeDelivery(Order $order, $args)
     {
-        if (isset($request->delivery['nickname'])) {
-            $del = $request->delivery;
+        if (isset($args['delivery']['nickname'])) {
+            $del = $args['delivery'];
             $del['user_id'] = Auth::id();
             $del['seq'] = UserDelivery::where('user_id', Auth::id())->count() + 1;
 
             UserDelivery::updateOrCreate(
-                ['nickname' => $request->delivery['nickname']],
+                ['nickname' => $args['delivery']['nickname']],
                 $del
             );
         }
 
-        $order->orderItems->each(function (OrderItem $orderItem) use ($request) {
+        $order->orderItems->each(function (OrderItem $orderItem) use ($args) {
             $delivery = new OrderDelivery();
             $delivery->order_item_id = $orderItem->id;
             $delivery->ship_no = '';
             $delivery->status = OrderDelivery::READY;
             $delivery->company_id = $orderItem->sellType->getDelivery()->company->id;
-            $delivery->recv_name = $request->delivery['name'];
-            $delivery->recv_phone = $request->delivery['phone'];
-            $delivery->recv_addr = $request->delivery['addr'] ?: '';
-            $delivery->recv_addr_detail = $request->delivery['addr_detail'];
-            $delivery->recv_addr_post = $request->delivery['addr_post'];
-            $delivery->recv_msg = $request->delivery['msg'];
+            $delivery->recv_name = $args['delivery']['name'];
+            $delivery->recv_phone = $args['delivery']['phone'];
+            $delivery->recv_addr = $args['delivery']['addr'] ?: '';
+            $delivery->recv_addr_detail = $args['delivery']['addr_detail'];
+            $delivery->recv_addr_post = $args['delivery']['addr_post'];
+            $delivery->recv_msg = $args['delivery']['msg'];
             $delivery->save();
         });
 
@@ -290,7 +289,7 @@ class OrderHandler extends SellSetHandler
         }
 
         $counts = collect($days)->map(function ($item) {
-            return $this->whereUser()->whereDate('created_at', $item)->count();
+            return $this->whereUser()->where('code','!=',Order::TEMP)->whereDate('created_at', $item)->count();
         })->all();
 
         return [
@@ -318,7 +317,7 @@ class OrderHandler extends SellSetHandler
 
         $delivery->setShipNo($ship_no);
 
-        $this->update($order);
+        return $this->update($order);
     }
 
     public function completeDelivery(OrderItem $orderItem)
@@ -336,7 +335,7 @@ class OrderHandler extends SellSetHandler
         $orderItem->code = $code;
         $orderItem->save();
 
-        $this->update($order);
+        return $this->update($order);
     }
 
     public function makeOrderAfterservice($type, OrderItem $orderItem, Request $request)
@@ -373,6 +372,7 @@ class OrderHandler extends SellSetHandler
 
             $this->changeOrderItem($orderItem, Order::CANCELED);
         });
+        return $this->update($order);
     }
 
     public function receiveOrderAfterservice(OrderItem $orderItem)
