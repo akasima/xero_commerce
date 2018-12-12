@@ -23,7 +23,8 @@ class FeedbackHandlerTest extends DefaultSet
         $product = $this->makeProduct();
         $args=[
             'title'=>'test',
-            'content'=>'test'
+            'content'=>'test',
+            'score'=>rand(0,10)
         ];
         $handler->store($product,$args);
         $this->assertNotEquals(0,$product->feedback()->count());
