@@ -1,7 +1,7 @@
 const lg = {
   name: 'lg',
   submit: function (success, fail) {
-    var result = openXpay(document.getElementById('xero_pay'), null, 'iframe', null, "", "");
+    var result = openXpay(document.getElementById('xero_pay'), document.getElementsByName('CST_PLATFORM')[0].value, 'iframe', null, "", "");
     $(result).on("load", function () {
       var iframe = result.contentWindow || result.contentDocument;
       console.log('load');

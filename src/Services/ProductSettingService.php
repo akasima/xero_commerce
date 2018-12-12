@@ -3,6 +3,7 @@
 namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
@@ -97,11 +98,17 @@ class ProductSettingService
             }
         }
 
+        if (empty($productArgs['original_price'])===true) {
+            $productArgs['original_price'] = $productArgs['sell_price'];
+        }
+
         if (is_null($productArgs['discount_percentage']) && !is_null($productArgs['original_price']) && !is_null($productArgs['sell_price'])) {
             $productArgs['discount_percentage'] = floor(($productArgs['original_price'] - $productArgs['sell_price']) * 10000/ $productArgs['original_price']) / 100;
         }
 
         $newProductId = $this->productHandler->store($productArgs);
+
+        \Event::dispatch(new NewProductRegisterEvent(Product::find($newProductId)));
 
         return $newProductId;
     }

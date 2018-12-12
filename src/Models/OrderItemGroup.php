@@ -20,6 +20,6 @@ class OrderItemGroup extends SellGroup
 
     public function sellSet()
     {
-        return $this->belongsTo(OrderItem::class);
+        return $this->belongsTo(OrderItem::class,'order_item_id');
     }
 }

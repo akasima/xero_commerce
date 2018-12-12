@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce;
 
+use App\Facades\XeConfig;
 use Faker\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -206,7 +207,7 @@ class Dev
 
     private function getXeroCommerceCategoryIds()
     {
-        $config = \XeConfig::get(Plugin::getId());
+        $config = XeConfig::get(Plugin::getId());
 
         $categoryId = $config->get('categoryId');
 

@@ -107,4 +107,10 @@ class Resources
             $table->timestamps();
         });
     }
+
+    public static function deleteDataTable(){
+        Schema::dropIfExists('xero_pay_payment');
+
+        Schema::dropIfExists('xero_pay_log');
+    }
 }

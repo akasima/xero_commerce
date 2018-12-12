@@ -218,7 +218,6 @@ class ProductHandler
             }
         }
 
-        \Event::dispatch(new NewProductRegisterEvent($newProduct));
 
         return $newProduct->id;
     }
@@ -303,7 +302,7 @@ class ProductHandler
         $revisionProduct->save();
     }
 
-    public function setPublish($productId, boolean $bool)
+    public function setPublish($productId, $bool)
     {
         $product = Product::find($productId);
         $product->publish = $bool;

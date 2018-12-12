@@ -19,12 +19,19 @@ class CartHandler extends SellSetHandler
 
     public function getCartListByCartIds($cart_ids)
     {
-        return $this->getCartQuery()->whereIn('id', $cart_ids)->get();
+        if (is_iterable($cart_ids)) {
+            return $this->getCartQuery()->whereIn('id', $cart_ids)->get();
+        }else{
+            return $this->getCartQuery()->where('id', $cart_ids)->get();
+        }
     }
 
     private function getCartQuery()
     {
-        return Cart::where('user_id', Auth::id() ?: \request()->ip())->latest();
+        if (is_null($user_id = Auth::id())) {
+            $user_id = \request()->ip();
+        }
+        return Cart::where('user_id', $user_id)->latest();
     }
 
     public function addCart(SellType $sellType, $cartGroupList, $delivery)
@@ -68,9 +75,9 @@ class CartHandler extends SellSetHandler
     public function makeCartGroup(SellUnit $sellUnit, $count)
     {
         $cartGroup = new CartGroup();
-
-        $sellUnit->cartGroup()->save($cartGroup);
+        $cartGroup->cart_id = 0;
         $cartGroup->setCount($count);
+        $sellUnit->cartGroup()->save($cartGroup);
         $cartGroup->save();
 
         return $cartGroup;

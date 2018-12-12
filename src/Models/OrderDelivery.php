@@ -48,4 +48,9 @@ class OrderDelivery extends DynamicModel
     {
         return $this->company->uri . $this->ship_no;
     }
+
+    public function orderItem()
+    {
+        return $this->belongsTo(OrderItem::class);
+    }
 }

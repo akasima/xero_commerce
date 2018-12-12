@@ -61,7 +61,8 @@ class Shop extends DynamicModel
 
     public function getDefaultDeliveryCompany()
     {
-        return $this->deliveryCompanys()->where('is_default', 1)->first();
+        $default = $this->deliveryCompanys()->where('is_default', 1)->first();
+        return $default?:$this->deliveryCompanys()->first();
     }
 
     public function users()
