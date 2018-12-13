@@ -56,10 +56,6 @@
                         <a href="/leaflet" class="img-logo">
                             <img id="logoPreview" name="logo" src="{{ app('xero_commerce.imageHandler')->getImageUrlByFileId($shopConfig['logo_id']) }}">
                         </a>
-                    @else
-                        <a href="/shopping" class="text-logo">
-                            {{$shopConfig['companyName']}}
-                        </a>
                     @endif
                 </h1>
 
