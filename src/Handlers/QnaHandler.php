@@ -39,6 +39,7 @@ class QnaHandler
     {
         return Qna::where('type_id', $target->id)
             ->where('type_type', get_class($target))
+            ->latest()
             ->get();
     }
 }

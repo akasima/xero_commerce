@@ -29,6 +29,7 @@ use Xpressengine\Plugins\XeroCommerce\Components\Widget\SlideWidget\Skins\Common
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\CommunicationHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\FeedbackHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
@@ -796,6 +797,24 @@ class Resources
                         'permission' => 'xero_commerce']);
                 });
 
+                //후기, 문의 관리
+                Route::get('/communication/feedback', [
+                    'as' =>'xero_commerce::setting.commuication.feedback',
+                    'uses' => 'CommunicationController@index',
+                    'settings_menu' => 'xero_commerce.product.feedback'
+                ]);
+
+                Route::get('/communication/qna', [
+                    'as' =>'xero_commerce::setting.commuication.qna',
+                    'uses' => 'CommunicationController@index',
+                    'settings_menu' => 'xero_commerce.product.qna'
+                ]);
+
+                Route::get('/communication/show/{type}/{id}', [
+                    'as' =>'xero_commerce::setting.communication.show',
+                    'uses' => 'CommunicationController@show'
+                ]);
+
                 //약관 관리
                 Route::get('/agreement', [
                     'as' => 'xero_commerce::setting.agreement.index',
@@ -1086,6 +1105,16 @@ class Resources
         });
 
         $app->alias(FeedbackHandler::class, 'xero_commerce.feedbackHandler');
+
+        $app->singleton(CommunicationHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(CommunicationHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+
+        $app->alias(CommunicationHandler::class, 'xero_commerce.communicationHandler');
 
         $app->singleton(XeroCommerceImageHandler::class, function ($app) {
             return new XeroCommerceImageHandler();
@@ -1429,6 +1458,18 @@ class Resources
                 'display' => true,
                 'description' => '',
                 'ordering' => 100015
+            ],
+            'xero_commerce.product.feedback' => [
+                'title' => '후기관리',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100016
+            ],
+            'xero_commerce.product.qna' => [
+                'title' => '문의관리',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100017
             ]
         ];
     }

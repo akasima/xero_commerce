@@ -61,7 +61,7 @@ class ProductController extends XeroCommerceBasicController
                 ->with('alert', ['type' => 'danger', 'message' => '존재하지 않는 상품입니다.']);
         }
 
-        return \XePresenter::make('product.show', ['product' => $product, 'category' => $category]);
+        return \XePresenter::make('product.show_new', ['product' => $product, 'category' => $category]);
     }
 
     public function cartAdd(Request $request, Product $product)
