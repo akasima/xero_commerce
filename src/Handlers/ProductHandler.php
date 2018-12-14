@@ -232,6 +232,8 @@ class ProductHandler
         } else {
             if ($existImage = $newProduct->images->get($key)) {
                 $newProduct->images()->updateExistingPivot($existImage->id, ['image_id' => $imageFile->id]);
+            }else{
+                $newProduct->images()->attach($imageFile->id);
             }
         }
 
