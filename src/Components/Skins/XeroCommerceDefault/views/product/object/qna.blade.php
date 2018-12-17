@@ -52,6 +52,7 @@
         </tr>
         </tbody>
     </table>
+    @if(\Illuminate\Support\Facades\Auth::user()->rating==\Xpressengine\User\Rating::USER)
     <div style="padding:10px">
         <div class="form-group">
             <label>Qna작성</label>
@@ -63,6 +64,7 @@
             <button class="xe-btn xe-btn-black" @click="write">글쓰기</button>
         </div>
     </div>
+    @endif
 </div>
 <script>
     $(function(){
@@ -102,7 +104,19 @@
                     $.ajax({
                         url: "{{route('xero_commerce::product.qna.get',['product'=>$product])}}"
                     }).done(function (res){
-                        this.list = res
+                        var list =res;
+                        @if(isset($total))
+                            @if(!$total)
+                            list = res.filter(function(item){
+                                var array = {!! json_encode($list) !!};
+                                var filtered = $.grep(array, function(matchitem){
+                                    return item.id == matchitem.id;
+                                });
+                                return filtered.length>0;
+                        });
+                            @endif
+                        @endif
+                        this.list = list
                     }.bind(this))
                 },
                 write: function () {
@@ -118,7 +132,7 @@
                 add: function (data, url) {
 
                     if ({{\Illuminate\Support\Facades\Auth::check()?'true':'false'}}) {
-                        data._token = $("#csrf_token").val()
+                        data._token = '{{csrf_token()}}'
                         data.privacy = Number(data.privacy)
                         $.ajax({
                             url: url,
