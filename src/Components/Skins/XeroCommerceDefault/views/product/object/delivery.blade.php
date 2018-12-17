@@ -31,18 +31,15 @@
             el:"#delivery",
             name: "DeliverySelectComponent",
             watch: {
-                pay (el) {
+                pay: function (el) {
                     this.$emit('input', el)
                 }
             },
-            data () {
+            data: function () {
                 return {
                     pay: '선불',
                     delivery: {!! json_encode($delivery) !!}
                 }
-            },
-            mounted () {
-                this.$emit('input', this.pay)
             }
         });
     })

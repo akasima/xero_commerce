@@ -41,9 +41,9 @@
             el: "#option",
             name: "OptionSelectComponent",
             watch: {
-                selectOption(el) {
+                selectOption: function (el) {
                     if (el == null) return
-                    var exist = this.select.find(v => {
+                    var exist = this.select.find(function(v){
                         return v.unit.id === el.id
                     })
                     if (exist) {
@@ -64,17 +64,17 @@
                 }
             },
             computed: {
-                totalChoosePrice() {
+                totalChoosePrice: function() {
                     return this.sum(this.select)
                 },
-                onlyOneOption () {
+                onlyOneOption: function () {
                     return this.options.length ===1
                 },
-                chooseJson () {
+                chooseJson: function () {
                     return JSON.stringify(this.select)
                 }
             },
-            data() {
+            data: function() {
                 return {
                     selectOption: null,
                     'select': [],
@@ -85,26 +85,26 @@
                 }
             },
             methods: {
-                sum(array) {
-                    return array.map((v) => {
+                sum: function (array) {
+                    return array.map(function (v) {
                         return v.unit.sell_price * v.count
-                    }).reduce((a, b) => a + b, 0);
+                    }).reduce(function (a, b) { return a + b }, 0);
                 },
-                dropOption(key) {
+                dropOption: function (key) {
                     this.select.splice(key, 1)
                 },
-                toggleButton () {
+                toggleButton: function () {
                     if($("#toggleBtn").hasClass("on")){
                         $("#toggleBtn").removeClass("on")
                     }else{
                         $("#toggleBtn").addClass("on")
                     }
                 },
-                initialize () {
+                initialize: function () {
                     if(this.onlyOneOption && this.select.length===0) this.selectOption=this.options[0]
                 }
             },
-            mounted() {
+            mounted: function () {
                 this.select = this.alreadyChoose
                 this.$emit('input', this.select)
                 this.initialize()

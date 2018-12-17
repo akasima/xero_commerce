@@ -69,12 +69,12 @@
         var qna = new Vue({
             el: "#qna",
             computed: {
-                listExist () {
+                listExist: function () {
                     return this.list.length> 0;
                 }
             },
             watch: {
-                list (el) {
+                list: function (el) {
                     this.childDocument=[]
                     el.forEach(function(v){
                         this.childDocument.push({
@@ -86,7 +86,7 @@
                     }.bind(this))
                 }
             },
-            data () {
+            data: function () {
                 return {
                     document: {
                         title: '',

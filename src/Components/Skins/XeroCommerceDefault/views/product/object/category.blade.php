@@ -30,10 +30,10 @@
                 }
             },
             methods: {
-                recursivePush(categorys, key) {
-                    var find = categorys.find(v => {
+                recursivePush: function (categorys, key) {
+                    var find = categorys.find(function(v) {
                         return v.self.id === this.targetCategory[key].id
-                    })
+                    }.bind(this))
                     if (find) {
                         this.levelTree.push(categorys)
                         this.checked.push(this.targetCategory[key])
