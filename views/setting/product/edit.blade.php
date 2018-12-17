@@ -42,6 +42,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 <category-component :category-items='{{ json_encode($categoryItems) }}'
                                                     get-child-url="{{ route('xero_commerce:setting.product.category.getChild') }}"
                                                     mode="create"
+                                                    name="newCategory"
                                                     :selected="{{ json_encode($productCategorys)}}">
                                 </category-component>
                             </div>

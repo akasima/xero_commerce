@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Components\Widget\LabelProductWidget
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
+use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Widget\AbstractWidget;
 use View;
 
@@ -63,10 +64,13 @@ class LabelProductWidget extends AbstractWidget
     public function renderSetting(array $args = [])
     {
         $labels = $this->labelHandler->getLabels();
+        $productCategoryService = new ProductCategoryService();
+        $categoryItems = $productCategoryService->getCategoryItems();
 
         return View::make(sprintf('%s/setting', static::$path), [
             'args' => $args,
-            'labels' => $labels
+            'labels' => $labels,
+            'categoryItems' => $categoryItems
         ]);
     }
 }
