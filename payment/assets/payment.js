@@ -1,4 +1,4 @@
-const payment = {
+var payment = {
 
   gateway: null,
 

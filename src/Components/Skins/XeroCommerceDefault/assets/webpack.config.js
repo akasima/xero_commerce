@@ -28,13 +28,7 @@ module.exports = [{
             {
                 test: /\.css$/,
                 use: [
-                    {
-                        loader: 'style-loader',
-                        options: {
-                            transform: './src/transform.js'
-                        }
-                    },
-                    'css-loader',
+                    'css-loader'
                 ]
             },
             {

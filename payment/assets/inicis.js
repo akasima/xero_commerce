@@ -1,4 +1,4 @@
-const inicis = {
+var inicis = {
   name: 'test',
   submit: function (success, fail) {
     INIStdPay.pay('xero_pay');
