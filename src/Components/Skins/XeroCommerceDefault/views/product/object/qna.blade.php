@@ -52,18 +52,20 @@
         </tr>
         </tbody>
     </table>
-    @if(\Illuminate\Support\Facades\Auth::user()->rating==\Xpressengine\User\Rating::USER)
-    <div style="padding:10px">
-        <div class="form-group">
-            <label>Qna작성</label>
-            <input type="text" class="form-control" placeholder="제목" v-model="document.title">
-            <textarea class="form-control" placeholder="문의내용" style="resize:vertical" rows="4" v-model="document.content"></textarea>
+    @if(\Illuminate\Support\Facades\Auth::check())
+        @if(\Illuminate\Support\Facades\Auth::user()->rating==\Xpressengine\User\Rating::USER)
+        <div style="padding:10px">
+            <div class="form-group">
+                <label>Qna작성</label>
+                <input type="text" class="form-control" placeholder="제목" v-model="document.title">
+                <textarea class="form-control" placeholder="문의내용" style="resize:vertical" rows="4" v-model="document.content"></textarea>
+            </div>
+            <div style="text-align: right;">
+                <input type="checkbox" v-model="document.privacy"> 비공개
+                <button class="xe-btn xe-btn-black" @click="write">글쓰기</button>
+            </div>
         </div>
-        <div style="text-align: right;">
-            <input type="checkbox" v-model="document.privacy"> 비공개
-            <button class="xe-btn xe-btn-black" @click="write">글쓰기</button>
-        </div>
-    </div>
+        @endif
     @endif
 </div>
 <script>

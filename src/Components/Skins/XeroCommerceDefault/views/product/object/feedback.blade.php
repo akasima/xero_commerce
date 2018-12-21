@@ -39,6 +39,7 @@
     </tr>
     </tbody>
 </table>
+@if(\Illuminate\Support\Facades\Auth::check())
 <div style="padding:10px" id="feedbackForm">
     <div class="form-group">
         <label class="sr-only">평점</label>
@@ -55,6 +56,7 @@
         <button class="xe-btn xe-btn-black" type="button" onclick="feedback_write()">글쓰기</button>
     </div>
 </div>
+@endif
 <script>
     var feedback;
     $(function(){
