@@ -1,6 +1,5 @@
 
 <body onload="func()">
-test
 </body>
 <script>
     (function () {

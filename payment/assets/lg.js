@@ -1,4 +1,4 @@
-const lg = {
+var lg = {
   name: 'lg',
   submit: function (success, fail) {
     var result = openXpay(document.getElementById('xero_pay'), document.getElementsByName('CST_PLATFORM')[0].value, 'iframe', null, "", "");
