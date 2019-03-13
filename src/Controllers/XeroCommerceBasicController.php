@@ -19,5 +19,7 @@ class XeroCommerceBasicController extends Controller
 
         $menuTheme = \XeMenu::getMenuTheme(\XeMenu::menus()->findWith($mainMenuId));
         $themeHandler->selectTheme($menuTheme['desktopTheme']);
+
+        \XePresenter::setSkinTargetId(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
     }
 }

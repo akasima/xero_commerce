@@ -25,7 +25,7 @@ class OrderController extends XeroCommerceBasicController
 
     public function index()
     {
-        return \XePresenter::make('xero_commerce::views.order.dash', ['title' => '주문내역', 'dashboard' => $this->orderService->dashBoard()]);
+        return \XePresenter::make('order.dash', ['title' => '주문내역', 'dashboard' => $this->orderService->dashBoard()]);
     }
 
     public function list(Request $request)
@@ -48,7 +48,7 @@ class OrderController extends XeroCommerceBasicController
         ];
         if ($request->get('code')) $default['equal']['code'] = $request->get('code');
         $data = $this->orderService->orderList(1, 5, $default);
-        return \XePresenter::make('xero_commerce::views.order.list',
+        return \XePresenter::make('order.list',
             [
                 'title' => '주문/배송조회',
                 'list' => $data['data'],
@@ -64,7 +64,7 @@ class OrderController extends XeroCommerceBasicController
 
     public function detail(Order $order)
     {
-        return \XePresenter::make('xero_commerce::views.order.detail', ['title' => '주문상세', 'order' => $this->orderService->orderDetail($order)]);
+        return \XePresenter::make('order.detail', ['title' => '주문상세', 'order' => $this->orderService->orderDetail($order)]);
     }
 
     public function register(Request $request)
@@ -83,7 +83,7 @@ class OrderController extends XeroCommerceBasicController
         $paymentService->statusCheck();
         $paymentService->loadScript();
         return \XePresenter::make(
-            'xero_commerce::views.order.register',
+            'order.register',
             ['title' => 'test',
                 'agreements' => [
                     'purchase' => AgreementService::get('purchase'),
@@ -101,7 +101,7 @@ class OrderController extends XeroCommerceBasicController
     public function fail(Order $order)
     {
         return \XePresenter::make(
-            'xero_commerce::views.order.fail',
+            'order.fail',
             [
                 'title' => 'fail',
                 'order' => $order
@@ -136,7 +136,7 @@ class OrderController extends XeroCommerceBasicController
             default:
                 throwException(\HttpUrlException::class);
         }
-        return \XePresenter::make('xero_commerce::views.order.as',
+        return \XePresenter::make('order.as',
             [
                 'type' => $type,
                 'order' => $order,
@@ -158,7 +158,7 @@ class OrderController extends XeroCommerceBasicController
 
     public function cancelService(Order $order)
     {
-        return \XePresenter::make('xero_commerce::views.order.cancel',
+        return \XePresenter::make('order.cancel',
             [
                 'order' => $order,
                 'summary'=>$this->orderService->summary($order)
@@ -176,6 +176,6 @@ class OrderController extends XeroCommerceBasicController
 
     public function complete(Order $order)
     {
-        return \XePresenter::make('xero_commerce::views.order.complete',['order'=>$order]);
+        return \XePresenter::make('order.complete',['order'=>$order]);
     }
 }

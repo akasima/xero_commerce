@@ -20,7 +20,7 @@ class WishController extends XeroCommerceBasicController
     {
         $list = $this->wishService->get();
 
-        return \XePresenter::make('xero_commerce::views.wish.index', ['list'=>$list]);
+        return \XePresenter::make('wish.index', ['list'=>$list]);
     }
 
     public function remove(Request $request)

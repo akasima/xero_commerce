@@ -63,7 +63,7 @@ class ProductController extends SettingBaseController
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return XePresenter::make('xero_commerce::views.setting.product.create',
+        return XePresenter::make('xero_commerce::views.setting.product.create2',
             compact('labels', 'badges', 'categoryItems', 'shops'));
     }
 

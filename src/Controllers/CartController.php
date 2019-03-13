@@ -24,7 +24,7 @@ class CartController extends XeroCommerceBasicController
     public function index()
     {
         return \XePresenter::make(
-            'xero_commerce::views.cart.index',
+            'cart.index',
             [
                 'cartList' => $this->cartService->getJsonList()
             ]
