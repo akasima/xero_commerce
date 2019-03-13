@@ -38,7 +38,7 @@ class ProductController extends SettingBaseController
         $products = $this->productSettingService->getProducts($request);
 
         return XePresenter::make(
-            'xero_commerce::views.setting.product.index',
+            'product.index',
             compact('displayStates', 'dealStates', 'products')
         );
     }
@@ -48,7 +48,7 @@ class ProductController extends SettingBaseController
         $product = $this->productSettingService->getProduct($productId);
         $options = $this->productSettingService->getProductOptionArrays($product);
 
-        return XePresenter::make('xero_commerce::views.setting.product.show', compact('product', 'options'));
+        return XePresenter::make('product.show', compact('product', 'options'));
     }
 
     public function create(ProductCategoryService $productCategoryService)
@@ -63,7 +63,7 @@ class ProductController extends SettingBaseController
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return XePresenter::make('xero_commerce::views.setting.product.create2',
+        return XePresenter::make('product.create',
             compact('labels', 'badges', 'categoryItems', 'shops'));
     }
 
@@ -97,7 +97,7 @@ class ProductController extends SettingBaseController
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return XePresenter::make('xero_commerce::views.setting.product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys'));
+        return XePresenter::make('product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys'));
     }
 
     public function update(Request $request, $productId)

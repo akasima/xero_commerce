@@ -17,7 +17,7 @@ class ShopConfigController extends SettingBaseController
     {
         $config = XeConfig::getOrNew(Plugin::getId());
 
-        return XePresenter::make('xero_commerce::views.setting.config.config', compact('config'));
+        return XePresenter::make('config.config', compact('config'));
     }
 
     public function store(Request $request)
@@ -53,7 +53,7 @@ class ShopConfigController extends SettingBaseController
     {
         $skinSection = new SkinSection(XeroCommerceModule::getId());
 
-        return XePresenter::make('xero_commerce::views.setting.config.skin', compact('skinSection'));
+        return XePresenter::make('config.skin', compact('skinSection'));
     }
 
     public function editTheme()
@@ -69,7 +69,7 @@ class ShopConfigController extends SettingBaseController
         $selectedTheme['desktop'] = $menuTheme['desktopTheme'];
         $selectedTheme['mobile'] = $menuTheme['mobileTheme'];
 
-        return \XePresenter::make('xero_commerce::views.setting.config.theme', compact('selectedTheme'));
+        return \XePresenter::make('config.theme', compact('selectedTheme'));
     }
 
     public function updateTheme(Request $request)

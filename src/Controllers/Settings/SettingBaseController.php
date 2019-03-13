@@ -23,5 +23,7 @@ class SettingBaseController extends Controller
             \Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/settings.js')
         )->load();
         XeFrontend::bodyClass('xero-settings')->load();
+
+        \XePresenter::setSettingsSkinTargetId(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
     }
 }

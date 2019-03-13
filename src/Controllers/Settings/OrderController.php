@@ -28,7 +28,7 @@ class OrderController extends SettingBaseController
     {
         XeFrontend::js('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js')->load();
 
-        return \XePresenter::make('xero_commerce::views.setting.order.dash', [
+        return \XePresenter::make('order.dash', [
             'title' => 'xero_commerce',
             'dash' => $this->orderService->dashBoard(),
             'week' => $this->orderService->weekBoard(),
@@ -48,7 +48,7 @@ class OrderController extends SettingBaseController
 
     public function delivery()
     {
-        return \XePresenter::make('xero_commerce::views.setting.order.delivery', [
+        return \XePresenter::make('order.delivery', [
             'title' => 'xero_commerce',
             'orderItems' => $this->orderService->deliveryOrderItemList()
         ]);
@@ -81,7 +81,7 @@ class OrderController extends SettingBaseController
 
     public function afterservice()
     {
-        return \XePresenter::make('xero_commerce::views.setting.order.as', [
+        return \XePresenter::make('order.as', [
             'list' => $this->orderService->afterserviceList()
         ]);
     }

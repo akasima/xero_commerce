@@ -44,6 +44,11 @@
           "description": "The skin supported by Xero_commerce plugin.",
           "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\ShoppingDefault\\ShoppingDefaultSkin"
         },
+        "xero_commerce/settingsSkin/xero_commerce@shopping_default": {
+          "name": "XeroCommerce Settings Default Skin",
+          "description": "The skin supported by Xero_commerce plugin.",
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\SettingsDefault\\SettingsDefaultSkin"
+        },
         "uiobject/xero_commerce@tag": {
           "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\UIObjects\\Tag\\TagUIObject",
           "name": "Tag",
