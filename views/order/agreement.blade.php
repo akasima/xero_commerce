@@ -51,6 +51,7 @@
     #contacts {
         width:600px;
         margin-top: 20px;
+        margin-bottom: 40px;
     }
     #contacts textarea {
         resize: none;
