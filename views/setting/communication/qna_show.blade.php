@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 <div class="panel">
     <div class="panel-heading">
         <div class="panel-title">

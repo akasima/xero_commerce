@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 {{ XeFrontend::js($plugin::asset('assets/js/module_category.js'))->load() }}
 
 <div>
