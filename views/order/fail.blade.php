@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 <div class="title">{{ $title }}</div>
 <div class="xe-well">
     <h2>주문실패</h2>

@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 <h2 class="xe-sr-only">취소요청</h2>
 
 <div class="step-ui step-1">
