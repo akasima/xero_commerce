@@ -87,9 +87,6 @@
                 this.loading = true
                 this.$emit('remove',item.data)
             }
-        },
-        mounted() {
-            console.log(this.optionList)
         }
     }
 </script>

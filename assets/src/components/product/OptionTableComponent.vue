@@ -143,21 +143,18 @@
             add() {
                 this.addList.push({
                     product_id: this.productId,
-                    option_type: '',
+                    option_type: 2,
                     name: '',
                     addition_price: '',
                     stock: '',
                     alert_stock: '',
-                    state_display: '',
-                    state_deal: '',
+                    state_display: 1,
+                    state_deal: 1,
                 })
             },
             pop(key) {
                 this.addList.splice(key,1);
             }
-        },
-        mounted() {
-            console.log(this.optionList[0])
         }
     }
 </script>
