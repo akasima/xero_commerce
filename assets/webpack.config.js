@@ -1,7 +1,7 @@
-var path = require('path');
-const VueLoader = require('vue-loader/lib/plugin')
+var path = require('path')
+var VueLoader = require('vue-loader/lib/plugin')
 
-module.exports = [{
+module.exports = {
   mode: 'development',
   entry: './src/app.js',
   output: {
@@ -47,6 +47,8 @@ module.exports = [{
   },
   plugins: [
     new VueLoader()
-  ]
+  ],
+  performance: {
+    hints: false
+  }
 }
-]
