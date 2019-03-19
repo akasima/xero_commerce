@@ -134,7 +134,12 @@ class Product extends SellType
 
     public function getThumbnailSrc()
     {
-        return XeMedia::images()->getThumbnail($this->images->first(), 'widen', 'M')->url();
+        $url = 'https://via.placeholder.com/150x120';
+        $imageItem = $this->images->first();
+        if ($imageItem == null) {
+            return $url;
+        }
+        return XeMedia::images()->getThumbnail($imageItem, 'widen', 'M')->url();
     }
 
     /**

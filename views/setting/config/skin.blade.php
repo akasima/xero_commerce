@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 @section('page_title')
     <h2>스킨 설정</h2>
 @endsection

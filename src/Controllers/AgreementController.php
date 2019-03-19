@@ -13,7 +13,7 @@ class AgreementController extends XeroCommerceBasicController
 {
     public function contacts(Request $request)
     {
-        return XePresenter::make('xero_commerce::views.order.agreement', [
+        return XePresenter::make('order.agreement', [
             'agreement' => AgreementService::get('contacts')
         ]);
     }

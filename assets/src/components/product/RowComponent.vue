@@ -3,10 +3,10 @@
         <template v-if="!loading">
             <td v-if="isShowState">{{ optionList.option_type_name }}</td>
             <td v-if="isShowState" v-model="optionList.name">{{ optionList.name }}</td>
-            <td v-if="isShowState">{{ optionList.addition_price.toLocaleString() }}</td>
-            <td v-if="isShowState">{{ optionList.sell_price.toLocaleString() }}</td>
-            <td v-if="isShowState">{{ optionList.stock.toLocaleString() }}</td>
-            <td v-if="isShowState">{{ optionList.alert_stock.toLocaleString() }}</td>
+            <td v-if="isShowState">{{ Number(optionList.addition_price).toLocaleString() }}</td>
+            <td v-if="isShowState">{{ Number(optionList.sell_price).toLocaleString() }}</td>
+            <td v-if="isShowState">{{ Number(optionList.stock).toLocaleString() }}</td>
+            <td v-if="isShowState">{{ Number(optionList.alert_stock).toLocaleString() }}</td>
             <td v-if="isShowState">{{ (Number(optionList.state_display)==1)?'출력':'미출력' }}</td>
             <td v-if="isShowState">{{ (Number(optionList.state_deal)==1)?'판매':((Number(optionList.state_deal)==2)?'일시중단':'중단' )}}</td>
             <td v-if="isShowState">

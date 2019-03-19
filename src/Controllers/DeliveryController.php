@@ -8,6 +8,6 @@ class DeliveryController extends XeroCommerceBasicController
 {
     public function index()
     {
-        return XePresenter::make('xero_commerce::views.no_delivery');
+        return XePresenter::make('no_delivery');
     }
 }

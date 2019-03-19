@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 @section('page_title')
     <h3>약관변경</h3>
 @endsection

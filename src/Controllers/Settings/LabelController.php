@@ -26,20 +26,20 @@ class LabelController extends SettingBaseController
     {
         $labels = Label::get();
 
-        return XePresenter::make('xero_commerce::views.setting.label.index', compact('labels'));
+        return XePresenter::make('label.index', compact('labels'));
     }
 
     public function store(Request $request)
     {
         $this->labelService->create($request);
 
-        return redirect()->route('xero_commerce::setting.label.index');
+        return redirect()->route('label.index');
     }
 
     public function edit(Request $request, $id)
     {
         $label = Label::find($id);
-        return XePresenter::make('xero_commerce::views.setting.label.edit', compact('label'));
+        return XePresenter::make('setting.label.edit', compact('label'));
     }
 
     public function update(Request $request, $id)

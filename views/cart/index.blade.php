@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 {{ XeFrontend::js(asset(\Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')))->appendTo('body')->load() }}
 <h2>장바구니</h2>
 <div id="component-container">

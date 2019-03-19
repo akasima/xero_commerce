@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 @foreach($list as $item)
     <tr>
         <td>{{$item->target->getName()}}</td>

@@ -1,4 +1,4 @@
-
+{{--@deprecated since ver 1.1.4--}}
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     @foreach(\Xpressengine\Plugins\XeroCommerce\Models\Agreement::groupBy('type')->select(DB::raw('*, max(version) as version'))->orderBy('version','desc')->get() as $agreement)
     <div class="panel __xe_section_box">

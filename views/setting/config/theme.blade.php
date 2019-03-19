@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 <div class="row">
     <div class="col-sm-12">
         <div class="panel-group">

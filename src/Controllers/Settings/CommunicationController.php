@@ -25,7 +25,7 @@ class CommunicationController
     {
         $type = basename(url()->current());
         $list = $this->communicationService->getList($type);
-        return XePresenter::make('xero_commerce::views.setting.communication.index', compact('list' , 'type'));
+        return XePresenter::make('communication.index', compact('list' , 'type'));
     }
 
     public function update()
@@ -37,6 +37,6 @@ class CommunicationController
     {
         $item = $this->communicationService->getItem($type, $id);
         $target = $this->communicationService->getTargetInfo($item);
-        return XePresenter::make('xero_commerce::views.setting.communication.show', compact('item', 'type', 'target'));
+        return XePresenter::make('communication.show', compact('item', 'type', 'target'));
     }
 }
