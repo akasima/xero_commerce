@@ -15,6 +15,7 @@
         :pay-target="{{json_encode($order->getPayInfo())}}"
         agree-url="{{route('xero_commerce::agreement.order.save',['order'=>$order->id])}}"
         denied-url="{{route('xero_commerce::agreement.order.cancel',['order'=>$order->id])}}"
+        delivery-store-url="{{route('xero_commerce::delivery.store')}}"
     ></order-register-component>
     <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
 </div>

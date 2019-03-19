@@ -234,17 +234,24 @@ class OrderHandler extends SellSetHandler
         $this->update($order);
     }
 
+    public function addUserDelivery($args)
+    {
+        $del = $args;
+        $del['user_id'] = Auth::id();
+        $del['seq'] = UserDelivery::where('user_id', Auth::id())->count() + 1;
+
+        $item = UserDelivery::updateOrCreate(
+            ['nickname' => $args['nickname']],
+            $del
+        );
+
+        return $item;
+    }
+
     public function makeDelivery(Order $order, $args)
     {
         if (isset($args['delivery']['nickname'])) {
-            $del = $args['delivery'];
-            $del['user_id'] = Auth::id();
-            $del['seq'] = UserDelivery::where('user_id', Auth::id())->count() + 1;
-
-            UserDelivery::updateOrCreate(
-                ['nickname' => $args['delivery']['nickname']],
-                $del
-            );
+            $this->addUserDelivery($args['delivery']);
         }
 
         $order->orderItems->each(function (OrderItem $orderItem) use ($args) {

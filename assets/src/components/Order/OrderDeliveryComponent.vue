@@ -134,7 +134,7 @@
             }
         },
         props: [
-            'input', 'userInfo'
+            'input', 'userInfo', 'deliveryStoreUrl'
         ],
         data() {
             return {
@@ -186,10 +186,27 @@
                     alert('신규 배송지주소가 없습니다')
                     return
                 }
-                this.delivery.nickname = this.new_name
-                this.userInfo.user_delivery.push(this.delivery)
-                this.deliveryCheck = this.new_name
-                this.new_name = ''
+
+                $.ajax({
+                    url: this.deliveryStoreUrl,
+                    method: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: $('#csrf_token').val(),
+                        nickname: this.new_name,
+                        name: this.delivery.name,
+                        phone: this.delivery.phone,
+                        addr: this.delivery.addr,
+                        addr_detail: this.delivery.addr_detail,
+                        addr_post: this.delivery.addr_post,
+                        msg: this.delivery.msg
+                    }
+                }).done((req)=>{
+                    this.delivery.nickname = this.new_name
+                    this.userInfo.user_delivery.push(this.delivery)
+                    this.deliveryCheck = this.new_name
+                    this.new_name = ''
+                })
             },
             modal() {
                 $('#addressModal').xeModal()
