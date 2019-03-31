@@ -144,6 +144,9 @@
                 @if(!is_null($shopConfig['telNumber']))
                     <dd class="item-company">대표전화 : {{$shopConfig['telNumber']}}</dd>
                 @endif
+                @if(!is_null($shopConfig['faxNumber']))
+                    <dd class="item-company">팩스번호 :{{$shopConfig['faxNumber']}}</dd>
+                @endif
                 @if(!is_null($shopConfig['email']))
                     <dd class="item-company">이메일 :  <a href="mailto:{{$shopConfig['email']}}" class="link-email">{{$shopConfig['email']}}</a></dd>
                 @endif
