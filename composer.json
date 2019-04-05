@@ -104,7 +104,7 @@
     }
   ],
   "require": {
-    "xpressengine-plugin/banner": "0.9.4"
+    "xpressengine-plugin/banner": ">=1.0.0 || 0.9.4"
   },
   "autoload": {
     "psr-4": {
