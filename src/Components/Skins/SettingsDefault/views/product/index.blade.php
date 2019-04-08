@@ -89,7 +89,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                         <tbody>
                             @foreach ($products as $product)
                             <tr>
-                                <td><img src="{{$product->getThumbnailSrc()}}" alt="" style="width:80px; height:60px;"></td>
+                                <td><img src="{{$product->getThumbnailSrc('T')}}" alt="" style="width:80px; height:60px;"></td>
                                 <td class="nowrap">{{ $product->product_code }}</td>
                                 <td class="full"><a href="{{ route('xero_commerce::setting.product.show', ['productId' => $product->id]) }}"><span>{{ $product->name }}</span></a></td>
                                 <td class="full">{{$product->sub_name}}</td>

@@ -46,7 +46,7 @@
                                 <span style="color: {{$badge->text_color}};">{{$badge->name}}</span>
                             </div>
                         @endif
-                        <span class="thumnail" style="background-image:url('{{$product->getThumbnailSrc()}}')"></span>
+                        <span class="thumnail" style="background-image:url('{{$product->getThumbnailSrc('S')}}')"></span>
                         <div class="box_content">
                             <strong>{{$product->name}}</strong>
                             <p class="price">
