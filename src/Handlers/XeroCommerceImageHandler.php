@@ -21,7 +21,7 @@ class XeroCommerceImageHandler
     public function resizeAfterSave(UploadedFile $file, $width, $height, $path, $name = null)
     {
         if($file->clientExtension()=='svg'){
-            $img = XeStorage::upload($file, $path);
+            $img = XeStorage::upload($file, self::XERO_COMMERCE_IMAGE_PATH . $path);
             return $img;
         }
 
