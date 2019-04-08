@@ -18,6 +18,10 @@ class ShopHandler
         $newShop = new Shop();
 
         $newShop->fill($args);
+        if(array_has($args, 'user_id')){
+
+            $newShop->users()->sync($args['user_id']);
+        }
 
         $newShop->save();
 
