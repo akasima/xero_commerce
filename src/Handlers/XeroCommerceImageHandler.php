@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
+use App\Facades\XeStorage;
 use Illuminate\Http\UploadedFile;
 use Xpressengine\Media\Thumbnailer;
 use Xpressengine\Storage\File;
@@ -19,6 +20,11 @@ class XeroCommerceImageHandler
 
     public function resizeAfterSave(UploadedFile $file, $width, $height, $path, $name = null)
     {
+        if($file->clientExtension()=='svg'){
+            $img = XeStorage::upload($file, $path);
+            return $img;
+        }
+
         $img = $this->resize($file, $width, $height);
 
         $saveImage = $this->saveImage($file, $path, $img, $name);
@@ -68,6 +74,6 @@ class XeroCommerceImageHandler
             return '';
         }
 
-        return $media->make($file)->url();
+        return $file->url();
     }
 }
