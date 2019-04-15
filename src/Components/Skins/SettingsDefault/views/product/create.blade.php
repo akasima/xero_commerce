@@ -129,7 +129,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                     @endphp
                                     <option value="">선택</option>
                                     @foreach($deliverys as $delivery)
+                                        @if(Request::old('shop_delivery_id'))
                                         <option value="{{$delivery->pivot->id}}" @if (Request::old('shop_delivery_id') == $delivery->pivot->id) selected @endif>{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
+                                        @else
+                                        <option value="{{$delivery->pivot->id}}" @if (array_first($deliverys)->id == $delivery->id) selected @endif>{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
