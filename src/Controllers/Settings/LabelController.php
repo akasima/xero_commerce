@@ -33,7 +33,7 @@ class LabelController extends SettingBaseController
     {
         $this->labelService->create($request);
 
-        return redirect()->route('label.index');
+        return redirect()->route('xero_commerce::setting.label.index');
     }
 
     public function edit(Request $request, $id)
