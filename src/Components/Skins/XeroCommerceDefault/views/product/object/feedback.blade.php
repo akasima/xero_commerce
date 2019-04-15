@@ -1,6 +1,6 @@
 {{\App\Facades\XeFrontend::js('https://unpkg.com/vue@2.5.21/dist/vue.min.js')->load()}}
 {{\App\Facades\XeFrontend::js('https://unpkg.com/vue-star-rating/dist/star-rating.min.js')->load()}}
-<table class="table">
+<table class="table" id="feedbackList">
     <thead>
     <tr>
         <th style="width:10%">번호</th>
@@ -9,8 +9,7 @@
         <th style="width:20%">작성일</th>
     </tr>
     </thead>
-    <tbody id="feedbackList">
-    <template v-for="(item, key) in list" v-if="listExist">
+    <tbody v-for="(item, key) in list" v-if="listExist">
         <tr>
             <td><small>@{{list.length-key}}</small></td>
             <td>
@@ -33,11 +32,10 @@
                 @{{item.content}}
             </td>
         </tr>
-    </template>
+    </tbody>
     <tr v-if="!listExist">
         <td colspan="4" style="text-align: center;">상품후기가 존재하지 않습니다.</td>
     </tr>
-    </tbody>
 </table>
 @if(\Illuminate\Support\Facades\Auth::check())
 <div style="padding:10px" id="feedbackForm">
@@ -77,8 +75,7 @@
                     $.ajax({
                         url: "{{route('xero_commerce::product.feedback.get',['product'=>$product])}}"
                     }).done(function(res){
-                        this.list = res
-                        console.log(res)
+                        this.list = res;
                     }.bind(this))
                 },
                 write: function (data) {
@@ -93,7 +90,7 @@
                             method: 'post',
                             data: data
                         }).done(function(){
-                            document.location.href=document.location.href+"/#feedbackForm";
+                            this.load();
                         }.bind(this))
                     }else{
                         XE.toast('warning','로그인 후 사용할 수 있습니다')
@@ -108,6 +105,9 @@
             content:$("#feedbackForm [name=content]").val(),
             score: Number($("#feedbackForm [name=score]").val())*2,
         }
+        $("#feedbackForm [name=title]").val('');
+        $("#feedbackForm [name=content]").val('')
+        $("#feedbackForm [name=score]").val('');
         feedback.write(data);
     }
 

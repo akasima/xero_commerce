@@ -9,8 +9,7 @@
             <th style="width:20%">작성일</th>
         </tr>
         </thead>
-        <tbody>
-        <template v-for="(item, key) in list" v-if="listExist">
+        <tbody v-for="(item, key) in list" v-if="listExist">
             <tr>
                 <td><small>@{{list.length-key}}</small></td>
                 <td><small>@{{item.title}}</small></td>
@@ -46,11 +45,10 @@
                     </div>
                 </td>
             </tr>
-        </template>
+        </tbody>
         <tr v-if="!listExist">
             <td colspan="4" style="text-align: center;">QnA가 존재하지 않습니다.</td>
         </tr>
-        </tbody>
     </table>
     @if(\Illuminate\Support\Facades\Auth::check())
         @if(\Illuminate\Support\Facades\Auth::user()->rating==\Xpressengine\User\Rating::USER)
@@ -150,7 +148,7 @@
                 }
             },
             mounted: function() {
-                this.list = {!! json_encode($list) !!}
+                this.load();
             }
         });
     })
