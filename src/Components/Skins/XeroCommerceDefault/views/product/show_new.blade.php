@@ -122,9 +122,9 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                     _token: "{{csrf_token()}}"
                 },
                 method: 'post'
-            }).done(res => {
+            }).done(function (res) {
                 success(res)
-            }).fail(err => {
+            }).fail(function (err){
                 fail(err)
             })
         },
@@ -134,7 +134,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                 if (conf) {
                     document.location.href = "{{route('xero_commerce::cart.index')}}"
                 }
-            }, err => {
+            }, function(err) {
                 console.log(err)
             })
         },
@@ -158,7 +158,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                     form.appendChild(order_id)
                     form.submit()
                 })
-            }, err => {
+            }, function(err) {
                 console.log(err)
             })
         },
@@ -204,7 +204,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                 $.ajax({
                     url: "{{route('xero_commerce::product.wish.toggle',['product'=>$product])}}",
                     method: 'get'
-                }).done(res => {
+                }).done(function(res) {
                     if (Number(res)) {
                         var conf = confirm('관심상품에 담았습니다. 관심상품으로 갈까요?')
                         if (conf) {
@@ -215,13 +215,13 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                         alert('관심상품에서 제거했습니다.')
                         $(".btn-like").removeClass("active")
                     }
-                }).fail(err => {
+                }).fail(function(err) {
                     console.log(err)
                 })
             }else{
                 XE.toast('warning','로그인 후 사용할 수 있습니다')
             }
-        },
+        }
      }
 </script>
 <style>

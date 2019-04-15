@@ -58,9 +58,9 @@
                     this.$emit('input', this.select)
                     this.selectOption = null
                 },
-                reset () {
-                    this.select= []
-                    this.initialize()
+                reset: function () {
+                    this.select= [];
+                    this.initialize();
                 }
             },
             computed: {

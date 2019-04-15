@@ -20,7 +20,7 @@
         var qna = new Vue({
             el: "#category",
             name: "ProductCategoryComponent",
-            data() {
+            data: function () {
                 return {
                     levelTree: [],
                     checked: [],
@@ -43,8 +43,8 @@
                     }
                 }
             },
-            mounted() {
-                this.recursivePush(this.categorys, 0)
+            mounted: function () {
+                this.recursivePush(this.categorys, 0);
             }
         });
     });
