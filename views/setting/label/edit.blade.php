@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 {{ XeFrontend::js(asset(Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/colorpicker.min.js')))->appendTo('body')->load() }}
 @section('page_title')
 <h2>라벨 수정</h2>

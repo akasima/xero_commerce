@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 <?php
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
@@ -51,6 +52,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             <div class="col-sm-4">
                                 <category-component :category-items='{{ json_encode($categoryItems) }}'
                                                     get-child-url="{{ route('xero_commerce:setting.product.category.getChild') }}"
+                                                    name="newCategory"
                                                     mode="create">
                                 </category-component>
                             </div>

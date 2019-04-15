@@ -23,12 +23,12 @@ class BadgeController extends SettingBaseController
     {
         $badges = Badge::get();
 
-        return XePresenter::make('xero_commerce::views.setting.badge.index', compact('badges'));
+        return XePresenter::make('badge.index', compact('badges'));
     }
 
     public function edit(Request $request, Badge $badge)
     {
-        return XePresenter::make('xero_commerce::views.setting.badge.edit', compact('badge'));
+        return XePresenter::make('badge.edit', compact('badge'));
     }
 
     public function store(Request $request)

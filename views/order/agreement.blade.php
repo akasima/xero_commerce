@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 <div class="container" id="contacts">
     <div>
         <h3>주문자 정보 입력</h3>
@@ -50,6 +51,7 @@
     #contacts {
         width:600px;
         margin-top: 20px;
+        margin-bottom: 40px;
     }
     #contacts textarea {
         resize: none;

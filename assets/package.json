@@ -6,7 +6,8 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "moment": "^2.22.2",
     "vue": "^2.5.17",
-    "vue-daum-postcode": "^0.4.0"
+    "vue-daum-postcode": "^0.4.0",
+    "vue-star-rating": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",

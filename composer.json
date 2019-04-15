@@ -36,13 +36,28 @@
         },
         "module/xero_commerce@xero_commerce_module/skin/xero_commerce@xero_commerce_default": {
           "name": "XeroCommerce Default Skin",
-          "description": "The skin supported by Xero_commerce plugin.",
+          "description": "The skin supported by Xero_commerce plugin. shopping",
           "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\XeroCommerceDefault\\XeroCommerceDefaultSkin"
+        },
+        "xero_commerce/skin/xero_commerce@shopping_default": {
+          "name": "XeroCommerce Shopping Default Skin",
+          "description": "The skin supported by Xero_commerce plugin.",
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\ShoppingDefault\\ShoppingDefaultSkin"
+        },
+        "xero_commerce/settingsSkin/xero_commerce@shopping_default": {
+          "name": "XeroCommerce Settings Default Skin",
+          "description": "The skin supported by Xero_commerce plugin.",
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\SettingsDefault\\SettingsDefaultSkin"
         },
         "uiobject/xero_commerce@tag": {
           "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\UIObjects\\Tag\\TagUIObject",
           "name": "Tag",
           "description": "xero_commerce product Tag"
+        },
+        "uiobject/xero_commerce@star": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\UIObjects\\Star\\StarUIObject",
+          "name": "Star",
+          "description": "xero_commerce Feedback Star"
         },
         "widget/xero_commerce@label_product_widget": {
           "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\LabelProductWidget\\LabelProductWidget",

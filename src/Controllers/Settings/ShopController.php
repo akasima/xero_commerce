@@ -39,7 +39,7 @@ class ShopController extends SettingBaseController
     {
         $shops = $this->shopService->getShops($request);
 
-        return XePresenter::make('xero_commerce::views.setting.shop.index', compact('shops'));
+        return XePresenter::make('shop.index', compact('shops'));
     }
 
     /**
@@ -51,7 +51,7 @@ class ShopController extends SettingBaseController
 
         XeFrontend::rule('shop', ValidateManager::getShopValidateRules());
 
-        return XePresenter::make('xero_commerce::views.setting.shop.create', compact('shopTypes', 'deliveryCompanys'));
+        return XePresenter::make('shop.create', compact('shopTypes', 'deliveryCompanys'));
     }
 
     /**
@@ -77,7 +77,7 @@ class ShopController extends SettingBaseController
         $shop = $this->shopService->getShop($shopId);
         $deliveryCompanys = DeliveryCompany::all();
 
-        return XePresenter::make('xero_commerce::views.setting.shop.show', compact('shop', 'deliveryCompanys'));
+        return XePresenter::make('shop.show', compact('shop', 'deliveryCompanys'));
     }
 
     /**
@@ -95,7 +95,7 @@ class ShopController extends SettingBaseController
 
         XeFrontend::rule('shop', ValidateManager::getShopValidateRules());
 
-        return XePresenter::make('xero_commerce::views.setting.shop.edit', compact('shop', 'shopTypes'));
+        return XePresenter::make('shop.edit', compact('shop', 'shopTypes'));
     }
 
     /**

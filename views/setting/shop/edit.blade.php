@@ -1,3 +1,4 @@
+{{--@deprecated since ver 1.1.4--}}
 <?php
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin;

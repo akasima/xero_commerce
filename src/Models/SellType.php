@@ -64,12 +64,17 @@ abstract class SellType extends DynamicModel
             'contents' => $this->getContents(),
             'data' => $this,
             'shop' => $this->getShop(),
-            'options' => $this->visibleSellUnits()->map(function (SellUnit $sellUnit) {
-                return $sellUnit->getJsonFormat();
-            }),
+            'options' => $this->getAvailableOptions(),
             'delivery' => $this->getDelivery(),
             'url' => $this->slugUrl()
         ];
+    }
+
+    public function getAvailableOptions()
+    {
+        return $this->visibleSellUnits()->map(function (SellUnit $sellUnit) {
+            return $sellUnit->getJsonFormat();
+        });
     }
 
     public function getDelivery()

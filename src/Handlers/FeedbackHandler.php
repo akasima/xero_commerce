@@ -40,6 +40,7 @@ class FeedbackHandler
     {
         return FeedBack::where('type_id', $target->id)
             ->where('type_type', get_class($target))
+            ->latest()
             ->get();
     }
 }

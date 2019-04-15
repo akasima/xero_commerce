@@ -19,13 +19,13 @@ class AgreementController extends SettingBaseController
     public function index(Request $request)
     {
 
-        return XePresenter::make('xero_commerce::views.setting.agreement.index');
+        return XePresenter::make('agreement.index');
     }
 
     public function edit(Request $request, $type)
     {
         $agreement = AgreementService::get($type);
-        return XePresenter::make('xero_commerce::views.setting.agreement.edit',compact('agreement'));
+        return XePresenter::make('agreement.edit',compact('agreement'));
     }
 
     public function update(Request $request, $type)
