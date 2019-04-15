@@ -740,6 +740,11 @@ class Resources
                 'uses' => 'DeliveryController@index'
             ]);
 
+            Route::post('/delivery/store', [
+                'as' => 'xero_commerce::delivery.store',
+                'uses' => 'DeliveryController@store'
+            ]);
+
             Route::get('/{strSlug}', [
                 'as' => 'xero_commerce::product.show',
                 'uses' => 'ProductController@show'
@@ -1151,7 +1156,16 @@ class Resources
      */
     public static function setConfig()
     {
-        XeConfig::set('xero_pay', ['uses' => array_keys(app('xe.pluginRegister')->get('xero_pay'))[0]]);
+        XeConfig::set('xero_pay', [
+            'uses' => 'xero_pay/xero_commerce@account',
+            'pg' => [
+                'xero_pay/xero_commerce@account' => [
+                    'Msg' => 'input Description',
+                    'AccountNo' => 'input your account number',
+                    'Host' => 'input your account owner name',
+                ],
+            ],
+        ]);
         \XeEditor::setInstance(Plugin::getId(), CkEditor::getId());
         \XeEditor::setConfig(Plugin::getId(), ['uploadActive' => true]);
 

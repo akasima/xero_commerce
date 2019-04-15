@@ -61,7 +61,7 @@
                         </div>
                     </div><!-- //table-type -->
                 </div><!-- //table-wrap -->
-                <order-delivery-component :user-info="userInfo" v-model="delivery"></order-delivery-component>
+                <order-delivery-component :user-info="userInfo" :delivery-store-url="deliveryStoreUrl" v-model="delivery"></order-delivery-component>
                 <!--<div class="table-wrap">-->
                 <!--<h4 class="table-type-title">할인 정보</h4>-->
                 <!--<button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>-->
@@ -125,7 +125,7 @@
             OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent, PayComponent
         },
         props: [
-            'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods', 'agreeUrl', 'deniedUrl', 'payTarget'
+            'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods', 'agreeUrl', 'deniedUrl', 'payTarget', 'deliveryStoreUrl'
         ],
         computed: {
             validate() {

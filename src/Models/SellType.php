@@ -89,7 +89,7 @@ abstract class SellType extends DynamicModel
         }
 
         return $this->images->map(function ($item) {
-            return XeMedia::images()->getThumbnail($item, 'widen', 'L')->url();
+            return XeMedia::images()->getThumbnail($item, 'widen', 'B')->url();
         });
     }
 

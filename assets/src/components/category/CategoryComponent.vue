@@ -48,7 +48,6 @@
         },
         mounted() {
             if (this.selected) {
-                console.log(this.selected)
                 $.each(this.selected, (k,v)=>{
                     var find = this.find(this.categoryItems, v)
                     if(!find){
@@ -85,11 +84,15 @@
         },
         methods: {
             addCreateComponent: function () {
+                var order = this.createComponents.length;
                 this.createComponents.push({
                     category_id: this.firstCategoryId
                 });
                 this.childItems.push([]);
                 this.componentCategoryOptions.push(this.categoryItems)
+                if(this.categoryItems.length){
+                    this.updateChild(this.categoryItems[0].value, order);
+                }
             },
             removeCreateComponent: function (componentIndex) {
                 this.createComponents.splice(componentIndex, 1)

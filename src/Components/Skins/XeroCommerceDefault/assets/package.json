@@ -3,7 +3,7 @@
     "@babel/preset-es2015": "^7.0.0-beta.53",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.1.3",
-    "bootstrap-vue": "^2.0.0-rc.11",
+    "bootstrap-vue": "^2.0.0-rc.17",
     "moment": "^2.22.2",
     "vue": "^2.5.17",
     "vue-daum-postcode": "^0.4.0"

@@ -108,6 +108,11 @@
           "class": "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\RecommendSlider\\RecommendSliderSkin",
           "name": "MD 추천상품 스킨",
           "description": "MD 추천상품 스킨"
+        },
+        "xero_pay/xero_commerce@account": {
+          "class": "Xpressengine\\Plugins\\XeroCommerce\\AccountPayment\\Account",
+          "name": "기본 계좌입금 모듈",
+          "description": "기본 계좌입금용 결제 모듈"
         }
       }
     }
