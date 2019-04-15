@@ -1157,12 +1157,12 @@ class Resources
     public static function setConfig()
     {
         XeConfig::set('xero_pay', [
-            'uses' => 'xero_pay/xero_commerce@transfer',
+            'uses' => 'xero_pay/xero_commerce@account',
             'pg' => [
-                'xero_pay/xero_commerce@transfer' => [
-                    'account_bank' => 'input your bank',
-                    'account_number' => 'input your account number',
-                    'account_owner' => 'input your account owner name',
+                'xero_pay/xero_commerce@account' => [
+                    'Msg' => 'input Description',
+                    'AccountNo' => 'input your account number',
+                    'Host' => 'input your account owner name',
                 ],
             ],
         ]);
