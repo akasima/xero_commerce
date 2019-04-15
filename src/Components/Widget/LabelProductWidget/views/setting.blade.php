@@ -1,29 +1,6 @@
 
 <script src="{{Xpressengine\Plugins\XeroCommerce\Plugin::asset('assets/js/index.js')}}"></script>
-<div class="form-group">
-    <label>라벨</label>
-    <select name="label_id" class="form-control">
-        @if (isset($args['label_id']) === true)
-            @foreach ($labels as $label)
-                <option value="{{ $label['id'] }}" @if ($args['label_id'] == $label['id']) selected @endif>{{ xe_trans($label['name']) }}</option>
-            @endforeach
-        @else
-            @foreach ($labels as $label)
-                <option value="{{ $label['id'] }}">{{ xe_trans($label['name']) }}</option>
-            @endforeach
-        @endif
-    </select>
-</div>
-<div id="component-container" class="form-group">
-    <label class ="control-label">카테고리</label>
-    <div>
-        <category-component :category-items='{{ json_encode($categoryItems) }}'
-                            get-child-url="{{ route('xero_commerce:setting.product.category.getChild') }}"
-                            name="category_item_id"
-                            mode="create">
-        </category-component>
-    </div>
-</div>
+
 {{--<div id="component-container" class="form-group">--}}
     {{--<label>출력할 카테고리 ID 설정</label>--}}
     {{--<category-component :category-items='{{ json_encode($categoryItems) }}'--}}

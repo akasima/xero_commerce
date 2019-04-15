@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Components\Widget\LabelProductWidget
 
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Widget\AbstractWidget;
@@ -27,15 +28,8 @@ class LabelProductWidget extends AbstractWidget
     {
         $widgetConfig = $this->setting();
 
-        $labelId = $widgetConfig['label_id'];
-        $label = $this->labelHandler->getLabel($labelId);
 
-        if (is_array($widgetConfig['category_item_id']) === true) {
-            $categoryIds = $widgetConfig['category_item_id'];
-        } else {
-            $categoryIds = explode(',', $widgetConfig['category_item_id']);
-        }
-        $categories = CategoryItem::whereIn('id', $categoryIds)->get();
+
 
         if (is_array($widgetConfig['product_id']) === true) {
             $productIds = $widgetConfig['product_id'];
@@ -43,21 +37,20 @@ class LabelProductWidget extends AbstractWidget
             $productIds = explode(',', $widgetConfig['product_id']);
         }
 
-        $productCategories = ProductCategory::whereIn('category_id', $categoryIds)->get();
 
-        $products = [];
-        foreach ($productCategories as $category) {
-            foreach ($category->product as $product) {
-                if (in_array($product->id, $productIds) == true) {
-                    $products[$category->category_id][] = $product;
-                }
-            }
-        }
+        $products = Product::find($productIds);
+        $categorizedProducts = [];
+        $products->each(function(Product $product)use(&$categorizedProducts){
 
+            $product->category->each(function(CategoryItem $categoryItem)use($product, &$categorizedProducts){
+                $categorizedProducts[$categoryItem->id][]=$product;
+            });
+        });
+        $categories = CategoryItem::whereIn('id', array_keys($categorizedProducts) )->get();
         return $this->renderSkin([
             'widgetConfig' => $widgetConfig,
             'categories' => $categories,
-            'products' => $products
+            'products' => $categorizedProducts
         ]);
     }
 

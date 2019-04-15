@@ -237,7 +237,7 @@ class Product extends SellType
 
     public function category()
     {
-        return $this->hasManyThrough(CategoryItem::class, ProductCategory::class, 'category_id', 'id');
+        return $this->hasManyThrough(CategoryItem::class, ProductCategory::class, 'product_id', 'id','id','category_id');
     }
 
     public function qna()
