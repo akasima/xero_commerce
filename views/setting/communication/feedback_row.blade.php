@@ -1,7 +1,7 @@
 {{--@deprecated since ver 1.1.4--}}
 @foreach($list as $item)
     <tr>
-        <td>{{$item->target->getName()}}</td>
+        <td><a href="{{route('xero_commerce::setting.communication.show',['type'=>'feedback','id'=>$item->id])}}">{{$item->target->getName()}}</a></td>
         <td>{!! uio(\Xpressengine\Plugins\XeroCommerce\Components\UIObjects\Star\StarUIObject::getId(), [
         'id'=>$item->id,
         'star'=>$item->score/2,

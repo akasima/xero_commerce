@@ -3,7 +3,7 @@
     <h3>상품평</h3>
 @endsection
 
-<a href="{{url()->previous()}}">돌아가기</a> <br>
+<button onclick="location.href='{{url()->previous()}}'">돌아가기</button> <br>
 <div class="col-sm-12">
     @include('xero_commerce::views.setting.communication.'.$type.'_show', ['item'=>$item])
 </div>

@@ -12,12 +12,13 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 use App\Facades\XePresenter;
 use Xpressengine\Plugins\XeroCommerce\Services\CommunicationManageService;
 
-class CommunicationController
+class CommunicationController extends SettingBaseController
 {
     private $communicationService;
 
     public function __construct()
     {
+        parent::__construct();
         $this->communicationService=new CommunicationManageService();
     }
 

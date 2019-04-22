@@ -1,8 +1,9 @@
 @section('page_title')
     <h3>상품평</h3>
 @endsection
-
-<a href="{{url()->previous()}}">돌아가기</a> <br>
+<div class="col-sm-12 text-right">
+    <button class="btn btn-primary" onclick="location.href='{{url()->previous()}}'"><i class="xi-back"></i>돌아가기</button> <br>
+</div>
 <div class="col-sm-12">
     @include('xero_commerce::views.setting.communication.'.$type.'_show', ['item'=>$item])
 </div>
