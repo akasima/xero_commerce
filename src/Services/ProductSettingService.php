@@ -103,7 +103,9 @@ class ProductSettingService
         }
 
         if (is_null($productArgs['discount_percentage']) && !is_null($productArgs['original_price']) && !is_null($productArgs['sell_price'])) {
-            $productArgs['discount_percentage'] = floor(($productArgs['original_price'] - $productArgs['sell_price']) * 10000/ $productArgs['original_price']) / 100;
+            $orirginal_price = (int)str_replace(',','',$productArgs['original_price']);
+            $sell_price = (int)str_replace(',','',$productArgs['sell_price']);
+            $productArgs['discount_percentage'] = floor(($orirginal_price - $sell_price) * 10000/ $orirginal_price) / 100;
         }
 
         $newProductId = $this->productHandler->store($productArgs);

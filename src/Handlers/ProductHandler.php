@@ -203,7 +203,7 @@ class ProductHandler
     public function store(array $args)
     {
         $newProduct = new Product();
-
+        $args = $this->numberFormatPrice($args);
         $newProduct->fill($args);
         $info = array_combine($args['infoKeys'], $args['infoValues']);
         $newProduct->detail_info = json_encode($info);
@@ -248,6 +248,7 @@ class ProductHandler
 
     public function update(Product $product, $args)
     {
+        $args = $this->numberFormatPrice($args);
         $attributes = $product->getAttributes();
 
         foreach ($args as $name => $value) {
@@ -309,5 +310,15 @@ class ProductHandler
         $product = Product::find($productId);
         $product->publish = $bool;
         return $product->save();
+    }
+
+    private function numberFormatPrice($args){
+        if(array_has($args, 'sell_price')){
+            $args['sell_price']=str_replace(',','',$args['sell_price']);
+        }
+        if(array_has($args,'original_price')){
+            $args['original_price']=str_replace(',','',$args['original_price']);
+        }
+        return $args;
     }
 }

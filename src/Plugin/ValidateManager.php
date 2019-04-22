@@ -12,8 +12,8 @@ class ValidateManager
     return [
         'name' => 'required|max:255',
         'sub_name' => 'required',
-        'original_price' => 'numeric|nullable',
-        'sell_price' => 'required|numeric',
+        'original_price' => 'nullable',
+        'sell_price' => 'required',
         'description' => 'required',
         'stock' => 'required',
         'shop_delivery_id' => 'required'
