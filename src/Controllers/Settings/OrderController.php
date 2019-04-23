@@ -4,7 +4,10 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
 use App\Facades\XeFrontend;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroCommerce\ExcelExport\DeliveryExport;
+use Xpressengine\Plugins\XeroCommerce\ExcelImport\DeliveryImport;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderSettingService;
@@ -52,6 +55,25 @@ class OrderController extends SettingBaseController
             'title' => 'xero_commerce',
             'orderItems' => $this->orderService->deliveryOrderItemList()
         ]);
+    }
+
+    public function deliveryExcelExport()
+    {
+        $orderItemList = $this->orderService->deliveryOrderItemList();
+        $orderItemList = $orderItemList->filter(function($item){return !$item['delivery']->ship_no;});
+        return Excel::download(new DeliveryExport($orderItemList),now()->format('YmdHis').'.xlsx');
+    }
+
+    public function deliveryExcelImport(Request $request)
+    {
+        $handler = app('xero_commerce.orderHandler');
+        $dataProcess = Excel::toArray(new DeliveryImport(),$request->file('delivery'));
+        foreach($dataProcess[0] as $key=>$data){
+            if($key && $data[3]){
+                $handler->shipNoRegister(OrderItem::find((int)$data[0]),$data[3]);
+            }
+        }
+        return redirect()->route('xero_commerce::setting.order.delivery');
     }
 
     public function registerDelivery()

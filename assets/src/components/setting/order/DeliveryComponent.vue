@@ -62,111 +62,143 @@
             </div>
         </div>
         <div class="xero-settings-control-float">
-            <button class="btn btn-link" type="button">엑셀양식다운로드</button>
-            <button class="btn btn-default" type="button">엑셀업로드</button>
+            <button class="btn btn-link" type="button" @click="downloadTemplate">엑셀양식다운로드</button>
+            <button class="btn btn-default" type="button" @click="showExcelUpload">엑셀업로드</button>
+        </div>
+        <div class="modal" id="excelUpload">
+            <form action="/settings/xero_commerce/order/delivery/excel" method="post" enctype="multipart/form-data">
+            <div class="modal-dialog">
+                <div class="modal-content" style="padding:20px">
+                    <h3>엑셀을 이용한 송장번호 입력</h3>
+                        <input type="hidden" name="_token" :value="token">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>파일첨부</label>
+                                <input type="file" name="delivery" class="form-control">
+                                <small>반드시 <button class="btn btn-link" type="button" @click="downloadTemplate">엑셀양식다운로드</button>를 이용해 받은 엑셀양식으로만 작성해주세요.</small>
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="xe-btn xe-btn-black">업로드</button>
+                        <button type="button" class="xe-btn xe-btn-danger" @click="hideExcelUpload">취소</button>
+                    </div>
+                </div>
+            </div>
+            </form>
         </div>
     </div>
 </template>
 
 <script>
-  export default {
-    name: "DeliveryComponent",
-    props: [
-        'orderItems', 'token'
-    ],
-    watch: {
-      allNo(el){
-        console.log(el)
-        this.checked.forEach(v=>{
-          this.texted[v] = el
-        })
-      },
-      allCheck (el) {
-        this.checked=(el)?this.orderItems.map(v=>{return v.id}):[];
-      }
-    },
-    computed:{
-      delivery () {
-        return this.checked.map(v=>{
-          return {
-            id: v,
-            no: this.texted[v]
-          }
-        })
-      }
-    },
-    data() {
-      return {
-        checked:[],
-        texted:[],
-        allNo:'370269846894',
-        allCheck: false
-      }
-    },
-    mounted () {
-      console.log(this.orderItems)
-    },
-    methods: {
-      select (id) {
-        this.checked = [id]
-        this.submit()
-      },
-      selectComplete (id) {
-        this.checked = [id]
-        this.complete()
-      },
-      submit () {
-          this.texted=[]
-          $.each(this.checked,(k,v)=>{
-              console.log(this.checked)
-              console.log(v)
-              this.texted[v] = this.allNo
-          })
-        if(this.validate()){
-          $.ajax({
-            url:'/settings/xero_commerce/order/delivery',
-            method:'post',
-            data:{
-              delivery: this.delivery,
-              _token: this.token
+    export default {
+        name: "DeliveryComponent",
+        props: [
+            'orderItems', 'token'
+        ],
+        watch: {
+            allNo(el) {
+                console.log(el)
+                this.checked.forEach(v => {
+                    this.texted[v] = el
+                })
+            },
+            allCheck(el) {
+                this.checked = (el) ? this.orderItems.map(v => {
+                    return v.id
+                }) : [];
             }
-          }).done(()=>{
-            document.location.reload()
-          }).fail((err)=>{
-            console.log(err)
-          })
+        },
+        computed: {
+            delivery() {
+                return this.checked.map(v => {
+                    return {
+                        id: v,
+                        no: this.texted[v]
+                    }
+                })
+            }
+        },
+        data() {
+            return {
+                checked: [],
+                texted: [],
+                allNo: '370269846894',
+                allCheck: false
+            }
+        },
+        mounted() {
+            console.log(this.orderItems)
+        },
+        methods: {
+            select(id) {
+                this.checked = [id]
+                this.submit()
+            },
+            selectComplete(id) {
+                this.checked = [id]
+                this.complete()
+            },
+            submit() {
+                this.texted = []
+                $.each(this.checked, (k, v) => {
+                    console.log(this.checked)
+                    console.log(v)
+                    this.texted[v] = this.allNo
+                })
+                if (this.validate()) {
+                    $.ajax({
+                        url: '/settings/xero_commerce/order/delivery',
+                        method: 'post',
+                        data: {
+                            delivery: this.delivery,
+                            _token: this.token
+                        }
+                    }).done(() => {
+                        document.location.reload()
+                    }).fail((err) => {
+                        console.log(err)
+                    })
+                }
+            },
+            validate() {
+                var err = [];
+                this.delivery.forEach(v => {
+                    if (typeof v.no === 'undefined' || String(v.no) === '') {
+                        err.push(v)
+                    }
+                })
+                if (err.length > 0) {
+                    alert('송장번호 입력이 안된 주문 또는 이미 배송중인 주문이 있습니다.')
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            complete() {
+                $.ajax({
+                    url: '/settings/xero_commerce/order/delivery/complete',
+                    method: 'post',
+                    data: {
+                        delivery: this.checked,
+                        _token: this.token
+                    }
+                }).done(() => {
+                    document.location.reload()
+                }).fail((err) => {
+                    console.log(err)
+                })
+            },
+            showExcelUpload() {
+                $('#excelUpload').modal('show');
+            },
+            hideExcelUpload() {
+                $('#excelUpload').modal('hide');
+            },
+            downloadTemplate() {
+                location.href='/settings/xero_commerce/order/delivery/excel';
+            }
         }
-      },
-      validate () {
-        var err=[];
-        this.delivery.forEach(v=>{
-          if(typeof v.no === 'undefined' || String(v.no) === '') {
-            err.push(v)
-          }
-        })
-        if(err.length>0){
-          alert('송장번호 입력이 안된 주문 또는 이미 배송중인 주문이 있습니다.')
-          return false;
-        }else{
-          return true;
-        }
-      },
-      complete () {
-        $.ajax({
-          url:'/settings/xero_commerce/order/delivery/complete',
-          method:'post',
-          data:{
-            delivery: this.checked,
-            _token: this.token
-          }
-        }).done(()=>{
-          document.location.reload()
-        }).fail((err)=>{
-          console.log(err)
-        })
-      }
     }
-  }
 </script>
 
 <style scoped>

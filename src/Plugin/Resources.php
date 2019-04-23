@@ -897,6 +897,14 @@ class Resources
                         'settings_menu' => 'xero_commerce.order.delivery',
                         'permission' => 'xero_commerce'
                     ]);
+                    Route::get('/delivery/excel', [
+                        'as' => 'xero_commerce::setting.order.delivery.exel',
+                        'uses' => 'OrderController@deliveryExcelExport'
+                    ]);
+                    Route::post('/delivery/excel', [
+                        'as' => 'xero_commerce::setting.order.delivery.exel',
+                        'uses' => 'OrderController@deliveryExcelImport'
+                    ]);
                     Route::post('/delivery', [
                         'as' => 'xero_commerce::process.order.delivery',
                         'uses' => 'OrderController@processDelivery',
