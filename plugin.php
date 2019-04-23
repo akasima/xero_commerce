@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce;
 
+use Illuminate\Support\Facades\Artisan;
 use Route;
 use Xpressengine\Log\LogHandler;
 use Xpressengine\Plugin\AbstractPlugin;
@@ -117,6 +118,10 @@ class Plugin extends AbstractPlugin
         );
         Resources::setConfig();
         Resources::defaultSitemapSetting();
+
+        Artisan::call('vendor:publish',[
+            '--provider'=>"Maatwebsite\Excel\ExcelServiceProvider"
+        ]);
     }
 
     /**
