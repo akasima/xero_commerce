@@ -346,11 +346,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
             $("[name=shop_delivery_id] option").not(':selected').remove();
             $.ajax({
                 url: '{{route('xero_commerce::setting.config.shop.delivery',['shop'=>''])}}/' + $("[name=shop_id]").val(),
-            }).done(res => {
-                $.each(res, (k, v) => {
+            }).done(function (res) {
+                $.each(res, function(k,v) {
                     $("[name=shop_delivery_id]").append('<option value="' + v.pivot.id + '">' + v.name + '(' + Number(v.pivot.delivery_fare).toLocaleString() + ')</option>');
                 })
-            }).fail(res => {
+            }).fail(function (res)  {
 
             })
         });
@@ -364,7 +364,6 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 </script>
 <style>
     .col-lg-4:nth-child(3n+1) {
-        clear: both;
     }
     .control-label{
         text-align: right;

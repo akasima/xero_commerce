@@ -156,6 +156,7 @@
         width: 100px;
 
         -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
     }
 
     .badge span {
