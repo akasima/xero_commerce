@@ -8,12 +8,27 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">{{xe_trans('xe::skin')}}</h3>
+                        <h3 class="panel-title">모듈 {{xe_trans('xe::skin')}}</h3>
                     </div>
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse in">
                     <div class="panel-body">
                         {!! $skinSection !!}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="panel-group">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <h3 class="panel-title">기본 {{xe_trans('xe::skin')}}</h3>
+                    </div>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        {!! $skinDefaultSection !!}
                     </div>
                 </div>
             </div>

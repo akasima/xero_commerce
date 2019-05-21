@@ -52,8 +52,11 @@ class ShopConfigController extends SettingBaseController
     public function setSkin()
     {
         $skinSection = new SkinSection(XeroCommerceModule::getId());
+        $skinDefaultSection = new SkinSection(Plugin::getId());
+        $skinSettingSection = new SkinSection(Plugin::getId());
 
-        return XePresenter::make('config.skin', compact('skinSection'));
+
+        return XePresenter::make('config.skin', compact('skinSection','skinDefaultSection','skinSettingSection'));
     }
 
     public function editTheme()

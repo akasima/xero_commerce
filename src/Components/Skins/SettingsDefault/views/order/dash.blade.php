@@ -128,7 +128,7 @@
                     <td colspan="2" rowspan="2">{{$item->order_no}}</td>
                     <td>{{$item->userInfo->name}}</td>
                     <td>{{$item->userInfo->phone}}</td>
-                    <td>{{$item->orderItems[0]->delivery->recv_name}}</td>
+                    <td>@if($item->orderItems[0]->delivery){{$item->orderItems[0]->delivery->recv_name}}@endif</td>
                     <td rowspan="3">{{$item->orderItems->sum(function($item){return $item->getSellPrice()+$item->getFare();})}}</td>
                     <td rowspan="3">{{$item->payment->price}}</td>
                 </tr>
@@ -140,8 +140,8 @@
                 <tr>
                     <td>{{$item->getStatus()}}</td>
                     <td>{{$item->payment->getMethod()}}</td>
-                    <td>{{$item->orderItems[0]->delivery->ship_no}}</td>
-                    <td>{{$item->orderItems[0]->delivery->company->name}}</td>
+                    <td>@if($item->orderItems[0]->delivery){{$item->orderItems[0]->delivery->ship_no}}@endif</td>
+                    <td>@if($item->orderItems[0]->delivery){{$item->orderItems[0]->delivery->company->name}}@endif</td>
                     <td></td>
                 </tr>
                 @endforeach
