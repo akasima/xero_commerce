@@ -88,6 +88,10 @@ body {
   margin-top: 16px;
 }
 
+#sub-container .board {
+  margin-top: 50px;
+}
+
 .xe-shop-notice {
   float: left;
   font-size: 12px;
