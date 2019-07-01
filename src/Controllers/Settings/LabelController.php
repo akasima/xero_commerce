@@ -39,7 +39,7 @@ class LabelController extends SettingBaseController
     public function edit(Request $request, $id)
     {
         $label = Label::find($id);
-        return XePresenter::make('setting.label.edit', compact('label'));
+        return XePresenter::make('label.edit', compact('label'));
     }
 
     public function update(Request $request, $id)
