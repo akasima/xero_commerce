@@ -115,4 +115,8 @@ abstract class SellType extends DynamicModel
     abstract function getSellPriceMethod();
 
     abstract function slugUrl();
+
+    abstract function renderForSellSet(SellSet $sellSet);
+
+    abstract function isDelivered();
 }

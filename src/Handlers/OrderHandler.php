@@ -29,14 +29,18 @@ class OrderHandler extends SellSetHandler
             abort(500, '잘못된 주문 요청입니다.');
         }
         $order->orderItems->each(function(OrderItem $orderItem)use($order){
-            if($orderItem->forcedSellType()->trashed()){
-                $order->delete();
-                abort('500','현재 제공하지 않는 상품입니다. <br> 상품정보 : '.$orderItem->forcedSellType()->getName());
+            if(method_exists($orderItem->forcedSellType(),'trashed')){
+                if($orderItem->forcedSellType()->trashed()){
+                    $order->delete();
+                    abort('500','현재 제공하지 않는 상품입니다. <br> 상품정보 : '.$orderItem->forcedSellType()->getName());
+                }
             }
             $orderItem->sellGroups->each(function(SellGroup $sellGroup)use($order){
-                if($sellGroup->forcedSellUnit()->trashed()){
-                    $order->delete();
-                    abort('500','현재 제공하지 않는 상품옵션입니다. <br> 상품정보 : '.$sellGroup->forcedSellUnit()->getName());
+                if(method_exists($sellGroup->forcedSellType(),'trashed')) {
+                    if ($sellGroup->forcedSellUnit()->trashed()) {
+                        $order->delete();
+                        abort('500', '현재 제공하지 않는 상품옵션입니다. <br> 상품정보 : ' . $sellGroup->forcedSellUnit()->getName());
+                    }
                 }
             });
         });
@@ -255,18 +259,20 @@ class OrderHandler extends SellSetHandler
         }
 
         $order->orderItems->each(function (OrderItem $orderItem) use ($args) {
-            $delivery = new OrderDelivery();
-            $delivery->order_item_id = $orderItem->id;
-            $delivery->ship_no = '';
-            $delivery->status = OrderDelivery::READY;
-            $delivery->company_id = $orderItem->sellType->getDelivery()->company->id;
-            $delivery->recv_name = $args['delivery']['name'];
-            $delivery->recv_phone = $args['delivery']['phone'];
-            $delivery->recv_addr = $args['delivery']['addr'] ?: '';
-            $delivery->recv_addr_detail = $args['delivery']['addr_detail'];
-            $delivery->recv_addr_post = $args['delivery']['addr_post'];
-            $delivery->recv_msg = $args['delivery']['msg'];
-            $delivery->save();
+            if($orderItem->sellType->isDelivered()){
+                $delivery = new OrderDelivery();
+                $delivery->order_item_id = $orderItem->id;
+                $delivery->ship_no = '';
+                $delivery->status = OrderDelivery::READY;
+                $delivery->company_id = $orderItem->sellType->getDelivery()->company->id;
+                $delivery->recv_name = $args['delivery']['name'];
+                $delivery->recv_phone = $args['delivery']['phone'];
+                $delivery->recv_addr = $args['delivery']['addr'] ?: '';
+                $delivery->recv_addr_detail = $args['delivery']['addr_detail'];
+                $delivery->recv_addr_post = $args['delivery']['addr_post'];
+                $delivery->recv_msg = $args['delivery']['msg'];
+                $delivery->save();
+            }
         });
 
         return $this->update($order);

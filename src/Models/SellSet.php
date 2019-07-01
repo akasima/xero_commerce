@@ -69,6 +69,9 @@ abstract class SellSet extends DynamicModel
         if ($this->getDeliveryPay() == '착불') {
             return 0;
         }
+        if (!$this->forcedSellType()->isDelivered()) {
+            return 0;
+        }
 
         return $this->forcedSellType()->getFare();
     }

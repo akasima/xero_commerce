@@ -254,4 +254,23 @@ class Product extends SellType
     {
         return route('xero_commerce::product.show', ['strSlug' => $this->getSlug()]);
     }
+
+    function renderForSellSet(SellSet $sellSet)
+    {
+        $row = [];
+        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->getSlug()]) . '">' . $sellSet->renderSpanBr($this->getName()) . '</a>';
+        $row [] = $sellSet->renderSpanBr($this->getInfo());
+        $this->sellGroups->each(function (SellGroup $group) use (&$row,$sellSet) {
+            $row [] = $sellSet->renderSpanBr($group->forcedSellUnit()->getName() . ' / ' . $group->getCount() . '개', "color: grey");
+        });
+
+        $row [] = $sellSet->renderSpanBr($this->getShop()->shop_name);
+
+        return $row;
+    }
+
+    function isDelivered()
+    {
+        return true;
+    }
 }

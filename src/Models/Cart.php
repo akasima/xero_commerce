@@ -16,16 +16,7 @@ class Cart extends SellSet
      */
     public function renderInformation()
     {
-        $row = [];
-        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->forcedSellType()->getSlug()]) . '">' . $this->renderSpanBr($this->forcedSellType()->getName()) . '</a>';
-        $row [] = $this->renderSpanBr($this->forcedSellType()->getInfo());
-        $this->sellGroups->each(function (SellGroup $group) use (&$row) {
-            $row [] = $this->renderSpanBr($group->forcedSellUnit()->getName() . ' / ' . $group->getCount() . '개', "color: grey");
-        });
-
-        $row [] = $this->renderSpanBr($this->forcedSellType()->getShop()->shop_name);
-
-        return $row;
+        return $this->forcedSellType()->renderForSellSet($this);
     }
 
     function getJsonFormat()

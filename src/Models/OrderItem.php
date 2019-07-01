@@ -33,7 +33,7 @@ class OrderItem extends SellSet
         $this->sellGroups->each(function (SellGroup $group) use (&$row) {
             $row [] = $this->renderSpanBr($group->forcedSellUnit()->getName() . ' / ' . $group->getCount() . '개', "color: grey");
         });
-        $row [] = $this->renderSpanBr($this->forcedSellType()->shop->shop_name);
+        $row [] = $this->renderSpanBr($this->forcedSellType()->getShop()->shop_name);
 
         return $row;
     }
