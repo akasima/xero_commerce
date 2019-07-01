@@ -51,7 +51,7 @@ class ShopController extends SettingBaseController
 
         XeFrontend::rule('shop', ValidateManager::getShopValidateRules());
 
-        return XePresenter::make('shop.create', compact('shopTypes', 'deliveryCompanys'));
+        return XePresenter::make('shop.create', compact('shopTypes'));
     }
 
     /**
