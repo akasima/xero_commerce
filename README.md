@@ -5,6 +5,10 @@ Xero-Commerce
 
 Xero-Commerce는 [XE3](https://github.com/xpressengine/xpressengine/)에 설치해서 사용하는 전자상거래 시스템 플러그인 입니다. Xero-Commerce를 이용해 더 유연하고 확장가능한 웹사이트를 만드세요.
 
+## 기술지원문의
+소프트웨어 사용에 대한 기술 컨설팅, 쇼핑몰 서비스 구축 등 관련 문의는 XEHub [개발지원 서비스](https://www.xpressengine.io/tech_service/getContact)로 주시면 친절히 안내해 드립니다.
+
+https://www.xpressengine.io/tech_service/product
 
 ## Server Requirements
 * PHP version 7.0.0 greater 
