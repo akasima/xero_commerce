@@ -76,7 +76,7 @@ abstract class SellSet extends DynamicModel
         return $this->forcedSellType()->getFare();
     }
 
-    protected function renderSpanBr($var, $style = "")
+    public function renderSpanBr($var, $style = "")
     {
         return "<span style=\"{$style}\">{$var}</span> <br>";
     }
