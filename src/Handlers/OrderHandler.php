@@ -36,7 +36,7 @@ class OrderHandler extends SellSetHandler
                 }
             }
             $orderItem->sellGroups->each(function(SellGroup $sellGroup)use($order){
-                if(method_exists($sellGroup->forcedSellType(),'trashed')) {
+                 if(method_exists($sellGroup->sellSet->forcedSellType(),'trashed')) {
                     if ($sellGroup->forcedSellUnit()->trashed()) {
                         $order->delete();
                         abort('500', '현재 제공하지 않는 상품옵션입니다. <br> 상품정보 : ' . $sellGroup->forcedSellUnit()->getName());

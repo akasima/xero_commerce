@@ -4,7 +4,7 @@
         <div class="col-md-4">
             <div class="panel">
                 <div class="panel-body">
-                    <h4>입금대기</h4>
+                    <h4>입금대기<button class="btn btn-default" type="button" @click="downloadTemplate" id="order_excel">엑셀로 추출하기</button></h4>
                     @if($dash['결제대기'])
                         <strong>{{ $dash['결제대기'] }}건</strong>
                     @else
@@ -151,6 +151,11 @@
 </div>
 
 <script>
+	
+	$( "#order_excel").click(function() {//02.07 수정
+         location.href='/settings/xero_commerce/order/delivery/excel1';
+            }); 
+	
     $(function(){
         var format = function(date){
             return (date.getMonth()+1) + '/' + date.getDate();
@@ -183,3 +188,5 @@
         })
     })
 </script>
+<style scoped>
+

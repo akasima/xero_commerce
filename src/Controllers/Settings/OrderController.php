@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\ExcelExport\DeliveryExport;
+use Xpressengine\Plugins\XeroCommerce\ExcelExport\OrderCheckExport;
 use Xpressengine\Plugins\XeroCommerce\ExcelImport\DeliveryImport;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
@@ -62,6 +63,13 @@ class OrderController extends SettingBaseController
         $orderItemList = $this->orderService->deliveryOrderItemList();
         $orderItemList = $orderItemList->filter(function($item){return !$item['delivery']->ship_no;});
         return Excel::download(new DeliveryExport($orderItemList),now()->format('YmdHis').'.xlsx');
+    }
+
+	public function OrderCheckExcelExport()//02.06수정
+    {
+        $orderItemList = $this->orderService->deliveryOrderItemList();
+        $orderItemList = $orderItemList->filter(function($item){return !$item['delivery']->ship_no;});
+        return Excel::download(new OrderCheckExport($orderItemList),now()->format('YmdHis').'.xlsx');
     }
 
     public function deliveryExcelImport(Request $request)
