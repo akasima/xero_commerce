@@ -84,6 +84,16 @@ class ProductHandler
 
         return $query;
     }
+	
+    public function getProductsQueryForCommon(Request $request)
+    {
+        $query = new Product();
+
+        $query = $this->commonMakeWhere($request, $query);
+        $query = $this->commonOrderBy($request, $query);
+
+        return $query;
+    }
 
     private function filterByOwnShop($query)
     {
