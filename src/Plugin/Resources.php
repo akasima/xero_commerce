@@ -905,6 +905,16 @@ class Resources
                         'as' => 'xero_commerce::setting.order.delivery.exel',
                         'uses' => 'OrderController@deliveryExcelImport'
                     ]);
+					//02.06 추가
+					     Route::get('/delivery/excel1', [
+                        'as' => 'xero_commerce::setting.order.delivery.exel',
+                        'uses' => 'OrderController@OrderCheckExcelExport'
+                    ]);
+                    Route::post('/delivery/excel1', [
+                        'as' => 'xero_commerce::setting.order.delivery.exel',
+                        'uses' => 'OrderController@OrderCheckExcelExport'
+                    ]);
+					//여기까지
                     Route::post('/delivery', [
                         'as' => 'xero_commerce::process.order.delivery',
                         'uses' => 'OrderController@processDelivery',

@@ -4,7 +4,7 @@
         <div class="col-md-4">
             <div class="panel">
                 <div class="panel-body">
-                    <h4>입금대기</h4>
+                    <h4>입금대기</h4><button class="btn btn-link" type="button" @click="downloadTemplate">엑셀양식다운로드</button>
                     @if($dash['결제대기'])
                         <strong>{{ $dash['결제대기'] }}건</strong>
                     @else
