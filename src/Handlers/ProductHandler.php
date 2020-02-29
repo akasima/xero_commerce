@@ -121,6 +121,14 @@ class ProductHandler
 
             $targetProductIds = array_intersect($targetProductIds, $productIds);
         }
+		
+        if ($tags = $config->get('tags')) {
+			$productIds = Product::whereHas('tags', function($query) use ($tags) {
+				$query->whereIn('word', $tags);
+			})->pluck('id')->toArray();
+
+            $targetProductIds = array_intersect($targetProductIds, $productIds);
+        }
 
         $targetProductIds = array_unique($targetProductIds);
         $query = $query->where('state_display', Product::DISPLAY_VISIBLE);
