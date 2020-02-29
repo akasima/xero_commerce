@@ -1034,7 +1034,7 @@ bootstrap-vue@^2.0.0-rc.17:
     popper.js "^1.15.0"
     portal-vue "^2.1.6"
     vue-functional-data-merge "^3.1.0"
-
+    
 "bootstrap@>=4.3.1 <5.0.0":
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.3.1.tgz#280ca8f610504d99d7b6b4bfc4b68cec601704ac"
