@@ -13,6 +13,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 <form id="save" method="post" action="{{ route('xero_commerce::setting.product.store') }}" enctype="multipart/form-data"
       data-rule="product" data-rule-alert-type="toast">
     {{ csrf_field() }}
+    <input type="hidden" name="type" value="{{Request::get('type')}}" />
+    
     <div class="form-group">
         @if(count($shops)>1)
             <label>입점몰</label>

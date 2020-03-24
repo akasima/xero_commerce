@@ -13,6 +13,11 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
 class DigitalProduct extends Product
 {
 
-    protected static $singleTableType = 'digital';
+    public static $singleTableType = 'digital';
+    
+    public static $singleTableName = '디지털 상품';
+    
+    
+    // TODO: 디지털 상품 구현필요
     
 }

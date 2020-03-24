@@ -13,7 +13,9 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
 class BundleProduct extends Product
 {
 
-    protected static $singleTableType = 'bundle';
+    public static $singleTableType = 'bundle';
+    
+    public static $singleTableName = '묶음 상품';
     
     /**
      * Product items of bundle

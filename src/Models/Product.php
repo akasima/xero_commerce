@@ -40,7 +40,24 @@ class Product extends SellType
 
     protected static $singleTableTypeField = 'type';
     
-    protected static $singleTableSubclasses = [GeneralProduct::class, DigitalProduct::class, TimeProduct::class, BundleProduct::class];
+    public static $singleTableType = 'general';
+    
+    public static $singleTableName = '일반 상품';
+    
+    protected static $singleTableSubclasses = [DigitalProduct::class, TimeProduct::class, BundleProduct::class];
+    
+    /**
+     * 타입에 따른 이름을 가져오는 함수.
+     * @return array the type map
+     */
+    public static function getSingleTableNameMap() {
+        $nameMap = [self::$singleTableType => self::$singleTableName];
+        $subclasses = self::getSingleTableTypeMap();
+        foreach ($subclasses as $type => $subclass) {
+            $nameMap[$type] = $subclass::$singleTableName;
+        }
+        return $nameMap;
+    }
     
     /**
      * @return array

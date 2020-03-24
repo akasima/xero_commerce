@@ -770,7 +770,13 @@ class Resources
                     Route::post('/store', ['as' => 'xero_commerce::setting.product.store',
                         'uses' => 'ProductController@store',
                         'permission' => 'xero_commerce']);
-
+                    Route::get('/search', ['as' => 'xero_commerce:setting.product.search',
+                        'uses' => 'ProductController@search',
+                        'permission' => 'xero_commerce']);
+                    Route::post('/{productId}/bundle/items', ['as' => 'xero_commerce::setting.product.bundle.items',
+                        'uses' => 'ProductController@storeBundleItem',
+                        'permission' => 'xero_commerce']);
+                    
                     Route::post('/option/save', ['as' => 'xero_commerce::setting.product.option.save',
                         'uses' => 'ProductOptionController@save',
                         'permission' => 'xero_commerce']);
@@ -800,6 +806,7 @@ class Resources
                     Route::get('/category/child', ['as' => 'xero_commerce:setting.product.category.getChild',
                         'uses' => 'ProductController@getChildCategory',
                         'permission' => 'xero_commerce']);
+                    
                 });
 
                 //후기, 문의 관리
