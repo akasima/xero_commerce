@@ -9,10 +9,15 @@ use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Tag\Tag;
+use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\GeneralProduct;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\DigitalProduct;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\TimeProduct;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\BundleProduct;
 
 class Product extends SellType
 {
-    use SoftDeletes;
+    use SoftDeletes, SingleTableInheritanceTrait;
 
     const IMG_MAXSIZE = 50000000;
 
@@ -29,10 +34,14 @@ class Product extends SellType
 
     protected $table = 'xero_commerce_products';
 
-    protected $fillable = ['shop_id', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
+    protected $fillable = ['shop_id', 'type', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
         'min_buy_count', 'max_buy_count', 'description', 'badge_id', 'tax_type', 'state_display',
         'state_deal', 'sub_name', 'shop_delivery_id'];
 
+    protected static $singleTableTypeField = 'type';
+    
+    protected static $singleTableSubclasses = [GeneralProduct::class, DigitalProduct::class, TimeProduct::class, BundleProduct::class];
+    
     /**
      * @return array
      */
@@ -147,7 +156,7 @@ class Product extends SellType
      */
     public function sellUnits()
     {
-        return $this->hasMany(ProductOptionItem::class);
+        return $this->hasMany(ProductOptionItem::class, 'product_id');
     }
 
     /**
