@@ -1,145 +1,145 @@
 {
-	"name" : "xpressengine-plugin/xero_commerce",
-	"description" : "This Package is Xpressengine Plugin - xero_commerce.",
-	"keywords" : [
-		"xpressengine",
-		"plugin"
-	],
-	"license" : "LGPL-2.1",
-	"version" : "1.2.1",
-	"type" : "xpressengine-plugin",
-	"support" : {
-		"email" : "input@your.email"
-	},
-	"authors" : [{
-			"name" : "input your name",
-			"email" : "input@your.email",
-			"homepage" : "http://input.your.site",
-			"role" : "Developer"
-		}
-	],
-	"extra" : {
-		"xpressengine" : {
-			"title" : "xero_commerce",
-			"icon" : "icon.png",
-			"component" : {
-				"module/xero_commerce@xero_commerce_module" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Modules\\XeroCommerceModule",
-					"name" : "XeroCommerce Module",
-					"description" : "xero_commerce customer module"
-				},
-				"theme/xero_commerce@xero_commerce_theme_default" : {
-					"name" : "XeroCommerce Default Theme",
-					"description" : "The theme supported by Xero_commerce plugin.",
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Themes\\XeroCommerceTheme\\XeroCommerceTheme"
-				},
-				"module/xero_commerce@xero_commerce_module/skin/xero_commerce@xero_commerce_default" : {
-					"name" : "XeroCommerce Default Skin",
-					"description" : "The skin supported by Xero_commerce plugin. shopping",
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\XeroCommerceDefault\\XeroCommerceDefaultSkin"
-				},
-				"xero_commerce/skin/xero_commerce@shopping_default" : {
-					"name" : "XeroCommerce Shopping Default Skin",
-					"description" : "The skin supported by Xero_commerce plugin.",
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\ShoppingDefault\\ShoppingDefaultSkin"
-				},
-				"xero_commerce/settingsSkin/xero_commerce@shopping_default" : {
-					"name" : "XeroCommerce Settings Default Skin",
-					"description" : "The skin supported by Xero_commerce plugin.",
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\SettingsDefault\\SettingsDefaultSkin"
-				},
-				"uiobject/xero_commerce@tag" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\UIObjects\\Tag\\TagUIObject",
-					"name" : "Tag",
-					"description" : "xero_commerce product Tag"
-				},
-				"uiobject/xero_commerce@star" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\UIObjects\\Star\\StarUIObject",
-					"name" : "Star",
-					"description" : "xero_commerce Feedback Star"
-				},
-				"widget/xero_commerce@label_product_widget" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\LabelProductWidget\\LabelProductWidget",
-					"name" : "XeroCommerce 라벨 상품 분류 위젯",
-					"description" : "XeroCommerce 라벨 상품 분류 위젯"
-				},
-				"widget/xero_commerce@label_product_widget/skin/xero_commerce@label_widget_common_skin" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\LabelProductWidget\\Skins\\Common\\CommonSkin",
-					"name" : "XeroCommerce 라벨 상품 분류 위젯 기본 스킨",
-					"description" : "XeroCommerce 라벨 상품 분류 위젯 기본 스킨"
-				},
-				"widget/xero_commerce@event_widget" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\EventWidget\\EventWidget",
-					"name" : "XeroCommerce 이벤트 위젯",
-					"description" : "XeroCommerce 이벤트 위젯"
-				},
-				"widget/xero_commerce@event_widget/skin/xero_commerce@event_widget_common_skin" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\EventWidget\\Skins\\Common\\CommonSkin",
-					"name" : "XeroCommerce 이벤트 위젯 기본 스킨",
-					"description" : "XeroCommerce 이벤트 위젯 기본 스킨"
-				},
-				"widget/xero_commerce@product_list_widget" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\ProductListWidget\\ProductListWidget",
-					"name" : "XeroCommerce 상품 목록 위젯",
-					"description" : "XeroCommerce 상품 목록 위젯"
-				},
-				"widget/xero_commerce@product_list_widget/skin/xero_commerce@product_list_widget_common_skin" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\ProductListWidget\\Skins\\Common\\CommonSkin",
-					"name" : "XeroCommerce 상품 목록 위젯 기본 스킨",
-					"description" : "XeroCommerce 상품 목록 위젯 기본 스킨"
-				},
-				"xero_pay/xero_pay@inicis" : {
-					"class" : "Xpressengine\\XePlugin\\XeroPay\\Inicis\\Inicis",
-					"name" : "이니시스",
-					"description" : "xero_pay 이니시스 모듈"
-				},
-				"xero_pay/xero_pay@lg" : {
-					"class" : "Xpressengine\\XePlugin\\XeroPay\\LG\\LG",
-					"name" : "LG X페이",
-					"description" : "xero_pay LG U+ X페이 모듈"
-				},
-				"widget/banner@widget/skin/xero_commerce@main_slider" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\MainSlider\\MainSliderSkin",
-					"name" : "Main Slider 스킨",
-					"description" : "Main Slider 스킨"
-				},
-				"widget/banner@widget/skin/xero_commerce@recommend_slider" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\RecommendSlider\\RecommendSliderSkin",
-					"name" : "MD 추천상품 스킨",
-					"description" : "MD 추천상품 스킨"
-				},
-				"xero_pay/xero_commerce@account" : {
-					"class" : "Xpressengine\\Plugins\\XeroCommerce\\AccountPayment\\Account",
-					"name" : "기본 계좌입금 모듈",
-					"description" : "기본 계좌입금용 결제 모듈"
-				}
-			}
-		}
-	},
-	"repositories" : [{
-			"type" : "composer",
-			"url" : "https://store.xpressengine.io"
-		}
-	],
-	"require" : {
-		"xpressengine-plugin/banner" : ">=1.0.0 || 0.9.4",
-		"maatwebsite/excel" : "^3.1",
-		"nanigans/single-table-inheritance" : "0.8.*"
-	},
-	"autoload" : {
-		"psr-4" : {
-			"Xpressengine\\Plugins\\XeroCommerce\\" : [
-				"src/",
-				"./"
-			],
-			"Xpressengine\\XePlugin\\XeroPay\\" : [
-				"payment/src/",
-				"payment/"
-			],
-			"Xpressengine\\Plugins\\XeroCommerce\\Test\\" : "tests/"
-		}
-	},
-	"config" : {
-		"optimize-autoloader" : true
-	}
+  "name" : "xpressengine-plugin/xero_commerce",
+  "description" : "This Package is Xpressengine Plugin - xero_commerce.",
+  "keywords" : [
+    "xpressengine",
+    "plugin"
+  ],
+  "license" : "LGPL-2.1",
+  "version" : "1.2.1",
+  "type" : "xpressengine-plugin",
+  "support" : {
+    "email" : "input@your.email"
+  },
+  "authors" : [{
+      "name" : "input your name",
+      "email" : "input@your.email",
+      "homepage" : "http://input.your.site",
+      "role" : "Developer"
+    }
+  ],
+  "extra" : {
+    "xpressengine" : {
+      "title" : "xero_commerce",
+      "icon" : "icon.png",
+      "component" : {
+        "module/xero_commerce@xero_commerce_module" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Modules\\XeroCommerceModule",
+          "name" : "XeroCommerce Module",
+          "description" : "xero_commerce customer module"
+        },
+        "theme/xero_commerce@xero_commerce_theme_default" : {
+          "name" : "XeroCommerce Default Theme",
+          "description" : "The theme supported by Xero_commerce plugin.",
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Themes\\XeroCommerceTheme\\XeroCommerceTheme"
+        },
+        "module/xero_commerce@xero_commerce_module/skin/xero_commerce@xero_commerce_default" : {
+          "name" : "XeroCommerce Default Skin",
+          "description" : "The skin supported by Xero_commerce plugin. shopping",
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\XeroCommerceDefault\\XeroCommerceDefaultSkin"
+        },
+        "xero_commerce/skin/xero_commerce@shopping_default" : {
+          "name" : "XeroCommerce Shopping Default Skin",
+          "description" : "The skin supported by Xero_commerce plugin.",
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\ShoppingDefault\\ShoppingDefaultSkin"
+        },
+        "xero_commerce/settingsSkin/xero_commerce@shopping_default" : {
+          "name" : "XeroCommerce Settings Default Skin",
+          "description" : "The skin supported by Xero_commerce plugin.",
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Skins\\SettingsDefault\\SettingsDefaultSkin"
+        },
+        "uiobject/xero_commerce@tag" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\UIObjects\\Tag\\TagUIObject",
+          "name" : "Tag",
+          "description" : "xero_commerce product Tag"
+        },
+        "uiobject/xero_commerce@star" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\UIObjects\\Star\\StarUIObject",
+          "name" : "Star",
+          "description" : "xero_commerce Feedback Star"
+        },
+        "widget/xero_commerce@label_product_widget" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\LabelProductWidget\\LabelProductWidget",
+          "name" : "XeroCommerce 라벨 상품 분류 위젯",
+          "description" : "XeroCommerce 라벨 상품 분류 위젯"
+        },
+        "widget/xero_commerce@label_product_widget/skin/xero_commerce@label_widget_common_skin" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\LabelProductWidget\\Skins\\Common\\CommonSkin",
+          "name" : "XeroCommerce 라벨 상품 분류 위젯 기본 스킨",
+          "description" : "XeroCommerce 라벨 상품 분류 위젯 기본 스킨"
+        },
+        "widget/xero_commerce@event_widget" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\EventWidget\\EventWidget",
+          "name" : "XeroCommerce 이벤트 위젯",
+          "description" : "XeroCommerce 이벤트 위젯"
+        },
+        "widget/xero_commerce@event_widget/skin/xero_commerce@event_widget_common_skin" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\EventWidget\\Skins\\Common\\CommonSkin",
+          "name" : "XeroCommerce 이벤트 위젯 기본 스킨",
+          "description" : "XeroCommerce 이벤트 위젯 기본 스킨"
+        },
+        "widget/xero_commerce@product_list_widget" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\ProductListWidget\\ProductListWidget",
+          "name" : "XeroCommerce 상품 목록 위젯",
+          "description" : "XeroCommerce 상품 목록 위젯"
+        },
+        "widget/xero_commerce@product_list_widget/skin/xero_commerce@product_list_widget_common_skin" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\ProductListWidget\\Skins\\Common\\CommonSkin",
+          "name" : "XeroCommerce 상품 목록 위젯 기본 스킨",
+          "description" : "XeroCommerce 상품 목록 위젯 기본 스킨"
+        },
+        "xero_pay/xero_pay@inicis" : {
+          "class" : "Xpressengine\\XePlugin\\XeroPay\\Inicis\\Inicis",
+          "name" : "이니시스",
+          "description" : "xero_pay 이니시스 모듈"
+        },
+        "xero_pay/xero_pay@lg" : {
+          "class" : "Xpressengine\\XePlugin\\XeroPay\\LG\\LG",
+          "name" : "LG X페이",
+          "description" : "xero_pay LG U+ X페이 모듈"
+        },
+        "widget/banner@widget/skin/xero_commerce@main_slider" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\MainSlider\\MainSliderSkin",
+          "name" : "Main Slider 스킨",
+          "description" : "Main Slider 스킨"
+        },
+        "widget/banner@widget/skin/xero_commerce@recommend_slider" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\Components\\Widget\\RecommendSlider\\RecommendSliderSkin",
+          "name" : "MD 추천상품 스킨",
+          "description" : "MD 추천상품 스킨"
+        },
+        "xero_pay/xero_commerce@account" : {
+          "class" : "Xpressengine\\Plugins\\XeroCommerce\\AccountPayment\\Account",
+          "name" : "기본 계좌입금 모듈",
+          "description" : "기본 계좌입금용 결제 모듈"
+        }
+      }
+    }
+  },
+  "repositories" : [{
+      "type" : "composer",
+      "url" : "https://store.xpressengine.io"
+    }
+  ],
+  "require" : {
+    "xpressengine-plugin/banner" : ">=1.0.0 || 0.9.4",
+    "maatwebsite/excel" : "^3.1",
+    "nanigans/single-table-inheritance" : "0.8.*"
+  },
+  "autoload" : {
+    "psr-4" : {
+      "Xpressengine\\Plugins\\XeroCommerce\\" : [
+        "src/",
+        "./"
+      ],
+      "Xpressengine\\XePlugin\\XeroPay\\" : [
+        "payment/src/",
+        "payment/"
+      ],
+      "Xpressengine\\Plugins\\XeroCommerce\\Test\\" : "tests/"
+    }
+  },
+  "config" : {
+    "optimize-autoloader" : true
+  }
 }
