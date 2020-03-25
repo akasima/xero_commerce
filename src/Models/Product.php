@@ -47,7 +47,7 @@ class Product extends SellType
     protected static $singleTableSubclasses = [DigitalProduct::class, TimeProduct::class, BundleProduct::class];
     
     /**
-     * 타입에 따른 이름을 가져오는 함수.
+     * 타입에 따른 이름맵을 가져오는 함수
      * @return array the type map
      */
     public static function getSingleTableNameMap() {
@@ -57,6 +57,15 @@ class Product extends SellType
             $nameMap[$type] = $subclass::$singleTableName;
         }
         return $nameMap;
+    }
+    
+    /**
+     * 외부에서 상품타입을 등록하는 함수
+     * @return void
+     */
+    public static function addSingleTableSubclass($subClass)
+    {
+        self::$singleTableSubclasses[] = $subClass;
     }
     
     /**
