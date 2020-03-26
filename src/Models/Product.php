@@ -10,7 +10,6 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Tag\Tag;
 use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
-use Xpressengine\Plugins\XeroCommerce\Models\Products\GeneralProduct;
 use Xpressengine\Plugins\XeroCommerce\Models\Products\DigitalProduct;
 use Xpressengine\Plugins\XeroCommerce\Models\Products\TimeProduct;
 use Xpressengine\Plugins\XeroCommerce\Models\Products\BundleProduct;
