@@ -9,10 +9,6 @@ class ProductOptionItem extends SellUnit
 {
     use SoftDeletes;
 
-    const TYPE_DEFAULT_OPTION = 1;
-    const TYPE_OPTION_ITEM = 2;
-    const TYPE_ADDITION_ITEM = 3;
-
     const DISPLAY_VISIBLE = 1;
     const DISPLAY_HIDDEN = 2;
 
@@ -22,19 +18,8 @@ class ProductOptionItem extends SellUnit
 
     protected $table = 'xero_commerce_product_option_item';
 
-    protected $fillable = ['product_id', 'option_type', 'name', 'addition_price', 'stock', 'alert_stock',
+    protected $fillable = ['product_id', 'name', 'value_combination', 'addition_price', 'stock', 'alert_stock',
         'state_display', 'state_deal'];
-
-    /**
-     * @return array
-     */
-    public static function getOptionTypes()
-    {
-        return [
-            self::TYPE_OPTION_ITEM => '옵션 상품',
-            self::TYPE_ADDITION_ITEM => '추가 상품',
-        ];
-    }
 
     /**
      * @return array
@@ -57,18 +42,6 @@ class ProductOptionItem extends SellUnit
             self::DEAL_PAUSE => '판매 일시 중지',
             self::DEAL_END => '거래 종료',
         ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getOptionTypeName()
-    {
-        $optionTypes = [self::TYPE_DEFAULT_OPTION => '기본 옵션'];
-
-        $optionTypes = $optionTypes + self::getOptionTypes();
-
-        return $optionTypes[$this->option_type];
     }
 
     /**

@@ -48,8 +48,9 @@ class ProductController extends SettingBaseController
     {
         $product = $this->productSettingService->getProduct($productId);
         $options = $this->productSettingService->getProductOptionArrays($product);
+        $optionItems = $this->productSettingService->getProductOptionItemArrays($product);
 
-        return XePresenter::make('product.show', compact('product', 'options'));
+        return XePresenter::make('product.show', compact('product', 'options', 'optionItems'));
     }
 
     public function create(Request $request, ProductCategoryService $productCategoryService)
@@ -61,7 +62,7 @@ class ProductController extends SettingBaseController
         })->get();
 
         $categoryItems = $productCategoryService->getCategoryItems();
-        
+
         $type = $request->get('type', Product::$singleTableType);
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
@@ -89,6 +90,8 @@ class ProductController extends SettingBaseController
         $product = $this->productSettingService->getProduct($productId);
         $categoryItems = $productCategoryService->getCategoryItems();
         $productCategorys = $productCategoryService->getProductCategory($productId);
+        $options = $this->productSettingService->getProductOptionArrays($product);
+        $optionItems = $this->productSettingService->getProductOptionItemArrays($product);
 
         $productLabelIds = [];
         foreach ($product->labels as $label) {
@@ -100,7 +103,7 @@ class ProductController extends SettingBaseController
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return XePresenter::make('product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys'));
+        return XePresenter::make('product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'optionItems'));
     }
 
     public function update(Request $request, $productId)
@@ -125,15 +128,15 @@ class ProductController extends SettingBaseController
 
         return XePresenter::makeApi(['type' => 'success', 'categories' => $childCategory]);
     }
-    
+
     // 번들상품 검색을 위한 API
     public function search(Request $request)
     {
         $products = $this->productSettingService->getProducts($request);
-        
+
         return XePresenter::makeApi(['type' => 'success', 'products' => $products]);
     }
-    
+
     public function storeBundleItem(Request $request, $productId)
     {
         $product = $this->productSettingService->getProduct($productId);

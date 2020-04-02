@@ -31,20 +31,24 @@ class Product extends SellType
     const TAX_TYPE_NO = 2;
     const TAX_TYPE_FREE = 3;
 
+    const OPTION_TYPE_SIMPLE = 0;   // 단독형
+    const OPTION_TYPE_COMBINATION_MERGE = 1;  // 조합 일체 선택형
+    const OPTION_TYPE_COMBINATION_SPLIT = 2;  // 조합 분리 선택형
+
     protected $table = 'xero_commerce_products';
 
     protected $fillable = ['shop_id', 'type', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
-        'min_buy_count', 'max_buy_count', 'description', 'badge_id', 'tax_type', 'state_display',
+        'min_buy_count', 'max_buy_count', 'description', 'badge_id', 'tax_type', 'option_type', 'state_display',
         'state_deal', 'sub_name', 'shop_delivery_id'];
 
     protected static $singleTableTypeField = 'type';
-    
+
     public static $singleTableType = 'general';
-    
+
     public static $singleTableName = '일반 상품';
-    
+
     protected static $singleTableSubclasses = [DigitalProduct::class, TimeProduct::class, BundleProduct::class];
-    
+
     /**
      * 타입에 따른 이름맵을 가져오는 함수
      * @return array the type map
@@ -57,7 +61,7 @@ class Product extends SellType
         }
         return $nameMap;
     }
-    
+
     /**
      * 외부에서 상품타입을 등록하는 함수
      * @return void
@@ -66,7 +70,7 @@ class Product extends SellType
     {
         self::$singleTableSubclasses[] = $subClass;
     }
-    
+
     /**
      * @return array
      */
@@ -113,9 +117,39 @@ class Product extends SellType
     }
 
     /**
+     * @return array
+     */
+    public static function getOptionTypes()
+    {
+        return [
+            self::OPTION_TYPE_SIMPLE => '단독형',
+            self::OPTION_TYPE_COMBINATION_MERGE => '조합 일체선택형',
+            self::OPTION_TYPE_COMBINATION_SPLIT => '조합 분리선택형',
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getOptionTypeName()
+    {
+        $optionTypes = self::getOptionTypes();
+
+        return $optionTypes[$this->option_type];
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function productOption()
+    public function options()
+    {
+        return $this->hasMany(ProductOption::class, 'product_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function optionItems()
     {
         return $this->hasMany(ProductOptionItem::class, 'product_id', 'id');
     }

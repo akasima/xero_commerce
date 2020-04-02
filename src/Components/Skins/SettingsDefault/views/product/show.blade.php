@@ -102,12 +102,54 @@
                 </div>
 
                 <div class="panel-body">
-                    <option-table-component :options='{{ json_encode($options) }}'
-                                            product-id="{{$product->id}}"
-                                            product-price="{{$product->sell_price}}"
-                                            save-url="{{route('xero_commerce::setting.product.option.save')}}"
-                                            remove-url="{{route('xero_commerce::setting.product.option.remove')}}"
-                                            load-url="{{route('xero_commerce::setting.product.option.load',['product'=>$product])}}"></option-table-component>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">옵션 타입</label>
+                        <div class="col-sm-10">
+                            <label>{{ $product->getOptionTypeName() }}</label>
+                        </div>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>옵션명</th>
+                                <th>옵션값</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($options as $option)
+                            <tr>
+                                <td>{{ $option['name'] }}</td>
+                                <td>{{ implode(', ', $option['values']) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>옵션품목명</th>
+                                <th>추가 금액</th>
+                                <th>현재 재고</th>
+                                <th>품절 알림 재고</th>
+                                <th>출력 상태</th>
+                                <th>판매 상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($optionItems as $optionItem)
+                                <tr>
+                                    <td>{{ $optionItem['name'] }}</td>
+                                    <td>{{ $optionItem['addition_price'] }}</td>
+                                    <td>{{ $optionItem['stock'] }}</td>
+                                    <td>{{ $optionItem['alert_stock'] }}</td>
+                                    <td>{{ $optionItem['state_display'] == 1 ? '출력' : '미출력' }}</td>
+                                    <td>{{ $optionItem['state_deal'] == 1 ? '판매' : ($optionItem['state_deal'] == 2 ? '일시중단' : '중단') }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -118,7 +160,7 @@
                 <div class="panel-heading">
                     <h3>묶음 상품</h3>
                 </div>
-        
+
                 <div class="panel-body table-responsive" style="overflow-y: visible">
                     <table class="table detail_info">
                     	<thead>
@@ -130,7 +172,7 @@
                             	<th>수량</th>
                             	<th>합계</th>
                             	<th>작업</th>
-                            </tr>	
+                            </tr>
                     	</thead>
                     	<tbody>
                     		@foreach ($product->items as $item)
