@@ -71,6 +71,7 @@ class ProductSettingService
         foreach ($product->optionItems as $optionItem) {
             $optionData['id'] = $optionItem->id;
             $optionData['name'] = $optionItem->name;
+            $optionData['value_combination'] = $optionItem->value_combination;
             $optionData['addition_price'] = $optionItem->addition_price;
             $optionData['sell_price'] = $optionItem->getSellPrice();
             $optionData['product_price']=$product->sell_price;

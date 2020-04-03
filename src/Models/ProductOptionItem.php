@@ -21,6 +21,10 @@ class ProductOptionItem extends SellUnit
     protected $fillable = ['product_id', 'name', 'value_combination', 'addition_price', 'stock', 'alert_stock',
         'state_display', 'state_deal'];
 
+    protected $casts = [
+        'value_combination' => 'json',
+    ];
+
     /**
      * @return array
      */

@@ -162,7 +162,6 @@
             option.values.map((value) => {
               this.optionItems.push({
                 product_id: this.productId,
-                option_type: 2,
                 name: value,
                 value_combination: { [option.name] : value },
                 addition_price: 0,
@@ -191,13 +190,12 @@
           combinedValueList.map((values) => {
             this.optionItems.push({
               product_id: this.productId,
-              option_type: 2,
               name: Object.values(values).join(', '),
               value_combination: values,
               addition_price: 0,
               sell_price: 0,
               stock: 0,
-              alert_stock: '',
+              alert_stock: 0,
               state_display: 1,
               state_deal: 1,
             });
