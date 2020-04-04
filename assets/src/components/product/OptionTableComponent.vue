@@ -3,9 +3,9 @@
     <div class="form-group">
       <label class="control-label col-sm-2 xe-form__label--requried">옵션 타입</label>
       <div class="col-sm-10">
-        <label><input type="radio" name="option_type" v-model="optionType" value="0" @click.prevent="confirmOptionTypeChange" />단독형</label>
-        <label><input type="radio" name="option_type" v-model="optionType" value="1" @click.prevent="confirmOptionTypeChange" />조합 일체선택형</label>
-        <label><input type="radio" name="option_type" v-model="optionType" value="2" @click.prevent="confirmOptionTypeChange" />조합 분리선택형</label>
+        <label><input type="radio" name="option_type" v-model="optionType" value="0" @click.prevent="confirmOptionTypeChange" />조합 일체선택형</label>
+        <label><input type="radio" name="option_type" v-model="optionType" value="1" @click.prevent="confirmOptionTypeChange" />조합 분리선택형</label>
+        <label><input type="radio" name="option_type" v-model="optionType" value="2" @click.prevent="confirmOptionTypeChange" />단독형</label>
       </div>
     </div>
     <div class="form-group">
@@ -155,27 +155,8 @@
           alert('옵션값은 필수 입력입니다.');
           return;
         }
-        // 단독형이면
-        if(this.optionType == 0) {
-          this.optionItems.splice(0);
-          this.optionList.map((option) => {
-            option.values.map((value) => {
-              this.optionItems.push({
-                product_id: this.productId,
-                name: value,
-                value_combination: { [option.name] : value },
-                addition_price: 0,
-                sell_price: 0,
-                stock: 0,
-                alert_stock: 0,
-                state_display: 1,
-                state_deal: 1,
-              });
-            });
-          });
-        }
         // 조합 일체선택형 & 조합 분리선택형
-        if(this.optionType == 1 || this.optionType == 2) {
+        if(this.optionType == 0 || this.optionType == 1) {
           let optionValuesMap = {};
           this.optionList.map((option) => {
             optionValuesMap[option.name] = option.values;
@@ -198,6 +179,25 @@
               alert_stock: 0,
               state_display: 1,
               state_deal: 1,
+            });
+          });
+        }
+        // 단독형이면
+        if(this.optionType == 2) {
+          this.optionItems.splice(0);
+          this.optionList.map((option) => {
+            option.values.map((value) => {
+              this.optionItems.push({
+                product_id: this.productId,
+                name: value,
+                value_combination: { [option.name] : value },
+                addition_price: 0,
+                sell_price: 0,
+                stock: 0,
+                alert_stock: 0,
+                state_display: 1,
+                state_deal: 1,
+              });
             });
           });
         }

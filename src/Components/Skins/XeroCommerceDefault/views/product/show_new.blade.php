@@ -29,8 +29,10 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                         </dl>
                         @include($skin::view('product.object.delivery'),['delivery'=>$product->getDelivery()])
                         @include($skin::view('product.object.option'),[
-                        'options'=>$product->getAvailableOptions(),
-                        'choose'=>[]
+                            'optionType'=>$product->option_type,
+                            'options'=>$product->getAvailableOptions(),
+                            'optionItems'=>$product->getAvailableOptionItems(),
+                            'choose'=>[]
                         ])
                         <div class="box-button">
                             <a href="#" class="link-buy"onclick="event.preventDefault(); productPage.buyPage()">구매하기</a>

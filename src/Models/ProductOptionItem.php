@@ -51,7 +51,7 @@ class ProductOptionItem extends SellUnit
     /**
      * @return string
      */
-    public function getOptionDisplayStateName()
+    public function getDisplayStateName()
     {
         $displayStates = self::getDisplayStates();
 
@@ -61,7 +61,7 @@ class ProductOptionItem extends SellUnit
     /**
      * @return string
      */
-    public function getOptionDealStateName()
+    public function getDealStateName()
     {
         $dealState = self::getDealStates();
 
@@ -106,13 +106,9 @@ class ProductOptionItem extends SellUnit
         return $this->forcedSellType()->sell_price + $this->addition_price;
     }
 
-    public function getDealState()
-    {
-        return self::getDealStates()[$this->state_deal];
-    }
-
     public function isDisplay()
     {
         return $this->state_display === self::DISPLAY_VISIBLE;
     }
+
 }

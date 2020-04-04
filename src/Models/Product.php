@@ -31,9 +31,9 @@ class Product extends SellType
     const TAX_TYPE_NO = 2;
     const TAX_TYPE_FREE = 3;
 
-    const OPTION_TYPE_SIMPLE = 0;   // 단독형
-    const OPTION_TYPE_COMBINATION_MERGE = 1;  // 조합 일체 선택형
-    const OPTION_TYPE_COMBINATION_SPLIT = 2;  // 조합 분리 선택형
+    const OPTION_TYPE_COMBINATION_MERGE = 0;  // 조합 일체 선택형
+    const OPTION_TYPE_COMBINATION_SPLIT = 1;  // 조합 분리 선택형
+    const OPTION_TYPE_SIMPLE = 2;  // 단독형
 
     protected $table = 'xero_commerce_products';
 
@@ -122,9 +122,9 @@ class Product extends SellType
     public static function getOptionTypes()
     {
         return [
-            self::OPTION_TYPE_SIMPLE => '단독형',
             self::OPTION_TYPE_COMBINATION_MERGE => '조합 일체선택형',
             self::OPTION_TYPE_COMBINATION_SPLIT => '조합 분리선택형',
+            self::OPTION_TYPE_SIMPLE => '단독형',
         ];
     }
 
@@ -136,6 +136,12 @@ class Product extends SellType
         $optionTypes = self::getOptionTypes();
 
         return $optionTypes[$this->option_type];
+    }
+
+    public function getAvailableOptions()
+    {
+        // TODO : optionItems에 있는 옵션들만 출력되도록 구현필요
+        return $this->options;
     }
 
     /**

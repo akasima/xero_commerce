@@ -11,7 +11,8 @@
         </td>
 
 
-        <input type="hidden" :name="`option_items[${index}][value_combination]`" :value="JSON.stringify(optionItem.value_combination)" />
+        <input v-for="(value, key) in optionItem.value_combination" type="hidden" :name="`option_items[${index}][value_combination][${key}]`" :value="value" />
+
         <td v-show="!isShowState"><input type="text" :name="`option_items[${index}][name]`" class="form-control" v-model="optionItem.name"></td>
         <td v-show="!isShowState"><input type="text" :name="`option_items[${index}][addition_price]`" class="form-control" v-model="optionItem.addition_price"></td>
         <td v-show="!isShowState"><input type="text" :name="`option_items[${index}][stock]`" class="form-control" v-model="optionItem.stock"></td>
