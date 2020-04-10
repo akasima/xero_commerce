@@ -9,10 +9,14 @@ use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Tag\Tag;
+use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\DigitalProduct;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\TimeProduct;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\BundleProduct;
 
 class Product extends SellType
 {
-    use SoftDeletes;
+    use SoftDeletes, SingleTableInheritanceTrait;
 
     const IMG_MAXSIZE = 50000000;
 
@@ -27,11 +31,45 @@ class Product extends SellType
     const TAX_TYPE_NO = 2;
     const TAX_TYPE_FREE = 3;
 
+    const OPTION_TYPE_COMBINATION_MERGE = 0;  // 조합 일체 선택형
+    const OPTION_TYPE_COMBINATION_SPLIT = 1;  // 조합 분리 선택형
+    const OPTION_TYPE_SIMPLE = 2;  // 단독형
+
     protected $table = 'xero_commerce_products';
 
-    protected $fillable = ['shop_id', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
-        'min_buy_count', 'max_buy_count', 'description', 'badge_id', 'tax_type', 'state_display',
+    protected $fillable = ['shop_id', 'type', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
+        'min_buy_count', 'max_buy_count', 'description', 'badge_id', 'tax_type', 'option_type', 'state_display',
         'state_deal', 'sub_name', 'shop_delivery_id'];
+
+    protected static $singleTableTypeField = 'type';
+
+    public static $singleTableType = 'general';
+
+    public static $singleTableName = '일반 상품';
+
+    protected static $singleTableSubclasses = [DigitalProduct::class, TimeProduct::class, BundleProduct::class];
+
+    /**
+     * 타입에 따른 이름맵을 가져오는 함수
+     * @return array the type map
+     */
+    public static function getSingleTableNameMap() {
+        $nameMap = [self::$singleTableType => self::$singleTableName];
+        $subclasses = self::getSingleTableTypeMap();
+        foreach ($subclasses as $type => $subclass) {
+            $nameMap[$type] = $subclass::$singleTableName;
+        }
+        return $nameMap;
+    }
+
+    /**
+     * 외부에서 상품타입을 등록하는 함수
+     * @return void
+     */
+    public static function addSingleTableSubclass($subClass)
+    {
+        self::$singleTableSubclasses[] = $subClass;
+    }
 
     /**
      * @return array
@@ -79,9 +117,45 @@ class Product extends SellType
     }
 
     /**
+     * @return array
+     */
+    public static function getOptionTypes()
+    {
+        return [
+            self::OPTION_TYPE_COMBINATION_MERGE => '조합 일체선택형',
+            self::OPTION_TYPE_COMBINATION_SPLIT => '조합 분리선택형',
+            self::OPTION_TYPE_SIMPLE => '단독형',
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getOptionTypeName()
+    {
+        $optionTypes = self::getOptionTypes();
+
+        return $optionTypes[$this->option_type];
+    }
+
+    public function getAvailableOptions()
+    {
+        // TODO : optionItems에 있는 옵션들만 출력되도록 구현필요
+        return $this->options;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function productOption()
+    public function options()
+    {
+        return $this->hasMany(ProductOption::class, 'product_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function optionItems()
     {
         return $this->hasMany(ProductOptionItem::class, 'product_id', 'id');
     }
@@ -147,7 +221,7 @@ class Product extends SellType
      */
     public function sellUnits()
     {
-        return $this->hasMany(ProductOptionItem::class);
+        return $this->hasMany(ProductOptionItem::class, 'product_id');
     }
 
     /**

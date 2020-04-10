@@ -22,5 +22,16 @@ Vue.component('shop-delivery-component', require('./components/setting/shop/Deli
 Vue.component('wish-component', require('./components/Wish/WishComponent').default);
 
 var app = new Vue({
-    el: '#component-container'
+  el: '#component-container'
 });
+
+// 여러 Vue 인스턴스를 실행할 수 있도록 구현
+var containers = document.querySelectorAll('.component-container');
+containers.forEach((containerEl) => {
+  new Vue({
+    el: containerEl
+  });
+});
+
+
+

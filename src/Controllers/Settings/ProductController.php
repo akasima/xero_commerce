@@ -36,10 +36,11 @@ class ProductController extends SettingBaseController
         $displayStates = Product::getDisplayStates();
         $dealStates = Product::getDealStates();
         $products = $this->productSettingService->getProducts($request);
+        $types = Product::getSingleTableNameMap();
 
         return XePresenter::make(
             'product.index',
-            compact('displayStates', 'dealStates', 'products')
+            compact('displayStates', 'dealStates', 'products', 'types')
         );
     }
 
@@ -47,11 +48,12 @@ class ProductController extends SettingBaseController
     {
         $product = $this->productSettingService->getProduct($productId);
         $options = $this->productSettingService->getProductOptionArrays($product);
+        $optionItems = $this->productSettingService->getProductOptionItemArrays($product);
 
-        return XePresenter::make('product.show', compact('product', 'options'));
+        return XePresenter::make('product.show', compact('product', 'options', 'optionItems'));
     }
 
-    public function create(ProductCategoryService $productCategoryService)
+    public function create(Request $request, ProductCategoryService $productCategoryService)
     {
         $labels = Label::get();
         $badges = Badge::get();
@@ -61,10 +63,12 @@ class ProductController extends SettingBaseController
 
         $categoryItems = $productCategoryService->getCategoryItems();
 
+        $type = $request->get('type', Product::$singleTableType);
+
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
         return XePresenter::make('product.create',
-            compact('labels', 'badges', 'categoryItems', 'shops'));
+            compact('labels', 'badges', 'categoryItems', 'shops', 'type'));
     }
 
     public function store(Request $request)
@@ -86,6 +90,8 @@ class ProductController extends SettingBaseController
         $product = $this->productSettingService->getProduct($productId);
         $categoryItems = $productCategoryService->getCategoryItems();
         $productCategorys = $productCategoryService->getProductCategory($productId);
+        $options = $this->productSettingService->getProductOptionArrays($product);
+        $optionItems = $this->productSettingService->getProductOptionItemArrays($product);
 
         $productLabelIds = [];
         foreach ($product->labels as $label) {
@@ -97,7 +103,7 @@ class ProductController extends SettingBaseController
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return XePresenter::make('product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys'));
+        return XePresenter::make('product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'optionItems'));
     }
 
     public function update(Request $request, $productId)
@@ -121,5 +127,23 @@ class ProductController extends SettingBaseController
         $childCategory = $categoryService->getChildCategory($parentId);
 
         return XePresenter::makeApi(['type' => 'success', 'categories' => $childCategory]);
+    }
+
+    // 번들상품 검색을 위한 API
+    public function search(Request $request)
+    {
+        $products = $this->productSettingService->getProducts($request);
+
+        return XePresenter::makeApi(['type' => 'success', 'products' => $products]);
+    }
+
+    public function storeBundleItem(Request $request, $productId)
+    {
+        $product = $this->productSettingService->getProduct($productId);
+        $product->items()->create([
+            'product_id' => $request->product_id,
+            'quantity' => 1
+        ]);
+        return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
     }
 }

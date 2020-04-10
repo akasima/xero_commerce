@@ -43,24 +43,48 @@ class ProductSettingService
     {
         $options = [];
 
-        /** @var ProductOptionItem $option */
-        foreach ($product->productOption as $option) {
+        /** @var ProductOption $option */
+        foreach ($product->options as $option) {
             $optionData['id'] = $option->id;
-            $optionData['option_type_name'] = $option->getOptionTypeName();
+            $optionData['product_id'] = $option->product_id;
+            $optionData['display_type'] = $option->display_type;
             $optionData['name'] = $option->name;
-            $optionData['addition_price'] = $option->addition_price;
-            $optionData['sell_price'] = $option->getSellPrice();
-            $optionData['product_price']=$product->sell_price;
-            $optionData['stock'] = $option->stock;
-            $optionData['alert_stock'] = $option->alert_stock;
-            $optionData['state_display'] = $option->state_display;
-            $optionData['state_deal'] = $option->state_deal;
-            $optionData['data']=$option;
+            $optionData['values'] = $option->values;
+            $optionData['sort_order'] = $option->sort_order;
 
             $options[] = $optionData;
         }
 
         return $options;
+    }
+
+    /**
+     * @param Product $product product
+     *
+     * @return array
+     */
+    public function getProductOptionItemArrays($product)
+    {
+        $optionItems = [];
+
+        /** @var ProductOptionItem $optionItem */
+        foreach ($product->optionItems as $optionItem) {
+            $optionData['id'] = $optionItem->id;
+            $optionData['name'] = $optionItem->name;
+            $optionData['value_combination'] = $optionItem->value_combination;
+            $optionData['addition_price'] = $optionItem->addition_price;
+            $optionData['sell_price'] = $optionItem->getSellPrice();
+            $optionData['product_price']=$product->sell_price;
+            $optionData['stock'] = $optionItem->stock;
+            $optionData['alert_stock'] = $optionItem->alert_stock;
+            $optionData['state_display'] = $optionItem->state_display;
+            $optionData['state_deal'] = $optionItem->state_deal;
+            $optionData['data'] = $optionItem;
+
+            $optionItems[] = $optionData;
+        }
+
+        return $optionItems;
     }
 
     /**

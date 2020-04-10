@@ -35,6 +35,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\QnaHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
@@ -770,6 +771,12 @@ class Resources
                     Route::post('/store', ['as' => 'xero_commerce::setting.product.store',
                         'uses' => 'ProductController@store',
                         'permission' => 'xero_commerce']);
+                    Route::get('/search', ['as' => 'xero_commerce:setting.product.search',
+                        'uses' => 'ProductController@search',
+                        'permission' => 'xero_commerce']);
+                    Route::post('/{productId}/bundle/items', ['as' => 'xero_commerce::setting.product.bundle.items',
+                        'uses' => 'ProductController@storeBundleItem',
+                        'permission' => 'xero_commerce']);
 
                     Route::post('/option/save', ['as' => 'xero_commerce::setting.product.option.save',
                         'uses' => 'ProductOptionController@save',
@@ -800,6 +807,7 @@ class Resources
                     Route::get('/category/child', ['as' => 'xero_commerce:setting.product.category.getChild',
                         'uses' => 'ProductController@getChildCategory',
                         'permission' => 'xero_commerce']);
+
                 });
 
                 //후기, 문의 관리
@@ -1044,6 +1052,15 @@ class Resources
             return $instance;
         });
         $app->alias(ProductHandler::class, 'xero_commerce.productHandler');
+
+        $app->singleton(ProductOptionHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(ProductOptionHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(ProductOptionHandler::class, 'xero_commerce.productOptionHandler');
 
         $app->singleton(ProductOptionItemHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(ProductOptionItemHandler::class);

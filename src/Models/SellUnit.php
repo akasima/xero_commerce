@@ -26,7 +26,9 @@ abstract class SellUnit extends DynamicModel
 
     abstract public function getSellPrice();
 
-    abstract public function getDealState();
+    abstract public function getDisplayStateName();
+
+    abstract public function getDealStateName();
 
     abstract public function isDisplay();
 
@@ -40,9 +42,11 @@ abstract class SellUnit extends DynamicModel
         return [
             'id' => $this->id,
             'name' => $this->getName(),
+            'value_combination' => $this->value_combination,
             'sell_price' => $this->getSellPrice(),
-            'add_price' => $this->addition_price,
-            'state'=>$this->getDealState()
+            'addition_price' => $this->addition_price,
+            'state_display'=>$this->getDisplayStateName(),
+            'state_deal'=>$this->getDealStateName(),
         ];
     }
 }

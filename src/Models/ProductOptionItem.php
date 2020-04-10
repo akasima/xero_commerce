@@ -9,10 +9,6 @@ class ProductOptionItem extends SellUnit
 {
     use SoftDeletes;
 
-    const TYPE_DEFAULT_OPTION = 1;
-    const TYPE_OPTION_ITEM = 2;
-    const TYPE_ADDITION_ITEM = 3;
-
     const DISPLAY_VISIBLE = 1;
     const DISPLAY_HIDDEN = 2;
 
@@ -22,19 +18,12 @@ class ProductOptionItem extends SellUnit
 
     protected $table = 'xero_commerce_product_option_item';
 
-    protected $fillable = ['product_id', 'option_type', 'name', 'addition_price', 'stock', 'alert_stock',
+    protected $fillable = ['product_id', 'name', 'value_combination', 'addition_price', 'stock', 'alert_stock',
         'state_display', 'state_deal'];
 
-    /**
-     * @return array
-     */
-    public static function getOptionTypes()
-    {
-        return [
-            self::TYPE_OPTION_ITEM => '옵션 상품',
-            self::TYPE_ADDITION_ITEM => '추가 상품',
-        ];
-    }
+    protected $casts = [
+        'value_combination' => 'json',
+    ];
 
     /**
      * @return array
@@ -62,19 +51,7 @@ class ProductOptionItem extends SellUnit
     /**
      * @return string
      */
-    public function getOptionTypeName()
-    {
-        $optionTypes = [self::TYPE_DEFAULT_OPTION => '기본 옵션'];
-
-        $optionTypes = $optionTypes + self::getOptionTypes();
-
-        return $optionTypes[$this->option_type];
-    }
-
-    /**
-     * @return string
-     */
-    public function getOptionDisplayStateName()
+    public function getDisplayStateName()
     {
         $displayStates = self::getDisplayStates();
 
@@ -84,7 +61,7 @@ class ProductOptionItem extends SellUnit
     /**
      * @return string
      */
-    public function getOptionDealStateName()
+    public function getDealStateName()
     {
         $dealState = self::getDealStates();
 
@@ -129,13 +106,9 @@ class ProductOptionItem extends SellUnit
         return $this->forcedSellType()->sell_price + $this->addition_price;
     }
 
-    public function getDealState()
-    {
-        return self::getDealStates()[$this->state_deal];
-    }
-
     public function isDisplay()
     {
         return $this->state_display === self::DISPLAY_VISIBLE;
     }
+
 }
