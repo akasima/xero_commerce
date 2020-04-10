@@ -71,41 +71,47 @@ class Resources
 
     public static function addColumn()
     {
-        Schema::table('xero_pay_payment', function (Blueprint $table) {
-            $table->string('transaction_id')->nullable();
-        });
+        if (!Schema::hasColumn('xero_pay_payment', 'transaction_id')) {
+            Schema::table('xero_pay_payment', function (Blueprint $table) {
+                $table->string('transaction_id')->nullable();
+            });
+        }
     }
 
     public static function makeDataTable()
     {
-        Schema::create('xero_pay_payment', function (Blueprint $table) {
-            $table->string('id', 36);
-            $table->string('transaction_id')->nullable();
-            $table->string('user_id');
-            $table->string('name');
-            $table->string('ip');
-            $table->string('payment_type');
-            $table->string('payable_id');
-            $table->string('payable_type');
-            $table->string('payable_unique_id');
-            $table->integer('price');
-            $table->string('method');
-            $table->boolean('is_paid_method');
-            $table->text('info');
-            $table->string('status');
-            $table->text('receipt');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('xero_pay_payment')) {
+            Schema::create('xero_pay_payment', function (Blueprint $table) {
+                $table->string('id', 36);
+                $table->string('transaction_id')->nullable();
+                $table->string('user_id');
+                $table->string('name');
+                $table->string('ip');
+                $table->string('payment_type');
+                $table->string('payable_id');
+                $table->string('payable_type');
+                $table->string('payable_unique_id');
+                $table->integer('price');
+                $table->string('method');
+                $table->boolean('is_paid_method');
+                $table->text('info');
+                $table->string('status');
+                $table->text('receipt');
+                $table->timestamps();
+            });
+        }
 
-        Schema::create('xero_pay_log', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('status');
-            $table->string('payment_id', 36);
-            $table->text('req');
-            $table->text('res');
-            $table->string('action');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('xero_pay_log')) {
+            Schema::create('xero_pay_log', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('status');
+                $table->string('payment_id', 36);
+                $table->text('req');
+                $table->text('res');
+                $table->string('action');
+                $table->timestamps();
+            });
+        }
     }
 
     public static function deleteDataTable(){
