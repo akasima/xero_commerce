@@ -36,7 +36,7 @@ class AddProductType extends Migration
                 $table->integer('bundle_product_id')->unsigned();
                 $table->integer('product_id')->unsigned();
                 $table->integer('quantity');
-                $table->json('option_values');
+                $table->text('option_values');
 
                 $table->timestamps();
 
