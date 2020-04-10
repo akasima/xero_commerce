@@ -31,6 +31,17 @@ class ProductService
         return $items;
     }
 
+    public function getProductsForCommon($request, $paginationCount = self::DEFAULT_PAGINATION_COUNT)
+    {
+        $query = $this->handler->getProductsQueryForCommon($request);
+
+        $query = $query->limit(8);
+
+        $items = $query->paginate($paginationCount, ['*'], 'product_page')->appends($request->except('product_page'));
+
+        return $items;
+    }
+	
     public function getProducts(Request $request, $config, $paginationCount = self::DEFAULT_PAGINATION_COUNT)
     {
         $query = $this->handler->getProductsQueryForModule($request, $config);
