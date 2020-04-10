@@ -1,6 +1,6 @@
 {
   "name": "xpressengine-plugin/xero_commerce",
-  "description": "This Package is Xpressengine Plugin - xero_commerce.",
+  "description": "XE3에 설치해서 사용하는 전자상거래 시스템 플러그인 입니다.",
   "keywords": [
     "xpressengine",
     "plugin"
@@ -13,9 +13,9 @@
   },
   "authors": [
     {
-      "name": "input your name",
-      "email": "input@your.email",
-      "homepage": "http://input.your.site",
+      "name": "XE Developers",
+      "email": "developer@xpressengine.com",
+      "homepage": "https://store.xehub.io/plugins/xero_commerce",
       "role": "Developer"
     }
   ],
