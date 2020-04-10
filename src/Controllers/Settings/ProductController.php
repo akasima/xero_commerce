@@ -10,6 +10,7 @@ use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Badge;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOption;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin\ValidateManager;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
@@ -65,10 +66,12 @@ class ProductController extends SettingBaseController
 
         $type = $request->get('type', Product::$singleTableType);
 
+        $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
+
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
         return XePresenter::make('product.create',
-            compact('labels', 'badges', 'categoryItems', 'shops', 'type'));
+            compact('labels', 'badges', 'categoryItems', 'shops', 'type', 'customOptionTypes'));
     }
 
     public function store(Request $request)
@@ -92,6 +95,8 @@ class ProductController extends SettingBaseController
         $productCategorys = $productCategoryService->getProductCategory($productId);
         $options = $this->productSettingService->getProductOptionArrays($product);
         $optionItems = $this->productSettingService->getProductOptionItemArrays($product);
+        $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
+        $customOptions = $this->productSettingService->getProductCustomOptionArrays($product);
 
         $productLabelIds = [];
         foreach ($product->labels as $label) {
@@ -103,7 +108,7 @@ class ProductController extends SettingBaseController
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return XePresenter::make('product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'optionItems'));
+        return XePresenter::make('product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'optionItems', 'customOptionTypes', 'customOptions'));
     }
 
     public function update(Request $request, $productId)

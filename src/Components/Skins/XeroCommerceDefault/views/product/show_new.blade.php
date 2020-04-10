@@ -1,5 +1,6 @@
 @php
 $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\XeroCommerceDefaultSkin::class;
+/** @var \Xpressengine\Plugins\XeroCommerce\Models\Product $product */
 @endphp
 @if($product->state_deal == \Xpressengine\Plugins\XeroCommerce\Models\Product::DEAL_ON_SALE)
     <div class="hide" id="page">
@@ -32,6 +33,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                             'optionType'=>$product->option_type,
                             'options'=>$product->getAvailableOptions(),
                             'optionItems'=>$product->getAvailableOptionItems(),
+                            'customOptions'=>$product->getAvailableCustomOptions(),
                             'choose'=>[]
                         ])
                         <div class="box-button">

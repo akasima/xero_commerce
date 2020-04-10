@@ -1,11 +1,18 @@
-{{\App\Facades\XeFrontend::js('https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js')->load()}}
+{{\App\Facades\XeFrontend::js('https://cdn.jsdelivr.net/npm/vue/dist/vue.js')->load()}}
 <div id="option">
+    {{-- 커스텀 옵션 --}}
+    @if($customOptions->count() > 0)
+        <div v-for="(option, i) in customOptions" class="box-option">
+            <strong>@{{ option.name }} @{{ option.is_required ? '(필수)' : '' }}</strong>
+            <input :type="option.type" v-model="customOptionValues[option.name]" class="form-select" />
+        </div>
+    @endif
     {{-- 기본값(옵션품목1개), 조합일체형 --}}
     @if($optionType == \Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_MERGE)
     <div class="box-option">
-        <strong>선택항목</strong>
+        <strong>옵션 선택</strong>
         <select v-model="selectedOptionItem" class="form-select">
-            <option disabled="" selected value="null">옵션을 선택해주세요</option>
+            <option selected :value="undefined">[필수] 옵션을 선택해주세요</option>
             <option v-for="item in optionItems" :value="item" :disabled="item.state_deal!=='판매중'">@{{item.name}}
                 (+@{{Number(item.addition_price).toLocaleString()}} ) @{{(item.state_deal!=='판매중')? '-'+ item.state_deal: ''}}
             </option>
@@ -17,7 +24,7 @@
     <div v-for="(option, i) in options" class="box-option">
         <strong>@{{ option.name }}</strong>
         <select v-model="selectedOptions[i]" class="form-select">
-            <option disabled="" selected value="undefined">[필수] 옵션을 선택해주세요</option>
+            <option selected :value="undefined">[필수] 옵션을 선택해주세요</option>
             <option v-for="value in option.values" :value="{[option.name] : value}">@{{value}}</option>
         </select>
     </div>
@@ -25,6 +32,7 @@
     <div class="product-info-counter">
         <div v-if="!hasOnlyOneItem" class="product-info-cell" v-for="(selectedOption, key) in select">
             <div class="product-info-counter-title">@{{selectedOption.unit.name}} </div>
+            <div v-for="(v, k) in selectedOption.custom_values" style="padding-left: 10px">@{{ k }} : @{{ v }}</div>
             <div class="xe-spin-box">
                 <button type="button" @click="selectedOption.count--; if(selectedOption.count<=0)dropOption(key)"><i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span></button>
                 <p>@{{selectedOption.count}}</p>
@@ -36,6 +44,7 @@
 
         <div v-if="hasOnlyOneItem" class="product-info-cell" v-for="(selectedOption, key) in select">
             <div class="product-info-counter-title">@{{selectedOption.unit.name}} </div>
+            <div v-for="(v, k) in selectedOption.custom_values" style="padding-left: 10px">@{{ k }} : @{{ v }}</div>
             <div class="xe-spin-box">
                 <button type="button" @click="(selectedOption.count>1) ? selectedOption.count-- : ''"><i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span></button>
                 <p>@{{selectedOption.count}}</p>
@@ -50,6 +59,7 @@
 </div>
 <script>
     $(function(){
+        Vue.config.devtools = true;
         new Vue({
             el: "#option",
             name: "OptionSelectComponent",
@@ -91,11 +101,13 @@
             data: function() {
                 return {
                     selectedOptions: [],
-                    selectedOptionItem: null,
-                    'select': [],
+                    selectedOptionItem: undefined,
+                    customOptionValues: {},
+                    select: [],
                     pay: 'prepay',
                     options: {!! json_encode($options) !!},
                     optionItems: {!! json_encode($optionItems) !!},
+                    customOptions: {!! json_encode($customOptions) !!},
                     alreadyChoose:{!! json_encode($choose) !!},
                     reset:null
                 }
@@ -117,12 +129,22 @@
                     }
                 },
                 initialize: function () {
-                    if(this.hasOnlyOneItem && this.select.length===0) this.selectedOptionItem=this.optionItems[0];
+                    // 커스텀 옵션이 있는경우, 상품이 하나여도 옵션이 달라질수 있기 때문에 아래 코드 주석처리
+                    // if(this.hasOnlyOneItem && this.select.length===0) this.selectedOptionItem=this.optionItems[0];
                 },
                 // 선택된 옵션목록에 아이템 추가
                 addOptionItemToList(el) {
-                    if (el == null) return
-                    let exist = this.select.find(function(v){
+                    if (el == undefined) return
+                    if (!this.validateCustomOption()) {
+                        console.log(el);
+                        alert('필수옵션을 입력해야 합니다')
+                        return
+                    }
+                    let exist = this.select.find((v) => {
+                        // 커스텀옵션이 설정되어 있다면
+                        if(Object.values(this.customOptionValues).filter(a => a != '').length > 0) {
+                            return v.unit.id === el.id && JSON.stringify(v.custom_values) == JSON.stringify(this.customOptionValues)
+                        }
                         return v.unit.id === el.id
                     });
                     if (exist) {
@@ -131,12 +153,25 @@
                         this.select.push({
                             id: null,
                             unit: el,
-                            count: 1
+                            count: 1,
+                            custom_values: Object.assign({}, this.customOptionValues)
                         })
                     }
                     this.$emit('input', this.select)
                     this.selectedOptionItem = null;
                     this.selectedOptions = [];
+                    this.customOptionValues = {};
+                },
+                validateCustomOption() {
+                    let invalids = this.customOptions.filter(option => {
+                        // 필수옵션인데 값이 없는 경우 true
+                        if(option.is_required) {
+                            return !this.customOptionValues[option.name]
+                        }
+                        return false
+                    })
+                    // invalid가 하나도 없으면 true
+                    return !invalids.length;
                 }
             },
             mounted: function () {
