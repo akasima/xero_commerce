@@ -177,6 +177,10 @@ class ProductHandler
         if (isset($args['product_tax_type']) == true) {
             $query = $query->where('tax_type', $args['product_tax_type']);
         }
+        
+        if (isset($args['product_type']) == true) {
+            $query = $query->where('type', $args['product_type']);
+        }
 
         return $query;
     }
@@ -210,7 +214,8 @@ class ProductHandler
      */
     public function store(array $args)
     {
-        $newProduct = new Product();
+        $class = Product::getSingleTableTypeMap()[$args['type']] ?: Product::class;
+        $newProduct = (new $class)->newInstance();
         $args = $this->numberFormatPrice($args);
         $newProduct->fill($args);
         $info = array_combine($args['infoKeys'], $args['infoValues']);

@@ -11,8 +11,7 @@
   "support": {
     "email": "input@your.email"
   },
-  "authors": [
-    {
+  "authors": [{
       "name": "input your name",
       "email": "input@your.email",
       "homepage": "http://input.your.site",
@@ -117,15 +116,15 @@
       }
     }
   },
-  "repositories": [
-    {
+  "repositories": [{
       "type": "composer",
       "url": "https://store.xpressengine.io"
     }
   ],
   "require": {
     "xpressengine-plugin/banner": ">=1.0.0 || 0.9.4",
-    "maatwebsite/excel": "^3.1"
+    "maatwebsite/excel": "^3.1",
+    "nanigans/single-table-inheritance": "0.8.*"
   },
   "autoload": {
     "psr-4": {

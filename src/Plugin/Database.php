@@ -6,9 +6,16 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
+use Illuminate\Support\Facades\Artisan;
+use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class Database
 {
+    public static function update()
+    {
+        Artisan::call('migrate', array('--path' => 'plugins/'.Plugin::getId().'/src/Migrations', '--force' => true));
+    }
+    
     public static function addTable()
     {
 

@@ -1,9 +1,11 @@
 {
   "dependencies": {
+    "@johmun/vue-tags-input": "^2.1.0",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.3.1",
     "bootstrap-colorpicker": "^3.0.3",
     "bootstrap-vue": "^2.0.0-rc.17",
+    "combos": "^0.2.0",
     "moment": "^2.22.2",
     "vue": "^2.5.17",
     "vue-daum-postcode": "^0.4.0",
@@ -23,7 +25,7 @@
     "webpack-cli": "^3.3.0"
   },
   "scripts": {
-    "build": "./node_modules/webpack/bin/webpack.js -p",
-    "watch": "./node_modules/webpack/bin/webpack.js --watch"
+    "build": "webpack -p",
+    "watch": "webpack --watch"
   }
 }

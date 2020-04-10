@@ -32,7 +32,7 @@ class ProductOptionItemSettingService
 
         $productOptionItemArgs = [];
         $productOptionItemArgs['product_id'] = $productId;
-        $productOptionItemArgs['option_type'] = ProductOptionItem::TYPE_DEFAULT_OPTION;
+        $productOptionItemArgs['option_type'] = Product::OPTION_TYPE_SIMPLE;
         $productOptionItemArgs['name'] = $productArgs['name'];
         $productOptionItemArgs['addition_price'] = 0;
         $productOptionItemArgs['stock'] = $productArgs['stock'];
@@ -53,23 +53,21 @@ class ProductOptionItemSettingService
         $this->productOptionItemHandler->store($productOptionItemArgs);
     }
 
-    public function create(array $args)
+    /**
+     * @param Request $request
+     * @param $productId
+     */
+    public function saveOptionItems(Request $request, $productId)
     {
-        $this->productOptionItemHandler->store($args);
-    }
-
-    public function update(array $args, $optionItemId)
-    {
-        $optionItem = $this->productOptionItemHandler->getOptionItem($optionItemId);
-
-        $this->productOptionItemHandler->update($optionItem, $args);
-    }
-
-    public function remove($optionItemId)
-    {
-        $optionItem = $this->productOptionItemHandler->getOptionItem($optionItemId);
-
-        $this->productOptionItemHandler->destroy($optionItem);
+        // 기존 옵션들은 삭제
+        $this->removeProductOptionItems($productId);
+        // 새로운 옵션들을 입력
+        $optionItemsData = $request->get('option_items');
+        // 저장
+        foreach ($optionItemsData as $itemData) {
+            $itemData['product_id'] = $productId;
+            $this->productOptionItemHandler->store($itemData);
+        }
     }
 
     public function removeProductOptionItems($productId)

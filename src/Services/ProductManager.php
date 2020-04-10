@@ -11,6 +11,9 @@ class ProductManager
     /** @var ProductSettingService $productSettingService */
     protected $productSettingService;
 
+    /** @var ProductOptionSettingService $productOptionSettingService */
+    protected $productOptionSettingService;
+
     /** @var ProductOptionItemSettingService $productOptionItemSettingService */
     protected $productOptionItemSettingService;
 
@@ -29,6 +32,7 @@ class ProductManager
     public function __construct()
     {
         $this->productSettingService = new ProductSettingService();
+        $this->productOptionSettingService = new ProductOptionSettingService();
         $this->productOptionItemSettingService = new ProductOptionItemSettingService();
         $this->productCategoryService = new ProductCategoryService();
         $this->tagHandler = app('xe.tag');
@@ -50,7 +54,13 @@ class ProductManager
             XeDB::beginTransaction();
 
             $productId = $this->productSettingService->store($request);
-            $this->productOptionItemSettingService->defaultOptionStore($request, $productId);
+            // 옵션이 수정되었으면 옵션저장, 아니면 기본옵션 입력
+            if($request->get('is_option_changed')) {
+                $this->productOptionSettingService->saveOptions($request, $productId);
+            } else {
+                $this->productOptionItemSettingService->defaultOptionStore($request, $productId);
+            }
+            $this->productOptionItemSettingService->saveOptionItems($request, $productId);
             $this->setTag($productId, $request);
             ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
             $this->labelService->createProductLabel($productId, $request);
@@ -105,6 +115,10 @@ class ProductManager
             XeDB::beginTransaction();
 
             $this->productSettingService->update($request, $productId);
+            if($request->get('is_option_changed')) {
+                $this->productOptionSettingService->saveOptions($request, $productId);
+            }
+            $this->productOptionItemSettingService->saveOptionItems($request, $productId);
             $this->setTag($productId, $request);
             ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
             $this->labelService->updateProductLabel($productId, $request);

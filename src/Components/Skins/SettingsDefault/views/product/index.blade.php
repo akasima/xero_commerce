@@ -21,6 +21,15 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                                 <label>상품 코드</label>
                                 <input type="text" name="product_code" class="form-control" value="{{ Request::get('product_code') }}">
                             </div>
+                            <div class="col-md-4">
+                                <label>상품 타입</label>
+                                <select name="product_type" class="form-control">
+                                    <option value="">선택</option>
+                                    @foreach ($types as $type => $name)
+                                    <option value="{{ $type }}" {{ Request::get('product_type') == $type ? 'selected' : '' }}>{{ $name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col-md-4">
@@ -70,7 +79,18 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
     <div class="col-sm-12">
         <div class="panel-group">
             <div class="xero-settings-control-float">
-                <a href="{{ route('xero_commerce::setting.product.create') }}" class="xe-btn xe-btn-primary xe-btn-lg">상품 등록</a>
+				<div class="dropup">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        	상품 등록 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+							@foreach ($types as $type => $name)
+								<li><a href="{{ route('xero_commerce::setting.product.create', ['type' => $type] ) }}">{{ $name }}</a></li>
+							@endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="panel">
                 <div class="panel-body table-scrollable">
@@ -79,6 +99,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                             <tr>
                                 <th>썸네일</th>
                                 <th>상품코드</th>
+                                <th>상품타입</th>
                                 <th>상품명</th>
                                 <th>상품설명</th>
                                 <th>재고</th>
@@ -91,6 +112,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Product;
                             <tr>
                                 <td><img src="{{$product->getThumbnailSrc('T')}}" alt="" style="width:80px; height:60px;"></td>
                                 <td class="nowrap">{{ $product->product_code }}</td>
+                                <td class="nowrap">{{ $product::$singleTableName }}</td>
                                 <td class="full"><a href="{{ route('xero_commerce::setting.product.show', ['productId' => $product->id]) }}"><span>{{ $product->name }}</span></a></td>
                                 <td class="full">{{$product->sub_name}}</td>
                                 <td class="nowrap">{{ $product->getStock() }}</td>

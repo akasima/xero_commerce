@@ -26,19 +26,19 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     </div>
                     <div id="상품정보Section" class="panel-body panel-collapse collapse in" role="tabpanel" aria-expanded="false">
                         <div class="form-group">
-                            <label for="pwd" class ="control-label col-sm-3">상품명</label>
-                            <div class="col-sm-8">
+                            <label for="pwd" class ="control-label col-sm-2">상품명</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" name="name" data-valid-name="상품명" value="{{ $product->name }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">간략 소개</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">간략 소개</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" name="sub_name" data-valid-name="간략 소개" value="{{ $product->sub_name }}">
                             </div>
                         </div>
                         <div id="component-container" class="form-group">
-                            <label class ="control-label col-sm-3">카테고리</label>
+                            <label class ="control-label col-sm-2">카테고리</label>
                             <div class="col-sm-4">
                                 <category-component :category-items='{{ json_encode($categoryItems) }}'
                                                     get-child-url="{{ route('xero_commerce:setting.product.category.getChild') }}"
@@ -48,9 +48,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 </category-component>
                             </div>
                         </div>
-                        <div id="component-container" class="form-group">
-                            <label class ="control-label col-sm-3">라벨</label>
-                            <div class="col-sm-8">
+                        <div class="form-group">
+                            <label class ="control-label col-sm-2">라벨</label>
+                            <div class="col-sm-9">
                                 @foreach ($labels as $label)
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="labels[]" value="{{ $label->id }}"
@@ -59,9 +59,9 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 @endforeach
                             </div>
                         </div>
-                        <div id="component-container" class="form-group">
-                            <label class ="control-label col-sm-3">배지</label>
-                            <div class="col-sm-8">
+                        <div class="form-group">
+                            <label class ="control-label col-sm-2">배지</label>
+                            <div class="col-sm-9">
                                 <label class="radio-inline">
                                     <input type="radio" name="badge_id" value="" @if ($product->badge_id == '') checked @endif>사용
                                 </label>
@@ -75,8 +75,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">상품 코드</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">상품 코드</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" name="product_code" data-valid-name="상품 코드" value="{{ $product->product_code }}">
                             </div>
                         </div>
@@ -90,20 +90,20 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     <div id="가격정보Section" class="panel-body panel-collapse collapse in" role="tabpanel" aria-expanded="false">
 
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">정상 가격</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">정상 가격</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control must-price" name="original_price" data-valid-name="정상 가격" value="{{ $product->original_price }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">판매 가격</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">판매 가격</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control must-price" name="sell_price" data-valid-name="판매 가격" value="{{ $product->sell_price }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">할인율</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">할인율</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" name="discount_percentage" data-valid-name="할인율" value="{{ $product->discount_percentage }}">
                             </div>
                         </div>
@@ -116,8 +116,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     </div>
                     <div id="배송정보Section" class="panel-body panel-collapse collapse in" role="tabpanel" aria-expanded="false">
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">배송사</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">배송사</label>
+                            <div class="col-sm-9">
                                 <select name="shop_delivery_id" class="form-control" data-valid-name="배송사">
                                     @php
                                         $deliverys = $product->shop->deliveryCompanys;
@@ -141,32 +141,32 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     </div>
                     <div id="재고정보Section" class="panel-body panel-collapse collapse in" role="tabpanel" aria-expanded="false">
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">현재 재고</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">현재 재고</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" name="stock" data-valid-name="현재 재고" value="{{ $product->getStock() }}" readonly>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">품절 알림 재고</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">품절 알림 재고</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" name="alert_stock" data-valid-name="품절 알림 재고" value="{{ $product->alert_stock }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">최소 구매 수량</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">최소 구매 수량</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" name="min_buy_count" data-valid-name="최소 구매 수량" value="{{ $product->min_buy_count }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">최대 구매 수량</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">최대 구매 수량</label>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" name="max_buy_count" data-valid-name="최대 구매 수량" value="{{ $product->max_buy_count }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">과세 유형</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">과세 유형</label>
+                            <div class="col-sm-9">
                                 @foreach (Product::getTaxTypes() as $key => $type)
                                     <label class="radio-inline">
                                         <input type="radio" name="tax_type" value="{{ $key }}"
@@ -178,14 +178,31 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                     </div>
                 </div>
                 <div class="panel __xe_section_box">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#옵션Section" aria-expanded="false">
+                        <a data-toggle="collapse" data-target="#옵션Section" class="btn-link panel-toggle collapsed" aria-expanded="false"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">메뉴닫기</span></a>
+                        <h3 class="panel-title">옵션</h3>
+                    </div>
+
+                    <div id="옵션Section" class="panel-body panel-collapse collapse in" role="tabpanel" aria-expanded="false">
+                        <div class="form-group component-container">
+                            <div class="col-sm-12">
+                                <option-table-component :options="{{ json_encode($options) }}"
+                                                        :option-items="{{ json_encode($optionItems) }}"
+                                                        product-id="{{$product->id}}"
+                                                        product-option-type="{{$product->option_type}}"></option-table-component>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel __xe_section_box">
                     <div class="panel-heading" data-toggle="collapse" data-target="#추가정보Section" aria-expanded="false">
                         <a data-toggle="collapse" data-target="#추가정보Section" class="btn-link panel-toggle collapsed" aria-expanded="false"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">메뉴닫기</span></a>
                         <h3 class="panel-title">추가정보</h3>
                     </div>
                     <div id="추가정보Section" class="panel-body panel-collapse collapse in" role="tabpanel" aria-expanded="false">
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">상품 정보 추가 </label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">상품 정보 추가 </label>
+                            <div class="col-sm-9">
                                 <button type="button" class="btn btn-primary btn-sm" onclick="addProductInfo()"><i class="xi-plus"></i> 항목 추가</button>
                                 <table class="table table-striped" id="productInfoTable">
                                     <thead>
@@ -221,8 +238,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">사진업로드 </label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">사진업로드 </label>
+                            <div class="col-sm-9">
                                 <button type="button" class="btn btn-primary btn-sm" onclick="addImage()"><i class="xi-plus"></i> 이미지 추가</button>
                                 @for($i=1; $i<=10; $i++)
                                     <div class="col-lg-12 form-image @if($product->images->count()>=$i) open @endif" id="form-image-{{$i}}">
@@ -238,8 +255,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">상품 소개</label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">상품 소개</label>
+                            <div class="col-sm-9">
                                 {!! editor(Plugin::getId(), [
                                    'content' => $product->description,
                                    'contentDomName' => 'description',
@@ -247,8 +264,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class ="control-label col-sm-3">태그등록 </label>
-                            <div class="col-sm-8">
+                            <label class ="control-label col-sm-2">태그등록 </label>
+                            <div class="col-sm-9">
                                 {!! uio('uiobject/xero_commerce@tag', [
                                     'tags' => $product->tags->toArray()
                                 ]) !!}
@@ -360,7 +377,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
         $('.toggle-required').click(function(e){
             e.stopPropagation();
             e.preventDefault();
-            $('label').not('.xe-form__label--requried').parent().not('.xero-settings-control-float').toggle();
+            $('label.control-label').not('.xe-form__label--requried').parent().not('.xero-settings-control-float').toggle();
         }).trigger('click');
     })
 </script>
@@ -375,5 +392,8 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
     }
     .control-label{
         text-align: right;
+    }
+    .actually-not-required:after {
+        content: none;
     }
 </style>

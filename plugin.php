@@ -77,6 +77,7 @@ class Plugin extends AbstractPlugin
         }
 
         Database::create();
+        Database::update();
         Resources::storeDefaultDeliveryCompanySet();
         Resources::storeDefaultShop();
         $shop_name = Shop::first()->shop_name;
@@ -142,7 +143,7 @@ class Plugin extends AbstractPlugin
      */
     public function update()
     {
-
+        Database::update();
     }
 
     /**
