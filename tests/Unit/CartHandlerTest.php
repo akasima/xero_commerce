@@ -38,7 +38,7 @@ class CartHandlerTest extends DefaultSet
         $this->makeProduct();
         $cartHandler = new CartHandler();
         $sellUnit = ProductOptionItem::first();
-        $cartGroup = $cartHandler->makeCartGroup($sellUnit, 4);
+        $cartGroup = $cartHandler->makeCartGroup($sellUnit, [], 4);
         $this->assertInstanceOf(CartGroup::class, $cartGroup);
     }
 

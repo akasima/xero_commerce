@@ -198,6 +198,22 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 <option-table-component :options="{{ json_encode(Request::old('options',[])) }}"
                                                         :option-items="{{ json_encode(Request::old('option_items',[])) }}"
                                                         product-option-type="{{Request::old('option_type')}}"></option-table-component>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel __xe_section_box">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#추가옵션Section" aria-expanded="false">
+                        <a data-toggle="collapse" data-target="#추가옵션Section" class="btn-link panel-toggle collapsed" aria-expanded="false"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">메뉴닫기</span></a>
+                        <h3 class="panel-title">추가옵션</h3>
+                    </div>
+
+                    <div id="추가옵션Section" class="panel-body panel-collapse collapse in" role="tabpanel" aria-expanded="false">
+                        <div class="form-group component-container">
+                            <div class="col-sm-12">
+                                <custom-option-table-component :custom-options="{{ json_encode(Request::old('custom_options',[])) }}"
+                                                        :types="{{ json_encode($customOptionTypes) }}"></custom-option-table-component>
                             </div>
                         </div>
                     </div>

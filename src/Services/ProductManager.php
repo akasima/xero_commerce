@@ -17,6 +17,9 @@ class ProductManager
     /** @var ProductOptionItemSettingService $productOptionItemSettingService */
     protected $productOptionItemSettingService;
 
+    /** @var ProductCustomOptionSettingService $productCustomOptionSettingService */
+    protected $productCustomOptionSettingService;
+
     /** @var TagHandler $tagHandler */
     protected $tagHandler;
 
@@ -34,6 +37,7 @@ class ProductManager
         $this->productSettingService = new ProductSettingService();
         $this->productOptionSettingService = new ProductOptionSettingService();
         $this->productOptionItemSettingService = new ProductOptionItemSettingService();
+        $this->productCustomOptionSettingService = new ProductCustomOptionSettingService();
         $this->productCategoryService = new ProductCategoryService();
         $this->tagHandler = app('xe.tag');
         $this->labelService = new LabelService();
@@ -55,12 +59,16 @@ class ProductManager
 
             $productId = $this->productSettingService->store($request);
             // 옵션이 수정되었으면 옵션저장, 아니면 기본옵션 입력
-            if($request->get('is_option_changed')) {
+            if($request->get('is_option_changed') == 'true') {
                 $this->productOptionSettingService->saveOptions($request, $productId);
+                $this->productOptionItemSettingService->saveOptionItems($request, $productId);
             } else {
                 $this->productOptionItemSettingService->defaultOptionStore($request, $productId);
             }
-            $this->productOptionItemSettingService->saveOptionItems($request, $productId);
+            // 커스텁옵션이 입력되었다면 저장
+            if($request->get('is_custom_option_changed') == 'true') {
+                $this->productCustomOptionSettingService->saveOptions($request, $productId);
+            }
             $this->setTag($productId, $request);
             ProductSlugService::storeSlug($this->productSettingService->getProduct($productId), $request);
             $this->labelService->createProductLabel($productId, $request);
@@ -115,8 +123,11 @@ class ProductManager
             XeDB::beginTransaction();
 
             $this->productSettingService->update($request, $productId);
-            if($request->get('is_option_changed')) {
+            if($request->get('is_option_changed') == 'true') {
                 $this->productOptionSettingService->saveOptions($request, $productId);
+            }
+            if($request->get('is_custom_option_changed') == 'true') {
+                $this->productCustomOptionSettingService->saveOptions($request, $productId);
             }
             $this->productOptionItemSettingService->saveOptionItems($request, $productId);
             $this->setTag($productId, $request);

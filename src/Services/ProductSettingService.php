@@ -47,7 +47,6 @@ class ProductSettingService
         foreach ($product->options as $option) {
             $optionData['id'] = $option->id;
             $optionData['product_id'] = $option->product_id;
-            $optionData['display_type'] = $option->display_type;
             $optionData['name'] = $option->name;
             $optionData['values'] = $option->values;
             $optionData['sort_order'] = $option->sort_order;
@@ -85,6 +84,31 @@ class ProductSettingService
         }
 
         return $optionItems;
+    }
+
+    /**
+     * @param Product $product product
+     *
+     * @return array
+     */
+    public function getProductCustomOptionArrays($product)
+    {
+        $options = [];
+
+        /** @var ProductCustomOption $option */
+        foreach ($product->customOptions as $option) {
+            $optionData['id'] = $option->id;
+            $optionData['product_id'] = $option->product_id;
+            $optionData['name'] = $option->name;
+            $optionData['type'] = $option->type;
+            $optionData['sort_order'] = $option->sort_order;
+            $optionData['is_required'] = $option->is_required;
+            $optionData['settings'] = $option->settings;
+
+            $options[] = $optionData;
+        }
+
+        return $options;
     }
 
     /**

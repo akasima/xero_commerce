@@ -8,15 +8,15 @@ use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
+use Xpressengine\Plugins\XeroCommerce\Traits\CustomTableInheritanceTrait;
 use Xpressengine\Tag\Tag;
-use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 use Xpressengine\Plugins\XeroCommerce\Models\Products\DigitalProduct;
 use Xpressengine\Plugins\XeroCommerce\Models\Products\TimeProduct;
 use Xpressengine\Plugins\XeroCommerce\Models\Products\BundleProduct;
 
 class Product extends SellType
 {
-    use SoftDeletes, SingleTableInheritanceTrait;
+    use SoftDeletes, CustomTableInheritanceTrait;
 
     const IMG_MAXSIZE = 50000000;
 
@@ -48,28 +48,6 @@ class Product extends SellType
     public static $singleTableName = '일반 상품';
 
     protected static $singleTableSubclasses = [DigitalProduct::class, TimeProduct::class, BundleProduct::class];
-
-    /**
-     * 타입에 따른 이름맵을 가져오는 함수
-     * @return array the type map
-     */
-    public static function getSingleTableNameMap() {
-        $nameMap = [self::$singleTableType => self::$singleTableName];
-        $subclasses = self::getSingleTableTypeMap();
-        foreach ($subclasses as $type => $subclass) {
-            $nameMap[$type] = $subclass::$singleTableName;
-        }
-        return $nameMap;
-    }
-
-    /**
-     * 외부에서 상품타입을 등록하는 함수
-     * @return void
-     */
-    public static function addSingleTableSubclass($subClass)
-    {
-        self::$singleTableSubclasses[] = $subClass;
-    }
 
     /**
      * @return array
@@ -144,6 +122,11 @@ class Product extends SellType
         return $this->options;
     }
 
+    public function getAvailableCustomOptions()
+    {
+        return $this->customOptions;
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -158,6 +141,14 @@ class Product extends SellType
     public function optionItems()
     {
         return $this->hasMany(ProductOptionItem::class, 'product_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function customOptions()
+    {
+        return $this->hasMany(ProductCustomOption::class, 'product_id', 'id');
     }
 
     function getJsonFormat()

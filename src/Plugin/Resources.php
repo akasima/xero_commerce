@@ -34,6 +34,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\FeedbackHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCustomOptionHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
@@ -1070,6 +1071,15 @@ class Resources
             return $instance;
         });
         $app->alias(ProductOptionItemHandler::class, 'xero_commerce.productOptionItemHandler');
+
+        $app->singleton(ProductCustomOptionHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(ProductCustomOptionHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(ProductCustomOptionHandler::class, 'xero_commerce.productCustomOptionHandler');
 
         $app->singleton(ProductCategoryHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(ProductCategoryHandler::class);

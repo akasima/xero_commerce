@@ -6,6 +6,10 @@ class CartGroup extends SellGroup
 {
     protected $table = 'xero_commerce_cart_group';
 
+    protected $casts = [
+        'custom_values' => 'json'
+    ];
+
     public $timestamps = false;
 
     function getCount()
@@ -21,5 +25,15 @@ class CartGroup extends SellGroup
     public function sellSet()
     {
         return $this->belongsTo(Cart::class);
+    }
+
+    public function getCustomValues()
+    {
+        return $this->custom_values;
+    }
+
+    public function setCustomValues($customValues)
+    {
+        $this->custom_values = $customValues;
     }
 }
