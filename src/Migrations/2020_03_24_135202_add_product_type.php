@@ -14,14 +14,14 @@ class AddProductType extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('xero_commerce_products')) {
+        if (!Schema::hasColumn('xero_commerce_products', 'type')) {
             // 상품 테이블에 type 추가
             Schema::table('xero_commerce_products', function (Blueprint $table) {
                 $table->string('type')->default(Product::$singleTableType)->after('shop_id');
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_products_revision')) {
+        if (!Schema::hasColumn('xero_commerce_products_revision', 'type')) {
             Schema::table('xero_commerce_products_revision', function (Blueprint $table) {
                 $table->string('type')->default(Product::$singleTableType)->after('shop_id');
             });
@@ -57,11 +57,11 @@ class AddProductType extends Migration
         Schema::table('xero_commerce_products', function (Blueprint $table) {
             $table->dropColumn('type');
         });
-        
+
         Schema::table('xero_commerce_products_revision', function (Blueprint $table) {
             $table->dropColumn('type');
         });
-        
+
         Schema::dropIfExists('xero_commerce_product_bundle_item');
     }
 }

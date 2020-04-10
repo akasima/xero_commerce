@@ -1029,6 +1029,7 @@ class Resources
         ]);
     }
 
+
     /**
      * @return void
      */
@@ -1422,10 +1423,8 @@ class Resources
             $op->product_id = $product_id;
 
             if ($i == 0) {
-                $op->option_type = ProductOptionItem::TYPE_DEFAULT_OPTION;
                 $op->addition_price = 0;
             } else {
-                $op->option_type = rand(ProductOptionItem::TYPE_OPTION_ITEM, ProductOptionItem::TYPE_ADDITION_ITEM);
                 $op->addition_price = $faker->numberBetween(0, 10) * 500;
             }
 

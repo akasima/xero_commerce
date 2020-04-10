@@ -76,6 +76,12 @@ class Plugin extends AbstractPlugin
             abort(500, 'XE 배너플러그인을 필요로 합니다.');
         }
 
+        // 이미 설치된적이 있는 경우 에러를 방지하기 위해 Skip
+        if(Database::hasTables()){
+            Database::update();
+            return;
+        }
+
         Database::create();
         Database::update();
         Resources::storeDefaultDeliveryCompanySet();
