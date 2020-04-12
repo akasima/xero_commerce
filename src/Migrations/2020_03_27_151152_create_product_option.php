@@ -19,23 +19,22 @@ class CreateProductOption extends Migration
                 $table->increments('id');
                 $table->integer('product_id')->index();
                 $table->string('name');
-                $table->string('display_type');
                 $table->text('values');
                 $table->integer('sort_order');
                 $table->timestamps();
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_product_suboption')) {
-            // 사용자의 입력을 받을 수 있는 서브옵션 테이블 추가
-            Schema::create('xero_commerce_product_suboption', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce_product_custom_option')) {
+            // 사용자의 입력을 받을 수 있는 커스텀옵션 테이블 추가
+            Schema::create('xero_commerce_product_custom_option', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_id')->index();
                 $table->string('name');
-                $table->string('input_type');
+                $table->string('type');
                 $table->integer('sort_order');
                 $table->boolean('is_required');
-                $table->boolean('is_hidden');
+                $table->boolean('settings');
                 $table->timestamps();
             });
         }
@@ -73,6 +72,20 @@ class CreateProductOption extends Migration
                     ->after('tax_type');
             });
         }
+
+        // 카트그룹과 주문그룹에 커스텀 옵션값 추가
+        if (!Schema::hasColumn('xero_commerce_cart_group', 'custom_values')) {
+            Schema::table('xero_commerce_cart_group', function (Blueprint $table) {
+                $table->text('custom_values')->after('unit_type');
+            });
+        }
+
+        if (!Schema::hasColumn('xero_commerce_order_item_group', 'custom_values')) {
+            Schema::table('xero_commerce_order_item_group', function (Blueprint $table) {
+                $table->text('custom_values')->after('unit_type');
+            });
+        }
+
     }
 
     /**
@@ -83,23 +96,44 @@ class CreateProductOption extends Migration
     public function down()
     {
         Schema::dropIfExists('xero_commerce_product_option');
-        Schema::dropIfExists('xero_commerce_product_suboption');
+        Schema::dropIfExists('xero_commerce_product_custom_option');
 
-        Schema::table('xero_commerce_product_option_item', function (Blueprint $table) {
-            $table->dropColumn('value_combination');
-            $table->integer('option_type')->after('product_id');
-        });
+        if (Schema::hasColumn('xero_commerce_product_option_item', 'value_combination')) {
+            Schema::table('xero_commerce_product_option_item', function (Blueprint $table) {
+                $table->dropColumn('value_combination');
+                $table->integer('option_type')->after('product_id');
+            });
+        }
 
-        Schema::table('xero_commerce_product_option_item_revision', function (Blueprint $table) {
-            $table->dropColumn('value_combination');
-            $table->integer('option_type')->after('product_id');
-        });
+        if (Schema::hasColumn('xero_commerce_product_option_item_revision', 'value_combination')) {
+            Schema::table('xero_commerce_product_option_item_revision', function (Blueprint $table) {
+                $table->dropColumn('value_combination');
+                $table->integer('option_type')->after('product_id');
+            });
+        }
 
-        Schema::table('xero_commerce_products', function (Blueprint $table) {
-            $table->dropColumn('option_type');
-        });
-        Schema::table('xero_commerce_products_revision', function (Blueprint $table) {
-            $table->dropColumn('option_type');
-        });
+        if (Schema::hasColumn('xero_commerce_products', 'option_type')) {
+            Schema::table('xero_commerce_products', function (Blueprint $table) {
+                $table->dropColumn('option_type');
+            });
+        }
+
+        if (Schema::hasColumn('xero_commerce_products_revision', 'option_type')) {
+            Schema::table('xero_commerce_products_revision', function (Blueprint $table) {
+                $table->dropColumn('option_type');
+            });
+        }
+
+        if (Schema::hasColumn('xero_commerce_cart_group', 'custom_values')) {
+            Schema::table('xero_commerce_cart_group', function (Blueprint $table) {
+                $table->dropColumn('custom_values');
+            });
+        }
+
+        if (Schema::hasColumn('xero_commerce_order_item_group', 'custom_values')) {
+            Schema::table('xero_commerce_order_item_group', function (Blueprint $table) {
+                $table->dropColumn('custom_values');
+            });
+        }
     }
 }
