@@ -39,18 +39,18 @@ class CreateProductOption extends Migration
             });
         }
 
-        if (!Schema::hasColumn('xero_commerce_product_option_item', 'value_combination')) {
-            // OptionItem에 옵션값의 조합(value_combination) 칼럼 추가 (예시: {'색상':'블랙','사이즈':'S'})
+        if (!Schema::hasColumn('xero_commerce_product_option_item', 'combination_values')) {
+            // OptionItem에 옵션값의 조합(combination_values) 칼럼 추가 (예시: {'색상':'블랙','사이즈':'S'})
             Schema::table('xero_commerce_product_option_item', function (Blueprint $table) {
-                $table->text('value_combination')->after('name');
+                $table->text('combination_values')->after('name');
                 // 아래 칼럼은 product 테이블의 option_type과 중복이므로 삭제
                 $table->dropColumn('option_type');
             });
         }
 
-        if (!Schema::hasColumn('xero_commerce_product_option_item_revision', 'value_combination')) {
+        if (!Schema::hasColumn('xero_commerce_product_option_item_revision', 'combination_values')) {
             Schema::table('xero_commerce_product_option_item_revision', function (Blueprint $table) {
-                $table->text('value_combination')->after('name');
+                $table->text('combination_values')->after('name');
                 // 아래 칼럼은 product 테이블의 option_type과 중복이므로 삭제
                 $table->dropColumn('option_type');
             });
@@ -98,16 +98,16 @@ class CreateProductOption extends Migration
         Schema::dropIfExists('xero_commerce_product_option');
         Schema::dropIfExists('xero_commerce_product_custom_option');
 
-        if (Schema::hasColumn('xero_commerce_product_option_item', 'value_combination')) {
+        if (Schema::hasColumn('xero_commerce_product_option_item', 'combination_values')) {
             Schema::table('xero_commerce_product_option_item', function (Blueprint $table) {
-                $table->dropColumn('value_combination');
+                $table->dropColumn('combination_values');
                 $table->integer('option_type')->after('product_id');
             });
         }
 
-        if (Schema::hasColumn('xero_commerce_product_option_item_revision', 'value_combination')) {
+        if (Schema::hasColumn('xero_commerce_product_option_item_revision', 'combination_values')) {
             Schema::table('xero_commerce_product_option_item_revision', function (Blueprint $table) {
-                $table->dropColumn('value_combination');
+                $table->dropColumn('combination_values');
                 $table->integer('option_type')->after('product_id');
             });
         }

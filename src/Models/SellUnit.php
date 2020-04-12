@@ -42,7 +42,7 @@ abstract class SellUnit extends DynamicModel
         return [
             'id' => $this->id,
             'name' => $this->getName(),
-            'value_combination' => $this->value_combination,
+            'combination_values' => $this->combination_values,
             'sell_price' => $this->getSellPrice(),
             'addition_price' => $this->addition_price,
             'state_display'=>$this->getDisplayStateName(),

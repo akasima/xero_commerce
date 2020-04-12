@@ -71,7 +71,7 @@
                         // 옵션품목중 일치하는 조건으로 가져옴
                         let optionItem = this.optionItems.find(item => {
                             let selectedCombination = selectedOptions.reduce((obj, item) => ({...obj, ...item}), {});
-                            return JSON.stringify(item.value_combination) == JSON.stringify(selectedCombination);
+                            return JSON.stringify(item.combination_values) == JSON.stringify(selectedCombination);
                         });
                         // 일치하는 품목이 있으면
                         if(optionItem) {
