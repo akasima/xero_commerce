@@ -18,7 +18,7 @@ class Database
 
     public static function update()
     {
-        Artisan::call('migrate', array('--path' => 'plugins/'.Plugin::getId().'/src/Migrations', '--force' => true));
+        Artisan::call('migrate', array('--path' => 'plugins/'.Plugin::getId().'/migrations', '--force' => true));
     }
 
     public static function addTable()
