@@ -35,4 +35,17 @@ class ProductCustomOption extends DynamicModel
 
     public static $singleTableName = '텍스트';
 
+    public function renderHtml(array $attrs)
+    {
+        $result = '<input type="text" ';
+        foreach ($attrs as $key => $value) {
+            $result .= "$key=\"$value\" ";
+        }
+        if($this->is_required) {
+            $result .= 'required ';
+        }
+        $result .= '/>';
+        return $result;
+    }
+
 }

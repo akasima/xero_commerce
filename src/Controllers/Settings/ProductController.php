@@ -50,8 +50,10 @@ class ProductController extends SettingBaseController
         $product = $this->productSettingService->getProduct($productId);
         $options = $this->productSettingService->getProductOptionArrays($product);
         $optionItems = $this->productSettingService->getProductOptionItemArrays($product);
+        $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
+        $customOptions = $this->productSettingService->getProductCustomOptionArrays($product);
 
-        return XePresenter::make('product.show', compact('product', 'options', 'optionItems'));
+        return XePresenter::make('product.show', compact('product', 'options', 'optionItems', 'customOptionTypes', 'customOptions'));
     }
 
     public function create(Request $request, ProductCategoryService $productCategoryService)

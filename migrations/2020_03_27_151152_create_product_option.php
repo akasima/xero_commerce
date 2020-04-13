@@ -60,7 +60,7 @@ class CreateProductOption extends Migration
             // 상품 테이블에 option_type 추가 (단독형, 조합형)
             Schema::table('xero_commerce_products', function (Blueprint $table) {
                 $table->string('option_type')
-                    ->default(\Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_SIMPLE)
+                    ->default(\Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_MERGE)
                     ->after('tax_type');
             });
         }
@@ -68,7 +68,7 @@ class CreateProductOption extends Migration
         if (!Schema::hasColumn('xero_commerce_products_revision', 'option_type')) {
             Schema::table('xero_commerce_products_revision', function (Blueprint $table) {
                 $table->string('option_type')
-                    ->default(\Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_SIMPLE)
+                    ->default(\Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_MERGE)
                     ->after('tax_type');
             });
         }
