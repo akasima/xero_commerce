@@ -39,7 +39,7 @@
                             </div><!-- //cart-product-name -->
                             <div class="cart-product-option">
                                 <button type="button" class="xe-btn xe-btn-secondary" @click="changeModal(cartItem)">옵션변경</button>
-                                <div class="modal" :id="'cartChangeModal'+cartItem.id">
+                                <div class="modal" :id="'cartChangeModal'+cartItem.id" style="overflow: scroll">
                                     <div class="modal-dialog">
                                         <div class="modal-content" style="padding:20px">
                                             <div class="modal-header">
@@ -56,8 +56,6 @@
                                                     </div>
                                                 </div>
                                                 <option-select-component
-                                                    :delivery="cartItem.delivery"
-                                                    v-model="cartItem.choose"
                                                     :already-choose="cartItem.choose"
                                                     :options="cartItem.option_list"></option-select-component>
                                             </div>
@@ -70,7 +68,15 @@
                                 </div>
                                 <ul class="cart-product-option-list">
                                     <li v-for="choose in cartItem.choose">
-                                        <span>{{choose.unit.name}} / {{choose.count}}개 </span>
+                                        <span>
+                                          {{choose.unit.name}}
+                                          <span v-for="(value, key, i) in choose.custom_values">
+                                            {{ i == 0 ? '(' : '' }}
+                                            {{key}} : {{value}}
+                                            {{ i != Object.keys(choose.custom_values).length - 1 ? ',' : ')' }}
+                                          </span>
+                                          / {{choose.count}}개
+                                        </span>
                                     </li>
                                 </ul>
                             </div><!-- //cart-product-option -->

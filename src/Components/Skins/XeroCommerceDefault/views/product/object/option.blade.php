@@ -23,10 +23,6 @@
             ]); !!}
         </div>
         @endforeach
-{{--        <div v-for="(option, i) in customOptions" class="box-option">--}}
-{{--            <strong>@{{ option.name }} @{{ option.is_required ? '(필수)' : '' }}</strong>--}}
-{{--            <span v-html="option.rawhtml"></span>--}}
-{{--        </div>--}}
     @endif
     {{-- 기본값(옵션품목1개), 조합일체형, 단독형 --}}
     @if($optionType == \Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_MERGE || $optionType == \Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_SIMPLE)

@@ -31,7 +31,23 @@ class OrderItem extends SellSet
         $row = [];
         $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->forcedSellType()->getSlug()]) . '">' . $this->renderSpanBr($this->forcedSellType()->getName()) . '</a>';
         $this->sellGroups->each(function (SellGroup $group) use (&$row) {
-            $row [] = $this->renderSpanBr($group->forcedSellUnit()->getName() . ' / ' . $group->getCount() . '개', "color: grey");
+            $spanData = $group->forcedSellUnit()->getName();
+            $customValues = $group->getCustomValues();
+            if(!empty($customValues)) {
+                $spanData .= ' (';
+            }
+            foreach ($customValues as $key => $value) {
+                $spanData .= $key.' : '.$value;
+                // 마지막 루프면
+                if($key == array_keys($customValues)[count($customValues)-1]) {
+                    $spanData .= ')';
+                } else {
+                    $spanData .= ', ';
+                }
+            }
+            $spanData .= ' / ' . $group->getCount() . '개';
+
+            $row [] = $this->renderSpanBr($spanData, "color: grey");
         });
         $row [] = $this->renderSpanBr($this->forcedSellType()->getShop()->shop_name);
 

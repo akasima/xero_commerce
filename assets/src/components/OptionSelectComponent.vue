@@ -1,18 +1,10 @@
 <template>
 
     <div>
-        <div class="box-option">
-            <strong>선택항목</strong>
-            <select v-model="selectOption" class="form-select">
-                <option disabled="" selected value="null">선택</option>
-                <option v-for="option in options" :value="option" :disabled="option.state!=='판매중'">{{option.name}}
-                    (+{{Number(option.add_price).toLocaleString()}} ) {{(option.state!=='판매중')? '-'+ option.state: ''}}
-                </option>
-            </select>
-        </div>
         <div class="product-info-counter">
             <div v-if="!onlyOneOption" class="product-info-cell" v-for="(selectedOption, key) in select">
                 <div class="product-info-counter-title">{{selectedOption.unit.name}} </div>
+                <div v-for="(v, k) in selectedOption.custom_values" style="padding-left: 10px">{{ k }} : {{ v }}</div>
                 <div class="xe-spin-box">
                     <button type="button" @click="selectedOption.count--; if(selectedOption.count<=0)dropOption(key)"><i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span></button>
                     <p>{{selectedOption.count}}</p>
@@ -24,6 +16,7 @@
 
             <div v-if="onlyOneOption" class="product-info-cell" v-for="(selectedOption, key) in select">
                 <div class="product-info-counter-title">{{selectedOption.unit.name}} </div>
+                <div v-for="(v, k) in selectedOption.custom_values" style="padding-left: 10px">{{ k }} : {{ v }}</div>
                 <div class="xe-spin-box">
                     <button type="button" @click="(selectedOption.count>1) ? selectedOption.count-- : ''"><i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span></button>
                     <p>{{selectedOption.count}}</p>

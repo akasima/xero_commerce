@@ -69,6 +69,7 @@ class OrderHandler extends SellSetHandler
 
                 $orderItemGroup->sellUnit()->associate($cartGroup->forcedSellUnit());
                 $orderItemGroup->setCount($cartGroup->getCount());
+                $orderItemGroup->setCustomValues($cartGroup->getCustomValues());
 
                 $orderItem->sellGroups()->save($orderItemGroup);
             });

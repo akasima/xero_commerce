@@ -39,7 +39,7 @@ class OrderHandlerTest extends DefaultSet
         $orderHandler = new OrderHandler();
         $cartHandler =  new \Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler();
         $this->makeProduct();
-        $cart = $cartHandler->addCart(Product::first(), $cartHandler->makeCartGroup(ProductOptionItem::first(),2),'선불');
+        $cart = $cartHandler->addCart(Product::first(), $cartHandler->makeCartGroup(ProductOptionItem::first(), [], 2),'선불');
         $order = $orderHandler->register(collect([$cart]));
         $this->assertNotEquals(0, $order->orderItems()->count());
         return $order;
