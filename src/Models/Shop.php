@@ -55,7 +55,7 @@ class Shop extends DynamicModel
             DeliveryCompany::class,
             'xero_commerce_shop_delivery'
         )->withPivot(
-            ['id', 'delivery_fare', 'up_to_free']
+            ['id', 'delivery_fare', 'up_to_free', 'addr', 'addr_detail', 'addr_post']
         );
     }
 

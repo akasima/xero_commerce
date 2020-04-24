@@ -35,16 +35,18 @@ class OrderItem extends SellSet
             $customValues = $group->getCustomValues();
             if(!empty($customValues)) {
                 $spanData .= ' (';
-            }
-            foreach ($customValues as $key => $value) {
-                $spanData .= $key.' : '.$value;
-                // 마지막 루프면
-                if($key == array_keys($customValues)[count($customValues)-1]) {
-                    $spanData .= ')';
-                } else {
-                    $spanData .= ', ';
+
+                foreach ($customValues as $key => $value) {
+                    $spanData .= $key.' : '.$value;
+                    // 마지막 루프면
+                    if($key == array_keys($customValues)[count($customValues)-1]) {
+                        $spanData .= ')';
+                    } else {
+                        $spanData .= ', ';
+                    }
                 }
             }
+
             $spanData .= ' / ' . $group->getCount() . '개';
 
             $row [] = $this->renderSpanBr($spanData, "color: grey");
@@ -75,6 +77,7 @@ class OrderItem extends SellSet
             'delivery_url' => $this->delivery ? $this->delivery->geturl() : '',
             'fare' => $this->getFare(),
             'delivery_pay' => $this->getDeliveryPay(),
+            'delivery_company' => $this->sellType->getDelivery(),
             'as' => $this->afterService
         ];
     }

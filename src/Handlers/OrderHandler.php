@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\CartGroup;
+use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderAfterservice;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderDelivery;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
@@ -261,18 +262,34 @@ class OrderHandler extends SellSetHandler
 
         $order->orderItems->each(function (OrderItem $orderItem) use ($args) {
             if($orderItem->sellType->isDelivered()){
-                $delivery = new OrderDelivery();
-                $delivery->order_item_id = $orderItem->id;
-                $delivery->ship_no = '';
-                $delivery->status = OrderDelivery::READY;
-                $delivery->company_id = $orderItem->sellType->getDelivery()->company->id;
-                $delivery->recv_name = $args['delivery']['name'];
-                $delivery->recv_phone = $args['delivery']['phone'];
-                $delivery->recv_addr = $args['delivery']['addr'] ?: '';
-                $delivery->recv_addr_detail = $args['delivery']['addr_detail'];
-                $delivery->recv_addr_post = $args['delivery']['addr_post'];
-                $delivery->recv_msg = $args['delivery']['msg'];
-                $delivery->save();
+                // 픽업배송일때는 배송주소를 읽어와서 입력
+                $shopDelivery = $orderItem->sellType->getDelivery();
+                if($shopDelivery->company->type == DeliveryCompany::TAKE) {
+                    $delivery = new OrderDelivery();
+                    $delivery->order_item_id = $orderItem->id;
+                    $delivery->ship_no = '';
+                    $delivery->status = OrderDelivery::READY;
+                    $delivery->company_id = $shopDelivery->company->id;
+                    $delivery->recv_name = $args['delivery']['name'];
+                    $delivery->recv_phone = $args['delivery']['phone'];
+                    $delivery->recv_addr = $shopDelivery->addr;
+                    $delivery->recv_addr_detail = $shopDelivery->addr_detail;
+                    $delivery->recv_addr_post = $shopDelivery->addr_post;
+                    $delivery->save();
+                } else {
+                    $delivery = new OrderDelivery();
+                    $delivery->order_item_id = $orderItem->id;
+                    $delivery->ship_no = '';
+                    $delivery->status = OrderDelivery::READY;
+                    $delivery->company_id = $shopDelivery->company->id;
+                    $delivery->recv_name = $args['delivery']['name'];
+                    $delivery->recv_phone = $args['delivery']['phone'];
+                    $delivery->recv_addr = $args['delivery']['addr'] ?: '';
+                    $delivery->recv_addr_detail = $args['delivery']['addr_detail'];
+                    $delivery->recv_addr_post = $args['delivery']['addr_post'];
+                    $delivery->recv_msg = $args['delivery']['msg'];
+                    $delivery->save();
+                }
             }
         });
 

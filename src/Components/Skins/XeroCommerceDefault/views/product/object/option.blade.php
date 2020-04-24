@@ -15,6 +15,7 @@
     {{-- 커스텀 옵션 --}}
     @if($customOptions->count() > 0)
         @foreach($customOptions as $option)
+        <div>{{ $option->description }}</div>
         <div class="box-option">
             <strong>{{ $option->name }} {{ $option->is_required ? '(필수)' : '' }}</strong>
             {!! $option->renderHtml([

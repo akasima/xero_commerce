@@ -31,6 +31,7 @@ class CreateProductOption extends Migration
                 $table->increments('id');
                 $table->integer('product_id')->index();
                 $table->string('name');
+                $table->string('description');
                 $table->string('type');
                 $table->integer('sort_order');
                 $table->boolean('is_required');
@@ -40,8 +41,8 @@ class CreateProductOption extends Migration
         }
 
         if (!Schema::hasColumn('xero_commerce_product_option_item', 'combination_values')) {
-            // OptionItem에 옵션값의 조합(combination_values) 칼럼 추가 (예시: {'색상':'블랙','사이즈':'S'})
             Schema::table('xero_commerce_product_option_item', function (Blueprint $table) {
+                // OptionItem에 옵션값의 조합(combination_values) 칼럼 추가 (예시: {'색상':'블랙','사이즈':'S'})
                 $table->text('combination_values')->after('name');
                 // 아래 칼럼은 product 테이블의 option_type과 중복이므로 삭제
                 $table->dropColumn('option_type');
@@ -101,6 +102,7 @@ class CreateProductOption extends Migration
         if (Schema::hasColumn('xero_commerce_product_option_item', 'combination_values')) {
             Schema::table('xero_commerce_product_option_item', function (Blueprint $table) {
                 $table->dropColumn('combination_values');
+                $table->dropColumn('product_type');
                 $table->integer('option_type')->after('product_id');
             });
         }
@@ -108,6 +110,7 @@ class CreateProductOption extends Migration
         if (Schema::hasColumn('xero_commerce_product_option_item_revision', 'combination_values')) {
             Schema::table('xero_commerce_product_option_item_revision', function (Blueprint $table) {
                 $table->dropColumn('combination_values');
+                $table->dropColumn('product_type');
                 $table->integer('option_type')->after('product_id');
             });
         }

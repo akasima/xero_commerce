@@ -38,7 +38,7 @@
                                 <a href="#" @click.prevent="url(cartItem.url)">{{cartItem.name}}</a>
                             </div><!-- //cart-product-name -->
                             <div class="cart-product-option">
-                                <button type="button" class="xe-btn xe-btn-secondary" @click="changeModal(cartItem)">옵션변경</button>
+                                <button type="button" class="xe-btn xe-btn-secondary" @click="changeModal(cartItem)">수량변경</button>
                                 <div class="modal" :id="'cartChangeModal'+cartItem.id" style="overflow: scroll">
                                     <div class="modal-dialog">
                                         <div class="modal-content" style="padding:20px">

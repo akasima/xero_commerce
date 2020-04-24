@@ -70,10 +70,11 @@ class ProductController extends SettingBaseController
 
         $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
 
+        $productInstance = Product::getSingleTableTypeMap()[$type];
+
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return XePresenter::make('product.create',
-            compact('labels', 'badges', 'categoryItems', 'shops', 'type', 'customOptionTypes'));
+        return $productInstance::getSettingsCreateView(compact('labels', 'badges', 'categoryItems', 'shops', 'type', 'customOptionTypes'));
     }
 
     public function store(Request $request)
@@ -110,7 +111,7 @@ class ProductController extends SettingBaseController
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return XePresenter::make('product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'optionItems', 'customOptionTypes', 'customOptions'));
+        return $product::getSettingsEditView(compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'optionItems', 'customOptionTypes', 'customOptions'));
     }
 
     public function update(Request $request, $productId)

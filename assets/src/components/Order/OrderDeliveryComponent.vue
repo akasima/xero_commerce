@@ -1,9 +1,8 @@
 <template>
     <div class="table-wrap">
         <h4 class="table-type-title">배송지 정보</h4>
-        <button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i>
-        </button>
-        <div class="table-type">
+
+        <div class="table-type" v-if="deliveryItems.length > 0">
             <div class="table-row">
                 <div class="table-cell header">
                     배송지 선택
@@ -100,6 +99,22 @@
                 </div>
             </div>
         </div>
+
+      <div class="table-type" v-if="pickupItems.length > 0">
+        <div class="table-row">
+          <div class="table-cell header">
+            픽업 장소
+          </div>
+          <div class="table-cell">
+            <div v-for="item in pickupItems">
+              {{ item.name }}<br>
+              ㄴ [{{ item.delivery_company.addr_post }}] {{ item.delivery_company.addr }} {{ item.delivery_company.addr_detail }}
+            </div>
+          </div>
+        </div>
+
+      </div><!-- //table-type -->
+
     </div><!-- //table-wrap -->
 </template>
 
@@ -134,7 +149,7 @@
             }
         },
         props: [
-            'input', 'userInfo', 'deliveryStoreUrl'
+            'input', 'userInfo', 'deliveryStoreUrl', 'orderItems'
         ],
         data() {
             return {
@@ -158,7 +173,9 @@
                 },
                 phone1: '010',
                 phone2: this.userInfo.phone.slice(3,7),
-                phone3: this.userInfo.phone.slice(7,11)
+                phone3: this.userInfo.phone.slice(7,11),
+                deliveryItems: this.orderItems.filter(item => item.delivery_company.company.type != 3),
+                pickupItems: this.orderItems.filter(item => item.delivery_company.company.type == 3)
             }
         },
         methods: {

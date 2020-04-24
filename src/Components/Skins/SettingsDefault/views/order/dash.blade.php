@@ -151,11 +151,11 @@
 </div>
 
 <script>
-	
+
 	$( "#order_excel").click(function() {//02.07 수정
          location.href='/settings/xero_commerce/order/delivery/excel1';
-            }); 
-	
+            });
+
     $(function(){
         var format = function(date){
             return (date.getMonth()+1) + '/' + date.getDate();
@@ -190,3 +190,4 @@
 </script>
 <style scoped>
 
+</style>

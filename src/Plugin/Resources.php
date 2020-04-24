@@ -1310,6 +1310,12 @@ class Resources
             '한진택배' =>
                 ['http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=',
                     DeliveryCompany::LOGIS],
+            '자체배송' =>
+                ['',
+                    DeliveryCompany::SELF],
+            '수령' =>
+                ['',
+                    DeliveryCompany::TAKE],
         ];
         foreach ($deliery_list as $name => $option) {
             self::storeDefaultDeliveryCompany($name, $option[0], $option[1]);

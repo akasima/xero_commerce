@@ -338,4 +338,23 @@ class Product extends SellType
     {
         return true;
     }
+
+    /**
+     * 관리자용 상품등록페이지 지정 (type별로 오버라이딩 할수 있도록 이곳에 구현)
+     * @param $vars
+     * @return mixed
+     */
+    public static function getSettingsCreateView($vars) {
+        return \XePresenter::make('product.create', $vars);
+    }
+
+    /**
+     * 관리자용 상품수정페이지 지정 (type별로 오버라이딩 할수 있도록 이곳에 구현)
+     * @param $vars
+     * @return mixed
+     */
+    public static function getSettingsEditView($vars) {
+
+        return \XePresenter::make('product.edit', $vars);
+    }
 }
