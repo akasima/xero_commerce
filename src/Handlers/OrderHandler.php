@@ -333,9 +333,11 @@ class OrderHandler extends SellSetHandler
     {
         return $this->whereUser()
             ->where('code', '!=', Order::TEMP)
-            ->when(!is_null($condition), function ($query) use ($condition) {
+            ->when(is_array($condition), function ($query) use ($condition) {
                 $query->where($condition);
             })
+            // 클로저를 사용할 수 있도록 구현
+            ->when(!is_null($condition) && $condition instanceof \Closure, $condition)
             ->with('orderItems.delivery', 'payment', 'userInfo')
             ->latest()
             ->paginate($count, ['*'], '', $page);
@@ -431,5 +433,20 @@ class OrderHandler extends SellSetHandler
         return $orderItems->map(function (OrderItem $orderItem) {
             return $orderItem->getJsonFormat();
         });
+    }
+
+    /**
+     * @param $orderId
+     * @return Order
+     */
+    public function getOrder($orderId)
+    {
+        $order = Order::find($orderId);
+
+        if(is_null($order)) {
+            abort(500, '해당 주문이 존재하지 않습니다.');
+        }
+
+        return $order;
     }
 }

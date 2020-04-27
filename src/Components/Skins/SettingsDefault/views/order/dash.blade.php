@@ -125,7 +125,9 @@
                 @foreach($list as $item)
                 <tr>
                     <td rowspan="3"><input type="checkbox"></td>
-                    <td colspan="2" rowspan="2">{{$item->order_no}}</td>
+                    <td colspan="2" rowspan="2">
+                        <a href="{{ route('xero_commerce::setting.order.show', ['orderId' => $item->id]) }}">{{$item->order_no}}</a>
+                    </td>
                     <td>{{$item->userInfo->name}}</td>
                     <td>{{$item->userInfo->phone}}</td>
                     <td>@if($item->orderItems[0]->delivery){{$item->orderItems[0]->delivery->recv_name}}@endif</td>

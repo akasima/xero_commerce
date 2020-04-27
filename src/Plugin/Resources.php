@@ -891,13 +891,19 @@ class Resources
 
                 //주문 관리
                 Route::group([
-                    'prefix' => 'order',
+                    'prefix' => 'orders',
                     'middleware' => ['web']
                 ], function () {
                     Route::get('/', [
                         'as' => 'xero_commerce::setting.order.index',
-                        'uses' => 'OrderController@dash',
+                        'uses' => 'OrderController@index',
                         'settings_menu' => 'xero_commerce.order.index',
+                        'permission' => 'xero_commerce'
+                    ]);
+                    Route::get('/dash', [
+                        'as' => 'xero_commerce::setting.order.dash',
+                        'uses' => 'OrderController@dash',
+                        'settings_menu' => 'xero_commerce.order.dash',
                         'permission' => 'xero_commerce'
                     ]);
                     Route::get('/delivery', [
@@ -953,6 +959,13 @@ class Resources
                         'uses' => 'OrderController@afterserviceReceive',
                         'permission' => 'xero_commerce'
                     ]);
+
+                    Route::get('/{orderId}', [
+                        'as' => 'xero_commerce::setting.order.show',
+                        'uses' => 'OrderController@show',
+                        'permission' => 'xero_commerce'
+                    ]);
+
                 });
 
                 //쇼핑몰 설정
@@ -1550,23 +1563,29 @@ class Resources
                 'description' => '',
                 'ordering' => 10002
             ],
+            'xero_commerce.order.dash' => [
+                'title' => '대시보드',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100021
+            ],
             'xero_commerce.order.index' => [
                 'title' => '전체 주문내역',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100021
+                'ordering' => 100022
             ],
             'xero_commerce.order.delivery' => [
                 'title' => '주문 배송처리',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100022
+                'ordering' => 100023
             ],
             'xero_commerce.order.as' => [
                 'title' => '교환/환불 처리',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100023
+                'ordering' => 100024
             ],
         ];
     }

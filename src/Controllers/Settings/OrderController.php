@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers\Settings;
 
 use App\Facades\XeFrontend;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\ExcelExport\DeliveryExport;
@@ -23,9 +24,22 @@ class OrderController extends SettingBaseController
         $this->orderService = new OrderSettingService();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return \XePresenter::make('xero_commerce::views.index', ['title' => 'xero_commerce']);
+        $page = $request->get('page', 1);
+        $count = $request->get('count', 10);
+
+        $param = collect($request->all());
+        if(!$param->has('from_date')) $param->put('from_date', Carbon::now()->addWeeks(-1)->format('Y-m-d'));
+        if(!$param->has('to_date')) $param->put('to_date', Carbon::now()->format('Y-m-d'));
+
+        $orders = $this->orderService->list($page, $count, $param);
+
+        return \XePresenter::make('order.index', [
+            'orders' => $orders,
+            'fromDate' => $param->get('from_date'),
+            'toDate' => $param->get('to_date')
+        ]);
     }
 
     public function dash()
@@ -40,9 +54,14 @@ class OrderController extends SettingBaseController
         ]);
     }
 
-    public function list()
+    public function show(Request $request, $orderId)
     {
+        $order = $this->orderService->getOrder($orderId);
 
+        return \XePresenter::make('order.show', [
+            'title' => 'xero_commerce',
+            'order' => $order
+        ]);
     }
 
     public function payment()

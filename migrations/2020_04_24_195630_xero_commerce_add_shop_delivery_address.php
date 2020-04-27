@@ -19,6 +19,10 @@ class XeroCommerceAddShopDeliveryAddress extends Migration
             $table->string('addr_detail');
             $table->string('addr_post');
         });
+
+        Schema::table('xero_commerce_order_delivery', function (Blueprint $table) {
+            $table->timestamp('completed_at')->nullable();
+        });
     }
 
     /**
@@ -32,6 +36,10 @@ class XeroCommerceAddShopDeliveryAddress extends Migration
             $table->dropColumn('addr');
             $table->dropColumn('addr_detail');
             $table->dropColumn('addr_post');
+        });
+
+        Schema::table('xero_commerce_order_delivery', function (Blueprint $table) {
+            $table->dropColumn('completed_at');
         });
     }
 }

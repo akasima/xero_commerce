@@ -35,7 +35,7 @@
                 <ul class="list-option">
                     @if(auth()->check())
                         @if(auth()->user()->rating == \Xpressengine\User\Rating::MANAGER || auth()->user()->rating == \Xpressengine\User\Rating::SUPER)
-                            <li class="item-option"><a href="{{ route('xero_commerce::setting.order.index') }}">관리자페이지</a></li>
+                            <li class="item-option"><a href="{{ route('xero_commerce::setting.order.dash') }}">관리자페이지</a></li>
                         @endif
                         <li class="item-option"><a class="link-option" href="{{ route('logout') }}">로그아웃</a></li>
                         <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
