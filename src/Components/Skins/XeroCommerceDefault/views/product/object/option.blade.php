@@ -1,14 +1,32 @@
 {{\App\Facades\XeFrontend::js('https://cdn.jsdelivr.net/npm/vue/dist/vue.js')->load()}}
+@php
+    // 추가옵션의 각 타입별 뷰를 가져오기 위해 여기서 렌더링
+    $renderedCustomOptions = $customOptions->map(function($option) {
+        $data = $option->toArray();
+        $data['rawhtml'] = $option->renderHtml([
+            'v-model' => 'customOptionValues[option.name]',
+            'class' => 'form-select'
+        ]);
+        return $data;
+    });
+@endphp
+
 <div id="option">
     {{-- 커스텀 옵션 --}}
     @if($customOptions->count() > 0)
-        <div v-for="(option, i) in customOptions" class="box-option">
-            <strong>@{{ option.name }} @{{ option.is_required ? '(필수)' : '' }}</strong>
-            <input :type="option.type" v-model="customOptionValues[option.name]" class="form-select" />
+        @foreach($customOptions as $option)
+        <div>{{ $option->description }}</div>
+        <div class="box-option">
+            <strong>{{ $option->name }} {{ $option->is_required ? '(필수)' : '' }}</strong>
+            {!! $option->renderHtml([
+                'v-model' => "customOptionValues['$option->name']",
+                'class' => 'form-select'
+            ]); !!}
         </div>
+        @endforeach
     @endif
-    {{-- 기본값(옵션품목1개), 조합일체형 --}}
-    @if($optionType == \Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_MERGE)
+    {{-- 기본값(옵션품목1개), 조합일체형, 단독형 --}}
+    @if($optionType == \Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_MERGE || $optionType == \Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_SIMPLE)
     <div class="box-option">
         <strong>옵션 선택</strong>
         <select v-model="selectedOptionItem" class="form-select">
@@ -19,8 +37,8 @@
         </select>
     </div>
     @endif
-    {{--  조합분리형 & 단독형  --}}
-    @if($optionType == \Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_SPLIT || $optionType == \Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_SIMPLE)
+    {{--  조합분리형  --}}
+    @if($optionType == \Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_SPLIT)
     <div v-for="(option, i) in options" class="box-option">
         <strong>@{{ option.name }}</strong>
         <select v-model="selectedOptions[i]" class="form-select">
@@ -71,7 +89,7 @@
                         // 옵션품목중 일치하는 조건으로 가져옴
                         let optionItem = this.optionItems.find(item => {
                             let selectedCombination = selectedOptions.reduce((obj, item) => ({...obj, ...item}), {});
-                            return JSON.stringify(item.value_combination) == JSON.stringify(selectedCombination);
+                            return JSON.stringify(item.combination_values) == JSON.stringify(selectedCombination);
                         });
                         // 일치하는 품목이 있으면
                         if(optionItem) {
@@ -107,7 +125,7 @@
                     pay: 'prepay',
                     options: {!! json_encode($options) !!},
                     optionItems: {!! json_encode($optionItems) !!},
-                    customOptions: {!! json_encode($customOptions) !!},
+                    customOptions: {!! json_encode($renderedCustomOptions) !!},
                     alreadyChoose:{!! json_encode($choose) !!},
                     reset:null
                 }
@@ -136,8 +154,8 @@
                 addOptionItemToList(el) {
                     if (el == undefined) return
                     if (!this.validateCustomOption()) {
-                        console.log(el);
-                        alert('필수옵션을 입력해야 합니다')
+                        alert('필수옵션을 입력해야 합니다');
+                        this.selectedOptionItem = undefined;
                         return
                     }
                     let exist = this.select.find((v) => {
@@ -158,7 +176,7 @@
                         })
                     }
                     this.$emit('input', this.select)
-                    this.selectedOptionItem = null;
+                    this.selectedOptionItem = undefined;
                     this.selectedOptions = [];
                     this.customOptionValues = {};
                 },

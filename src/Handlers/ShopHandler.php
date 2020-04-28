@@ -104,9 +104,23 @@ class ShopHandler
     public function addDelivery(array $args, Shop $shop)
     {
         if ($shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->exists()) {
-            $shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->updateExistingPivot($args['id'], ['delivery_fare' => $args['pivot']['delivery_fare'], 'up_to_free' => 0, 'is_default' => 0]);
+            $shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->updateExistingPivot($args['id'], [
+                'delivery_fare' => $args['pivot']['delivery_fare'],
+                'addr' => $args['pivot']['addr'],
+                'addr_detail' => $args['pivot']['addr_detail'],
+                'addr_post' => $args['pivot']['addr_post'],
+                'up_to_free' => 0,
+                'is_default' => 0
+            ]);
         } else {
-            $shop->deliveryCompanys()->attach($args['id'], ['delivery_fare' => $args['pivot']['delivery_fare'], 'up_to_free' => 0, 'is_default' => 0]);
+            $shop->deliveryCompanys()->attach($args['id'], [
+                'delivery_fare' => $args['pivot']['delivery_fare'],
+                'addr' => $args['pivot']['addr'],
+                'addr_detail' => $args['pivot']['addr_detail'],
+                'addr_post' => $args['pivot']['addr_post'],
+                'up_to_free' => 0,
+                'is_default' => 0
+            ]);
         }
     }
 

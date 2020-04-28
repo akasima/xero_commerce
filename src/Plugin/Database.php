@@ -11,11 +11,16 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class Database
 {
+    public static function hasTables()
+    {
+        return Schema::hasTable('xero_commerce_user');
+    }
+
     public static function update()
     {
-        Artisan::call('migrate', array('--path' => 'plugins/'.Plugin::getId().'/src/Migrations', '--force' => true));
+        Artisan::call('migrate', array('--path' => 'plugins/'.Plugin::getId().'/migrations', '--force' => true));
     }
-    
+
     public static function addTable()
     {
         if (!Schema::hasTable('xero_commerce_badge')) {

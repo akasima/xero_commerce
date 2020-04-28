@@ -16,22 +16,13 @@ class ProductOptionItem extends SellUnit
     const DEAL_PAUSE = 2;
     const DEAL_END = 3;
 
-    /**
-     * akasima - 2020.04.10.
-     * 기본 상품 설정을 위해서 필요한 코드로 보임.
-     * 이걸 상수로 만들어야하는지..
-     */
-    const TYPE_DEFAULT_OPTION = 1;
-    const TYPE_ADDITION_ITEM = 1;
-    const TYPE_OPTION_ITEM = 1;
-
     protected $table = 'xero_commerce_product_option_item';
 
-    protected $fillable = ['product_id', 'name', 'value_combination', 'addition_price', 'stock', 'alert_stock',
+    protected $fillable = ['product_id', 'name', 'combination_values', 'addition_price', 'stock', 'alert_stock',
         'state_display', 'state_deal'];
 
     protected $casts = [
-        'value_combination' => 'json',
+        'combination_values' => 'json',
     ];
 
     /**

@@ -24,7 +24,7 @@ trait CustomTableInheritanceTrait
     }
 
     /**
-     * 외부에서 상품타입을 등록하는 함수
+     * 외부에서 타입을 등록하는 함수
      * @return void
      */
     public static function addSingleTableSubclass($subClass)

@@ -76,7 +76,15 @@
                                             <div class="order-product-title">{{$json['name']}}</div>
                                             <ul class="order-product-option">
                                                 @foreach($json['options'] as $option)
-                                                    <li>{{$option['unit']['name']}} / {{$option['count']}}개</li>
+                                                    <li>
+                                                        {{$option['unit']['name']}}
+                                                        @foreach($option['custom_values'] as $key => $value)
+                                                            {{ $loop->index == 0 ? '(' : '' }}
+                                                            {{$key}} : {{$value}}
+                                                            {{ $loop->index !== sizeof($option['custom_values']) - 1 ? ',' : ')' }}
+                                                        @endforeach
+                                                        / {{$option['count']}}개
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         </div> <!-- //order-product -->

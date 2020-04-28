@@ -110,18 +110,18 @@
                     </div>
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>옵션명</th>
-                                <th>옵션값</th>
-                            </tr>
+                        <tr>
+                            <th>옵션명</th>
+                            <th>옵션값</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach($options as $option)
+                        @foreach($options as $option)
                             <tr>
                                 <td>{{ $option['name'] }}</td>
                                 <td>{{ implode(', ', $option['values']) }}</td>
                             </tr>
-                            @endforeach
+                        @endforeach
                         </tbody>
                     </table>
                     <div class="table-responsive">
@@ -137,7 +137,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($optionItems as $optionItem)
+                            @foreach($optionItems as $optionItem)
                                 <tr>
                                     <td>{{ $optionItem['name'] }}</td>
                                     <td>{{ $optionItem['addition_price'] }}</td>
@@ -146,10 +146,42 @@
                                     <td>{{ $optionItem['state_display'] == 1 ? '출력' : '미출력' }}</td>
                                     <td>{{ $optionItem['state_deal'] == 1 ? '판매' : ($optionItem['state_deal'] == 2 ? '일시중단' : '중단') }}</td>
                                 </tr>
-                                @endforeach
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-group">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>추가옵션</h3>
+                </div>
+
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>옵션타입</th>
+                            <th>옵션명</th>
+                            <th>옵션설정</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($customOptions as $option)
+                            <tr>
+                                <td>{{ $customOptionTypes[$option['type']] }}</td>
+                                <td>{{ $option['name'] }}</td>
+                                <td>
+                                    {{ $option['is_required'] ? '필수' : '필수아님'  }}
+                                    {{ $option['settings'] }}
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

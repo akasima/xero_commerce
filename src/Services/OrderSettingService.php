@@ -2,11 +2,15 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Services;
 
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
+use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
+use Xpressengine\Plugins\XeroCommerce\Models\UserInfo;
 
 class OrderSettingService
 {
@@ -29,9 +33,51 @@ class OrderSettingService
         return $this->orderHandler->dailyBoard();
     }
 
-    public function list()
+    /**
+     * 주문목록
+     * @param int $page
+     * @param int $count
+     * @param Collection|null $param
+     * @return mixed
+     */
+    public function list($page = 1, $count = 10, Collection $param = null)
     {
-        return $this->orderHandler->getOrderList(1, 10);
+        $condition = null;
+        if($param) {
+            $condition = function(Builder $query) use ($param) {
+                if($orderNo = $param->get('order_no')) {
+                    $query->where('order_no', 'LIKE' , "%$orderNo%");
+                }
+                if($code = $param->get('code')) {
+                    $query->where('code', $code);
+                }
+                if(($from = $param->get('from_date')) && ($to = $param->get('to_date'))) {
+                    $query->whereBetween('created_at', [$from, (new Carbon($to))->endOfDay()]);
+                }
+                if($shipNo = $param->get('ship_no')) {
+                    $query->whereHas('orderItems.delivery', function($q) use ($shipNo) {
+                        $q->where('ship_no', 'LIKE', "%$shipNo%");
+                    });
+                }
+                $userName = $param->get('user_name');
+                $userPhone = $param->get('user_phone');
+                if($userName || $userPhone) {
+                    $query->whereHas('userInfo', function($q) use ($userName, $userPhone) {
+                        if($userName) $q->where('name', 'LIKE', "%$userName%");
+                        if($userPhone) $q->where('phone', 'LIKE', "%$userPhone%");
+                    });
+                }
+                $recvName = $param->get('recv_name');
+                $recvPhone = $param->get('recv_phone');
+                if($recvName || $recvPhone) {
+                    $query->whereHas('orderItems.delivery', function($q) use ($recvName, $recvPhone) {
+                        $q->where('recv_name', 'LIKE', "%$recvName%");
+                        $q->where('recv_phone', 'LIKE', "%$recvPhone%");
+                    });
+                }
+            };
+        }
+        return $this->orderHandler->getOrderList($page, $count, $condition);
     }
 
     public function deliveryOrderItemList()
@@ -82,5 +128,19 @@ class OrderSettingService
         $this->orderHandler->endOrderAfterService($orderItem);
 
         return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDED);
+    }
+
+    /**
+     * 주문 하나를 가져오는 함수
+     * @param $orderId
+     * @return Order|null
+     */
+    public function getOrder($orderId)
+    {
+        $order = $this->orderHandler->getOrder($orderId);
+        $order->status = $order->getStatus();
+        $order->load('payment', 'userInfo');
+
+        return $order;
     }
 }

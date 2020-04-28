@@ -10,6 +10,7 @@
             <tr>
                 <th>회사명 <i class="xi-plus" @click="add"></i></th>
                 <th>배송금액</th>
+                <th>주소(픽업)</th>
                 <th>관리</th>
             </tr>
             </thead>
@@ -18,6 +19,7 @@
             <tr v-for="(option, key) in options">
                 <td v-if="edits.indexOf(key) === -1">{{ option.name }}</td>
                 <td v-if="edits.indexOf(key) === -1">{{ option.pivot.delivery_fare }}</td>
+                <td v-if="edits.indexOf(key) === -1">{{ option.pivot.addr_post }} {{ option.pivot.addr }} {{ option.pivot.addr_detail }}</td>
                 <td v-if="edits.indexOf(key) === -1">
                     <button type="button" v-on:click="toggleShowState(key)" class="xe-btn">수정</button>
                     <button type="button" v-on:click="remove(option)" class="xe-btn">삭제</button>
@@ -28,7 +30,12 @@
                         <option v-for="delivery in list" :value="delivery.id">{{delivery.name}}</option>
                     </select>
                 </td>
-                <td v-if="edits.indexOf(key) !== -1"><input type="text" v-model="option.pivot.delivery_fare"></td>
+                <td v-if="edits.indexOf(key) !== -1"><input type="text" class="form-control" v-model="option.pivot.delivery_fare"></td>
+                <td v-if="edits.indexOf(key) !== -1">
+                  우편번호 <input type="text" class="form-control" v-model="option.pivot.addr_post" placeholder="우편번호">
+                  주소 <input type="text" class="form-control" v-model="option.pivot.addr" placeholder="주소">
+                  <input type="text" class="form-control" v-model="option.pivot.addr_detail" placeholder="상세주소">
+                </td>
                 <td v-if="edits.indexOf(key) !== -1">
                     <button type="button" v-on:click="remove(option)" class="xe-btn">삭제</button>
                     <button type="button" v-on:click="save(option)" class="xe-btn">저장</button>
