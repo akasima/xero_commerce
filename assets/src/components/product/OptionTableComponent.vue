@@ -21,6 +21,7 @@
       </thead>
       <tbody>
       <tr v-for="(option, key) in optionList">
+        <input type="hidden" :name="`options[${key}][id]`" :value="option.id" :disabled="!option.id" />
         <td v-show="!tmpEditStates[key]">{{ option.name }}</td>
         <td v-show="!tmpEditStates[key]">{{ option.values }}</td>
 
@@ -161,7 +162,6 @@
           this.optionList.map((option) => {
             optionValuesMap[option.name] = option.values;
           });
-          console.log(optionValuesMap);
           let combinedValueList = combos(optionValuesMap);
           if(combinedValueList.length > 1000) {
             alert('조합형 옵션은 조합결과가 1000가지인 경우까지만 허용됩니다');

@@ -14,6 +14,8 @@ class ProductOptionHandler
         $newProductOption->fill($args);
 
         $newProductOption->save();
+
+        return $newProductOption;
     }
 
     public function getOptionItem($productOptionId)

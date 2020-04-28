@@ -61,7 +61,7 @@
                         </div>
                     </div><!-- //table-type -->
                 </div><!-- //table-wrap -->
-                <order-delivery-component :user-info="userInfo" :delivery-store-url="deliveryStoreUrl" v-model="delivery"></order-delivery-component>
+                <order-delivery-component :user-info="userInfo" :delivery-store-url="deliveryStoreUrl" v-model="delivery" :order-items="orderItemList"></order-delivery-component>
                 <!--<div class="table-wrap">-->
                 <!--<h4 class="table-type-title">할인 정보</h4>-->
                 <!--<button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>-->
@@ -137,18 +137,17 @@
                     res.msg.push('필수 약관에 모두 동의후 결제가 진행됩니다.')
                     res.status = false
                 }
-                if (this.delivery === null) {
+                // 픽업상품만 있는 경우 배송지를 적지 않을수 있음
+                if(this.needDelivery()) {
+                  if (this.delivery === null || this.delivery.addr === '') {
                     res.msg.push('주소가 불분명합니다.')
                     res.status = false
-                } else {
-                    if (this.delivery.addr === '') {
-                        res.msg.push('주소가 불분명합니다.')
-                        res.status = false
-                    }
+                  } else {
                     if (this.delivery.addr_detail === '') {
-                        res.msg.push('상세주소를 적어주세요.')
-                        res.status = false
+                      res.msg.push('상세주소를 적어주세요.')
+                      res.status = false
                     }
+                  }
                 }
                 if(this.payMethod === null){
                     res.msg.push('결제방식을 선택해주세요.')
@@ -187,6 +186,10 @@
             fail(error) {
                 console.log(error)
                 //document.location.href = this.failUrl
+            },
+            needDelivery() {
+                // 배송타입이 픽업이 아닌 상품이 하나라도 있으면 true
+                return this.orderItemList.filter(item => item.delivery_company.company.type != 3).length > 0
             }
         },
         mounted() {

@@ -34,6 +34,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\FeedbackHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\LabelHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCategoryHandler;
+use Xpressengine\Plugins\XeroCommerce\Handlers\ProductCustomOptionHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
@@ -890,13 +891,19 @@ class Resources
 
                 //주문 관리
                 Route::group([
-                    'prefix' => 'order',
+                    'prefix' => 'orders',
                     'middleware' => ['web']
                 ], function () {
                     Route::get('/', [
                         'as' => 'xero_commerce::setting.order.index',
-                        'uses' => 'OrderController@dash',
+                        'uses' => 'OrderController@index',
                         'settings_menu' => 'xero_commerce.order.index',
+                        'permission' => 'xero_commerce'
+                    ]);
+                    Route::get('/dash', [
+                        'as' => 'xero_commerce::setting.order.dash',
+                        'uses' => 'OrderController@dash',
+                        'settings_menu' => 'xero_commerce.order.dash',
                         'permission' => 'xero_commerce'
                     ]);
                     Route::get('/delivery', [
@@ -952,6 +959,13 @@ class Resources
                         'uses' => 'OrderController@afterserviceReceive',
                         'permission' => 'xero_commerce'
                     ]);
+
+                    Route::get('/{orderId}', [
+                        'as' => 'xero_commerce::setting.order.show',
+                        'uses' => 'OrderController@show',
+                        'permission' => 'xero_commerce'
+                    ]);
+
                 });
 
                 //쇼핑몰 설정
@@ -1028,6 +1042,7 @@ class Resources
         ]);
     }
 
+
     /**
      * @return void
      */
@@ -1070,6 +1085,15 @@ class Resources
             return $instance;
         });
         $app->alias(ProductOptionItemHandler::class, 'xero_commerce.productOptionItemHandler');
+
+        $app->singleton(ProductCustomOptionHandler::class, function ($app) {
+            $proxyHandler = XeInterception::proxy(ProductCustomOptionHandler::class);
+
+            $instance = new $proxyHandler();
+
+            return $instance;
+        });
+        $app->alias(ProductCustomOptionHandler::class, 'xero_commerce.productCustomOptionHandler');
 
         $app->singleton(ProductCategoryHandler::class, function ($app) {
             $proxyHandler = XeInterception::proxy(ProductCategoryHandler::class);
@@ -1299,6 +1323,12 @@ class Resources
             '한진택배' =>
                 ['http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=',
                     DeliveryCompany::LOGIS],
+            '자체배송' =>
+                ['',
+                    DeliveryCompany::SELF],
+            '수령' =>
+                ['',
+                    DeliveryCompany::TAKE],
         ];
         foreach ($deliery_list as $name => $option) {
             self::storeDefaultDeliveryCompany($name, $option[0], $option[1]);
@@ -1412,10 +1442,8 @@ class Resources
             $op->product_id = $product_id;
 
             if ($i == 0) {
-                $op->option_type = ProductOptionItem::TYPE_DEFAULT_OPTION;
                 $op->addition_price = 0;
             } else {
-                $op->option_type = rand(ProductOptionItem::TYPE_OPTION_ITEM, ProductOptionItem::TYPE_ADDITION_ITEM);
                 $op->addition_price = $faker->numberBetween(0, 10) * 500;
             }
 
@@ -1535,23 +1563,29 @@ class Resources
                 'description' => '',
                 'ordering' => 10002
             ],
+            'xero_commerce.order.dash' => [
+                'title' => '대시보드',
+                'display' => true,
+                'description' => '',
+                'ordering' => 100021
+            ],
             'xero_commerce.order.index' => [
                 'title' => '전체 주문내역',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100021
+                'ordering' => 100022
             ],
             'xero_commerce.order.delivery' => [
                 'title' => '주문 배송처리',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100022
+                'ordering' => 100023
             ],
             'xero_commerce.order.as' => [
                 'title' => '교환/환불 처리',
                 'display' => true,
                 'description' => '',
-                'ordering' => 100023
+                'ordering' => 100024
             ],
         ];
     }

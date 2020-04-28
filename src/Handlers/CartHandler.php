@@ -72,11 +72,12 @@ class CartHandler extends SellSetHandler
         return $this->getCartList();
     }
 
-    public function makeCartGroup(SellUnit $sellUnit, $count)
+    public function makeCartGroup(SellUnit $sellUnit, array $customValues, $count)
     {
         $cartGroup = new CartGroup();
         $cartGroup->cart_id = 0;
         $cartGroup->setCount($count);
+        $cartGroup->setCustomValues($customValues);
         $sellUnit->cartGroup()->save($cartGroup);
         $cartGroup->save();
 

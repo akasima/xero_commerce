@@ -22,7 +22,15 @@
                 <div class="cart-product-option">
                     <ul class="cart-product-option-list">
                         <li v-for="option in orderItem.options">
-                            <span> {{option.unit.name}} / {{option.count}} </span>
+                            <span>
+                              {{option.unit.name}}
+                              <span v-for="(value, key, i) in option.custom_values">
+                                {{ i == 0 ? '(' : '' }}
+                                {{key}} : {{value}}
+                                {{ i != Object.keys(option.custom_values).length - 1 ? ',' : ')' }}
+                              </span>
+                              / {{option.count}}개
+                            </span>
                         </li>
                     </ul>
                 </div><!-- //cart-product-option -->

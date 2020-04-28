@@ -18,11 +18,11 @@ class ProductOptionItem extends SellUnit
 
     protected $table = 'xero_commerce_product_option_item';
 
-    protected $fillable = ['product_id', 'name', 'value_combination', 'addition_price', 'stock', 'alert_stock',
+    protected $fillable = ['product_id', 'name', 'combination_values', 'addition_price', 'stock', 'alert_stock',
         'state_display', 'state_deal'];
 
     protected $casts = [
-        'value_combination' => 'json',
+        'combination_values' => 'json',
     ];
 
     /**

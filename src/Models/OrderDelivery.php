@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
+use Carbon\Carbon;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 class OrderDelivery extends DynamicModel
@@ -34,6 +35,7 @@ class OrderDelivery extends DynamicModel
     public function complete()
     {
         $this->status = self::DONE;
+        $this->completed_at = new Carbon();
         $this->save();
 
         return $this;
