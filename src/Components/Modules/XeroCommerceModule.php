@@ -83,7 +83,7 @@ class XeroCommerceModule extends AbstractModule
         if ($categoryItem) {
             $selectedLabel = xe_trans($categoryItem->word);
         }
-        
+
         $plugin = Plugin::class;
 
         return View::make('xero_commerce::views/setting/module/edit', [
@@ -120,7 +120,7 @@ class XeroCommerceModule extends AbstractModule
 
     public function deleteMenu($instanceId)
     {
-        XeConfig::remove(XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId)));
+        // XeConfig::remove(XeConfig::get(sprintf('%s.%s', Plugin::getId(), $instanceId)));
 
         $this->removeModuleListConfig($instanceId);
 

@@ -1,37 +1,17 @@
 <?php
 
-namespace Xpressengine\Plugins\XeroCommerce\Plugin;
-
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Xpressengine\Plugins\XeroCommerce\Models\Product;
-use Illuminate\Support\Facades\Artisan;
-use Xpressengine\Plugins\XeroCommerce\Plugin;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class Database
+class XeroCommerceCreateTables extends Migration
 {
-    public static function hasTables()
-    {
-        return Schema::hasTable('xero_commerce_user');
-    }
-
-    public static function update()
-    {
-        Artisan::call('migrate', array('--path' => 'plugins/'.Plugin::getId().'/migrations', '--force' => true));
-    }
-
-    public static function addTable()
-    {
-        if (!Schema::hasTable('xero_commerce_badge')) {
-            Schema::table('xero_commerce_badge', function (Blueprint $table) {
-                $table->string('background_color')->nullable();
-                $table->string('text_color')->nullable();
-            });
-        }
-    }
-
-    public static function create()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
         if (!Schema::hasTable('xero_commerce_user')) {
             Schema::create('xero_commerce_user', function (Blueprint $table) {
@@ -110,6 +90,9 @@ class Database
                 $table->integer('delivery_fare');
                 $table->integer('up_to_free');
                 $table->boolean('is_default');
+                $table->string('addr');
+                $table->string('addr_detail');
+                $table->string('addr_post');
             });
         }
 
@@ -239,6 +222,7 @@ class Database
                 $table->increments('id');
                 $table->integer('cart_id');
                 $table->morphs('unit');
+                $table->text('custom_values');
                 $table->integer('count');
             });
         }
@@ -262,6 +246,7 @@ class Database
                 $table->increments('id');
                 $table->integer('order_item_id');
                 $table->morphs('unit');
+                $table->text('custom_values');
                 $table->integer('count');
             });
         }
@@ -279,6 +264,7 @@ class Database
                 $table->string('recv_addr_detail');
                 $table->string('recv_addr_post');
                 $table->string('recv_msg')->nullable();
+                $table->timestamp('completed_at')->nullable();
                 $table->timestamps();
             });
         }
@@ -347,7 +333,156 @@ class Database
 
         \Xpressengine\XePlugin\XeroPay\Resources::makeDataTable();
     }
-    public static function drop()
+
+    /**
+     * @return void
+     */
+    private static function createProductTables()
+    {
+        if (!Schema::hasTable('xero_commerce_products')) {
+            //상품 테이블 생성
+            Schema::create('xero_commerce_products', function (Blueprint $table) {
+                $table->increments('id');
+                $table = self::setProductTableColumns($table);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('xero_commerce_products_revision')) {
+            //상품 Revision 테이블 생성
+            Schema::create('xero_commerce_products_revision', function (Blueprint $table) {
+                $table->increments('revision_id');
+                $table->integer('revision_no')->default(0);
+                $table->integer('id');
+
+                $table = self::setProductTableColumns($table);
+
+                //수정 전 product의 timestamp
+                $table->timestamp('origin_deleted_at')->nullable();
+                $table->timestamp('origin_created_at');
+                $table->timestamp('origin_updated_at');
+                //수정 내역의 timestamp
+                $table->timestamp('revision_deleted_at')->nullable();
+                $table->timestamp('revision_created_at');
+                $table->timestamp('revision_updated_at');
+
+                $table->index('id');
+            });
+        }
+    }
+
+    /**
+     * @param Blueprint $table 상품 테이블 컬럼 정의
+     *
+     * @return Blueprint
+     */
+    private static function setProductTableColumns($table)
+    {
+        $table->integer('shop_id');
+        $table->string('type')->default(\Xpressengine\Plugins\XeroCommerce\Models\Product::$singleTableType);
+        $table->boolean('publish')->default(false);
+        $table->string('product_code', 32)->nullable();
+        $table->string('name')->nullable();
+        $table->string('sub_name')->nullable();
+        $table->integer('original_price')->nullable();
+        $table->integer('sell_price')->nullable();
+        $table->double('discount_percentage')->nullable();
+        $table->integer('min_buy_count')->nullable();
+        $table->integer('max_buy_count')->nullable();
+        $table->text('description')->nullable();
+        $table->text('detail_info')->nullable();
+        $table->integer('badge_id')->nullable();
+        $table->integer('tax_type')->nullable();
+        $table->string('option_type')->default(\Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_MERGE);
+        $table->integer('state_display')->nullable();
+        $table->integer('state_deal')->nullable();
+        $table->integer('shop_delivery_id')->nullable();
+
+        return $table;
+    }
+
+    private static function createProductOptionTables()
+    {
+        // 상품옵션 테이블 추가
+        if (!Schema::hasTable('xero_commerce_product_option')) {
+            Schema::create('xero_commerce_product_option', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('product_id')->index();
+                $table->string('name');
+                $table->text('values');
+                $table->integer('sort_order');
+                $table->timestamps();
+            });
+        }
+
+        // 사용자의 입력을 받을 수 있는 커스텀옵션 테이블 추가
+        if (!Schema::hasTable('xero_commerce_product_custom_option')) {
+            Schema::create('xero_commerce_product_custom_option', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('product_id')->index();
+                $table->string('name');
+                $table->string('description');
+                $table->string('type');
+                $table->integer('sort_order');
+                $table->boolean('is_required');
+                $table->boolean('settings');
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('xero_commerce_product_option_item')) {
+            Schema::create('xero_commerce_product_option_item', function (Blueprint $table) {
+                $table->increments('id');
+                $table = self::setProductOptionTableColumns($table);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('xero_commerce_product_option_item_revision')) {
+            Schema::create('xero_commerce_product_option_item_revision', function (Blueprint $table) {
+                $table->increments('revision_id');
+                $table->integer('revision_no')->default(0);
+                $table->integer('id');
+
+                $table = self::setProductOptionTableColumns($table);
+
+                //수정 전 option의 timestamp
+                $table->timestamp('origin_deleted_at')->nullable();
+                $table->timestamp('origin_created_at');
+                $table->timestamp('origin_updated_at');
+                //수정 내역의 timestamp
+                $table->timestamp('revision_deleted_at')->nullable();
+                $table->timestamp('revision_created_at');
+                $table->timestamp('revision_updated_at');
+
+                $table->index('id');
+            });
+        }
+    }
+
+    private static function setProductOptionTableColumns($table)
+    {
+        $table->integer('product_id')->index();
+        $table->string('name');
+        // OptionItem에 옵션값의 조합(combination_values) 칼럼 추가 (예시: {'색상':'블랙','사이즈':'S'})
+        $table->text('combination_values');
+        $table->integer('addition_price');
+        $table->integer('stock');
+        $table->integer('alert_stock')->nullable();
+        $table->integer('state_display');
+        $table->integer('state_deal');
+
+        return $table;
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
         Schema::dropIfExists('xero_commerce_user');
 
@@ -394,7 +529,6 @@ class Database
 
         Schema::dropIfExists('xero_commerce_order_item');
 
-
         Schema::dropIfExists('xero_commerce_order_item_group');
 
         Schema::dropIfExists('xero_commerce_order_delivery');
@@ -412,51 +546,10 @@ class Database
         \Xpressengine\XePlugin\XeroPay\Resources::deleteDataTable();
     }
 
-
     /**
      * @return void
      */
-    private static function createProductTables()
-    {
-        if (!Schema::hasTable('xero_commerce_products')) {
-            //상품 테이블 생성
-            Schema::create('xero_commerce_products', function (Blueprint $table) {
-                $table->increments('id');
-                $table = self::setProductTableColumns($table);
-                $table->softDeletes();
-                $table->timestamps();
-            });
-        }
-
-        if (!Schema::hasTable('xero_commerce_products_revision')) {
-            //상품 Revision 테이블 생성
-            Schema::create('xero_commerce_products_revision', function (Blueprint $table) {
-                $table->increments('revision_id');
-                $table->integer('revision_no')->default(0);
-                $table->integer('id');
-
-                $table = self::setProductTableColumns($table);
-
-                //수정 전 product의 timestamp
-                $table->timestamp('origin_deleted_at')->nullable();
-                $table->timestamp('origin_created_at');
-                $table->timestamp('origin_updated_at');
-                //수정 내역의 timestamp
-                $table->timestamp('revision_deleted_at')->nullable();
-                $table->timestamp('revision_created_at');
-                $table->timestamp('revision_updated_at');
-
-                $table->index('id');
-            });
-        }
-    }
-
-
-    /**
-     * @return void
-     */
-    private
-    static function dropIfExistsProductTables()
+    private static function dropIfExistsProductTables()
     {
         //상품 테이블 생성
         Schema::dropIfExists('xero_commerce_products');
@@ -465,96 +558,15 @@ class Database
         Schema::dropIfExists('xero_commerce_products_revision');
     }
 
-    public
-    static function changeTable()
+    private static function dropIfExistsProductOptionTables()
     {
-        Schema::table('xero_commerce_products', function (Blueprint $table) {
-            $table->boolean('publish')->default(false);
-        });
-    }
+        Schema::dropIfExists('xero_commerce_product_option');
 
-    /**
-     * @param Blueprint $table 상품 테이블 컬럼 정의
-     *
-     * @return Blueprint
-     */
-    private static function setProductTableColumns($table)
-    {
-        $table->integer('shop_id');
-        $table->boolean('publish')->default(false);
-        $table->string('product_code', 32)->nullable();
-        $table->string('name')->nullable();
-        $table->string('sub_name')->nullable();
-        $table->integer('original_price')->nullable();
-        $table->integer('sell_price')->nullable();
-        $table->double('discount_percentage')->nullable();
-        $table->integer('min_buy_count')->nullable();
-        $table->integer('max_buy_count')->nullable();
-        $table->text('description')->nullable();
-        $table->text('detail_info')->nullable();
-        $table->integer('badge_id')->nullable();
-        $table->integer('tax_type')->nullable();
-        $table->integer('state_display')->nullable();
-        $table->integer('state_deal')->nullable();
-        $table->integer('shop_delivery_id')->nullable();
+        Schema::dropIfExists('xero_commerce_product_custom_option');
 
-        return $table;
-    }
-
-    private static function createProductOptionTables()
-    {
-        if (!Schema::hasTable('xero_commerce_product_option_item')) {
-            Schema::create('xero_commerce_product_option_item', function (Blueprint $table) {
-                $table->increments('id');
-                $table = self::setProductOptionTableColumns($table);
-                $table->softDeletes();
-                $table->timestamps();
-            });
-        }
-
-        if (!Schema::hasTable('xero_commerce_product_option_item_revision')) {
-            Schema::create('xero_commerce_product_option_item_revision', function (Blueprint $table) {
-                $table->increments('revision_id');
-                $table->integer('revision_no')->default(0);
-                $table->integer('id');
-
-                $table = self::setProductOptionTableColumns($table);
-
-                //수정 전 option의 timestamp
-                $table->timestamp('origin_deleted_at')->nullable();
-                $table->timestamp('origin_created_at');
-                $table->timestamp('origin_updated_at');
-                //수정 내역의 timestamp
-                $table->timestamp('revision_deleted_at')->nullable();
-                $table->timestamp('revision_created_at');
-                $table->timestamp('revision_updated_at');
-
-                $table->index('id');
-            });
-        }
-    }
-
-
-    private
-    static function dropIfExistsProductOptionTables()
-    {
         Schema::dropIfExists('xero_commerce_product_option_item');
 
         Schema::dropIfExists('xero_commerce_product_option_item_revision');
     }
 
-    private
-    static function setProductOptionTableColumns($table)
-    {
-        $table->integer('product_id')->index();
-        $table->integer('option_type');
-        $table->string('name');
-        $table->integer('addition_price');
-        $table->integer('stock');
-        $table->integer('alert_stock')->nullable();
-        $table->integer('state_display');
-        $table->integer('state_deal');
-
-        return $table;
-    }
 }

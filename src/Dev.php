@@ -18,7 +18,6 @@ use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Models\ShopUser;
-use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
@@ -36,7 +35,7 @@ class Dev
 
     public function makeTable()
     {
-        Database::create();
+        // Database::create();
 //        \Xpressengine\XePlugin\XeroPay\Resources::makeDataTable();
     }
 

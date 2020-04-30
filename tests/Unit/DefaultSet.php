@@ -89,13 +89,13 @@ class DefaultSet extends \PHPUnit\Framework\TestCase
         DynamicModel::setKeyGen(new Keygen());
 
         \Illuminate\Support\Facades\Facade::setFacadeApplication($app);
-        \Xpressengine\Plugins\XeroCommerce\Plugin\Database::create();
+        // \Xpressengine\Plugins\XeroCommerce\Plugin\Database::create();
     }
 
     public function tearDown()
     {
         parent::tearDown();
-        \Xpressengine\Plugins\XeroCommerce\Plugin\Database::drop();
+        // \Xpressengine\Plugins\XeroCommerce\Plugin\Database::drop();
     }
 
     protected function makeProduct()

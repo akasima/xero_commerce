@@ -2,14 +2,10 @@
 
 namespace Xpressengine\Plugins\XeroCommerce;
 
-use Illuminate\Support\Facades\Artisan;
-use Route;
 use Xpressengine\Log\LogHandler;
 use Xpressengine\Plugin\AbstractPlugin;
 use Xpressengine\Plugins\XeroCommerce\Exceptions\XeroCommercePrefixUsedException;
 use Xpressengine\Plugins\XeroCommerce\Logger\XeroCommerceLogger;
-use Xpressengine\Plugins\XeroCommerce\Models\Shop;
-use Xpressengine\Plugins\XeroCommerce\Plugin\Database;
 use Xpressengine\Plugins\XeroCommerce\Plugin\EventManager;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
 
@@ -76,57 +72,13 @@ class Plugin extends AbstractPlugin
             abort(500, 'XE 배너플러그인을 필요로 합니다.');
         }
 
-        // 이미 설치된적이 있는 경우 에러를 방지하기 위해 Skip
-        if(Database::hasTables()){
-            Database::update();
-            return;
-        }
+        // migration을 이용하여 DB생성
+        \Artisan::call('plugin:migrate', array('plugin' => Plugin::getId(), '--force' => true));
 
-        Database::create();
-        Database::update();
-        Resources::storeDefaultDeliveryCompanySet();
-        Resources::storeDefaultShop();
-        $shop_name = Shop::first()->shop_name;
-        Resources::storeAgreement(
-            'contacts',
-            '주문자정보 수집 동의',
-            str_replace(
-                '<$company_name>',
-                $shop_name,
-                file_get_contents(self::path('assets/sample/privacy'))
-            )
-        );
-        Resources::storeAgreement(
-            'purchase',
-            '구매 동의',
-            str_replace(
-                '<$company_name>',
-                $shop_name,
-                file_get_contents(self::path('assets/sample/purchase'))
-            )
-        );
-        Resources::storeAgreement(
-            'privacy',
-            '개인정보 수집 및 이용동의',
-            str_replace(
-                '<$company_name>',
-                $shop_name,
-                file_get_contents(self::path('assets/sample/privacy'))
-            )
-        );
-        Resources::storeAgreement(
-            'thirdParty',
-            '개인정보 제3자 제공/위탁동의',
-            str_replace(
-                '<$company_name>',
-                $shop_name,
-                file_get_contents(self::path('assets/sample/thirdParty'))
-            )
-        );
-        Resources::setConfig();
-        Resources::defaultSitemapSetting();
+        // seed를 이용하여 기본데이터 생성
+        \Artisan::call('plugin:seed', array('plugin' => Plugin::getId(), '--force' => true));
 
-        Artisan::call('vendor:publish',[
+        \Artisan::call('vendor:publish',[
             '--provider'=>"Maatwebsite\Excel\ExcelServiceProvider"
         ]);
     }
@@ -149,7 +101,8 @@ class Plugin extends AbstractPlugin
      */
     public function update()
     {
-        Database::update();
+        // migration으로 DB 업데이트 적용
+        \Artisan::call('plugin:migrate', array('plugin' => Plugin::getId(), '--force' => true));
     }
 
     /**

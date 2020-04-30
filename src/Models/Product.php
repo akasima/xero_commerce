@@ -12,7 +12,6 @@ use Xpressengine\Plugins\XeroCommerce\Traits\CustomTableInheritanceTrait;
 use Xpressengine\Tag\Tag;
 use Xpressengine\Plugins\XeroCommerce\Models\Products\DigitalProduct;
 use Xpressengine\Plugins\XeroCommerce\Models\Products\TimeProduct;
-use Xpressengine\Plugins\XeroCommerce\Models\Products\BundleProduct;
 
 class Product extends SellType
 {
@@ -47,7 +46,7 @@ class Product extends SellType
 
     public static $singleTableName = '일반 상품';
 
-    protected static $singleTableSubclasses = [DigitalProduct::class, TimeProduct::class, BundleProduct::class];
+    protected static $singleTableSubclasses = [DigitalProduct::class, TimeProduct::class];
 
     /**
      * @return array
