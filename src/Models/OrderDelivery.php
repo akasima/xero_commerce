@@ -7,7 +7,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class OrderDelivery extends DynamicModel
 {
-    protected $table = 'xero_commerce_order_delivery';
+    protected $table = 'xero_commerce__order_deliveries';
 
     const READY = 0;
     const PROCESSING = 1;

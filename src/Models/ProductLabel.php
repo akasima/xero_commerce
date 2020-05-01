@@ -6,7 +6,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class ProductLabel extends DynamicModel
 {
-    protected $table = 'xero_commerce_product_label';
+    protected $table = 'xero_commerce__product_label';
 
     public $timestamps = false;
 

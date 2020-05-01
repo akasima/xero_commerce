@@ -8,7 +8,7 @@ class ProductRevision extends Product
     const UPDATED_AT = 'revision_updated_at';
     const DELETED_AT = 'revision_deleted_at';
 
-    protected $table = 'xero_commerce_products_revision';
+    protected $table = 'xero_commerce__product_revisions';
 
     protected $fillable = ['revision_no', 'shop_id', 'product_code', 'name', 'original_price', 'sell_price',
         'discount_percentage', 'min_buy_count', 'max_buy_count', 'description', 'badge_id','tax_type', 'state_display',

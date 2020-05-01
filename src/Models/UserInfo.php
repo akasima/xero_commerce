@@ -7,7 +7,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class UserInfo extends DynamicModel
 {
-    protected $table = 'xero_commerce_user';
+    protected $table = 'xero_commerce__userinfos';
 
     public $timestamps = false;
 

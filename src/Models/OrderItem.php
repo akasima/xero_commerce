@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 class OrderItem extends SellSet
 {
-    protected $table = 'xero_commerce_order_item';
+    protected $table = 'xero_commerce__order_items';
 
     const EXCHANGING = 1;
     const EXCHANGED = 2;

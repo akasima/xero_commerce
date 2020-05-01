@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    protected $table = 'xero_commerce_payment';
+    protected $table = 'xero_commerce__payments';
 
     const ORDERED = 1;
     const PAID = 2;

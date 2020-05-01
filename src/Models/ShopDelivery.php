@@ -6,7 +6,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class ShopDelivery extends DynamicModel
 {
-    protected $table='xero_commerce_shop_delivery';
+    protected $table='xero_commerce__shop_delivery_company';
 
     public function company()
     {

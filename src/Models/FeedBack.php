@@ -16,7 +16,7 @@ use Xpressengine\User\Rating;
 
 class FeedBack extends DynamicModel
 {
-    protected $table = 'xero_commerce_feedback';
+    protected $table = 'xero_commerce__feedbacks';
     protected $guarded=[];
 
     public function target ()

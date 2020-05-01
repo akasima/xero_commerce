@@ -13,8 +13,8 @@ class XeroCommerceCreateTables extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('xero_commerce_user')) {
-            Schema::create('xero_commerce_user', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__userinfos')) {
+            Schema::create('xero_commerce__userinfos', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('user_id', 36);
                 $table->string('name');
@@ -23,8 +23,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_user_delivery')) {
-            Schema::create('xero_commerce_user_delivery', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__user_delivery_addresses')) {
+            Schema::create('xero_commerce__user_delivery_addresses', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('user_id', 36);
                 $table->integer('seq');
@@ -38,8 +38,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_user_agreement')) {
-            Schema::create('xero_commerce_user_agreement', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__user_agreement')) {
+            Schema::create('xero_commerce__user_agreement', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('user_id', 36);
                 $table->integer('agreement_id');
@@ -47,8 +47,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_agreement')) {
-            Schema::create('xero_commerce_agreement', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__agreements')) {
+            Schema::create('xero_commerce__agreements', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('type');
                 $table->string('version');
@@ -58,8 +58,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_shop')) {
-            Schema::create('xero_commerce_shop', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__shops')) {
+            Schema::create('xero_commerce__shops', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('shop_name');
                 $table->string('shop_eng_name')->nullable();
@@ -74,16 +74,16 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_shop_user')) {
-            Schema::create('xero_commerce_shop_user', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__shop_user')) {
+            Schema::create('xero_commerce__shop_user', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('shop_id');
                 $table->string('user_id', 36);
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_shop_delivery')) {
-            Schema::create('xero_commerce_shop_delivery', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__shop_delivery_company')) {
+            Schema::create('xero_commerce__shop_delivery_company', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('shop_id');
                 $table->integer('delivery_company_id');
@@ -99,16 +99,16 @@ class XeroCommerceCreateTables extends Migration
         self::createProductTables();
         self::createProductOptionTables();
 
-        if (!Schema::hasTable('xero_commerce_images')) {
-            Schema::create('xero_commerce_images', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__images')) {
+            Schema::create('xero_commerce__images', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('image_id', 36);
                 $table->morphs('imagable');
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_product_slug')) {
-            Schema::create('xero_commerce_product_slug', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__product_slugs')) {
+            Schema::create('xero_commerce__product_slugs', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('target_id');
                 $table->string('slug');
@@ -116,16 +116,16 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_product_category')) {
-            Schema::create('xero_commerce_product_category', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__product_category')) {
+            Schema::create('xero_commerce__product_category', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_id');
                 $table->integer('category_id')->index();
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_label')) {
-            Schema::create('xero_commerce_label', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__labels')) {
+            Schema::create('xero_commerce__labels', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name');
                 $table->string('eng_name');
@@ -134,8 +134,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_badge')) {
-            Schema::create('xero_commerce_badge', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__badges')) {
+            Schema::create('xero_commerce__badges', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name');
                 $table->string('eng_name');
@@ -144,16 +144,16 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_product_label')) {
-            Schema::create('xero_commerce_product_label', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__product_label')) {
+            Schema::create('xero_commerce__product_label', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_id');
                 $table->integer('label_id')->index();
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_order')) {
-            Schema::create('xero_commerce_order', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__orders')) {
+            Schema::create('xero_commerce__orders', function (Blueprint $table) {
                 $table->string('id');
                 $table->string('order_no');
                 $table->string('user_id', 36);
@@ -163,8 +163,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_order_agreement')) {
-            Schema::create('xero_commerce_order_agreement', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__order_agreement')) {
+            Schema::create('xero_commerce__order_agreement', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('order_id');
                 $table->integer('agreement_id');
@@ -173,8 +173,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_qna')) {
-            Schema::create('xero_commerce_qna', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__qnas')) {
+            Schema::create('xero_commerce__qnas', function (Blueprint $table) {
                 $table->increments('id');
                 $table->morphs('type');
                 $table->string('title');
@@ -185,8 +185,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_feedback')) {
-            Schema::create('xero_commerce_feedback', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__feedbacks')) {
+            Schema::create('xero_commerce__feedbacks', function (Blueprint $table) {
                 $table->increments('id');
                 $table->morphs('type');
                 $table->string('title');
@@ -197,8 +197,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_cart')) {
-            Schema::create('xero_commerce_cart', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__carts')) {
+            Schema::create('xero_commerce__carts', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('user_id', 36);
                 $table->smallInteger('delivery_pay');
@@ -208,8 +208,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_wish')) {
-            Schema::create('xero_commerce_wish', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__wishes')) {
+            Schema::create('xero_commerce__wishes', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('user_id', 36);
                 $table->morphs('type');
@@ -217,8 +217,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_cart_group')) {
-            Schema::create('xero_commerce_cart_group', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__cart_group')) {
+            Schema::create('xero_commerce__cart_group', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('cart_id');
                 $table->morphs('unit');
@@ -227,8 +227,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_order_item')) {
-            Schema::create('xero_commerce_order_item', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__order_items')) {
+            Schema::create('xero_commerce__order_items', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('order_id');
                 $table->smallInteger('delivery_pay');
@@ -241,8 +241,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_order_item_group')) {
-            Schema::create('xero_commerce_order_item_group', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__order_item_group')) {
+            Schema::create('xero_commerce__order_item_group', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('order_item_id');
                 $table->morphs('unit');
@@ -251,8 +251,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_order_delivery')) {
-            Schema::create('xero_commerce_order_delivery', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__order_deliveries')) {
+            Schema::create('xero_commerce__order_deliveries', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('order_item_id');
                 $table->smallInteger('status');
@@ -269,8 +269,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_order_afterservice')) {
-            Schema::create('xero_commerce_order_afterservice', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__order_afterservices')) {
+            Schema::create('xero_commerce__order_afterservices', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('type');
                 $table->integer('order_item_id');
@@ -282,8 +282,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_delivery_company')) {
-            Schema::create('xero_commerce_delivery_company', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__delivery_companies')) {
+            Schema::create('xero_commerce__delivery_companies', function (Blueprint $table) {
                 $table->increments('id');
                 $table->smallInteger('type')->default(0);
                 $table->string('name');
@@ -293,8 +293,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_payment')) {
-            Schema::create('xero_commerce_payment', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__payments')) {
+            Schema::create('xero_commerce__payments', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('order_id');
                 $table->string('method');
@@ -309,8 +309,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_order_log')) {
-            Schema::create('xero_commerce_order_log', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__order_logs')) {
+            Schema::create('xero_commerce__order_logs', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('order_id');
                 $table->string('status');
@@ -320,8 +320,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_pay_log')) {
-            Schema::create('xero_commerce_pay_log', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__pay_logs')) {
+            Schema::create('xero_commerce__pay_logs', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('pay_id');
                 $table->string('status');
@@ -339,9 +339,9 @@ class XeroCommerceCreateTables extends Migration
      */
     private static function createProductTables()
     {
-        if (!Schema::hasTable('xero_commerce_products')) {
-            //상품 테이블 생성
-            Schema::create('xero_commerce_products', function (Blueprint $table) {
+        //상품 테이블 생성
+        if (!Schema::hasTable('xero_commerce__products')) {
+            Schema::create('xero_commerce__products', function (Blueprint $table) {
                 $table->increments('id');
                 $table = self::setProductTableColumns($table);
                 $table->softDeletes();
@@ -349,9 +349,9 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_products_revision')) {
-            //상품 Revision 테이블 생성
-            Schema::create('xero_commerce_products_revision', function (Blueprint $table) {
+        //상품 Revision 테이블 생성
+        if (!Schema::hasTable('xero_commerce__product_revisions')) {
+            Schema::create('xero_commerce__product_revisions', function (Blueprint $table) {
                 $table->increments('revision_id');
                 $table->integer('revision_no')->default(0);
                 $table->integer('id');
@@ -405,8 +405,8 @@ class XeroCommerceCreateTables extends Migration
     private static function createProductOptionTables()
     {
         // 상품옵션 테이블 추가
-        if (!Schema::hasTable('xero_commerce_product_option')) {
-            Schema::create('xero_commerce_product_option', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__product_options')) {
+            Schema::create('xero_commerce__product_options', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_id')->index();
                 $table->string('name');
@@ -417,8 +417,8 @@ class XeroCommerceCreateTables extends Migration
         }
 
         // 사용자의 입력을 받을 수 있는 커스텀옵션 테이블 추가
-        if (!Schema::hasTable('xero_commerce_product_custom_option')) {
-            Schema::create('xero_commerce_product_custom_option', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__product_custom_options')) {
+            Schema::create('xero_commerce__product_custom_options', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_id')->index();
                 $table->string('name');
@@ -431,22 +431,22 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_product_option_item')) {
-            Schema::create('xero_commerce_product_option_item', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__product_variations')) {
+            Schema::create('xero_commerce__product_variations', function (Blueprint $table) {
                 $table->increments('id');
-                $table = self::setProductOptionTableColumns($table);
+                $table = self::setProductVariationTableColumns($table);
                 $table->softDeletes();
                 $table->timestamps();
             });
         }
 
-        if (!Schema::hasTable('xero_commerce_product_option_item_revision')) {
-            Schema::create('xero_commerce_product_option_item_revision', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__product_variation_revisions')) {
+            Schema::create('xero_commerce__product_variation_revisions', function (Blueprint $table) {
                 $table->increments('revision_id');
                 $table->integer('revision_no')->default(0);
                 $table->integer('id');
 
-                $table = self::setProductOptionTableColumns($table);
+                $table = self::setProductVariationTableColumns($table);
 
                 //수정 전 option의 timestamp
                 $table->timestamp('origin_deleted_at')->nullable();
@@ -462,7 +462,7 @@ class XeroCommerceCreateTables extends Migration
         }
     }
 
-    private static function setProductOptionTableColumns($table)
+    private static function setProductVariationTableColumns($table)
     {
         $table->integer('product_id')->index();
         $table->string('name');
@@ -484,64 +484,64 @@ class XeroCommerceCreateTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('xero_commerce_user');
+        Schema::dropIfExists('xero_commerce__userinfos');
 
-        Schema::dropIfExists('xero_commerce_user_delivery');
+        Schema::dropIfExists('xero_commerce__user_delivery_addresses');
 
-        Schema::dropIfExists('xero_commerce_user_agreement');
+        Schema::dropIfExists('xero_commerce__user_agreement');
 
-        Schema::dropIfExists('xero_commerce_agreement');
+        Schema::dropIfExists('xero_commerce__agreements');
 
-        Schema::dropIfExists('xero_commerce_shop');
+        Schema::dropIfExists('xero_commerce__shops');
 
-        Schema::dropIfExists('xero_commerce_shop_user');
+        Schema::dropIfExists('xero_commerce__shop_user');
 
-        Schema::dropIfExists('xero_commerce_shop_delivery');
+        Schema::dropIfExists('xero_commerce__shop_delivery_company');
 
         self::dropIfExistsProductTables();
         self::dropIfExistsProductOptionTables();
 
-        Schema::dropIfExists('xero_commerce_images');
+        Schema::dropIfExists('xero_commerce__images');
 
-        Schema::dropIfExists('xero_commerce_product_slug');
+        Schema::dropIfExists('xero_commerce__product_slugs');
 
-        Schema::dropIfExists('xero_commerce_product_category');
+        Schema::dropIfExists('xero_commerce__product_category');
 
-        Schema::dropIfExists('xero_commerce_label');
+        Schema::dropIfExists('xero_commerce__labels');
 
-        Schema::dropIfExists('xero_commerce_badge');
+        Schema::dropIfExists('xero_commerce__badges');
 
-        Schema::dropIfExists('xero_commerce_product_label');
+        Schema::dropIfExists('xero_commerce__product_label');
 
-        Schema::dropIfExists('xero_commerce_order');
+        Schema::dropIfExists('xero_commerce__orders');
 
-        Schema::dropIfExists('xero_commerce_order_agreement');
+        Schema::dropIfExists('xero_commerce__order_agreement');
 
-        Schema::dropIfExists('xero_commerce_qna');
+        Schema::dropIfExists('xero_commerce__qnas');
 
-        Schema::dropIfExists('xero_commerce_feedback');
+        Schema::dropIfExists('xero_commerce__feedbacks');
 
-        Schema::dropIfExists('xero_commerce_cart');
+        Schema::dropIfExists('xero_commerce__carts');
 
-        Schema::dropIfExists('xero_commerce_wish');
+        Schema::dropIfExists('xero_commerce__wishes');
 
-        Schema::dropIfExists('xero_commerce_cart_group');
+        Schema::dropIfExists('xero_commerce__cart_group');
 
-        Schema::dropIfExists('xero_commerce_order_item');
+        Schema::dropIfExists('xero_commerce__order_items');
 
-        Schema::dropIfExists('xero_commerce_order_item_group');
+        Schema::dropIfExists('xero_commerce__order_item_group');
 
-        Schema::dropIfExists('xero_commerce_order_delivery');
+        Schema::dropIfExists('xero_commerce__order_deliveries');
 
-        Schema::dropIfExists('xero_commerce_order_afterservice');
+        Schema::dropIfExists('xero_commerce__order_afterservices');
 
-        Schema::dropIfExists('xero_commerce_delivery_company');
+        Schema::dropIfExists('xero_commerce__delivery_companies');
 
-        Schema::dropIfExists('xero_commerce_payment');
+        Schema::dropIfExists('xero_commerce__payments');
 
-        Schema::dropIfExists('xero_commerce_order_log');
+        Schema::dropIfExists('xero_commerce__order_logs');
 
-        Schema::dropIfExists('xero_commerce_pay_log');
+        Schema::dropIfExists('xero_commerce__pay_logs');
 
         \Xpressengine\XePlugin\XeroPay\Resources::deleteDataTable();
     }
@@ -552,21 +552,21 @@ class XeroCommerceCreateTables extends Migration
     private static function dropIfExistsProductTables()
     {
         //상품 테이블 생성
-        Schema::dropIfExists('xero_commerce_products');
+        Schema::dropIfExists('xero_commerce__products');
 
         //상품 Revision 테이블 생성
-        Schema::dropIfExists('xero_commerce_products_revision');
+        Schema::dropIfExists('xero_commerce__product_revisions');
     }
 
     private static function dropIfExistsProductOptionTables()
     {
-        Schema::dropIfExists('xero_commerce_product_option');
+        Schema::dropIfExists('xero_commerce__product_options');
 
-        Schema::dropIfExists('xero_commerce_product_custom_option');
+        Schema::dropIfExists('xero_commerce__product_custom_options');
 
-        Schema::dropIfExists('xero_commerce_product_option_item');
+        Schema::dropIfExists('xero_commerce__product_variants');
 
-        Schema::dropIfExists('xero_commerce_product_option_item_revision');
+        Schema::dropIfExists('xero_commerce__product_variant_revisions');
     }
 
 }

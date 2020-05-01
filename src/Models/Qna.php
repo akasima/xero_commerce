@@ -16,7 +16,7 @@ use Xpressengine\User\Rating;
 
 class Qna extends DynamicModel
 {
-    protected $table = 'xero_commerce_qna';
+    protected $table = 'xero_commerce__qnas';
     protected $guarded=[];
 
     public function target ()

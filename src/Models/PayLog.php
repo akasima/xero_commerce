@@ -12,5 +12,5 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class PayLog extends DynamicModel
 {
-    protected $table='xero_commerce_pay_log';
+    protected $table='xero_commerce__pay_logs';
 }

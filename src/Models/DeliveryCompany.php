@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeliveryCompany extends Model
 {
-    protected $table = 'xero_commerce_delivery_company';
+    protected $table = 'xero_commerce__delivery_companies';
 
     const TYPE = [
         '택배',

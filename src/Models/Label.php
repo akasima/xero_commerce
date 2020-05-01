@@ -6,7 +6,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class Label extends DynamicModel
 {
-    protected $table = 'xero_commerce_label';
+    protected $table = 'xero_commerce__labels';
 
     public $timestamps = false;
 
@@ -21,7 +21,7 @@ class Label extends DynamicModel
     {
         XeFrontend::html('label')->content('
             <style>
-                
+
             .xe-shop-tag {
                 display: inline-block;
                 padding: 2px 4px;
@@ -32,7 +32,7 @@ class Label extends DynamicModel
                 transform: translateY(-1px);
             }
             </style>
-        
+
         ')->load();
 
         $html = '<span class="xe-shop-tag" ';

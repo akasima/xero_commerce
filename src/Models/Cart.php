@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 class Cart extends SellSet
 {
-    protected $table = 'xero_commerce_cart';
+    protected $table = 'xero_commerce__carts';
 
     public function sellGroups()
     {

@@ -40,7 +40,7 @@ abstract class SellType extends DynamicModel
 
     public function images()
     {
-        return $this->morphToMany(\Xpressengine\Media\Models\Image::class, 'imagable', 'xero_commerce_images');
+        return $this->morphToMany(\Xpressengine\Media\Models\Image::class, 'imagable', (new Image)->getTable());
     }
 
     public function delivery()

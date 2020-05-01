@@ -7,7 +7,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class ProductCategory extends DynamicModel
 {
-    protected $table = 'xero_commerce_product_category';
+    protected $table = 'xero_commerce__product_category';
 
     public $timestamps = false;
 

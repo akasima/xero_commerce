@@ -6,7 +6,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class ProductSlug extends DynamicModel
 {
-    protected $table = 'xero_commerce_product_slug';
+    protected $table = 'xero_commerce__product_slugs';
 
     public $timestamps = false;
 

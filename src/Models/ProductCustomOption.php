@@ -12,7 +12,7 @@ class ProductCustomOption extends DynamicModel
 {
     use CustomTableInheritanceTrait;
 
-    protected $table = 'xero_commerce_product_custom_option';
+    protected $table = 'xero_commerce__product_custom_options';
 
     protected $fillable = [
         'product_id',

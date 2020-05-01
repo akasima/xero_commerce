@@ -6,7 +6,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class Image extends DynamicModel
 {
-    protected $table = 'xero_commerce_images';
+    protected $table = 'xero_commerce__images';
 
     public $timestamps = false;
 }

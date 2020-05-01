@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 class OrderItemGroup extends SellGroup
 {
-    protected $table = 'xero_commerce_order_item_group';
+    protected $table = 'xero_commerce__order_item_group';
 
     protected $casts = [
         'custom_values' => 'json'

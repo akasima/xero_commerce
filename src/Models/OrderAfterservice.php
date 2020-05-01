@@ -6,7 +6,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class OrderAfterservice extends DynamicModel
 {
-    protected $table = 'xero_commerce_order_afterservice';
+    protected $table = 'xero_commerce__order_afterservices';
 
     public $timestamps=false;
 

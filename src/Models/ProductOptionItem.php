@@ -16,7 +16,7 @@ class ProductOptionItem extends SellUnit
     const DEAL_PAUSE = 2;
     const DEAL_END = 3;
 
-    protected $table = 'xero_commerce_product_option_item';
+    protected $table = 'xero_commerce__product_variations';
 
     protected $fillable = ['product_id', 'name', 'combination_values', 'addition_price', 'stock', 'alert_stock',
         'state_display', 'state_deal'];

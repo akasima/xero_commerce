@@ -10,7 +10,7 @@ use Xpressengine\XePlugin\XeroPay\Payable;
 class Order extends DynamicModel
 {
     use Payable;
-    protected $table = 'xero_commerce_order';
+    protected $table = 'xero_commerce__orders';
     public $incrementing = false;
 
     const TEMP = 0;

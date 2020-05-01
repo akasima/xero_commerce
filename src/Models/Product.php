@@ -34,7 +34,7 @@ class Product extends SellType
     const OPTION_TYPE_COMBINATION_SPLIT = 1;  // 조합 분리 선택형
     const OPTION_TYPE_SIMPLE = 2;  // 단독형
 
-    protected $table = 'xero_commerce_products';
+    protected $table = 'xero_commerce__products';
 
     protected $fillable = ['shop_id', 'type', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
         'min_buy_count', 'max_buy_count', 'description', 'badge_id', 'tax_type', 'option_type', 'state_display',

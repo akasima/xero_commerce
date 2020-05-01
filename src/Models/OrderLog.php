@@ -13,5 +13,5 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class OrderLog extends DynamicModel
 {
-    protected $table='xero_commerce_order_log';
+    protected $table='xero_commerce__order_logs';
 }

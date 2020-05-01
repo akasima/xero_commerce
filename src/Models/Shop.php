@@ -20,7 +20,7 @@ class Shop extends DynamicModel
 
     const BASIC_SHOP_NAME = 'basic_shop';
 
-    protected $table = 'xero_commerce_shop';
+    protected $table = 'xero_commerce__shops';
 
     protected $fillable = ['shop_name', 'shop_eng_name', 'logo_path', 'background_path', 'shop_type',
         'state_approval', 'delivery_info', 'as_info'];
@@ -53,7 +53,7 @@ class Shop extends DynamicModel
     {
         return $this->belongsToMany(
             DeliveryCompany::class,
-            'xero_commerce_shop_delivery'
+            (new ShopDelivery)->getTable()
         )->withPivot(
             ['id', 'delivery_fare', 'up_to_free', 'addr', 'addr_detail', 'addr_post']
         );
@@ -67,7 +67,7 @@ class Shop extends DynamicModel
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'xero_commerce_shop_user');
+        return $this->belongsToMany(User::class, (new ShopUser)->getTable());
     }
 
     public function logo()

@@ -6,7 +6,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class Badge extends DynamicModel
 {
-    protected $table = 'xero_commerce_badge';
+    protected $table = 'xero_commerce__badges';
 
     public $timestamps = false;
 

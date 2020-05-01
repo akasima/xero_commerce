@@ -7,7 +7,7 @@ use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 
 class ProductOption extends DynamicModel
 {
-    protected $table = 'xero_commerce_product_option';
+    protected $table = 'xero_commerce__product_options';
 
     protected $fillable = [
         'product_id',
