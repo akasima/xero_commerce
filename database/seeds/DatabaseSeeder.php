@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         // 설치시 실패하면 모든 변경사항을 되돌림
         \XeDB::beginTransaction();
         try {
-            $this->call(DeliverySeeder::class);
+            $this->call(CarrierSeeder::class);
             $this->call(ShopSeeder::class);
             $this->call(ConfigSeeder::class);
             $this->call(ProductSeeder::class);

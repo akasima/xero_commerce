@@ -18,9 +18,9 @@ class UserInfo extends DynamicModel
         return self::where('user_id', $user_id)->first();
     }
 
-    public function userDelivery()
+    public function addresses()
     {
-        return $this->hasMany(UserDelivery::class, 'user_id', 'user_id');
+        return $this->hasMany(UserAddress::class, 'user_id', 'user_id');
     }
 
     public function getLevel()

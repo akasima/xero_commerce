@@ -16,7 +16,7 @@ class ValidateManager
         'sell_price' => 'required',
         'description' => 'required',
         'stock' => 'required',
-        'shop_delivery_id' => 'required'
+        'shop_carrier_id' => 'required'
     ];
 }
 
@@ -33,7 +33,7 @@ class ValidateManager
                 'sell_price.numeric'=>'판매 가격은 숫자로 입력해주세요.',
                 'description.required' => '상품소개는 필수입니다.',
                 'stock.required' => '기초재고는 필수입니다.',
-                'shop_delivery_id.required' => '배송사선택은 필수입니다.'
+                'shop_carrier_id.required' => '배송사선택은 필수입니다.'
             ]
         )->validate();
     }
@@ -44,7 +44,7 @@ class ValidateManager
             'shop_name' => 'required|max:255',
             'shop_eng_name' => 'required',
             'user_id' => 'required',
-            'delivery_info' => 'required',
+            'shipping_info' => 'required',
             'as_info' => 'required'
         ];
     }
@@ -58,7 +58,7 @@ class ValidateManager
                 'shop_name.required' => '이름 필드는 필수입니다.',
                 'shop_eng_name.required' => '영어 이름 필드는 필수입니다.',
                 'user_id.required' => '관리자 아이디는 적어도 하나가 필요합니다.',
-                'delivery_info.required' => '배송정보는 필수입니다.',
+                'shipping_info.required' => '배송정보는 필수입니다.',
                 'as_info' => '반품/교환정보는 필수입니다.'
             ]
         )->validate();

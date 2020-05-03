@@ -43,9 +43,9 @@ abstract class SellType extends DynamicModel
         return $this->morphToMany(\Xpressengine\Media\Models\Image::class, 'imagable', (new Image)->getTable());
     }
 
-    public function delivery()
+    public function shopCarrier()
     {
-        return $this->belongsTo(ShopDelivery::class, 'shop_delivery_id');
+        return $this->belongsTo(ShopCarrier::class, 'shop_carrier_id');
     }
 
     protected function visibleSellUnits()
@@ -65,7 +65,7 @@ abstract class SellType extends DynamicModel
             'data' => $this,
             'shop' => $this->getShop(),
             'optionItems' => $this->getAvailableOptionItems(),
-            'delivery' => $this->getDelivery(),
+            'shopCarrier' => $this->getShopCarrier(),
             'url' => $this->slugUrl()
         ];
     }
@@ -77,9 +77,9 @@ abstract class SellType extends DynamicModel
         });
     }
 
-    public function getDelivery()
+    public function getShopCarrier()
     {
-        return $this->delivery->load('company');
+        return $this->shopCarrier->load('carrier');
     }
 
     function getImages()
@@ -118,5 +118,5 @@ abstract class SellType extends DynamicModel
 
     abstract function renderForSellSet(SellSet $sellSet);
 
-    abstract function isDelivered();
+    abstract function isShipped();
 }

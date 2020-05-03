@@ -99,9 +99,9 @@
                         <tbody>
                         @foreach ($orders as $order)
                             @php
-                                $delivery = new stdClass();
-                                if($order->orderItems[0]->delivery) {
-                                    $delivery = $order->orderItems[0]->delivery;
+                                $shipment = new stdClass();
+                                if($order->orderItems[0]->shipment) {
+                                    $shipment = $order->orderItems[0]->shipment;
                                 }
                             @endphp
                             <tr>
@@ -111,10 +111,10 @@
                                 </td>
                                 <td class="nowrap">{{ $order->userInfo->name }}</td>
                                 <td class="nowrap">{{ $order->userInfo->phone }}</td>
-                                <td class="nowrap">{{ $delivery->recv_name }}</td>
-                                <td class="nowrap">{{ $delivery->ship_no }}</td>
-                                <td class="nowrap">{{ $delivery->company->name }}</td>
-                                <td class="nowrap">{{ $delivery->completed_at }}</td>
+                                <td class="nowrap">{{ $shipment->recv_name }}</td>
+                                <td class="nowrap">{{ $shipment->ship_no }}</td>
+                                <td class="nowrap">{{ $shipment->carrier->name }}</td>
+                                <td class="nowrap">{{ $shipment->completed_at }}</td>
                                 <td class="nowrap">
                                     {{
                                         number_format(

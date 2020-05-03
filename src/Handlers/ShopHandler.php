@@ -101,11 +101,11 @@ class ShopHandler
         Shop::where('id', $shopId)->delete();
     }
 
-    public function addDelivery(array $args, Shop $shop)
+    public function addCarrier(array $args, Shop $shop)
     {
-        if ($shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->exists()) {
-            $shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->updateExistingPivot($args['id'], [
-                'delivery_fare' => $args['pivot']['delivery_fare'],
+        if ($shop->carriers()->wherePivot('id', $args['pivot']['id'])->exists()) {
+            $shop->carriers()->wherePivot('id', $args['pivot']['id'])->updateExistingPivot($args['id'], [
+                'fare' => $args['pivot']['fare'],
                 'addr' => $args['pivot']['addr'],
                 'addr_detail' => $args['pivot']['addr_detail'],
                 'addr_post' => $args['pivot']['addr_post'],
@@ -113,8 +113,8 @@ class ShopHandler
                 'is_default' => 0
             ]);
         } else {
-            $shop->deliveryCompanys()->attach($args['id'], [
-                'delivery_fare' => $args['pivot']['delivery_fare'],
+            $shop->carriers()->attach($args['id'], [
+                'fare' => $args['pivot']['fare'],
                 'addr' => $args['pivot']['addr'],
                 'addr_detail' => $args['pivot']['addr_detail'],
                 'addr_post' => $args['pivot']['addr_post'],
@@ -124,8 +124,8 @@ class ShopHandler
         }
     }
 
-    public function removeDelivery(array $args, Shop $shop)
+    public function removeCarrier(array $args, Shop $shop)
     {
-        $shop->deliveryCompanys()->wherePivot('id', $args['pivot']['id'])->detach();
+        $shop->carriers()->wherePivot('id', $args['pivot']['id'])->detach();
     }
 }

@@ -39,7 +39,7 @@ class CartService
             return $this->cartHandler->makeCartGroup($sellType->sellUnits()->find($parm['unit']['id']), array_get($parm, 'custom_values', []), $parm['count']);
         });
 
-        return $this->cartHandler->addCart($sellType, $cartGroupList, $request->get('delivery'));
+        return $this->cartHandler->addCart($sellType, $cartGroupList, $request->get('shipment'));
     }
 
     public function draw(Cart $cart)

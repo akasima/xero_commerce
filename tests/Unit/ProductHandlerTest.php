@@ -51,7 +51,7 @@ class ProductHandlerTest extends DefaultSet
             'tax_type'=>1,
             'state_display'=>1,
             'state_deal'=>1,
-            'shop_delivery_id'=>1,
+            'shop_carrier_id'=>1,
             'images'=>[]
         ];
         $product = $handler->store($args);

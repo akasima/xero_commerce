@@ -7,7 +7,7 @@ use Xpressengine\Menu\Models\Menu;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\XeroCommerce\Components\Widget\MainSlider\MainSliderSkin;
 use Xpressengine\Plugins\XeroCommerce\Components\Widget\RecommendSlider\RecommendSliderSkin;
-use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class CleanerSeeder extends Seeder

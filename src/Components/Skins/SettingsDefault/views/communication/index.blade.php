@@ -1,4 +1,6 @@
-
+@php
+    $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\SettingsDefault\SettingsDefaultSkin::class;
+@endphp
 {{--<div class="xe-col-sm-12">--}}
     {{--<div class="panel">--}}
         {{--<div class="panel-body">--}}
@@ -30,7 +32,7 @@
                                 </td>
                             </tr>
                         @endif
-                        @include('xero_commerce::views.setting.communication.'.$type.'_row', compact('list'))
+                        @include($skin::view('communication.'.$type.'_row'), compact('list' , 'type'))
                     </tbody>
                 </table>
             </div>

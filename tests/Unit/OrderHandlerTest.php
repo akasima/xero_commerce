@@ -10,7 +10,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Test\Unit;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Query\Builder;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
-use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
@@ -65,7 +65,7 @@ class OrderHandlerTest extends DefaultSet
     {
         $orderHandler = new OrderHandler();
         $order = $this->testRegister();
-        $check = $orderHandler->deliveryCheck($order);
+        $check = $orderHandler->shipmentCheck($order);
         $this->assertNull($check);
     }
 
@@ -86,8 +86,8 @@ class OrderHandlerTest extends DefaultSet
         $this->makeShop();
         $cart = $cartHandler->addCart($product, $cartHandler->makeCartGroup(ProductOptionItem::first(), [], 2),'선불');
         $order = $orderHandler->register(collect([$cart]));
-        $order = $orderHandler->makeDelivery($order, [
-            'delivery' => [
+        $order = $orderHandler->makeShipment($order, [
+            'shipment' => [
                 'nickname'=>'test',
                 'name'=>'test',
                 'phone'=>'t010',
@@ -97,8 +97,8 @@ class OrderHandlerTest extends DefaultSet
                 'msg'=>'test'
             ]
         ]);
-        $delivery_count = $order->orderItems()->whereHas('delivery')->count();
-        $this->assertNotEquals(0, $delivery_count);
+        $shipment_count = $order->orderItems()->whereHas('shipment')->count();
+        $this->assertNotEquals(0, $shipment_count);
         return $order;
     }
 
@@ -117,10 +117,10 @@ class OrderHandlerTest extends DefaultSet
         $order = $this->testMakePayment();
         $order->orderItems()->each(function(OrderItem $orderItem){
             $sellType = $orderItem->sellType;
-            $sellType->delivery()->associate(DeliveryCompany::first());
+            $sellType->shipment()->associate(Carrier::first());
         });
         $order->orderItems->each(function(OrderItem $orderItem) use($handler){
-            $handler->completeDelivery($orderItem);
+            $handler->completeShipment($orderItem);
         });
         $order = $handler->update($order);
 

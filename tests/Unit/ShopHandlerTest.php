@@ -27,7 +27,7 @@ class ShopHandlerTest extends DefaultSet
             'shop_eng_name'=>'test',
             'shop_type'=>Shop::TYPE_INDIVIDUAL,
             'state_approval'=>Shop::APPROVAL_WAITING,
-            'delivery_info'=>'',
+            'shipping_info'=>'',
             'as_info'=>'',
             'user_id'=>Auth::id()
         ];

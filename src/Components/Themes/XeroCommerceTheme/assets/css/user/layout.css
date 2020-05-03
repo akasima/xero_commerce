@@ -7600,34 +7600,34 @@ header.header {
   font-style: normal;
 }
 
-.view-header .box-delivery {
+.view-header .box-shipment {
   margin: 0 0 24px 0;
   padding-bottom: 24px;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
-.view-header .list-delivery {
+.view-header .list-shipment {
   display: flex;
   margin: 0;
 }
 
-.view-header .list-delivery dt,
-.view-header .list-delivery dd {
+.view-header .list-shipment dt,
+.view-header .list-shipment dd {
   margin: 0;
   font-size: 14px;
   line-height: 34px;
   text-transform:uppercase;
 }
 
-.view-header .list-delivery dt {
+.view-header .list-shipment dt {
   width: 100px;
 }
 
-.view-header .list-delivery dd {
+.view-header .list-shipment dd {
   display: flex;
 }
 
-.view-header .list-delivery dd .xe-label {
+.view-header .list-shipment dd .xe-label {
   margin-right: 16px;
 }
 

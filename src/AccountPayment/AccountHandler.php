@@ -86,6 +86,6 @@ class AccountHandler implements PaymentHandler
      */
     public function cancel(Payment $payment, $reason)
     {
-        return '';
+        return new AccountResponse(request());
     }
 }

@@ -1,7 +1,7 @@
 @php
-    $delivery = new stdClass();
-    if($order->orderItems[0]->delivery) {
-        $delivery = $order->orderItems[0]->delivery;
+    $shipment = new stdClass();
+    if($order->orderItems[0]->shipment) {
+        $shipment = $order->orderItems[0]->shipment;
     }
 @endphp
 
@@ -35,15 +35,15 @@
                             <th>주문자전화</th>
                             <td>{{ $order->userInfo->phone }}</td>
                             <th>받는사람</th>
-                            <td>{{ $delivery->recv_name }}</td>
+                            <td>{{ $shipment->recv_name }}</td>
                         </tr>
                         <tr>
                             <th>송장번호</th>
-                            <td>{{ $delivery->ship_no }}</td>
+                            <td>{{ $shipment->ship_no }}</td>
                             <th>배송회사</th>
-                            <td>{{ $delivery->company->name }}</td>
+                            <td>{{ $shipment->carrier->name }}</td>
                             <th>배송일시</th>
-                            <td>{{ $delivery->completed_at }}</td>
+                            <td>{{ $shipment->completed_at }}</td>
                         </tr>
                         <tr>
                             <th>주문금액</th>

@@ -34,12 +34,12 @@ class CartHandler extends SellSetHandler
         return Cart::where('user_id', $user_id)->latest();
     }
 
-    public function addCart(SellType $sellType, $cartGroupList, $delivery)
+    public function addCart(SellType $sellType, $cartGroupList, $shipment)
     {
         $cart = new Cart();
 
         $cart->user_id = Auth::id() ?: \request()->ip();
-        $cart->delivery_pay = Cart::DELIVERY[$delivery];
+        $cart->shipping_fee = Cart::SHIPPING_FEE_TYPE[$shipment];
         $sellType->carts()->save($cart);
         $cart->save();
         $cartGroupList->each(function (CartGroup $cartGroup) use ($cart) {
@@ -84,10 +84,10 @@ class CartHandler extends SellSetHandler
         return $cartGroup;
     }
 
-    public function changeCartItem(Cart $cart, $cartGroupList, $delivery)
+    public function changeCartItem(Cart $cart, $cartGroupList, $shipment)
     {
         $cart->sellGroups()->delete();
-        $cart->delivery_pay = Cart::DELIVERY[$delivery];
+        $cart->shipping_fee = Cart::SHIPPING_FEE_TYPE[$shipment];
 
         $cartGroupList->each(function (CartGroup $cartGroup) use ($cart) {
             $cart->addGroup($cartGroup);

@@ -45,7 +45,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\XeroCommerceImageHandler;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
 use Xpressengine\Plugins\XeroCommerce\Models\Agreement;
 use Xpressengine\Plugins\XeroCommerce\Models\Badge;
-use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
@@ -277,14 +277,14 @@ class Resources
                 'as' => 'xero_commerce::agreement.order.cancel'
             ]);
 
-            Route::get('/no-delivery', [
-                'as' => 'xero_commerce::no-delivery',
-                'uses' => 'DeliveryController@index'
+            Route::get('/no-shipment', [
+                'as' => 'xero_commerce::no-shipment',
+                'uses' => 'ShipmentController@index'
             ]);
 
-            Route::post('/delivery/store', [
-                'as' => 'xero_commerce::delivery.store',
-                'uses' => 'DeliveryController@store'
+            Route::post('/shipment/store', [
+                'as' => 'xero_commerce::shipment.store',
+                'uses' => 'ShipmentController@store'
             ]);
 
             Route::get('/{strSlug}', [
@@ -446,38 +446,38 @@ class Resources
                         'settings_menu' => 'xero_commerce.order.dash',
                         'permission' => 'xero_commerce'
                     ]);
-                    Route::get('/delivery', [
-                        'as' => 'xero_commerce::setting.order.delivery',
-                        'uses' => 'OrderController@delivery',
-                        'settings_menu' => 'xero_commerce.order.delivery',
+                    Route::get('/shipment', [
+                        'as' => 'xero_commerce::setting.order.shipment',
+                        'uses' => 'OrderController@shipment',
+                        'settings_menu' => 'xero_commerce.order.shipment',
                         'permission' => 'xero_commerce'
                     ]);
-                    Route::get('/delivery/excel', [
-                        'as' => 'xero_commerce::setting.order.delivery.exel',
-                        'uses' => 'OrderController@deliveryExcelExport'
+                    Route::get('/shipment/excel', [
+                        'as' => 'xero_commerce::setting.order.shipment.exel',
+                        'uses' => 'OrderController@shipmentExcelExport'
                     ]);
-                    Route::post('/delivery/excel', [
-                        'as' => 'xero_commerce::setting.order.delivery.exel',
-                        'uses' => 'OrderController@deliveryExcelImport'
+                    Route::post('/shipment/excel', [
+                        'as' => 'xero_commerce::setting.order.shipment.exel',
+                        'uses' => 'OrderController@shipmentExcelImport'
                     ]);
 					//02.06 추가
-					     Route::get('/delivery/excel1', [
-                        'as' => 'xero_commerce::setting.order.delivery.exel',
+					     Route::get('/shipment/excel1', [
+                        'as' => 'xero_commerce::setting.order.shipment.exel',
                         'uses' => 'OrderController@OrderCheckExcelExport'
                     ]);
-                    Route::post('/delivery/excel1', [
-                        'as' => 'xero_commerce::setting.order.delivery.exel',
+                    Route::post('/shipment/excel1', [
+                        'as' => 'xero_commerce::setting.order.shipment.exel',
                         'uses' => 'OrderController@OrderCheckExcelExport'
                     ]);
 					//여기까지
-                    Route::post('/delivery', [
-                        'as' => 'xero_commerce::process.order.delivery',
-                        'uses' => 'OrderController@processDelivery',
+                    Route::post('/shipment', [
+                        'as' => 'xero_commerce::process.order.shipment',
+                        'uses' => 'OrderController@processShipment',
                         'permission' => 'xero_commerce'
                     ]);
-                    Route::post('/delivery/complete', [
-                        'as' => 'xero_commerce::complete.order.delivery',
-                        'uses' => 'OrderController@completeDelivery',
+                    Route::post('/shipment/complete', [
+                        'as' => 'xero_commerce::complete.order.shipment',
+                        'uses' => 'OrderController@completeShipment',
                         'permission' => 'xero_commerce'
                     ]);
 
@@ -554,19 +554,19 @@ class Resources
                         'as' => 'xero_commerce::setting.search.user'
                     ]);
 
-                    Route::get('/shop/delivery/{shop}', [
-                        'as' => 'xero_commerce::setting.config.shop.delivery',
-                        'uses' => 'ShopController@getDeliverys'
+                    Route::get('/shops/{shop}/carriers', [
+                        'as' => 'xero_commerce::setting.config.shop.carrier',
+                        'uses' => 'ShopController@getCarriers'
                     ]);
 
-                    Route::post('/shop/delivery/add/{shop}', [
-                        'as' => 'xero_commerce::setting.config.shop.add.delivery',
-                        'uses' => 'ShopController@addDeliverys'
+                    Route::post('/shops/{shop}/carriers/add', [
+                        'as' => 'xero_commerce::setting.config.shop.add.carrier',
+                        'uses' => 'ShopController@addCarrier'
                     ]);
 
-                    Route::post('/shop/delivery/remove/{shop}', [
-                        'as' => 'xero_commerce::setting.config.shop.remove.delivery',
-                        'uses' => 'ShopController@removeDeliverys'
+                    Route::post('/shops/{shop}/carriers/remove', [
+                        'as' => 'xero_commerce::setting.config.shop.remove.carrier',
+                        'uses' => 'ShopController@removeCarrier'
                     ]);
                 });
             });
@@ -869,7 +869,7 @@ class Resources
                 'description' => '',
                 'ordering' => 100022
             ],
-            'xero_commerce.order.delivery' => [
+            'xero_commerce.order.shipment' => [
                 'title' => '주문 배송처리',
                 'display' => true,
                 'description' => '',

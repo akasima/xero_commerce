@@ -23,7 +23,7 @@ class Shop extends DynamicModel
     protected $table = 'xero_commerce__shops';
 
     protected $fillable = ['shop_name', 'shop_eng_name', 'logo_path', 'background_path', 'shop_type',
-        'state_approval', 'delivery_info', 'as_info'];
+        'state_approval', 'shipping_info', 'as_info'];
 
     /**
      * @return array
@@ -49,20 +49,20 @@ class Shop extends DynamicModel
         }
     }
 
-    public function deliveryCompanys()
+    public function carriers()
     {
         return $this->belongsToMany(
-            DeliveryCompany::class,
-            (new ShopDelivery)->getTable()
+            Carrier::class,
+            (new ShopCarrier)->getTable()
         )->withPivot(
-            ['id', 'delivery_fare', 'up_to_free', 'addr', 'addr_detail', 'addr_post']
+            ['id', 'fare', 'up_to_free', 'addr', 'addr_detail', 'addr_post']
         );
     }
 
-    public function getDefaultDeliveryCompany()
+    public function getDefaultCarrier()
     {
-        $default = $this->deliveryCompanys()->where('is_default', 1)->first();
-        return $default?:$this->deliveryCompanys()->first();
+        $default = $this->carriers()->where('is_default', 1)->first();
+        return $default?:$this->carriers()->first();
     }
 
     public function users()

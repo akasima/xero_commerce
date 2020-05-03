@@ -64,7 +64,7 @@
                             이름
                         </div>
                         <div class="table-cell">
-                            {{delivery.recv_name}}
+                            {{shipment.recv_name}}
                         </div>
                     </div>
                     <div class="table-row">
@@ -72,7 +72,7 @@
                             연락처
                         </div>
                         <div class="table-cell">
-                            {{delivery.recv_phone}}
+                            {{shipment.recv_phone}}
                         </div>
                     </div>
                     <div class="table-row">
@@ -80,7 +80,7 @@
                             주소
                         </div>
                         <div class="table-cell">
-                            ({{delivery.recv_addr_post}}) {{delivery.recv_addr + delivery.recv_addr_detail}}
+                            ({{shipment.recv_addr_post}}) {{shipment.recv_addr + shipment.recv_addr_detail}}
                         </div>
                     </div>
                     <div class="table-row">
@@ -88,7 +88,7 @@
                             배송 메세지
                         </div>
                         <div class="table-cell">
-                            {{delivery.recv_msg}}
+                            {{shipment.recv_msg}}
                         </div>
                     </div>
                 </div><!-- //table-type -->
@@ -111,7 +111,7 @@
         },
         data() {
             return {
-                delivery: {
+                shipment: {
                     recv_name: null,
                     recv_phone: null,
                     recv_addr: null,
@@ -127,7 +127,7 @@
             }
         },
         mounted() {
-            this.delivery = this.order.orderItems[0].delivery
+            this.shipment = this.order.orderItems[0].shipment
         }
     }
 </script>

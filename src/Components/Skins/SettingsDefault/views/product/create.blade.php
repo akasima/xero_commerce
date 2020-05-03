@@ -125,17 +125,17 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-3">배송사</label>
                             <div class="col-sm-8">
-                                <select name="shop_delivery_id" class="form-control" data-valid-name="배송사">
+                                <select name="shop_carrier_id" class="form-control" data-valid-name="배송사">
                                     @php
                                         //TODO 입점몰이 여러개일 때 처리
-                                        $deliverys = $shops[0]->deliveryCompanys;
+                                        $carriers = $shops[0]->carriers;
                                     @endphp
                                     <option value="">선택</option>
-                                    @foreach($deliverys as $delivery)
-                                        @if(Request::old('shop_delivery_id'))
-                                        <option value="{{$delivery->pivot->id}}" @if (Request::old('shop_delivery_id') == $delivery->pivot->id) selected @endif>{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
+                                    @foreach($carriers as $carrier)
+                                        @if(Request::old('shop_carrier_id'))
+                                        <option value="{{$carrier->pivot->id}}" @if (Request::old('shop_carrier_id') == $carrier->pivot->id) selected @endif>{{$carrier->name}}({{number_format($carrier->pivot->fare)}})</option>
                                         @else
-                                        <option value="{{$delivery->pivot->id}}" @if (array_first($deliverys)->id == $delivery->id) selected @endif>{{$delivery->name}}({{number_format($delivery->pivot->delivery_fare)}})</option>
+                                        <option value="{{$carrier->pivot->id}}" @if (array_first($carriers)->id == $carrier->id) selected @endif>{{$carrier->name}}({{number_format($carrier->pivot->fare)}})</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -376,13 +376,13 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 <script>
     $(function () {
         $("[name=shop_id]").change(function () {
-            $("[name=shop_delivery_id]").val("");
-            $("[name=shop_delivery_id] option").not(':selected').remove();
+            $("[name=shop_carrier_id]").val("");
+            $("[name=shop_carrier_id] option").not(':selected').remove();
             $.ajax({
-                url: '{{route('xero_commerce::setting.config.shop.delivery',['shop'=>''])}}/' + $("[name=shop_id]").val(),
+                url: '{{route('xero_commerce::setting.config.shop.carrier',['shop'=>''])}}/' + $("[name=shop_id]").val(),
             }).done(function (res) {
                 $.each(res, function(k,v) {
-                    $("[name=shop_delivery_id]").append('<option value="' + v.pivot.id + '">' + v.name + '(' + Number(v.pivot.delivery_fare).toLocaleString() + ')</option>');
+                    $("[name=shop_carrier_id]").append('<option value="' + v.pivot.id + '">' + v.name + '(' + Number(v.pivot.fare).toLocaleString() + ')</option>');
                 })
             }).fail(function (res)  {
 

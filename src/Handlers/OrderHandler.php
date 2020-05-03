@@ -5,15 +5,15 @@ namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\CartGroup;
-use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderAfterservice;
-use Xpressengine\Plugins\XeroCommerce\Models\OrderDelivery;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderShipment;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItemGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\Payment;
 use Xpressengine\Plugins\XeroCommerce\Models\SellGroup;
-use Xpressengine\Plugins\XeroCommerce\Models\UserDelivery;
+use Xpressengine\Plugins\XeroCommerce\Models\UserAddress;
 
 class OrderHandler extends SellSetHandler
 {
@@ -57,7 +57,7 @@ class OrderHandler extends SellSetHandler
             $orderItem = new OrderItem();
 
             $orderItem->order_id = $order->id;
-            $orderItem->delivery_pay = $cart->delivery_pay;
+            $orderItem->shipping_fee = $cart->shipping_fee;
             $orderItem->sellType()->associate($cart->forcedSellType());
             $orderItem->original_price = $orderItem->getOriginalPrice();
             $orderItem->sell_price = $orderItem->getSellPrice();
@@ -88,15 +88,15 @@ class OrderHandler extends SellSetHandler
         $code = Order::TEMP;
 
         $paidCheck = $this->paidCheck($order);
-        $deliveryCheck = $this->deliveryCheck($order);
+        $shipmentCheck = $this->shipmentCheck($order);
         $ASCheck = $this->afterServiceCheck($order);
 
         if ($paidCheck) {
             $code = $paidCheck;
         }
 
-        if (!is_null($deliveryCheck)) {
-            $code = $deliveryCheck;
+        if (!is_null($shipmentCheck)) {
+            $code = $shipmentCheck;
         }
 
         if (!is_null($ASCheck)) {
@@ -124,21 +124,21 @@ class OrderHandler extends SellSetHandler
         }
     }
 
-    public function deliveryCheck(Order $order)
+    public function shipmentCheck(Order $order)
     {
-        $hasProcessingDelivery = $order->orderItems()->whereHas('delivery', function ($query) {
-            $query->where('status', OrderDelivery::PROCESSING);
+        $hasProcessingShipment = $order->orderItems()->whereHas('shipment', function ($query) {
+            $query->where('status', OrderShipment::PROCESSING);
         })->exists();
 
-        $hasDoneDelivery = $order->orderItems()->whereHas('delivery', function ($query) {
-            $query->where('status', OrderDelivery::DONE);
+        $hasDoneShipment = $order->orderItems()->whereHas('shipment', function ($query) {
+            $query->where('status', OrderShipment::DONE);
         })->exists();
 
-        if ($hasProcessingDelivery) {
+        if ($hasProcessingShipment) {
             return Order::DELIVER;
         }
 
-        if ($hasDoneDelivery) {
+        if ($hasDoneShipment) {
             return Order::COMPLETE;
         }
     }
@@ -194,12 +194,12 @@ class OrderHandler extends SellSetHandler
                 ->when(!is_null($condition), function ($query) use ($condition) {
                     $query->where($condition);
                 })
-                ->with('orderItems.delivery.company', 'orderItems.order.orderItems.sellGroups.sellSet')
+                ->with('orderItems.shipment.carrier', 'orderItems.order.orderItems.sellGroups.sellSet')
                 ->latest()->get()->pluck('orderItems')->flatten();
         } else {
             $orderItems = $order->orderItems()->when(!is_null($condition), function ($query) use ($condition) {
                 $query->where($condition);
-            })->with('delivery.company', 'order.orderItems.sellGroups.sellSet')->latest()->get();
+            })->with('shipment.carrier', 'order.orderItems.sellGroups.sellSet')->latest()->get();
         }
 
         return $orderItems->map(function (OrderItem $orderItem) {
@@ -240,55 +240,55 @@ class OrderHandler extends SellSetHandler
         $this->update($order);
     }
 
-    public function addUserDelivery($args)
+    public function addUserAddress($args)
     {
-        $del = $args;
-        $del['user_id'] = Auth::id();
-        $del['seq'] = UserDelivery::where('user_id', Auth::id())->count() + 1;
+        $addr = $args;
+        $addr['user_id'] = Auth::id();
+        $addr['seq'] = UserAddress::where('user_id', Auth::id())->count() + 1;
 
-        $item = UserDelivery::updateOrCreate(
+        $item = UserAddress::updateOrCreate(
             ['nickname' => $args['nickname']],
-            $del
+            $addr
         );
 
         return $item;
     }
 
-    public function makeDelivery(Order $order, $args)
+    public function makeShipment(Order $order, $args)
     {
-        if (isset($args['delivery']['nickname'])) {
-            $this->addUserDelivery($args['delivery']);
+        if (isset($args['shipment']['nickname'])) {
+            $this->addUserAddress($args['shipment']);
         }
 
         $order->orderItems->each(function (OrderItem $orderItem) use ($args) {
-            if($orderItem->sellType->isDelivered()){
+            if($orderItem->sellType->isShipped()){
                 // 픽업배송일때는 배송주소를 읽어와서 입력
-                $shopDelivery = $orderItem->sellType->getDelivery();
-                if($shopDelivery->company->type == DeliveryCompany::TAKE) {
-                    $delivery = new OrderDelivery();
-                    $delivery->order_item_id = $orderItem->id;
-                    $delivery->ship_no = '';
-                    $delivery->status = OrderDelivery::READY;
-                    $delivery->company_id = $shopDelivery->company->id;
-                    $delivery->recv_name = $args['delivery']['name'];
-                    $delivery->recv_phone = $args['delivery']['phone'];
-                    $delivery->recv_addr = $shopDelivery->addr;
-                    $delivery->recv_addr_detail = $shopDelivery->addr_detail;
-                    $delivery->recv_addr_post = $shopDelivery->addr_post;
-                    $delivery->save();
+                $shopCarrier = $orderItem->sellType->getShopCarrier();
+                if($shopCarrier->carrier->type == Carrier::TAKE) {
+                    $shipment = new OrderShipment();
+                    $shipment->order_item_id = $orderItem->id;
+                    $shipment->ship_no = '';
+                    $shipment->status = OrderShipment::READY;
+                    $shipment->carrier_id = $shopCarrier->carrier->id;
+                    $shipment->recv_name = $args['shipment']['name'];
+                    $shipment->recv_phone = $args['shipment']['phone'];
+                    $shipment->recv_addr = $shopCarrier->addr;
+                    $shipment->recv_addr_detail = $shopCarrier->addr_detail;
+                    $shipment->recv_addr_post = $shopCarrier->addr_post;
+                    $shipment->save();
                 } else {
-                    $delivery = new OrderDelivery();
-                    $delivery->order_item_id = $orderItem->id;
-                    $delivery->ship_no = '';
-                    $delivery->status = OrderDelivery::READY;
-                    $delivery->company_id = $shopDelivery->company->id;
-                    $delivery->recv_name = $args['delivery']['name'];
-                    $delivery->recv_phone = $args['delivery']['phone'];
-                    $delivery->recv_addr = $args['delivery']['addr'] ?: '';
-                    $delivery->recv_addr_detail = $args['delivery']['addr_detail'];
-                    $delivery->recv_addr_post = $args['delivery']['addr_post'];
-                    $delivery->recv_msg = $args['delivery']['msg'];
-                    $delivery->save();
+                    $shipment = new OrderShipment();
+                    $shipment->order_item_id = $orderItem->id;
+                    $shipment->ship_no = '';
+                    $shipment->status = OrderShipment::READY;
+                    $shipment->carrier_id = $shopCarrier->carrier->id;
+                    $shipment->recv_name = $args['shipment']['name'];
+                    $shipment->recv_phone = $args['shipment']['phone'];
+                    $shipment->recv_addr = $args['shipment']['addr'] ?: '';
+                    $shipment->recv_addr_detail = $args['shipment']['addr_detail'];
+                    $shipment->recv_addr_post = $args['shipment']['addr_post'];
+                    $shipment->recv_msg = $args['shipment']['msg'];
+                    $shipment->save();
                 }
             }
         });
@@ -338,26 +338,26 @@ class OrderHandler extends SellSetHandler
             })
             // 클로저를 사용할 수 있도록 구현
             ->when(!is_null($condition) && $condition instanceof \Closure, $condition)
-            ->with('orderItems.delivery', 'payment', 'userInfo')
+            ->with('orderItems.shipment', 'payment', 'userInfo')
             ->latest()
             ->paginate($count, ['*'], '', $page);
     }
 
     public function shipNoRegister(OrderItem $orderItem, $ship_no)
     {
-        $delivery = $orderItem->delivery;
+        $shipment = $orderItem->shipment;
         $order = $orderItem->order;
 
-        $delivery->setShipNo($ship_no);
+        $shipment->setShipNo($ship_no);
 
         return $this->update($order);
     }
 
-    public function completeDelivery(OrderItem $orderItem)
+    public function completeShipment(OrderItem $orderItem)
     {
-        $delivery = $orderItem->delivery;
+        $shipment = $orderItem->shipment;
         $order = $orderItem->order;
-        $delivery->complete();
+        $shipment->complete();
 
         $this->update($order);
     }
@@ -378,7 +378,7 @@ class OrderHandler extends SellSetHandler
         $oa->order_item_id = $orderItem->id;
         $oa->type = $type;
         $oa->reason = $request->reason;
-        $oa->delivery_company_id = $request->delivery;
+        $oa->carrier_id = $request->shipment;
         $oa->ship_no = $request->ship_no;
         $oa->received = false;
         $oa->complete = false;
@@ -396,7 +396,7 @@ class OrderHandler extends SellSetHandler
             $oa->order_item_id = $orderItem->id;
             $oa->type = "취소";
             $oa->reason = $reason;
-            $oa->delivery_company_id = 0;
+            $oa->carrier_id = 0;
             $oa->ship_no = "";
             $oa->received = false;
             $oa->complete = false;

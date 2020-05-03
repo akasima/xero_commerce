@@ -28,7 +28,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                             <dt>할인가</dt>
                             <dd>{{number_format($product->sell_price)}}<i>원</i></dd>
                         </dl>
-                        @include($skin::view('product.object.delivery'),['delivery'=>$product->getDelivery()])
+                        @include($skin::view('product.object.shipment'),['shopCarrier'=>$product->getShopCarrier()])
                         @include($skin::view('product.object.option'),[
                             'optionType'=>$product->option_type,
                             'options'=>$product->getAvailableOptions(),
@@ -104,8 +104,8 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
         choose: function () {
             return JSON.parse($("[name=choose]").val());
         },
-        delivery: function () {
-            return $("[name=delivery]").val();
+        shipment: function () {
+            return $("[name=shipment]").val();
         },
         count: function () {
             return Number(this.choose().map(function(v){
@@ -122,7 +122,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                 url: "{{route('xero_commerce::product.cart', ['product'=> $product])}}",
                 data: {
                     options: this.choose(),
-                    delivery: this.delivery(),
+                    shipment: this.shipment(),
                     _token: "{{csrf_token()}}"
                 },
                 method: 'post'

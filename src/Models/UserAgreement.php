@@ -6,7 +6,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 class UserAgreement extends DynamicModel
 {
-    protected $table = 'xero_commerce__user_agreements';
+    protected $table = 'xero_commerce__user_agreement';
 
     public function agreement()
     {

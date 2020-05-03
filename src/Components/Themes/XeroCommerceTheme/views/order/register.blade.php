@@ -66,7 +66,7 @@
                 <table class="xe-table">
                     <tr>
                         <th>배송지 선택</th>
-                        <td><input type="checkbox" name="delivery_option" value="default" checked="checked"> 기본 배송지 <input type="checkbox" name="delivery_option" value="new"> 신규 배송지</td>
+                        <td><input type="checkbox" name="shipment_option" value="default" checked="checked"> 기본 배송지 <input type="checkbox" name="shipment_option" value="new"> 신규 배송지</td>
                     </tr>
                     <tr>
                         <th>이름</th>

@@ -118,15 +118,15 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group">
                             <label class ="control-label col-sm-2">배송사</label>
                             <div class="col-sm-9">
-                                <select name="shop_delivery_id" class="form-control" data-valid-name="배송사">
+                                <select name="shop_carrier_id" class="form-control" data-valid-name="배송사">
                                     @php
-                                        $deliverys = $product->shop->deliveryCompanys;
+                                        $carriers = $product->shop->carriers;
                                     @endphp
                                     <option value="">선택</option>
-                                    @foreach($deliverys as $delivery)
-                                        <option @if($product->shop_delivery_id==$delivery->pivot->id) selected
-                                                @endif value="{{$delivery->pivot->id}}">{{$delivery->name}}
-                                            ({{number_format($delivery->pivot->delivery_fare)}})
+                                    @foreach($carriers as $carrier)
+                                        <option @if($product->shop_carrier_id==$carrier->pivot->id) selected
+                                                @endif value="{{$carrier->pivot->id}}">{{$carrier->name}}
+                                            ({{number_format($carrier->pivot->fare)}})
                                         </option>
                                     @endforeach
                                 </select>
@@ -376,13 +376,13 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 <script>
     $(function () {
         $("[name=shop_id]").change(function () {
-            $("[name=delivery_id]").val("");
-            $("[name=delivery_id] option").not(':selected').remove();
+            $("[name=carrier_id]").val("");
+            $("[name=carrier_id] option").not(':selected').remove();
             $.ajax({
-                url: '{{route('xero_commerce::setting.config.shop.delivery',['shop'=>''])}}/' + $("[name=shop_id]").val(),
+                url: '{{route('xero_commerce::setting.config.shop.carrier',['shop'=>''])}}/' + $("[name=shop_id]").val(),
             }).done(function(res) {
                 $.each(res, function (k, v){
-                    $("[name=delivery_id]").append('<option value="' + v.pivot.id + '">' + v.name + '(' + Number(v.pivot.delivery_fare).toLocaleString() + ')</option>');
+                    $("[name=carrier_id]").append('<option value="' + v.pivot.id + '">' + v.name + '(' + Number(v.pivot.fare).toLocaleString() + ')</option>');
                 })
             }).fail(function(res) {
 

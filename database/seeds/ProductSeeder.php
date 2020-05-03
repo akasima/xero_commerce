@@ -77,7 +77,7 @@ class ProductSeeder extends Seeder
             $product->tax_type = rand(Product::TAX_TYPE_TAX, Product::TAX_TYPE_FREE);
             $product->state_display = Product::DISPLAY_VISIBLE;
             $product->state_deal = Product::DEAL_ON_SALE;
-            $product->shop_delivery_id = Shop::find($product->shop_id)->deliveryCompanys()->first()->pivot->id;
+            $product->shop_carrier_id = Shop::find($product->shop_id)->carriers()->first()->pivot->id;
             $product->save();
 
             if (Product::count() == 4) {

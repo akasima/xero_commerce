@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
-use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Services\AgreementService;
@@ -141,7 +141,7 @@ class OrderController extends XeroCommerceBasicController
                 'type' => $type,
                 'order' => $order,
                 'item' => $orderItem->getJsonFormat(),
-                'company' => DeliveryCompany::get(),
+                'company' => Carrier::get(),
                 'payMethods' => $paymentService->methodList()
             ]);
     }

@@ -38,8 +38,8 @@ class Cart extends SellSet
                 return $sellGroup->getJsonFormat();
             }),
             'name' => $this->forcedSellType()->getName(),
-            'delivery' => $this->forcedSellType()->getDelivery(),
-            'pay' => $this->getDeliveryPay(),
+            'shop_carrier' => $this->forcedSellType()->getShopCarrier(),
+            'pay' => $this->getShippingFee(),
             'min'=>$this->forcedSellType()->min_buy_count,
             'max'=>$this->forcedSellType()->max_buy_count
         ];

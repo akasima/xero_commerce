@@ -55,7 +55,7 @@ class OrderSettingService
                     $query->whereBetween('created_at', [$from, (new Carbon($to))->endOfDay()]);
                 }
                 if($shipNo = $param->get('ship_no')) {
-                    $query->whereHas('orderItems.delivery', function($q) use ($shipNo) {
+                    $query->whereHas('orderItems.shipment', function($q) use ($shipNo) {
                         $q->where('ship_no', 'LIKE', "%$shipNo%");
                     });
                 }
@@ -70,7 +70,7 @@ class OrderSettingService
                 $recvName = $param->get('recv_name');
                 $recvPhone = $param->get('recv_phone');
                 if($recvName || $recvPhone) {
-                    $query->whereHas('orderItems.delivery', function($q) use ($recvName, $recvPhone) {
+                    $query->whereHas('orderItems.shipment', function($q) use ($recvName, $recvPhone) {
                         $q->where('recv_name', 'LIKE', "%$recvName%");
                         $q->where('recv_phone', 'LIKE', "%$recvPhone%");
                     });
@@ -80,24 +80,24 @@ class OrderSettingService
         return $this->orderHandler->getOrderList($page, $count, $condition);
     }
 
-    public function deliveryOrderItemList()
+    public function getOrderItemList()
     {
         return $this->orderHandler->getOrderItemList(new Order(), function ($query) {
             $query->where('code', '!=', Order::TEMP);
         });
     }
 
-    public function deliveryProcess(Request $request)
+    public function shipmentProcess(Request $request)
     {
-        foreach ($request->delivery as $delivery) {
-            $this->orderHandler->shipNoRegister(OrderItem::find($delivery['id']), $delivery['no']);
+        foreach ($request->shipment as $shipment) {
+            $this->orderHandler->shipNoRegister(OrderItem::find($shipment['id']), $shipment['no']);
         }
     }
 
-    public function deliveryComplete(Request $request)
+    public function shipmentComplete(Request $request)
     {
-        foreach ($request->delivery as $delivery) {
-            $this->orderHandler->completeDelivery(OrderItem::find($delivery));
+        foreach ($request->shipment as $shipment) {
+            $this->orderHandler->completeShipment(OrderItem::find($shipment));
         }
     }
 

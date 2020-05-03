@@ -1,2 +1,2 @@
-{!! $product->shop->delivery_info !!}
+{!! $product->shop->shipping_info !!}
 {!! $product->shop->as_info !!}

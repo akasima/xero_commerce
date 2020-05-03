@@ -38,7 +38,7 @@ class Product extends SellType
 
     protected $fillable = ['shop_id', 'type', 'product_code', 'name', 'original_price', 'sell_price', 'discount_percentage',
         'min_buy_count', 'max_buy_count', 'description', 'badge_id', 'tax_type', 'option_type', 'state_display',
-        'state_deal', 'sub_name', 'shop_delivery_id'];
+        'state_deal', 'sub_name', 'shop_carrier_id'];
 
     protected static $singleTableTypeField = 'type';
 
@@ -185,7 +185,7 @@ class Product extends SellType
 
     public function getFare()
     {
-        return $this->getDelivery()->delivery_fare;
+        return $this->getShopCarrier()->fare;
     }
 
     /**
@@ -333,7 +333,7 @@ class Product extends SellType
         return $row;
     }
 
-    function isDelivered()
+    function isShipped()
     {
         return true;
     }

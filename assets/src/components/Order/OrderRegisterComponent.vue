@@ -61,7 +61,7 @@
                         </div>
                     </div><!-- //table-type -->
                 </div><!-- //table-wrap -->
-                <order-delivery-component :user-info="userInfo" :delivery-store-url="deliveryStoreUrl" v-model="delivery" :order-items="orderItemList"></order-delivery-component>
+                <order-shipment-component :user-info="userInfo" :shipment-store-url="shipmentStoreUrl" v-model="shipment" :order-items="orderItemList"></order-shipment-component>
                 <!--<div class="table-wrap">-->
                 <!--<h4 class="table-type-title">할인 정보</h4>-->
                 <!--<button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>-->
@@ -114,7 +114,7 @@
 
 <script>
     import OrderItemListComponent from './OrderItemListComponent'
-    import OrderDeliveryComponent from './OrderDeliveryComponent'
+    import OrderShipmentComponent from './OrderShipmentComponent'
     import OrderBillComponent from './OrderBillComponent'
     import OrderAgreementComponent from './OrderAgreementComponent'
     import PayComponent from './PayComponent'
@@ -122,10 +122,10 @@
     export default {
         name: "OrderRegisterComponent",
         components: {
-            OrderDeliveryComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent, PayComponent
+            OrderShipmentComponent, OrderBillComponent, OrderAgreementComponent, OrderItemListComponent, PayComponent
         },
         props: [
-            'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods', 'agreeUrl', 'deniedUrl', 'payTarget', 'deliveryStoreUrl'
+            'orderItemList', 'orderSummary', 'user', 'userInfo', 'order_id', 'dashUrl', 'successUrl', 'failUrl', 'agreements', 'payMethods', 'agreeUrl', 'deniedUrl', 'payTarget', 'shipmentStoreUrl'
         ],
         computed: {
             validate() {
@@ -138,12 +138,12 @@
                     res.status = false
                 }
                 // 픽업상품만 있는 경우 배송지를 적지 않을수 있음
-                if(this.needDelivery()) {
-                  if (this.delivery === null || this.delivery.addr === '') {
+                if(this.needShipping()) {
+                  if (this.shipment === null || this.shipment.addr === '') {
                     res.msg.push('주소가 불분명합니다.')
                     res.status = false
                   } else {
-                    if (this.delivery.addr_detail === '') {
+                    if (this.shipment.addr_detail === '') {
                       res.msg.push('상세주소를 적어주세요.')
                       res.status = false
                     }
@@ -158,7 +158,7 @@
         },
         data() {
             return {
-                delivery: null,
+                shipment: null,
                 payMethod: null,
                 easyMethodList: [],
                 agreed: [],
@@ -172,7 +172,7 @@
                         url: this.successUrl,
                         method: 'post',
                         data: {
-                            delivery: this.delivery,
+                            shipment: this.shipment,
                             _token: document.getElementById('csrf_token').value
                         }
                     }).done(this.complete).fail(this.fail())
@@ -187,9 +187,9 @@
                 console.log(error)
                 //document.location.href = this.failUrl
             },
-            needDelivery() {
+            needShipping() {
                 // 배송타입이 픽업이 아닌 상품이 하나라도 있으면 true
-                return this.orderItemList.filter(item => item.delivery_company.company.type != 3).length > 0
+                return this.orderItemList.filter(item => item.shop_carrier.carrier.type != 3).length > 0
             }
         },
         mounted() {

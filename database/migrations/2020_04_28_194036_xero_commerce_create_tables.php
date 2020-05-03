@@ -23,8 +23,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce__user_delivery_addresses')) {
-            Schema::create('xero_commerce__user_delivery_addresses', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__user_addresses')) {
+            Schema::create('xero_commerce__user_addresses', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('user_id', 36);
                 $table->integer('seq');
@@ -67,7 +67,7 @@ class XeroCommerceCreateTables extends Migration
                 $table->string('background_path')->nullable();
                 $table->integer('shop_type');
                 $table->integer('state_approval')->default(0);
-                $table->text('delivery_info')->nullable();
+                $table->text('shipping_info')->nullable();
                 $table->text('as_info')->nullable();
                 $table->softDeletes();
                 $table->timestamps();
@@ -82,12 +82,12 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce__shop_delivery_company')) {
-            Schema::create('xero_commerce__shop_delivery_company', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__shop_carrier')) {
+            Schema::create('xero_commerce__shop_carrier', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('shop_id');
-                $table->integer('delivery_company_id');
-                $table->integer('delivery_fare');
+                $table->integer('carrier_id');
+                $table->integer('fare');
                 $table->integer('up_to_free');
                 $table->boolean('is_default');
                 $table->string('addr');
@@ -201,7 +201,7 @@ class XeroCommerceCreateTables extends Migration
             Schema::create('xero_commerce__carts', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('user_id', 36);
-                $table->smallInteger('delivery_pay');
+                $table->smallInteger('shipping_fee');
                 $table->morphs('type');
                 $table->string('order_id')->nullable();
                 $table->timestamps();
@@ -231,8 +231,8 @@ class XeroCommerceCreateTables extends Migration
             Schema::create('xero_commerce__order_items', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('order_id');
-                $table->smallInteger('delivery_pay');
-                $table->integer('delivery_id')->nullable();
+                $table->smallInteger('shipping_fee');
+                $table->integer('shipment_id')->nullable();
                 $table->morphs('type');
                 $table->integer('original_price');
                 $table->integer('sell_price');
@@ -251,13 +251,13 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce__order_deliveries')) {
-            Schema::create('xero_commerce__order_deliveries', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__order_shipments')) {
+            Schema::create('xero_commerce__order_shipments', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('order_item_id');
                 $table->smallInteger('status');
                 $table->string('ship_no');
-                $table->integer('company_id');
+                $table->integer('carrier_id');
                 $table->string('recv_name');
                 $table->string('recv_phone');
                 $table->string('recv_addr');
@@ -275,15 +275,16 @@ class XeroCommerceCreateTables extends Migration
                 $table->string('type');
                 $table->integer('order_item_id');
                 $table->text('reason');
-                $table->integer('delivery_company_id');
+                $table->integer('carrier_id');
                 $table->string('ship_no');
                 $table->boolean('received');
                 $table->boolean('complete');
+                $table->timestamps();
             });
         }
 
-        if (!Schema::hasTable('xero_commerce__delivery_companies')) {
-            Schema::create('xero_commerce__delivery_companies', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__carriers')) {
+            Schema::create('xero_commerce__carriers', function (Blueprint $table) {
                 $table->increments('id');
                 $table->smallInteger('type')->default(0);
                 $table->string('name');
@@ -397,7 +398,7 @@ class XeroCommerceCreateTables extends Migration
         $table->string('option_type')->default(\Xpressengine\Plugins\XeroCommerce\Models\Product::OPTION_TYPE_COMBINATION_MERGE);
         $table->integer('state_display')->nullable();
         $table->integer('state_deal')->nullable();
-        $table->integer('shop_delivery_id')->nullable();
+        $table->integer('shop_carrier_id')->nullable();
 
         return $table;
     }
@@ -486,7 +487,7 @@ class XeroCommerceCreateTables extends Migration
     {
         Schema::dropIfExists('xero_commerce__userinfos');
 
-        Schema::dropIfExists('xero_commerce__user_delivery_addresses');
+        Schema::dropIfExists('xero_commerce__user_addresses');
 
         Schema::dropIfExists('xero_commerce__user_agreement');
 
@@ -496,7 +497,7 @@ class XeroCommerceCreateTables extends Migration
 
         Schema::dropIfExists('xero_commerce__shop_user');
 
-        Schema::dropIfExists('xero_commerce__shop_delivery_company');
+        Schema::dropIfExists('xero_commerce__shop_carrier');
 
         self::dropIfExistsProductTables();
         self::dropIfExistsProductOptionTables();
@@ -531,11 +532,11 @@ class XeroCommerceCreateTables extends Migration
 
         Schema::dropIfExists('xero_commerce__order_item_group');
 
-        Schema::dropIfExists('xero_commerce__order_deliveries');
+        Schema::dropIfExists('xero_commerce__order_shipments');
 
         Schema::dropIfExists('xero_commerce__order_afterservices');
 
-        Schema::dropIfExists('xero_commerce__delivery_companies');
+        Schema::dropIfExists('xero_commerce__carriers');
 
         Schema::dropIfExists('xero_commerce__payments');
 

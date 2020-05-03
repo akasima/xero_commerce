@@ -8,15 +8,13 @@ class OrderAfterservice extends DynamicModel
 {
     protected $table = 'xero_commerce__order_afterservices';
 
-    public $timestamps=false;
-
     public function orderItem()
     {
         return $this->belongsTo(OrderItem::class);
     }
 
-    public function company()
+    public function carrier()
     {
-        return $this->belongsTo(DeliveryCompany::class);
+        return $this->belongsTo(Carrier::class);
     }
 }

@@ -125,16 +125,16 @@ class ShopService
         return true;
     }
 
-    public function addDelivery(Request $request, Shop $shop)
+    public function addCarrier(Request $request, Shop $shop)
     {
         $args = $request->all();
-        $this->handler->addDelivery($args, $shop);
+        $this->handler->addCarrier($args, $shop);
     }
 
-    public function removeDelivery(Request $request, Shop $shop)
+    public function removeCarrier(Request $request, Shop $shop)
     {
         $args = $request->all();
-        $this->handler->removeDelivery($args, $shop);
+        $this->handler->removeCarrier($args, $shop);
     }
 
     protected function validateShop(Request $request)

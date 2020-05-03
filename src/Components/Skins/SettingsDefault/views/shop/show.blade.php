@@ -52,12 +52,12 @@
                                 <h4>배송사 정보</h4>
                             </div>
                             <div class="panel-body" id="component-container">
-                                <shop-delivery-component
-                                    :list="{{json_encode($deliveryCompanys)}}"
-                                    :delivery="{{json_encode($shop->deliveryCompanys)}}"
-                                    load-url="{{route('xero_commerce::setting.config.shop.delivery', ['shop'=>$shop->id])}}"
-                                    add-url="{{route('xero_commerce::setting.config.shop.add.delivery', ['shop'=>$shop->id])}}"
-                                    remove-url="{{route('xero_commerce::setting.config.shop.remove.delivery', ['shop'=>$shop->id])}}"></shop-delivery-component>
+                                <shop-carrier-component
+                                    :list="{{json_encode($carriers)}}"
+                                    :carriers="{{json_encode($shop->carriers)}}"
+                                    load-url="{{route('xero_commerce::setting.config.shop.carrier', ['shop'=>$shop->id])}}"
+                                    add-url="{{route('xero_commerce::setting.config.shop.add.carrier', ['shop'=>$shop->id])}}"
+                                    remove-url="{{route('xero_commerce::setting.config.shop.remove.carrier', ['shop'=>$shop->id])}}"></shop-carrier-component>
                                 <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                                 <h4>배송 정보</h4>
                             </div>
                             <div class="panel-body">
-                                {!! $shop->delivery_info !!}
+                                {!! $shop->shipping_info !!}
                             </div>
                         </div>
                     </div>

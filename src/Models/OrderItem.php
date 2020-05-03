@@ -72,19 +72,19 @@ class OrderItem extends SellSet
             'discount_price' => $this->getDiscountPrice(),
             'count' => $this->getCount(),
             'src' => $this->getThumbnailSrc(),
-            'status' => $this->delivery ? $this->delivery->getStatus() : '',
-            'delivery' => $this->delivery ?: null,
-            'delivery_url' => $this->delivery ? $this->delivery->geturl() : '',
+            'status' => $this->shipment ? $this->shipment->getStatus() : '',
+            'shipment' => $this->shipment ?: null,
+            'shipment_url' => $this->shipment ? $this->shipment->geturl() : '',
             'fare' => $this->getFare(),
-            'delivery_pay' => $this->getDeliveryPay(),
-            'delivery_company' => $this->sellType->getDelivery(),
+            'shipping_fee' => $this->getShippingFee(),
+            'shop_carrier' => $this->sellType->getShopCarrier(),
             'as' => $this->afterService
         ];
     }
 
-    public function delivery()
+    public function shipment()
     {
-        return $this->hasOne(OrderDelivery::class);
+        return $this->hasOne(OrderShipment::class);
     }
 
     public function afterService()

@@ -6,7 +6,7 @@ use XePresenter;
 use XeFrontend;
 use App\Http\Controllers\Controller;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin\ValidateManager;
 use Xpressengine\Plugins\XeroCommerce\Services\ShopService;
@@ -75,9 +75,9 @@ class ShopController extends SettingBaseController
     public function show(Request $request, $shopId)
     {
         $shop = $this->shopService->getShop($shopId);
-        $deliveryCompanys = DeliveryCompany::all();
+        $carriers = Carrier::all();
 
-        return XePresenter::make('shop.show', compact('shop', 'deliveryCompanys'));
+        return XePresenter::make('shop.show', compact('shop', 'carriers'));
     }
 
     /**
@@ -90,8 +90,6 @@ class ShopController extends SettingBaseController
     {
         $shop = $this->shopService->getShop($shopId);
         $shopTypes = Shop::getShopTypes();
-        $deliveryCompanys = DeliveryCompany::all();
-        $default = $shop->getDefaultDeliveryCompany();
 
         XeFrontend::rule('shop', ValidateManager::getShopValidateRules());
 
@@ -130,18 +128,18 @@ class ShopController extends SettingBaseController
         return $redirect;
     }
 
-    public function getDeliverys(Shop $shop)
+    public function getCarriers(Shop $shop)
     {
-        return $shop->deliveryCompanys;
+        return $shop->carriers;
     }
 
-    public function addDeliverys(Request $request, Shop $shop)
+    public function addCarrier(Request $request, Shop $shop)
     {
-        $this->shopService->addDelivery($request, $shop);
+        $this->shopService->addCarrier($request, $shop);
     }
 
-    public function removeDeliverys(Request $request, Shop $shop)
+    public function removeCarrier(Request $request, Shop $shop)
     {
-        $this->shopService->removeDelivery($request, $shop);
+        $this->shopService->removeCarrier($request, $shop);
     }
 }

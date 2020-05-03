@@ -6,7 +6,7 @@
         </dl>
         <dl class="list-delivery">
             <dt>배송방법</dt>
-            <dd>{{Number(delivery.delivery_fare).toLocaleString()}}원</dd>
+            <dd>{{Number(delivery.fare).toLocaleString()}}원</dd>
         </dl>
         <dl class="list-delivery">
             <dt>배송비 결제</dt>

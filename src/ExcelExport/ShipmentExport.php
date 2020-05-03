@@ -12,7 +12,7 @@ namespace Xpressengine\Plugins\XeroCommerce\ExcelExport;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class OrderCheckExport implements FromCollection
+class ShipmentExport implements FromCollection
 {
 
     private $orderItems;
@@ -31,23 +31,20 @@ class OrderCheckExport implements FromCollection
             $option = $item['options']->first();
             return [
                 'id(고유키입니다. 수정하지마세요!)'=>$item['id'],
-                '이름'=>$item['user']['name'],
-				'전화번호'=>$item['shipment']['recv_phone'],
-                '메모'=>$item['name'],
-				'우편번호'=> $item['shipment']['recv_addr'],
-				'주소'=> $item['shipment']['recv_addr_detail'],
-				'수량'=> $option['count']
+                '주문번호'=>$item['order_no'],
+                '상품명'=>$item['name'].' '.$option['unit']['name'].' '.$option['count'].'개',
+                '송장번호'=>'',
+                '상태'=>$item['status']
+
             ];
         });
 
         $data->prepend([
             'id(고유키입니다. 수정하지마세요!)'=>'id(고유키입니다. 수정하지마세요!)',
-            '이름'=>'이름',
-            '전화번호'=>'전화번호',
-            '메모'=>'메모',
-            '우편번호'=>'우편번호',
-			'주소'=> '주소',
-			'수량'=>'수량'
+            '주문번호'=>'주문번호',
+            '상품명'=>'상품명',
+            '송장번호'=>'송장번호',
+            '상태'=>'상태'
         ]);
         return $data;
     }

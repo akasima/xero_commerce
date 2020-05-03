@@ -9,13 +9,13 @@
         :order-item-list='{!! $orderItems !!}'
         :order-summary='{!! json_encode($summary)  !!}'
         :user='{!! \Illuminate\Support\Facades\Auth::user()->makeVisible('email') !!}'
-        :user-info='{!! \Xpressengine\Plugins\XeroCommerce\Models\UserInfo::by(\Illuminate\Support\Facades\Auth::id())->load('userDelivery') !!}'
+        :user-info='{!! \Xpressengine\Plugins\XeroCommerce\Models\UserInfo::by(\Illuminate\Support\Facades\Auth::id())->load('addresses') !!}'
         order_id="{{$order->id}}"
         :pay-methods='{{ json_encode($payMethods)  }} '
         :pay-target="{{json_encode($order->getPayInfo())}}"
         agree-url="{{route('xero_commerce::agreement.order.save',['order'=>$order->id])}}"
         denied-url="{{route('xero_commerce::agreement.order.cancel',['order'=>$order->id])}}"
-        delivery-store-url="{{route('xero_commerce::delivery.store')}}"
+        shipment-store-url="{{route('xero_commerce::shipment.store')}}"
     ></order-register-component>
     <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
 </div>

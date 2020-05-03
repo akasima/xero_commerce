@@ -27,8 +27,9 @@ use Xpressengine\Database\ProxyManager;
 use Xpressengine\Database\VirtualConnection;
 use Xpressengine\Keygen\Keygen;
 use Xpressengine\Migrations\ConfigMigration;
+use Xpressengine\Plugins\XeroCommerce\Database\Seeds\CarrierSeeder;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
-use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin\EventManager;
@@ -116,7 +117,7 @@ class DefaultSet extends \PHPUnit\Framework\TestCase
         $product->tax_type = rand(Product::TAX_TYPE_TAX, Product::TAX_TYPE_FREE);
         $product->state_display = Product::DISPLAY_VISIBLE;
         $product->state_deal = Product::DEAL_ON_SALE;
-        $product->shop_delivery_id = 1;
+        $product->shop_carrier_id = 1;
         $product->save();
         Resources::storeProductOption($product->id);
         return $product;
@@ -133,10 +134,10 @@ class DefaultSet extends \PHPUnit\Framework\TestCase
 
         $newShop->save();
 
-        Resources::storeDefaultDeliveryCompanySet();
+        CarrierSeeder::storeDefaultCarrierSet();
 
-        $newShop->deliveryCompanys()->attach(DeliveryCompany::pluck('id'), [
-            'delivery_fare'=>0,
+        $newShop->carriers()->attach(Carrier::pluck('id'), [
+            'fare'=>0,
             'up_to_free'=>0,
             'is_default'=>0
         ]);

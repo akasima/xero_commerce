@@ -51,7 +51,7 @@ class OrderService
     {
         $this->orderHandler->idUpdate($order);
         $args = $request->all();
-        return $this->orderHandler->makeDelivery($order, $args);
+        return $this->orderHandler->makeShipment($order, $args);
     }
 
     public function orderItemList(Order $order)

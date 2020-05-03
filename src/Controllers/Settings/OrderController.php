@@ -7,9 +7,9 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroCommerce\ExcelExport\DeliveryExport;
+use Xpressengine\Plugins\XeroCommerce\ExcelExport\ShipmentExport;
 use Xpressengine\Plugins\XeroCommerce\ExcelExport\OrderCheckExport;
-use Xpressengine\Plugins\XeroCommerce\ExcelImport\DeliveryImport;
+use Xpressengine\Plugins\XeroCommerce\ExcelImport\ShipmentImport;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderSettingService;
@@ -69,53 +69,53 @@ class OrderController extends SettingBaseController
 
     }
 
-    public function delivery()
+    public function shipment()
     {
-        return \XePresenter::make('order.delivery', [
+        return \XePresenter::make('order.shipment', [
             'title' => 'xero_commerce',
-            'orderItems' => $this->orderService->deliveryOrderItemList()
+            'orderItems' => $this->orderService->getOrderItemList()
         ]);
     }
 
-    public function deliveryExcelExport()
+    public function shipmentExcelExport()
     {
-        $orderItemList = $this->orderService->deliveryOrderItemList();
-        $orderItemList = $orderItemList->filter(function($item){return !$item['delivery']->ship_no;});
-        return Excel::download(new DeliveryExport($orderItemList),now()->format('YmdHis').'.xlsx');
+        $orderItemList = $this->orderService->getOrderItemList();
+        $orderItemList = $orderItemList->filter(function($item){return !$item['shipment']->ship_no;});
+        return Excel::download(new ShipmentExport($orderItemList),now()->format('YmdHis').'.xlsx');
     }
 
 	public function OrderCheckExcelExport()//02.06수정
     {
-        $orderItemList = $this->orderService->deliveryOrderItemList();
-        $orderItemList = $orderItemList->filter(function($item){return !$item['delivery']->ship_no;});
+        $orderItemList = $this->orderService->getOrderItemList();
+        $orderItemList = $orderItemList->filter(function($item){return !$item['shipment']->ship_no;});
         return Excel::download(new OrderCheckExport($orderItemList),now()->format('YmdHis').'.xlsx');
     }
 
-    public function deliveryExcelImport(Request $request)
+    public function shipmentExcelImport(Request $request)
     {
         $handler = app('xero_commerce.orderHandler');
-        $dataProcess = Excel::toArray(new DeliveryImport(),$request->file('delivery'));
+        $dataProcess = Excel::toArray(new ShipmentImport(),$request->file('shipment'));
         foreach($dataProcess[0] as $key=>$data){
             if($key && $data[3]){
                 $handler->shipNoRegister(OrderItem::find((int)$data[0]),$data[3]);
             }
         }
-        return redirect()->route('xero_commerce::setting.order.delivery');
+        return redirect()->route('xero_commerce::setting.order.shipment');
     }
 
-    public function registerDelivery()
+    public function registerShipment()
     {
 
     }
 
-    public function processDelivery(Request $request)
+    public function processShipment(Request $request)
     {
-        $this->orderService->deliveryProcess($request);
+        $this->orderService->shipmentProcess($request);
     }
 
-    public function completeDelivery(Request $request)
+    public function completeShipment(Request $request)
     {
-        $this->orderService->deliveryComplete($request);
+        $this->orderService->shipmentComplete($request);
     }
 
     public function buyOption()

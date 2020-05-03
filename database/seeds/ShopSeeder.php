@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Agreement;
-use Xpressengine\Plugins\XeroCommerce\Models\DeliveryCompany;
+use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
@@ -39,8 +39,8 @@ class ShopSeeder extends Seeder
             $shopHandler = new ShopHandler();
             $shop = $shopHandler->store($args);
 
-            $shop->deliveryCompanys()->attach(DeliveryCompany::pluck('id'), [
-                'delivery_fare' => 0,
+            $shop->carriers()->attach(Carrier::pluck('id'), [
+                'fare' => 0,
                 'up_to_free' => 0,
                 'is_default' => 0
             ]);

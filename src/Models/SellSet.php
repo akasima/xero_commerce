@@ -6,7 +6,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 
 abstract class SellSet extends DynamicModel
 {
-    const DELIVERY = [
+    const SHIPPING_FEE_TYPE = [
         '선불' => 1,
         '착불' => 2
     ];
@@ -35,9 +35,9 @@ abstract class SellSet extends DynamicModel
         return $method($this->sellGroups);
     }
 
-    function getDeliveryPay()
+    function getShippingFee()
     {
-        return array_search($this->delivery_pay, self::DELIVERY);
+        return array_search($this->shipping_fee, self::SHIPPING_FEE_TYPE);
     }
 
     function getOriginalPrice()
@@ -66,10 +66,10 @@ abstract class SellSet extends DynamicModel
 
     public function getFare()
     {
-        if ($this->getDeliveryPay() == '착불') {
+        if ($this->getShippingFee() == '착불') {
             return 0;
         }
-        if (!$this->forcedSellType()->isDelivered()) {
+        if (!$this->forcedSellType()->isShipped()) {
             return 0;
         }
 

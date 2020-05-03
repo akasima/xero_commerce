@@ -52,11 +52,11 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                                 ]) !!}
                             </div>
                             <div class="col-lg-12">
-                                <label for="xeContentEditorDeliveryInfo">배송정보</label>
+                                <label for="xeContentEditorShippingInfo">배송정보</label>
                                 {!! editor(Plugin::getId(), [
-                                  'content' => Request::old('delivery_info'),
-                                  'contentDomName' => 'delivery_info',
-                                  'contentDomId' => 'xeContentEditorDeliveryInfo',
+                                  'content' => Request::old('shipping_info'),
+                                  'contentDomName' => 'shipping_info',
+                                  'contentDomId' => 'xeContentEditorShippingInfo',
                                 ]) !!}
 
                                 <label for="xeContentEditorAsInfo">반품/교환 정보</label>
@@ -77,6 +77,6 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
 </form>
 
 <script>
-    $('textarea[name=delivery_info]').attr('data-valid-name', '배송정보');
+    $('textarea[name=shipping_info]').attr('data-valid-name', '배송정보');
     $('textarea[name=as_info]').attr('data-valid-name', '반품/교환 정보');
 </script>
