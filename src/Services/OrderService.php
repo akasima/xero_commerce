@@ -30,13 +30,13 @@ class OrderService
     private function getCartsFromRequest(Request $request)
     {
         $cartService = new CartService();
-        return $cartService->getCartsById($request->get('cart_id'));
+        return $cartService->getList();
     }
 
     public function summary($order = null)
     {
         if (!is_null($order)) {
-            return $this->orderHandler->getSummary($order->orderItems);
+            return $this->orderHandler->getSummary($order->items);
         }
 
         return $this->orderHandler->getSummary($order = null);
@@ -71,10 +71,6 @@ class OrderService
             }),
             'paginate' => $paginate
         ];
-
-        return $this->orderHandler->getOrderList($page, $count, $this->makeQueryFromArray($query))->map(function (Order $order) {
-            return $this->orderDetail($order);
-        });
     }
 
     public function makeQueryFromArray($condition)
@@ -109,7 +105,7 @@ class OrderService
 
     public function orderDetail(Order $order)
     {
-        $order->orderItems = $this->orderHandler->getOrderItemList($order);
+        $order->items = $this->orderHandler->getOrderItemList($order);
         $order->status = $order->getStatus();
         $order->load('payment', 'userInfo');
 

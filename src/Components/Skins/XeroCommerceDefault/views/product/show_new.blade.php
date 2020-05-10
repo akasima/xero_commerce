@@ -4,7 +4,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
 @endphp
 @if($product->state_deal == \Xpressengine\Plugins\XeroCommerce\Models\Product::DEAL_ON_SALE)
     <div class="hide" id="page">
-        @foreach($product->getCategorys() as $key=>$item)
+        @foreach($product->getCategories() as $key=>$item)
             @include($skin::view('product.object.category'),[
             'categorys'=>$category,
             'target'=>$item,
@@ -15,7 +15,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                 <div class="view-header">
                     @include($skin::view('product.object.image'),['images'=>$product->getImages()])
                     <div class="view-info-detail"><h2 class="title-view">
-                            {{$product->getName()}}</h2>
+                            {{$product->name}}</h2>
                         <p class="text-summary">{{$product->sub_name}}</p>
                         <div class="box-label"></div>
                         <dl class="price">
@@ -32,7 +32,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                         @include($skin::view('product.object.option'),[
                             'optionType'=>$product->option_type,
                             'options'=>$product->getAvailableOptions(),
-                            'optionItems'=>$product->getAvailableOptionItems(),
+                            'optionItems'=>$product->getVisibleVariantsArray(),
                             'customOptions'=>$product->getAvailableCustomOptions(),
                             'choose'=>[]
                         ])
@@ -121,7 +121,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
             $.ajax({
                 url: "{{route('xero_commerce::product.cart', ['product'=> $product])}}",
                 data: {
-                    options: this.choose(),
+                    items: this.choose(),
                     shipment: this.shipment(),
                     _token: "{{csrf_token()}}"
                 },
@@ -136,7 +136,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
             this.addCart(function(res) {
                 var conf = confirm('장바구니에 담았습니다. 장바구니로 갈까요?')
                 if (conf) {
-                    document.location.href = "{{route('xero_commerce::cart.index')}}"
+                    document.location.href = "{{route('xero_commerce::cartitem.index')}}"
                 }
             }, function(err) {
                 console.log(err)

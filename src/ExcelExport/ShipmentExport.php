@@ -19,7 +19,7 @@ class ShipmentExport implements FromCollection
 
     public function __construct($orderItemollection)
     {
-        $this->orderItems= $orderItemollection;
+        $this->items= $orderItemollection;
     }
 
     /**
@@ -27,7 +27,7 @@ class ShipmentExport implements FromCollection
      */
     public function collection()
     {
-        $data = $this->orderItems->map(function($item){
+        $data = $this->items->map(function($item){
             $option = $item['options']->first();
             return [
                 'id(고유키입니다. 수정하지마세요!)'=>$item['id'],

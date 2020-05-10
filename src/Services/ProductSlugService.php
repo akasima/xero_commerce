@@ -35,40 +35,21 @@ class ProductSlugService
     public static function storeSlug(Product $product, Request $request)
     {
         if($product->name){
-            $slug = $product->slug;
 
-            if ($slug === null) {
-                $newSlug = $request->get('newSlug');
+            if (!$product->slug) {
 
-                if ($newSlug === null) {
-                    $newSlug = self::make($product->name, $product->id);
+                if ($newSlug = $request->get('newSlug')) {
+                    $product->slug = $newSlug;
+                } else {
+                    $product->slug = self::make($product->name, $product->id);
                 }
 
-                $slug = new ProductSlug([
-                    'slug' => $newSlug,
-                    'product_name' => $product->name,
-                ]);
-            } else {
-                if ($request->has('resetSlug') == true) {
-                    $slug['slug'] = $request->get('newSlug', self::make($product->name, $product->id));
-                }
-                $slug['product_name'] = $product->name;
+            } else if ($request->has('resetSlug') == true) {
+                $product->slug = $request->get('newSlug', self::make($product->name, $product->id));
             }
 
-            $product->productSlug()->save($slug);
+            $product->save();
         }
-    }
-
-    /**
-     * @param string $slug slug
-     *
-     * @return int
-     */
-    public static function getProductId($slug)
-    {
-        $slug = ProductSlug::where('slug', $slug)->first();
-
-        return $slug['target_id'];
     }
 
     /**
@@ -163,9 +144,9 @@ class ProductSlugService
         }
 
         while (static::has($slug, $increment) === true) {
-            $slugInfo = ProductSlug::where('slug', self::makeIncrement($slug, $increment))->first();
+            $product = Product::where('slug', self::makeIncrement($slug, $increment))->first();
 
-            if ($slugInfo->id == $id) {
+            if ($product->id == $id) {
                 break;
             }
 
@@ -201,7 +182,7 @@ class ProductSlugService
     {
         $slug = static::makeIncrement($slug, $increment);
 
-        $query = ProductSlug::where('slug', $slug);
+        $query = Product::where('slug', $slug);
 
         $count = $query->count();
 

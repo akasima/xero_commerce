@@ -15,7 +15,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($order->orderItems as $items)
+        @foreach($order->items as $items)
             <tr>
                 <td><img src="{{$items->getThumbnailSrc()}}" width="150px" height="150px" alt=""></td>
                 <td>

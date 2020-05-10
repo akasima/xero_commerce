@@ -5,23 +5,23 @@ namespace Xpressengine\Plugins\XeroCommerce\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 
 class StockLack extends Notification
 {
     use Queueable;
 
-    private $optionItem;
+    private $productVariant;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(ProductOptionItem $optionItem)
+    public function __construct(ProductVariant $productVariant)
     {
         //
-        $this->optionItem = $optionItem;
+        $this->productVariant = $productVariant;
     }
 
     /**
@@ -46,10 +46,10 @@ class StockLack extends Notification
         return (new MailMessage())
             ->greeting('재고 부족')
             ->line('해당 상품의 재고가 부족합니다.')
-            ->line($this->optionItem->product->getName() . '/' . $this->optionItem->getName())
+            ->line($this->productVariant->product->name . '/' . $this->productVariant->name)
             ->action(
                 '재고 확인',
-                route('xero_commerce::setting.product.show', ['productId' => $this->optionItem->product_id])
+                route('xero_commerce::setting.product.show', ['productId' => $this->productVariant->product_id])
             );
     }
 

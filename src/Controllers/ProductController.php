@@ -49,9 +49,7 @@ class ProductController extends XeroCommerceBasicController
 
     public function show(Request $request, $strSlug)
     {
-        $productId = ProductSlugService::getProductId($strSlug);
-
-        $product = $this->productService->getProduct($productId);
+        $product = $this->productService->getProductBySlug($strSlug);
 
         $categoryService = new ProductCategoryService();
         $category = $categoryService->getCategoryTree();

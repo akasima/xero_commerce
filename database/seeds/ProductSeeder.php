@@ -14,7 +14,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
@@ -124,20 +124,20 @@ class ProductSeeder extends Seeder
     {
         $faker = Factory::create('ko_kr');
         for ($i = 0; $i < rand(1, 4); $i++) {
-            $op = new ProductOptionItem();
+            $op = new ProductVariant();
             $op->product_id = $product_id;
 
             if ($i == 0) {
-                $op->addition_price = 0;
+                $op->additional_price = 0;
             } else {
-                $op->addition_price = $faker->numberBetween(0, 10) * 500;
+                $op->additional_price = $faker->numberBetween(0, 10) * 500;
             }
 
             $op->name = '옵션' . ($i + 1);
             $op->stock = 10;
             $op->alert_stock = 1;
-            $op->state_display = ProductOptionItem::DISPLAY_VISIBLE;
-            $op->state_deal = ProductOptionItem::DEAL_ON_SALE;
+            $op->state_display = ProductVariant::DISPLAY_VISIBLE;
+            $op->state_deal = ProductVariant::DEAL_ON_SALE;
             $op->save();
         }
     }

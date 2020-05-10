@@ -68,24 +68,18 @@
                                 <div class="table-cell" style="width:100%">
 
                                     <!-- [D] 재사용 구간 -->
-                                    @foreach($order->orderItems as $orderItem)
-                                        @php
-                                        $json=$orderItem->getJsonFormat();
-                                        @endphp
+                                    @foreach($order->items as $orderItem)
                                         <div class="order-product">
-                                            <div class="order-product-title">{{$json['name']}}</div>
+                                            <div class="order-product-title">{{$orderItem->product->name}}</div>
                                             <ul class="order-product-option">
-                                                @foreach($json['options'] as $option)
-                                                    <li>
-                                                        {{$option['unit']['name']}}
-                                                        @foreach($option['custom_values'] as $key => $value)
-                                                            {{ $loop->index == 0 ? '(' : '' }}
-                                                            {{$key}} : {{$value}}
-                                                            {{ $loop->index !== sizeof($option['custom_values']) - 1 ? ',' : ')' }}
-                                                        @endforeach
-                                                        / {{$option['count']}}개
-                                                    </li>
-                                                @endforeach
+                                                <li>
+                                                    {{$orderItem->productVariant->name}}
+                                                    @foreach($orderItem->custom_values as $key => $value)
+                                                        {{ $loop->index == 0 ? '(' : '' }}
+                                                        {{$key}} : {{$value}}
+                                                        {{ $loop->index !== sizeof($option['custom_values']) - 1 ? ',' : ')' }}
+                                                    @endforeach
+                                                </li>
                                             </ul>
                                         </div> <!-- //order-product -->
                                     @endforeach

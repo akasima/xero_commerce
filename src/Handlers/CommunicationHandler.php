@@ -56,7 +56,7 @@ class CommunicationHandler
     {
 
         return (object)[
-            'name'=>$product->getName(),
+            'name'=>$product->name,
             'sell_price'=>number_format($product->sell_price),
             'original_price'=>number_format($product->oirinal_price),
             'stock'=>$product->getStock(),

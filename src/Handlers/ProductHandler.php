@@ -49,6 +49,22 @@ class ProductHandler
         return $item;
     }
 
+    /**
+     * @param  integer $productId productId
+     *
+     * @return Product
+     */
+    public function getProductBySlug($slug)
+    {
+        $item = Product::where('slug', $slug)->first();
+
+        if(is_null($item)) {
+            abort(500, '해당 상품이 존재하지 않습니다.');
+        }
+
+        return $item;
+    }
+
     public function getProductsQueryForWidget($request)
     {
         $query = new Product();
@@ -84,7 +100,7 @@ class ProductHandler
 
         return $query;
     }
-	
+
     public function getProductsQueryForCommon(Request $request)
     {
         $query = new Product();
@@ -131,7 +147,7 @@ class ProductHandler
 
             $targetProductIds = array_intersect($targetProductIds, $productIds);
         }
-		
+
         if ($tags = $config->get('tags')) {
 			$productIds = Product::whereHas('tags', function($query) use ($tags) {
 				$query->whereIn('word', $tags);
@@ -187,7 +203,7 @@ class ProductHandler
         if (isset($args['product_tax_type']) == true) {
             $query = $query->where('tax_type', $args['product_tax_type']);
         }
-        
+
         if (isset($args['product_type']) == true) {
             $query = $query->where('type', $args['product_type']);
         }

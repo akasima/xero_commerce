@@ -29,7 +29,7 @@ class Order extends DynamicModel
         '임시', '결제대기', '상품준비', '배송중', '배송완료', '취소중', '취소완료', '교환중', '교환완료', '환불중', '환불완료'
     ];
 
-    public function orderItems()
+    public function items()
     {
         return $this->hasMany(OrderItem::class);
     }
@@ -62,15 +62,15 @@ class Order extends DynamicModel
     {
         $orderHandler = new OrderHandler();
 
-        $summary = $orderHandler->getSummary($this->orderItems);
+        $summary = $orderHandler->getSummary($this->items);
 
         return $summary['sum'];
     }
 
     function getNameForPay()
     {
-        $sellSetList = $this->orderItems;
-        $name = $sellSetList->first()->sellType->getName() . (($sellSetList->count() > 1) ? ' 외' . ($sellSetList->count() - 1) . '건' : '');
+        $items = $this->items;
+        $name = $items->first()->product->name . (($items->count() > 1) ? ' 외' . ($items->count() - 1) . '건' : '');
         $shortName = (mb_strlen($name) > 15) ? mb_substr($name, 0, 12) . '...' : $name;
 
         return $shortName;

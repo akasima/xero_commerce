@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Events;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItemGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderLog;
 use Xpressengine\Plugins\XeroCommerce\Notifications\OrderCancel;
@@ -18,12 +19,11 @@ class OrderObserver
         if (isset($dirty['code'])) {
             switch ($dirty['code']) {
                 case Order::DELIVER:
-                    $orderGroups = $order->orderGroup;
-                    $orderGroups->each(function (OrderItemGroup $group) {
-                        $unit = $group->sellUnit;
-                        if($unit){
-                            $unit->stock = $unit->stock - $group->getCount();
-                            $unit->save();
+                    $order->items->each(function (OrderItem $item) {
+                        $productVariant = $item->productVariant;
+                        if($productVariant){
+                            $productVariant->stock = $productVariant->stock - $item->count;
+                            $productVariant->save();
                         }
                     });
                     break;

@@ -32,7 +32,7 @@
         <select v-model="selectedOptionItem" class="form-select">
             <option selected :value="undefined">[필수] 옵션을 선택해주세요</option>
             <option v-for="item in optionItems" :value="item" :disabled="item.state_deal!=='판매중'">@{{item.name}}
-                (+@{{Number(item.addition_price).toLocaleString()}} ) @{{(item.state_deal!=='판매중')? '-'+ item.state_deal: ''}}
+                (+@{{Number(item.additional_price).toLocaleString()}} ) @{{(item.state_deal!=='판매중')? '-'+ item.state_deal: ''}}
             </option>
         </select>
     </div>
@@ -49,26 +49,26 @@
     @endif
     <div class="product-info-counter">
         <div v-if="!hasOnlyOneItem" class="product-info-cell" v-for="(selectedOption, key) in select">
-            <div class="product-info-counter-title">@{{selectedOption.unit.name}} </div>
+            <div class="product-info-counter-title">@{{selectedOption.variant.name}} </div>
             <div v-for="(v, k) in selectedOption.custom_values" style="padding-left: 10px">@{{ k }} : @{{ v }}</div>
             <div class="xe-spin-box">
                 <button type="button" @click="selectedOption.count--; if(selectedOption.count<=0)dropOption(key)"><i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span></button>
                 <p>@{{selectedOption.count}}</p>
                 <button type="button" @click="selectedOption.count++"><i class="xi-plus-thin"></i><span class="xe-sr-only">증가</span></button>
             </div>
-            <p class="product-info-counter-sum">@{{(selectedOption.unit.sell_price * selectedOption.count).toLocaleString()}}원</p>
+            <p class="product-info-counter-sum">@{{(selectedOption.variant.sell_price * selectedOption.count).toLocaleString()}}원</p>
             <button class="xe-btn xe-btn-remove" @click="dropOption(key)"><i class="xi-close-thin"></i><span class="xe-sr-only">이 옵션 삭제</span></button>
         </div> <!-- //product-info-cell -->
 
         <div v-if="hasOnlyOneItem" class="product-info-cell" v-for="(selectedOption, key) in select">
-            <div class="product-info-counter-title">@{{selectedOption.unit.name}} </div>
+            <div class="product-info-counter-title">@{{selectedOption.variant.name}} </div>
             <div v-for="(v, k) in selectedOption.custom_values" style="padding-left: 10px">@{{ k }} : @{{ v }}</div>
             <div class="xe-spin-box">
                 <button type="button" @click="(selectedOption.count>1) ? selectedOption.count-- : ''"><i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span></button>
                 <p>@{{selectedOption.count}}</p>
                 <button type="button" @click="selectedOption.count++"><i class="xi-plus-thin"></i><span class="xe-sr-only">증가</span></button>
             </div>
-            <p class="product-info-counter-sum">@{{(selectedOption.unit.sell_price * selectedOption.count).toLocaleString()}}원</p>
+            <p class="product-info-counter-sum">@{{(selectedOption.variant.sell_price * selectedOption.count).toLocaleString()}}원</p>
         </div>
     </div> <!-- //product-info-counter -->
 
@@ -133,7 +133,7 @@
             methods: {
                 sum: function (array) {
                     return array.map(function (v) {
-                        return v.unit.sell_price * v.count
+                        return v.variant.sell_price * v.count
                     }).reduce(function (a, b) { return a + b }, 0);
                 },
                 dropOption: function (key) {
@@ -161,16 +161,16 @@
                     let exist = this.select.find((v) => {
                         // 커스텀옵션이 설정되어 있다면
                         if(Object.values(this.customOptionValues).filter(a => a != '').length > 0) {
-                            return v.unit.id === el.id && JSON.stringify(v.custom_values) == JSON.stringify(this.customOptionValues)
+                            return v.variant.id === el.id && JSON.stringify(v.custom_values) == JSON.stringify(this.customOptionValues)
                         }
-                        return v.unit.id === el.id
+                        return v.variant.id === el.id
                     });
                     if (exist) {
                         exist.count++
                     } else {
                         this.select.push({
                             id: null,
-                            unit: el,
+                            variant: el,
                             count: 1,
                             custom_values: Object.assign({}, this.customOptionValues)
                         })

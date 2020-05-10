@@ -4,18 +4,16 @@ namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroCommerce\Models\CartGroup;
+use Xpressengine\Plugins\XeroCommerce\Models\CartItem;
 use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderAfterservice;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderShipment;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
-use Xpressengine\Plugins\XeroCommerce\Models\OrderItemGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\Payment;
-use Xpressengine\Plugins\XeroCommerce\Models\SellGroup;
 use Xpressengine\Plugins\XeroCommerce\Models\UserAddress;
 
-class OrderHandler extends SellSetHandler
+class OrderHandler extends OrderableItemHandler
 {
     public $auth = false;
 
@@ -29,55 +27,39 @@ class OrderHandler extends SellSetHandler
         if (!$order = $this->whereUser()->where('code', Order::TEMP)->find($id)) {
             abort(500, '잘못된 주문 요청입니다.');
         }
-        $order->orderItems->each(function(OrderItem $orderItem)use($order){
-            if(method_exists($orderItem->forcedSellType(),'trashed')){
-                if($orderItem->forcedSellType()->trashed()){
+        $order->items->each(function(OrderItem $orderItem) use ($order) {
+            if(method_exists($orderItem->productWithTrashed,'trashed')) {
+                if($orderItem->productWithTrashed->trashed()){
                     $order->delete();
-                    abort('500','현재 제공하지 않는 상품입니다. <br> 상품정보 : '.$orderItem->forcedSellType()->getName());
+                    abort('500','현재 제공하지 않는 상품입니다. <br> 상품정보 : '.$orderItem->productWithTrashed->name);
                 }
             }
-            $orderItem->sellGroups->each(function(SellGroup $sellGroup)use($order){
-                if(method_exists($sellGroup->sellSet->forcedSellType(),'trashed')) {
-                    if ($sellGroup->forcedSellUnit()->trashed()) {
-                        $order->delete();
-                        abort('500', '현재 제공하지 않는 상품옵션입니다. <br> 상품정보 : ' . $sellGroup->forcedSellUnit()->getName());
-                    }
-                }
-            });
         });
 
         return $order;
     }
 
-    public function register($carts)
+    public function register($cartItems)
     {
         $order = $this->makeOrder();
 
-        foreach ($carts as $cart) {
+        foreach ($cartItems as $cartItem) {
             $orderItem = new OrderItem();
 
             $orderItem->order_id = $order->id;
-            $orderItem->shipping_fee = $cart->shipping_fee;
-            $orderItem->sellType()->associate($cart->forcedSellType());
-            $orderItem->original_price = $orderItem->getOriginalPrice();
-            $orderItem->sell_price = $orderItem->getSellPrice();
+            $orderItem->shipping_fee = $cartItem->shipping_fee;
+            $orderItem->product()->associate($cartItem->productWithTrashed);
+            $orderItem->productVariant()->associate($cartItem->productVariant);
+            $orderItem->count = $cartItem->count;
+            $orderItem->custom_values = $cartItem->custom_values;
+            $orderItem->original_price = $cartItem->getOriginalPrice();
+            $orderItem->sell_price = $cartItem->getSellPrice();
             $orderItem->code = 0;
 
             $orderItem->save();
 
-            $cart->sellGroups->each(function (CartGroup $cartGroup) use (&$orderItem) {
-                $orderItemGroup = new OrderItemGroup();
-
-                $orderItemGroup->sellUnit()->associate($cartGroup->forcedSellUnit());
-                $orderItemGroup->setCount($cartGroup->getCount());
-                $orderItemGroup->setCustomValues($cartGroup->getCustomValues());
-
-                $orderItem->sellGroups()->save($orderItemGroup);
-            });
-
-            $cart->order_id = $order->id;
-
-            $cart->save();
+            // 주문완료후 장바구니를 비우기 위한 id저장
+            $cartItem->order_id = $order->id;
         }
 
         return $this->update($order);
@@ -126,11 +108,11 @@ class OrderHandler extends SellSetHandler
 
     public function shipmentCheck(Order $order)
     {
-        $hasProcessingShipment = $order->orderItems()->whereHas('shipment', function ($query) {
+        $hasProcessingShipment = $order->items()->whereHas('shipment', function ($query) {
             $query->where('status', OrderShipment::PROCESSING);
         })->exists();
 
-        $hasDoneShipment = $order->orderItems()->whereHas('shipment', function ($query) {
+        $hasDoneShipment = $order->items()->whereHas('shipment', function ($query) {
             $query->where('status', OrderShipment::DONE);
         })->exists();
 
@@ -145,12 +127,12 @@ class OrderHandler extends SellSetHandler
 
     public function afterServiceCheck(Order $order)
     {
-        $hasExchanging = $order->orderItems()->where('code', OrderItem::EXCHANGING)->exists();
-        $hasExchanged = $order->orderItems()->where('code', OrderItem::EXCHANGED)->exists();
-        $hasRefunding = $order->orderItems()->where('code', OrderItem::REFUNDING)->exists();
-        $hasRefunded = $order->orderItems()->where('code', OrderItem::REFUNDED)->exists();
-        $hasCanceling = $order->orderItems()->where('code', OrderItem::CANCELING)->exists();
-        $hasCanceled = $order->orderItems()->where('code', OrderItem::CANCELED)->exists();
+        $hasExchanging = $order->items()->where('code', OrderItem::EXCHANGING)->exists();
+        $hasExchanged = $order->items()->where('code', OrderItem::EXCHANGED)->exists();
+        $hasRefunding = $order->items()->where('code', OrderItem::REFUNDING)->exists();
+        $hasRefunded = $order->items()->where('code', OrderItem::REFUNDED)->exists();
+        $hasCanceling = $order->items()->where('code', OrderItem::CANCELING)->exists();
+        $hasCanceled = $order->items()->where('code', OrderItem::CANCELED)->exists();
 
         if ($hasExchanging) {
             return Order::EXCHANGING;
@@ -184,7 +166,7 @@ class OrderHandler extends SellSetHandler
 
     public function getSellSetList()
     {
-        return Order::where('user_id', Auth::id() ?: 1)->latest()->first()->orderItems;
+        return Order::where('user_id', Auth::id() ?: 1)->latest()->first()->items;
     }
 
     public function getOrderItemList(Order $order, $condition = null)
@@ -194,12 +176,12 @@ class OrderHandler extends SellSetHandler
                 ->when(!is_null($condition), function ($query) use ($condition) {
                     $query->where($condition);
                 })
-                ->with('orderItems.shipment.carrier', 'orderItems.order.orderItems.sellGroups.sellSet')
-                ->latest()->get()->pluck('orderItems')->flatten();
+                ->with('items.shipment.carrier', 'items.productVariant')
+                ->latest()->get()->pluck('items')->flatten();
         } else {
-            $orderItems = $order->orderItems()->when(!is_null($condition), function ($query) use ($condition) {
+            $orderItems = $order->items()->when(!is_null($condition), function ($query) use ($condition) {
                 $query->where($condition);
-            })->with('shipment.carrier', 'order.orderItems.sellGroups.sellSet')->latest()->get();
+            })->with('shipment.carrier', 'order.items.productVariant')->latest()->get();
         }
 
         return $orderItems->map(function (OrderItem $orderItem) {
@@ -209,7 +191,7 @@ class OrderHandler extends SellSetHandler
 
     public function makePayment(Order $order)
     {
-        $summary = $this->getSummary($order->orderItems);
+        $summary = $this->getSummary($order->items);
 
         $payment = new Payment();
 
@@ -260,10 +242,10 @@ class OrderHandler extends SellSetHandler
             $this->addUserAddress($args['shipment']);
         }
 
-        $order->orderItems->each(function (OrderItem $orderItem) use ($args) {
-            if($orderItem->sellType->isShipped()){
+        $order->items->each(function (OrderItem $orderItem) use ($args) {
+            if($orderItem->product->isShipped()){
                 // 픽업배송일때는 배송주소를 읽어와서 입력
-                $shopCarrier = $orderItem->sellType->getShopCarrier();
+                $shopCarrier = $orderItem->product->getShopCarrier();
                 if($shopCarrier->carrier->type == Carrier::TAKE) {
                     $shipment = new OrderShipment();
                     $shipment->order_item_id = $orderItem->id;
@@ -338,7 +320,7 @@ class OrderHandler extends SellSetHandler
             })
             // 클로저를 사용할 수 있도록 구현
             ->when(!is_null($condition) && $condition instanceof \Closure, $condition)
-            ->with('orderItems.shipment', 'payment', 'userInfo')
+            ->with('payment', 'userInfo')
             ->latest()
             ->paginate($count, ['*'], '', $page);
     }
@@ -388,7 +370,7 @@ class OrderHandler extends SellSetHandler
 
     public function orderCancel(Order $order, $reason)
     {
-        $orderItems = $order->orderItems;
+        $orderItems = $order->items;
 
         $orderItems->each(function ($orderItem) use ($reason) {
             $oa = new OrderAfterservice();

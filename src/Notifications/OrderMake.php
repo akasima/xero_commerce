@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 
 class OrderMake extends Notification
@@ -45,9 +45,13 @@ class OrderMake extends Notification
      */
     public function toMail($notifiable)
     {
+        \XePresenter::setSkinTargetId(\Xpressengine\Plugins\XeroCommerce\Plugin::getId());
+
         return (new MailMessage())
             ->subject('주문하신 상품이 정상적으로 주문되었습니다.')
-            ->view('xero_commerce::views.order.email', ['order'=>$this->order]);
+            ->line(
+                \XePresenter::make('order.email', ['order'=>$this->order])->render()
+            );
     }
 
     /**

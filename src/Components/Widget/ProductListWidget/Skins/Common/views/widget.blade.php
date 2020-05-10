@@ -13,7 +13,7 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
         <ul class="list-basic">
             @foreach ($products as $key => $product)
             <li class="item-basic">
-                <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}" class="link-basic">
+                <a href="{{ route('xero_commerce::product.show', ['slug' => $product->slug]) }}" class="link-basic">
                     <span class="thumnail" style="background-image:url('{{$product->getThumbnailSrc()}}')"></span>
                         <div class="box_content">
                         <strong>{{$product->name}}</strong>
@@ -71,19 +71,22 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
             @foreach ($products as $key => $product)
                 <li>
                     <div class="default-list-img">
-                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}"><img
+                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->slug]) }}"><img
                                     src="{{$product->getThumbnailSrc()}}" alt=""></a>
                         <h4 class="xe-sr-only">sns 공유</h4>
                         <ul class="default-list-sns">
+                            @php
+                                $userWish = $product->wishes()->where('user_id', Auth::id())->count();
+                            @endphp
                             <!-- [D] a 클릭시 내부에 xi-heart-o 클래스 명을 xi-heart 로 변경 부탁드립니다. -->
-                            <li><a href="#" onclick="event.preventDefault();toggleHeart('{{$product->id}}')"><i id="heart{{$product->id}}" class="{{($product->userWish())? 'xi-heart' : 'xi-heart-o'}}"></i><span class="xe-sr-only">좋아요</span></a></li>
+                            <li><a href="#" onclick="event.preventDefault();toggleHeart('{{$product->id}}')"><i id="heart{{$product->id}}" class="{{ $userWish ? 'xi-heart' : 'xi-heart-o'}}"></i><span class="xe-sr-only">좋아요</span></a></li>
                             <li><a href="#"><i class="xi-facebook"></i><span class="xe-sr-only">페이스북 공유</span></a></li>
                             <li><a href="#"><i class="xi-instagram"></i><span class="xe-sr-only">인스타그램 공유</span></a>
                             </li>
                         </ul>
                     </div>
                     <div class="default-list-text">
-                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}">
+                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->slug]) }}">
                             <h3 class="default-list-text-title">
                                 @foreach($product->labels as $label)
                                     <span class="xe-shop-tag" @if($label->background_color && $label->text_color)style="background: {{$label->background_color}}; color:{{$label->text_color}}" @endif>{{$label->name}}</span>

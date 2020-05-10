@@ -55,7 +55,7 @@ class OrderSettingService
                     $query->whereBetween('created_at', [$from, (new Carbon($to))->endOfDay()]);
                 }
                 if($shipNo = $param->get('ship_no')) {
-                    $query->whereHas('orderItems.shipment', function($q) use ($shipNo) {
+                    $query->whereHas('items.shipment', function($q) use ($shipNo) {
                         $q->where('ship_no', 'LIKE', "%$shipNo%");
                     });
                 }
@@ -70,7 +70,7 @@ class OrderSettingService
                 $recvName = $param->get('recv_name');
                 $recvPhone = $param->get('recv_phone');
                 if($recvName || $recvPhone) {
-                    $query->whereHas('orderItems.shipment', function($q) use ($recvName, $recvPhone) {
+                    $query->whereHas('items.shipment', function($q) use ($recvName, $recvPhone) {
                         $q->where('recv_name', 'LIKE', "%$recvName%");
                         $q->where('recv_phone', 'LIKE', "%$recvPhone%");
                     });

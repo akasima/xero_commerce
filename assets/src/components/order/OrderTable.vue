@@ -18,13 +18,13 @@
                 <div class="table-body">
 
                     <!-- [D] 복사 영역 주문별 영역 -->
-                    <div class="table-row"  v-for="item in list">
+                    <div class="table-row"  v-for="order in list">
                         <div class="table-cell header">
                             <h3 class="order-number xe-hidden-md xe-hidden-lg">주문 번호</h3>
                             <p class="order-number">
-                                <span class="xe-hidden-xs xe-hidden-sm">{{item.created_at.substr(0,10)}}</span>
+                                <span class="xe-hidden-xs xe-hidden-sm">{{order.created_at.substr(0,10)}}</span>
                                 <br class="xe-hidden-xs xe-hidden-sm">
-                                <a :href="detailUrl+'/'+item.id"><span>({{item.order_no}})</span></a>
+                                <a :href="detailUrl+'/'+order.id"><span>({{order.order_no}})</span></a>
                             </p>
                             <button class="order-number-btn">
                                 <i class="xi-angle-right-thin"></i>
@@ -33,26 +33,26 @@
                         <div class="table-cell">
 
                             <!-- [D] 복사 영역 상품 블럭 -->
-                            <div class="shipping-product"  v-for="(orderitem, key) in item.orderItems">
+                            <div class="shipping-product"  v-for="(orderItem, key) in order.items">
                                 <div class="cart-product-body">
                                     <div class="cart-product-info">
                                         <div class="cart-product-img">
-                                            <img :src="orderitem.src" alt="상품이미지">
+                                            <img :src="orderItem.src" alt="상품이미지">
                                         </div><!-- //cart-product-img -->
                                         <div class="cart-product-name">
-                                            {{orderitem.name}}
+                                            {{orderItem.name}}
                                         </div><!-- //cart-product-name -->
                                         <div class="cart-product-option">
                                             <ul class="cart-product-option-list">
-                                                <li v-for="option in orderitem.options">
+                                                <li>
                                                     <span>
-                                                      {{option.unit.name}}
-                                                      <span v-for="(value, key, i) in option.custom_values">
+                                                      {{orderItem.variant_name}}
+                                                      <span v-for="(value, key, i) in orderItem.custom_values">
                                                         {{ i == 0 ? '(' : '' }}
                                                         {{key}} : {{value}}
-                                                        {{ i != Object.keys(option.custom_values).length - 1 ? ',' : ')' }}
+                                                        {{ i != Object.keys(orderItem.custom_values).length - 1 ? ',' : ')' }}
                                                       </span>
-                                                      / {{option.count}}개
+                                                      / {{orderItem.count}}개
                                                     </span>
                                                 </li>
                                             </ul>
@@ -62,26 +62,26 @@
                                         <div class="cart-product-num-box">
                                             <div class="cart-product-price">
                                                 <span class="cart-product-title">결제금액</span>
-                                                <span class="cart-product-text">{{orderitem.sell_price.toLocaleString()}}원</span>
+                                                <span class="cart-product-text">{{orderItem.sell_price.toLocaleString()}}원</span>
                                             </div><!-- //cart-product-price -->
                                             <div class="cart-product-quantity">
                                                 <span class="cart-product-title">수량</span>
-                                                <span class="cart-product-text">{{orderitem.count}}개</span>
+                                                <span class="cart-product-text">{{orderItem.count}}개</span>
                                             </div><!-- //cart-product-num -->
                                             <div class="cart-product-shipping">
                                                 <span class="cart-product-title">배송비</span>
-                                                <span class="cart-product-text">{{orderitem.fare.toLocaleString()}}원</span>
+                                                <span class="cart-product-text">{{orderItem.fare.toLocaleString()}}원</span>
                                             </div><!-- //cart-product-shipping -->
                                             <div class="cart-product-sum">
                                                 <span class="cart-product-title">주문 상태</span>
-                                                <span class="cart-product-text">{{item.status}}</span>
+                                                <span class="cart-product-text">{{order.status}}</span>
                                                 <div class="cart-product-btn">
-                                                    <button v-if="inDelivery(item)" type="button" class="btn-shipping-status" @click="url(orderitem.delivery_url)">배송조회</button>
-                                                    <div v-if="inDelivery(item) && !notInProcess(item)">
-                                                        <button type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">교환요청</button>
-                                                        <button type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+item.id+'/'+orderitem.id)">환불요청</button>
+                                                    <button v-if="inDelivery(order)" type="button" class="btn-shipping-status" @click="url(orderItem.delivery_url)">배송조회</button>
+                                                    <div v-if="inDelivery(order) && !notInProcess(order)">
+                                                        <button type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+order.id+'/'+orderItem.id)">교환요청</button>
+                                                        <button type="button" class="btn-shipping-status" @click="url(asUrl+'/change/'+order.id+'/'+orderItem.id)">환불요청</button>
                                                     </div>
-                                                    <button v-if="notInDelivery(item) && !notInProcess(item)" type="button" class="btn-shipping-status" @click="url(cancelUrl+'/'+item.id)">취소요청</button>
+                                                    <button v-if="notInDelivery(order) && !notInProcess(order)" type="button" class="btn-shipping-status" @click="url(cancelUrl+'/'+order.id)">취소요청</button>
                                                 </div><!-- //cart-product-btn -->
                                             </div><!-- //cart-product-sum -->
                                         </div><!-- //cart-product-num-box -->
@@ -149,14 +149,14 @@
             url(url) {
                 window.open(url, 'target=_blank' + new Date().getTime())
             },
-            inDelivery (item) {
-                return item.status ==='배송중' || item.status==='배송완료'
+            inDelivery (order) {
+                return order.status ==='배송중' || order.status==='배송완료'
             },
-            notInDelivery( item ){
-                return item.status ==='상품준비' || item.status==='결제대기'
+            notInDelivery( order ){
+                return order.status ==='상품준비' || order.status==='결제대기'
             },
-            notInProcess (item) {
-                return !this.notInDelivery( item ) &&  !this.inDelivery(item)
+            notInProcess (order) {
+                return !this.notInDelivery( order ) &&  !this.inDelivery(order)
             }
         }
     }

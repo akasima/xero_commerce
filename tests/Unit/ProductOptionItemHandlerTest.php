@@ -10,7 +10,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Test\Unit;
 
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use PHPUnit\Framework\TestCase;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 
 class ProductOptionItemHandlerTest extends DefaultSet
 {
@@ -20,23 +20,23 @@ class ProductOptionItemHandlerTest extends DefaultSet
         $handler = new ProductOptionItemHandler();
         $args = [
             'product_id'=>1,
-            'option_type'=>ProductOptionItem::TYPE_ADDITION_ITEM,
+            'option_type'=>ProductVariant::TYPE_ADDITION_ITEM,
             'name'=>'test',
-            'addition_price'=>0,
+            'additional_price'=>0,
             'stock'=>10,
             'alert_stock'=>0,
             'state_display'=>0,
             'state_deal'=>0
         ];
         $handler->store($args);
-        $this->assertNotEquals(0,ProductOptionItem::count());
+        $this->assertNotEquals(0,ProductVariant::count());
     }
 
     public function testGetOptionItem()
     {
         $handler = new ProductOptionItemHandler();
         $this->testStore();
-        $item = ProductOptionItem::first();
+        $item = ProductVariant::first();
         $item = $handler->getOptionItem($item->id);
         $this->assertNotNull($item);
     }
@@ -45,23 +45,23 @@ class ProductOptionItemHandlerTest extends DefaultSet
     {
         $handler = new ProductOptionItemHandler();
         $this->testStore();
-        $item = ProductOptionItem::first();
+        $item = ProductVariant::first();
         $id = $item->id;
         $args = [
             'name'=>'updateTest'
             ];
         $handler->update($item, $args);
-        $this->assertEquals('updateTest',ProductOptionItem::find($id)->name);
+        $this->assertEquals('updateTest',ProductVariant::find($id)->name);
     }
 
     public function testDestroy()
     {
         $handler = new ProductOptionItemHandler();
         $this->testStore();
-        $item = ProductOptionItem::first();
+        $item = ProductVariant::first();
         $id = $item->id;
         $handler->destroy($item);
-        $this->assertNull(ProductOptionItem::find($id));
+        $this->assertNull(ProductVariant::find($id));
 
     }
 }

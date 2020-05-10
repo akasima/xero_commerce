@@ -5,6 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
 use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
+use Xpressengine\Plugins\XeroCommerce\Models\CartItem;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Services\AgreementService;
@@ -113,7 +114,7 @@ class OrderController extends XeroCommerceBasicController
     {
         $this->orderService->pay($order, $request);
         $cartService = new CartService();
-        $cartService->drawList(Cart::where('order_id', $order->id)->pluck('id'));
+        $cartService->deleteList(CartItem::where('order_id', $order->id)->pluck('id'));
         return $this->orderService->complete($order, $request);
     }
 

@@ -13,14 +13,14 @@ Vue.component('category-select-component', require('./components/category/Catego
 Vue.component('shipment-component', require('./components/setting/order/ShipmentComponent').default);
 Vue.component('after-service-component', require('./components/setting/order/AfterServiceComponent').default);
 Vue.component('user-search-component', require('./components/UserSearchComponent').default);
-Vue.component('cart-component', require('./components/Cart/CartComponent').default);
-Vue.component('order-register-component', require('./components/Order/OrderRegisterComponent').default);
-Vue.component('order-list-component', require('./components/Order/OrderListComponent').default);
-Vue.component('order-detail-component', require('./components/Order/OrderDetailComponent').default);
-Vue.component('order-after-service-component', require('./components/Order/OrderAfterServiceComponent').default);
+Vue.component('cart-component', require('./components/cart/CartComponent').default);
+Vue.component('order-register-component', require('./components/order/OrderRegisterComponent').default);
+Vue.component('order-list-component', require('./components/order/OrderListComponent').default);
+Vue.component('order-detail-component', require('./components/order/OrderDetailComponent').default);
+Vue.component('order-after-service-component', require('./components/order/OrderAfterServiceComponent').default);
 Vue.component('dash-component', require('./components/DashComponent').default);
 Vue.component('shop-carrier-component', require('./components/setting/shop/CarrierComponent').default);
-Vue.component('wish-component', require('./components/Wish/WishComponent').default);
+Vue.component('wish-component', require('./components/wish/WishComponent').default);
 
 var app = new Vue({
   el: '#component-container'

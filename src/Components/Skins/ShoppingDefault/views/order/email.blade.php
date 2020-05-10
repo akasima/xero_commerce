@@ -13,9 +13,9 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($order->orderItems as $item)
+        @foreach($order->items as $item)
             @php
-                $json= $item->getJsonFormat();
+                $json = $item->getJsonFormat();
             @endphp
             <tr>
                 <td style="width:100px;"><img src="{{$json['src']}}" alt="" style="width:90px; height:120px;"></td>

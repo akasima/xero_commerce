@@ -9,9 +9,9 @@ class Wish extends DynamicModel
     protected $table = 'xero_commerce__wishes';
     protected $guarded=[];
 
-    public function sellType()
+    public function product()
     {
-        return $this->morphTo('type');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
     /**

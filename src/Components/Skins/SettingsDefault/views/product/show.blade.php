@@ -41,7 +41,7 @@
                         </tr>
                         <tr>
                             <th>url명</th>
-                            <td>{{ $product->getSlug() }}</td>
+                            <td>{{ $product->slug }}</td>
                             <th>할인율</th>
                             <td>{{$product->discount_percentage}} %</td>
                             <th>최소 구매 수량</th>
@@ -140,7 +140,7 @@
                             @foreach($optionItems as $optionItem)
                                 <tr>
                                     <td>{{ $optionItem['name'] }}</td>
-                                    <td>{{ $optionItem['addition_price'] }}</td>
+                                    <td>{{ $optionItem['additional_price'] }}</td>
                                     <td>{{ $optionItem['stock'] }}</td>
                                     <td>{{ $optionItem['alert_stock'] }}</td>
                                     <td>{{ $optionItem['state_display'] == 1 ? '출력' : '미출력' }}</td>

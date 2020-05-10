@@ -14,7 +14,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 
 class OrderHandlerTest extends DefaultSet
 {
@@ -39,9 +39,9 @@ class OrderHandlerTest extends DefaultSet
         $orderHandler = new OrderHandler();
         $cartHandler =  new \Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler();
         $this->makeProduct();
-        $cart = $cartHandler->addCart(Product::first(), $cartHandler->makeCartGroup(ProductOptionItem::first(), [], 2),'선불');
+        $cart = $cartHandler->addCart(Product::first(), $cartHandler->makeCartItem(ProductVariant::first(), [], 2),'선불');
         $order = $orderHandler->register(collect([$cart]));
-        $this->assertNotEquals(0, $order->orderItems()->count());
+        $this->assertNotEquals(0, $order->items()->count());
         return $order;
     }
 
@@ -84,7 +84,7 @@ class OrderHandlerTest extends DefaultSet
         $cartHandler =  new \Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler();
         $product = $this->makeProduct();
         $this->makeShop();
-        $cart = $cartHandler->addCart($product, $cartHandler->makeCartGroup(ProductOptionItem::first(), [], 2),'선불');
+        $cart = $cartHandler->addCart($product, $cartHandler->makeCartItem(ProductVariant::first(), [], 2),'선불');
         $order = $orderHandler->register(collect([$cart]));
         $order = $orderHandler->makeShipment($order, [
             'shipment' => [
@@ -97,7 +97,7 @@ class OrderHandlerTest extends DefaultSet
                 'msg'=>'test'
             ]
         ]);
-        $shipment_count = $order->orderItems()->whereHas('shipment')->count();
+        $shipment_count = $order->items()->whereHas('shipment')->count();
         $this->assertNotEquals(0, $shipment_count);
         return $order;
     }
@@ -115,11 +115,11 @@ class OrderHandlerTest extends DefaultSet
     {
         $handler = new OrderHandler();
         $order = $this->testMakePayment();
-        $order->orderItems()->each(function(OrderItem $orderItem){
-            $sellType = $orderItem->sellType;
-            $sellType->shipment()->associate(Carrier::first());
+        $order->items()->each(function(OrderItem $orderItem){
+            $product = $orderItem->product;
+            $product->shipment()->associate(Carrier::first());
         });
-        $order->orderItems->each(function(OrderItem $orderItem) use($handler){
+        $order->items->each(function(OrderItem $orderItem) use($handler){
             $handler->completeShipment($orderItem);
         });
         $order = $handler->update($order);
@@ -140,7 +140,7 @@ class OrderHandlerTest extends DefaultSet
     {
         $handler = new OrderHandler();
         $order=$this->testMakePayment();
-        $orderItem = $order->orderItems()->first();
+        $orderItem = $order->items()->first();
         $afterOrder = $handler->changeOrderItem($orderItem, OrderItem::EXCHANGED);
         $this->assertNotEquals(Order::ORDERED, $afterOrder->code);
     }
@@ -181,7 +181,7 @@ class OrderHandlerTest extends DefaultSet
     {
         $handler = new OrderHandler();
         $order=$this->testMakePayment();
-        $order_item= $order->orderItems()->first();
+        $order_item= $order->items()->first();
         $updated_order = $handler->shipNoRegister($order_item, 'test');
         $this->assertNotEquals(Order::ORDERED,$updated_order->code);
 

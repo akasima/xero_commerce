@@ -4,6 +4,6 @@
     :list="{{json_encode($list)}}"
     cart-url="{{route('xero_commerce::product.cart', ['product'=> ''])}}"
     remove-url="{{route('xero_commerce::wish.remove')}}"
-    cart-page-url="{{route('xero_commerce::cart.index')}}"></wish-component>
+    cart-page-url="{{route('xero_commerce::cartitem.index')}}"></wish-component>
 </div>
 <input type="hidden" id="csrf_token" value="{{csrf_token()}}">

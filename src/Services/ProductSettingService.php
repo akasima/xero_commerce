@@ -6,7 +6,7 @@ use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Events\NewProductRegisterEvent;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 
 class ProductSettingService
@@ -66,12 +66,12 @@ class ProductSettingService
     {
         $optionItems = [];
 
-        /** @var ProductOptionItem $optionItem */
+        /** @var ProductVariant $optionItem */
         foreach ($product->optionItems as $optionItem) {
             $optionData['id'] = $optionItem->id;
             $optionData['name'] = $optionItem->name;
             $optionData['combination_values'] = $optionItem->combination_values;
-            $optionData['addition_price'] = $optionItem->addition_price;
+            $optionData['additional_price'] = $optionItem->additional_price;
             $optionData['sell_price'] = $optionItem->getSellPrice();
             $optionData['product_price']=$product->sell_price;
             $optionData['stock'] = $optionItem->stock;

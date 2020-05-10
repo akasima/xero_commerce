@@ -28,10 +28,10 @@
 
             </ul>
         </div><!-- //cart-step -->
-        <cart-list-component :cart-list="cartList"
+        <cart-list-component :cart-items="cartItems"
                              :cart-change-url="cartChangeUrl"
-                             :cart-draw-url="cartDrawUrl"
-                             :cart-draw-list-url="cartDrawListUrl"
+                             :cart-delete-url="cartDeleteUrl"
+                             :cart-delete-list-url="cartDeleteListUrl"
                              @wish="wish"
                              @checked="summary"
                              @change="reload"
@@ -53,7 +53,7 @@
             CartListComponent, CartSumComponent
         },
         props: [
-            'cartList', 'summaryUrl', 'orderUrl', 'cartChangeUrl', 'cartDrawUrl', 'cartDrawListUrl', 'wishAddUrl', 'wishUrl'
+            'cartItems', 'summaryUrl', 'orderUrl', 'cartChangeUrl', 'cartDeleteUrl', 'cartDeleteListUrl', 'wishAddUrl', 'wishUrl'
         ],
         data() {
             return {
@@ -73,10 +73,7 @@
                 this.disable = true
                 this.checkedList = cart_ids
                 $.ajax({
-                    url: this.summaryUrl,
-                    data: {
-                        cart_ids: cart_ids
-                    }
+                    url: this.summaryUrl
                 }).done((res) => {
                     this.cartSummary = res
                     this.disable = false
@@ -144,7 +141,7 @@
                     status: true,
                     msg: ''
                 }
-                if(this.cartList.filter((v)=>{return this.checkedList.indexOf(v.id) !== -1;}).map(v=>{return v.count;}).reduce((a,b)=>a+b,0)===0){
+                if(this.cartItems.filter((v)=>{return this.checkedList.indexOf(v.id) !== -1;}).map(v=>{return v.count;}).reduce((a,b)=>a+b,0)===0){
                     validate.status=false
                     validate.msg+= '구매하는 상품이 없거나 선택된 상품이 없습니다.'
                 }
@@ -155,7 +152,7 @@
             }
         },
         mounted () {
-            console.log(this.cartList)
+            console.log(this.cartItems)
         }
     }
 </script>

@@ -107,15 +107,6 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce__product_slugs')) {
-            Schema::create('xero_commerce__product_slugs', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('target_id');
-                $table->string('slug');
-                $table->string('product_name');
-            });
-        }
-
         if (!Schema::hasTable('xero_commerce__product_category')) {
             Schema::create('xero_commerce__product_category', function (Blueprint $table) {
                 $table->increments('id');
@@ -197,13 +188,17 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce__carts')) {
-            Schema::create('xero_commerce__carts', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__cart_items')) {
+            Schema::create('xero_commerce__cart_items', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('user_id', 36);
-                $table->smallInteger('shipping_fee');
-                $table->morphs('type');
-                $table->string('order_id')->nullable();
+                $table->integer('product_id');
+                $table->integer('product_variant_id');
+                $table->text('custom_values');
+                $table->integer('count');shipping_fee
+                $table->smallInteger('');
+                // 주문후 장바구니에서 주문된 상품을 지우기 위한 order_id
+                $table->integer('order_id');
                 $table->timestamps();
             });
         }
@@ -212,42 +207,26 @@ class XeroCommerceCreateTables extends Migration
             Schema::create('xero_commerce__wishes', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('user_id', 36);
-                $table->morphs('type');
+                $table->integer('product_id');
                 $table->timestamps();
             });
         }
 
-        if (!Schema::hasTable('xero_commerce__cart_group')) {
-            Schema::create('xero_commerce__cart_group', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('cart_id');
-                $table->morphs('unit');
-                $table->text('custom_values');
-                $table->integer('count');
-            });
-        }
 
         if (!Schema::hasTable('xero_commerce__order_items')) {
             Schema::create('xero_commerce__order_items', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('order_id');
+                $table->integer('product_id');
+                $table->integer('product_variant_id');
+                $table->text('custom_values');
+                $table->integer('count');
                 $table->smallInteger('shipping_fee');
                 $table->integer('shipment_id')->nullable();
-                $table->morphs('type');
                 $table->integer('original_price');
                 $table->integer('sell_price');
                 $table->smallInteger('code');
                 $table->timestamps();
-            });
-        }
-
-        if (!Schema::hasTable('xero_commerce__order_item_group')) {
-            Schema::create('xero_commerce__order_item_group', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('order_item_id');
-                $table->morphs('unit');
-                $table->text('custom_values');
-                $table->integer('count');
             });
         }
 
@@ -386,6 +365,7 @@ class XeroCommerceCreateTables extends Migration
         $table->string('product_code', 32)->nullable();
         $table->string('name')->nullable();
         $table->string('sub_name')->nullable();
+        $table->string('slug')->nullable();
         $table->integer('original_price')->nullable();
         $table->integer('sell_price')->nullable();
         $table->double('discount_percentage')->nullable();
@@ -432,8 +412,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce__product_variations')) {
-            Schema::create('xero_commerce__product_variations', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__product_variants')) {
+            Schema::create('xero_commerce__product_variants', function (Blueprint $table) {
                 $table->increments('id');
                 $table = self::setProductVariationTableColumns($table);
                 $table->softDeletes();
@@ -441,8 +421,8 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('xero_commerce__product_variation_revisions')) {
-            Schema::create('xero_commerce__product_variation_revisions', function (Blueprint $table) {
+        if (!Schema::hasTable('xero_commerce__product_variant_revisions')) {
+            Schema::create('xero_commerce__product_variant_revisions', function (Blueprint $table) {
                 $table->increments('revision_id');
                 $table->integer('revision_no')->default(0);
                 $table->integer('id');
@@ -469,7 +449,7 @@ class XeroCommerceCreateTables extends Migration
         $table->string('name');
         // OptionItem에 옵션값의 조합(combination_values) 칼럼 추가 (예시: {'색상':'블랙','사이즈':'S'})
         $table->text('combination_values');
-        $table->integer('addition_price');
+        $table->integer('additional_price');
         $table->integer('stock');
         $table->integer('alert_stock')->nullable();
         $table->integer('state_display');
@@ -504,8 +484,6 @@ class XeroCommerceCreateTables extends Migration
 
         Schema::dropIfExists('xero_commerce__images');
 
-        Schema::dropIfExists('xero_commerce__product_slugs');
-
         Schema::dropIfExists('xero_commerce__product_category');
 
         Schema::dropIfExists('xero_commerce__labels');
@@ -522,15 +500,11 @@ class XeroCommerceCreateTables extends Migration
 
         Schema::dropIfExists('xero_commerce__feedbacks');
 
-        Schema::dropIfExists('xero_commerce__carts');
+        Schema::dropIfExists('xero_commerce__cart_items');
 
         Schema::dropIfExists('xero_commerce__wishes');
 
-        Schema::dropIfExists('xero_commerce__cart_group');
-
         Schema::dropIfExists('xero_commerce__order_items');
-
-        Schema::dropIfExists('xero_commerce__order_item_group');
 
         Schema::dropIfExists('xero_commerce__order_shipments');
 

@@ -40,7 +40,7 @@
         <ul class="list-basic">
             @foreach ($products as $key => $product)
                 <li class="item-basic" style="position: relative;">
-                    <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}" style="overflow: hidden; position:relative;" class="link-basic">
+                    <a href="{{ route('xero_commerce::product.show', ['slug' => $product->slug]) }}" style="overflow: hidden; position:relative;" class="link-basic">
                         @if($badge = $product->badge)
                             <div class="badge" style="background: {{$badge->background_color}};">
                                 <span style="color: {{$badge->text_color}};">{{$badge->name}}</span>

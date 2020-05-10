@@ -3,33 +3,32 @@
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
-use Xpressengine\Plugins\XeroCommerce\Models\SellType;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\Wish;
 
 class WishHandler
 {
-    public function store(SellType $sellType)
+    public function store(Product $product)
     {
-        if(!$this->isWish($sellType)){
+        if(!$this->isWish($product)){
             $wish = new Wish();
             $wish->user_id = Auth::id();
-            $sellType->wishs()->save($wish);
+            $product->wishes()->save($wish);
             $wish->save();
         }
     }
 
     public function storeMany($collection)
     {
-        $collection->each(function(SellType $sellType) {
-            $this->store($sellType);
+        $collection->each(function(Product $product) {
+            $this->store($product);
         });
     }
 
-    public function remove(SellType $sellType)
+    public function remove(Product $product)
     {
         Wish::where('user_id', Auth::id())
-            ->where('type_id', $sellType->id)
-            ->where('type_type', get_class($sellType))
+            ->where('product_id', $product->id)
             ->delete();
     }
 
@@ -43,33 +42,30 @@ class WishHandler
         Wish::whereIn('id', $ids)->delete();
     }
 
-    public function list($sellType = null)
+    public function list($product = null)
     {
         $list = Wish::where('user_id', Auth::id())
-            ->when($sellType, function ($query) use ($sellType) {
-                $query
-                    ->where('type_id', $sellType->id)
-                    ->where('type_type', get_class($sellType));
+            ->when($product, function ($query) use ($product) {
+                $query->where('product_id', $product->id);
             })
-            ->with('sellType')
+            ->with('product')
             ->get();
 
         return $list->map(function (Wish $wish) {
-            $selltype = $wish->sellType()->first();
+            $product = $wish->product()->first();
             return [
                 'id' => $wish->id,
-                'sellType' => $selltype->getJsonFormat(),
+                'product' => $product->getJsonFormat(),
                 'choose' => []
             ];
         });
     }
 
-    public function isWish(SellType $sellType)
+    public function isWish(Product $product)
     {
         return
             Wish::where('user_id', Auth::id())
-                ->where('type_id', $sellType->id)
-                ->where('type_type', get_class($sellType))
+                ->where('product_id', $product->id)
                 ->exists();
     }
 }

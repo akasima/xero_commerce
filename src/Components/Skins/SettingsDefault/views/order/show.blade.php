@@ -1,7 +1,7 @@
 @php
     $shipment = new stdClass();
-    if($order->orderItems[0]->shipment) {
-        $shipment = $order->orderItems[0]->shipment;
+    if($order->items[0]->shipment) {
+        $shipment = $order->items[0]->shipment;
     }
 @endphp
 
@@ -50,7 +50,7 @@
                             <td>
                             {{
                                 number_format(
-                                    $order->orderItems->sum(function($item){
+                                    $order->items->sum(function($item){
                                         return $item->getSellPrice()+$item->getFare();
                                     })
                                 )

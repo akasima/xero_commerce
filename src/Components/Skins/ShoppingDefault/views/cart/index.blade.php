@@ -2,14 +2,14 @@
 <h2>장바구니</h2>
 <div id="component-container">
     <cart-component
-        :cart-list='{!! $cartList !!}'
-        summary-url="{{ route('xero_commerce::cart.summary') }}"
+        :cart-items='{!! $cartItems !!}'
+        summary-url="{{ route('xero_commerce::cartitem.summary') }}"
         order-url="{{ route('xero_commerce::order.register') }}"
-        cart-change-url="{{ route('xero_commerce::cart.change',['cart'=>'']) }}"
-        cart-draw-url="{{ route('xero_commerce::cart.draw',['cart'=>'']) }}"
-        cart-draw-list-url="{{ route('xero_commerce::cart.drawList') }}"
+        cart-change-url="{{ route('xero_commerce::cartitem.change', ['']) }}"
+        cart-delete-url="{{ route('xero_commerce::cartitem.delete', ['']) }}"
+        cart-delete-list-url="{{ route('xero_commerce::cartitem.deleteList') }}"
         wish-url="{{route('xero_commerce::wish.index')}}"
-        wish-add-url="{{route('xero_commerce::cart.wish')}}"
+        wish-add-url="{{route('xero_commerce::cartitem.wish')}}"
     ></cart-component>
     <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
 </div>

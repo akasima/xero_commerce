@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Services;
 
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\WishHandler;
-use Xpressengine\Plugins\XeroCommerce\Models\SellType;
+use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\Wish;
 
 class WishService
@@ -19,9 +19,9 @@ class WishService
         $this->wishHandler = app('xero_commerce.wishHandler');
     }
 
-    public function store(SellType $sellType)
+    public function store(Product $product)
     {
-        $this->wishHandler->store($sellType);
+        $this->wishHandler->store($product);
     }
 
     public function storeMany($collection)
@@ -29,20 +29,20 @@ class WishService
         $this->wishHandler->storeMany($collection);
     }
 
-    public function remove(SellType $sellType)
+    public function remove(Product $product)
     {
-        $this->wishHandler->remove($sellType);
+        $this->wishHandler->remove($product);
     }
 
-    public function toggle(SellType $sellType)
+    public function toggle(Product $product)
     {
-        $existWish = $this->wishHandler->list($sellType);
+        $existWish = $this->wishHandler->list($product);
 
         if ($existWish->count() > 0) {
-            $this->remove($sellType);
+            $this->remove($product);
             return 0;
         } else {
-            $this->store($sellType);
+            $this->store($product);
             return 1;
         }
     }

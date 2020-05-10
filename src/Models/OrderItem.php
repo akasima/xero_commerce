@@ -2,9 +2,13 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
-class OrderItem extends SellSet
+class OrderItem extends OrderableItem
 {
     protected $table = 'xero_commerce__order_items';
+
+    protected $casts = [
+        'custom_values' => 'json'
+    ];
 
     const EXCHANGING = 1;
     const EXCHANGED = 2;
@@ -12,11 +16,6 @@ class OrderItem extends SellSet
     const REFUNDED = 4;
     const CANCELING = 5;
     const CANCELED = 6;
-
-    public function sellGroups()
-    {
-        return $this->hasMany(OrderItemGroup::class);
-    }
 
     public function order()
     {
@@ -29,29 +28,27 @@ class OrderItem extends SellSet
     public function renderInformation()
     {
         $row = [];
-        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->forcedSellType()->getSlug()]) . '">' . $this->renderSpanBr($this->forcedSellType()->getName()) . '</a>';
-        $this->sellGroups->each(function (SellGroup $group) use (&$row) {
-            $spanData = $group->forcedSellUnit()->getName();
-            $customValues = $group->getCustomValues();
-            if(!empty($customValues)) {
-                $spanData .= ' (';
+        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->productWithTrashed->slug]) . '">' . $this->renderSpanBr($this->productWithTrashed->name) . '</a>';
+        $spanData = $this->productWithTrashed->name;
+        $customValues = $this->custom_values;
+        if(!empty($customValues)) {
+            $spanData .= ' (';
 
-                foreach ($customValues as $key => $value) {
-                    $spanData .= $key.' : '.$value;
-                    // 마지막 루프면
-                    if($key == array_keys($customValues)[count($customValues)-1]) {
-                        $spanData .= ')';
-                    } else {
-                        $spanData .= ', ';
-                    }
+            foreach ($customValues as $key => $value) {
+                $spanData .= $key.' : '.$value;
+                // 마지막 루프면
+                if($key == array_keys($customValues)[count($customValues)-1]) {
+                    $spanData .= ')';
+                } else {
+                    $spanData .= ', ';
                 }
             }
+        }
 
-            $spanData .= ' / ' . $group->getCount() . '개';
+        $spanData .= ' / ' . $this->getCount() . '개';
 
-            $row [] = $this->renderSpanBr($spanData, "color: grey");
-        });
-        $row [] = $this->renderSpanBr($this->forcedSellType()->getShop()->shop_name);
+        $row [] = $this->renderSpanBr($spanData, "color: grey");
+        $row [] = $this->renderSpanBr($this->productWithTrashed->shop->shop_name);
 
         return $row;
     }
@@ -63,21 +60,20 @@ class OrderItem extends SellSet
             'user' => $this->order->userInfo,
             'order_no' => $this->order->order_no,
             'info' => $this->renderInformation(),
-            'options' => $this->sellGroups->map(function (SellGroup $sellGroup) {
-                return $sellGroup->getJsonFormat();
-            }),
-            'name' => $this->forcedSellType()->getName(),
+            'custom_values' => $this->custom_values,
+            'name' => $this->productWithTrashed->name,
+            'variant_name' => $this->productVariant->name,
             'original_price' => $this->getOriginalPrice(),
             'sell_price' => $this->getSellPrice(),
             'discount_price' => $this->getDiscountPrice(),
-            'count' => $this->getCount(),
+            'count' => $this->count,
             'src' => $this->getThumbnailSrc(),
             'status' => $this->shipment ? $this->shipment->getStatus() : '',
             'shipment' => $this->shipment ?: null,
             'shipment_url' => $this->shipment ? $this->shipment->geturl() : '',
             'fare' => $this->getFare(),
-            'shipping_fee' => $this->getShippingFee(),
-            'shop_carrier' => $this->sellType->getShopCarrier(),
+            'shipping_fee' => $this->getShippingFeeType(),
+            'shop_carrier' => $this->product->getShopCarrier(),
             'as' => $this->afterService
         ];
     }

@@ -41,7 +41,7 @@ class ProductService
 
         return $items;
     }
-	
+
     public function getProducts(Request $request, $config, $paginationCount = self::DEFAULT_PAGINATION_COUNT)
     {
         $query = $this->handler->getProductsQueryForModule($request, $config);
@@ -54,6 +54,13 @@ class ProductService
     public function getProduct($productId)
     {
         $product = $this->handler->getProduct($productId);
+
+        return $product;
+    }
+
+    public function getProductBySlug($slug)
+    {
+        $product = $this->handler->getProductBySlug($slug);
 
         return $product;
     }

@@ -2,30 +2,11 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Plugin;
 
-use App\Facades\XeCategory;
 use App\Facades\XeConfig;
 use App\Facades\XeInterception;
-use App\Facades\XeLang;
-use App\Facades\XeMedia;
-use App\Facades\XeStorage;
-use Faker\Factory;
 use Illuminate\Support\Facades\Auth;
 use XeRegister;
-use XeDB;
-use XeMenu;
 use Route;
-use Xpressengine\Category\Models\CategoryItem;
-use Xpressengine\Document\ConfigHandler;
-use Xpressengine\Http\Request;
-use Xpressengine\Menu\MenuHandler;
-use Xpressengine\Permission\Grant;
-use Xpressengine\Plugins\Banner\Widgets\Widget;
-use Xpressengine\Plugins\CkEditor\Editors\CkEditor;
-use Xpressengine\Plugins\XeroCommerce\Components\Modules\XeroCommerceModule;
-use Xpressengine\Plugins\XeroCommerce\Components\Widget\DefaultWidget\Skins\Common\CommonSkin as DefaultWidgetCommonSkin;
-use Xpressengine\Plugins\XeroCommerce\Components\Widget\MainSlider\MainSliderSkin;
-use Xpressengine\Plugins\XeroCommerce\Components\Widget\RecommendSlider\RecommendSliderSkin;
-use Xpressengine\Plugins\XeroCommerce\Components\Widget\SlideWidget\Skins\Common\CommonSkin as SlideWidgetCommonSkin;
 use Xpressengine\Plugins\XeroCommerce\Controllers\Settings\ProductController;
 use Xpressengine\Plugins\XeroCommerce\Handlers\BadgeHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
@@ -43,17 +24,8 @@ use Xpressengine\Plugins\XeroCommerce\Handlers\ShopHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\WishHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\XeroCommerceImageHandler;
 use Xpressengine\Plugins\XeroCommerce\Middleware\AgreementMiddleware;
-use Xpressengine\Plugins\XeroCommerce\Models\Agreement;
-use Xpressengine\Plugins\XeroCommerce\Models\Badge;
-use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
-use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
-use Xpressengine\Plugins\XeroCommerce\Models\SellType;
-use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
-use Xpressengine\Plugins\XeroCommerce\Models\Shop;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\ShopUser;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
@@ -132,34 +104,34 @@ class Resources
                 'as' => 'xero_commerce::wish.remove'
             ]);
 
-            Route::post('/cart/wish', [
-                'uses' => 'CartController@wishMany',
-                'as' => 'xero_commerce::cart.wish'
-            ]);
-
             Route::get('/cart', [
-                'uses' => 'CartController@index',
-                'as' => 'xero_commerce::cart.index'
+                'uses' => 'CartItemController@index',
+                'as' => 'xero_commerce::cartitem.index'
             ]);
-            Route::get('/cart/draw/{cart}', [
-                'uses' => 'CartController@draw',
-                'as' => 'xero_commerce::cart.draw'
+            Route::get('/cart/delete/{cartItem}', [
+                'uses' => 'CartItemController@delete',
+                'as' => 'xero_commerce::cartitem.delete'
             ]);
-            Route::get('/cart/draw-list', [
-                'uses' => 'CartController@drawList',
-                'as' => 'xero_commerce::cart.drawList'
+            Route::get('/cart/delete-list', [
+                'uses' => 'CartItemController@deleteList',
+                'as' => 'xero_commerce::cartitem.deleteList'
             ]);
-            Route::get('/cart/change/{cart}', [
-                'uses' => 'CartController@change',
-                'as' => 'xero_commerce::cart.change'
+            Route::get('/cartitem/change/{cartItem}', [
+                'uses' => 'CartItemController@change',
+                'as' => 'xero_commerce::cartitem.change'
             ]);
             Route::get('/cart/list', [
-                'uses' => 'CartController@list',
-                'as' => 'xero_commerce::cart.list'
+                'uses' => 'CartItemController@list',
+                'as' => 'xero_commerce::cartitem.list'
             ]);
             Route::get('/cart/summary', [
-                'uses' => 'CartController@summary',
-                'as' => 'xero_commerce::cart.summary'
+                'uses' => 'CartItemController@summary',
+                'as' => 'xero_commerce::cartitem.summary'
+            ]);
+
+            Route::post('/cart/wish', [
+                'uses' => 'CartItemController@wishMany',
+                'as' => 'xero_commerce::cartitem.wish'
             ]);
 
 
@@ -743,10 +715,10 @@ class Resources
 
         $app->when(ProductController::class)
             ->needs(SellUnit::class)
-            ->give(ProductOptionItem::class);
+            ->give(ProductVariant::class);
 
         $app->when(ProductController::class)
-            ->needs(SellType::class)
+            ->needs(Product::class)
             ->give(Product::class);
     }
 

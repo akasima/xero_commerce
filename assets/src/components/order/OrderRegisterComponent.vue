@@ -61,7 +61,7 @@
                         </div>
                     </div><!-- //table-type -->
                 </div><!-- //table-wrap -->
-                <order-shipment-component :user-info="userInfo" :shipment-store-url="shipmentStoreUrl" v-model="shipment" :order-items="orderItemList"></order-shipment-component>
+                <order-shipment-component :user-info="userInfo" :address-store-url="shipmentStoreUrl" v-model="shipment" :order-items="orderItemList"></order-shipment-component>
                 <!--<div class="table-wrap">-->
                 <!--<h4 class="table-type-title">할인 정보</h4>-->
                 <!--<button type="button" class="btn-cart-toggle xe-hidden-md xe-hidden-lg"><i class="xi-angle-up-thin"></i></button>-->

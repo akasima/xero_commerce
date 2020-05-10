@@ -9,22 +9,22 @@
                 </div>
                 <div class="table-cell">
                     <label class="xe-label">
-                        <input type="radio" checked="checked" name="addr" value="기본배송지" v-model="deliveryCheck">
+                        <input type="radio" checked="checked" name="addr" value="기본배송지" v-model="addressCheck">
                         <span class="xe-input-helper"></span>
                         <span class="xe-label-text">기본 배송지</span>
                     </label>
-                    <label class="xe-label" v-for="del in userInfo.user_delivery" v-if="del.nickname!=='기본배송지'">
-                        <input type="radio" name="addr" v-model="deliveryCheck" :value="del.nickname">
+                    <label class="xe-label" v-for="del in userInfo.addresses" v-if="del.nickname!=='기본배송지'">
+                        <input type="radio" name="addr" v-model="addressCheck" :value="del.nickname">
                         <span class="xe-input-helper"></span>
                         <span class="xe-label-text">{{del.nickname}}</span>
                     </label>
                     <label class="xe-label">
-                        <input type="radio" name="addr" v-model="deliveryCheck" value="new">
+                        <input type="radio" name="addr" v-model="addressCheck" value="new">
                         <span class="xe-input-helper"></span>
                         <span class="xe-label-text">신규 배송지</span>
                     </label>
-                    <span v-show="this.deliveryCheck ==='new'"><input type="text" placeholder="신규배송지명"
-                                                                      v-model="new_name"> <button @click="addDelivery">저장</button></span>
+                    <span v-show="this.addressCheck ==='new'"><input type="text" placeholder="신규배송지명"
+                                                                      v-model="new_name"> <button @click="addAddress">저장</button></span>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
                     이름
                 </div>
                 <div class="table-cell">
-                    <input type="text" class="xe-form-control input-195" v-model="delivery.name">
+                    <input type="text" class="xe-form-control input-195" v-model="address.name">
                 </div>
             </div>
 
@@ -45,7 +45,7 @@
                     <div class="phone-number">
                         <div class="xe-select-box xe-btn table-select">
                             <label>{{phone1}}</label>
-                            <select v-model="phone1" @change="delivery.phone=phone1+phone2+phone3">
+                            <select v-model="phone1" @change="address.phone=phone1+phone2+phone3">
                                 <option>010</option>
                                 <option>011</option>
                                 <option>017</option>
@@ -54,10 +54,10 @@
                             </select>
                         </div>
                         <span class="margin-between">-</span>
-                        <input type="text" class="xe-form-control" maxlength="4" v-model="phone2" @input="delivery.phone=phone1+phone2+phone3">
+                        <input type="text" class="xe-form-control" maxlength="4" v-model="phone2" @input="address.phone=phone1+phone2+phone3">
                         <span class="margin-between">-</span>
-                        <input type="text" class="xe-form-control" maxlength="4" v-model="phone3" @input="delivery.phone=phone1+phone2+phone3">
-                        <input type="hidden" v-model="delivery.phone">
+                        <input type="text" class="xe-form-control" maxlength="4" v-model="phone3" @input="address.phone=phone1+phone2+phone3">
+                        <input type="hidden" v-model="address.phone">
                     </div> <!-- //table-cell-number -->
                 </div>
             </div>
@@ -68,12 +68,12 @@
                 </div>
                 <div class="table-cell">
                     <div class="table-cell-row">
-                        <input type="text" class="xe-form-control input-only-72" v-model="delivery.addr_post" readonly @click="modal">
+                        <input type="text" class="xe-form-control input-only-72" v-model="address.addr_post" readonly @click="modal">
                         <button type="button" class="xe-btn xe-btn-secondary" @click="modal">우편번호</button>
                     </div>
                     <div class="table-cell-row">
-                        <input type="text" class="xe-form-control input-195" readonly v-model="delivery.addr">
-                        <input type="text" class="xe-form-control" v-model="delivery.addr_detail">
+                        <input type="text" class="xe-form-control input-195" readonly v-model="address.addr">
+                        <input type="text" class="xe-form-control" v-model="address.addr_detail">
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                     배송 메세지
                 </div>
                 <div class="table-cell">
-                    <input type="text" class="xe-form-control table-input" v-model="delivery.msg">
+                    <input type="text" class="xe-form-control table-input" v-model="address.msg">
                 </div>
             </div>
 
@@ -120,20 +120,20 @@
 
 <script>
     export default {
-        name: "OrderDeliveryComponent",
+        name: "OrderShipmentComponent",
         watch: {
-            delivery(el) {
+            address(el) {
                 this.$emit('input', el);
-                this.phone1 = this.delivery.phone.slice(0,3)
-                this.phone2 = this.delivery.phone.slice(3,7)
-                this.phone3 = this.delivery.phone.slice(7,11)
+                this.phone1 = this.address.phone.slice(0,3)
+                this.phone2 = this.address.phone.slice(3,7)
+                this.phone3 = this.address.phone.slice(7,11)
             },
-            deliveryCheck(el) {
-                var del = this.userInfo.user_delivery.find(v => {
+            addressCheck(el) {
+                var del = this.userInfo.addresses.find(v => {
                     return v.nickname === el
                 })
                 if (del) {
-                    this.delivery = {
+                    this.address = {
                         name: del.name,
                         phone: del.phone,
                         addr: del.addr,
@@ -143,18 +143,18 @@
                         nickname: del.nickname
                     }
                 } else {
-                    this.delivery = Object.assign({}, this.newDelivery)
-                    if (el !== 'new') this.delivery.nickname = el
+                    this.address = Object.assign({}, this.newAddress)
+                    if (el !== 'new') this.address.nickname = el
                 }
             }
         },
         props: [
-            'input', 'userInfo', 'deliveryStoreUrl', 'orderItems'
+            'input', 'userInfo', 'addressStoreUrl', 'orderItems'
         ],
         data() {
             return {
-                deliveryCheck: '',
-                newDelivery: {
+                addressCheck: '',
+                newAddress: {
                     name: this.userInfo.name,
                     phone: this.userInfo.phone,
                     addr: '',
@@ -163,7 +163,7 @@
                     msg: ''
                 },
                 new_name: '',
-                delivery: {
+                address: {
                     name: this.userInfo.name,
                     phone: this.userInfo.phone,
                     addr: '',
@@ -179,8 +179,8 @@
             }
         },
         methods: {
-            clear(delivery) {
-                delivery = {
+            clear(address) {
+                address = {
                     name: '',
                     contact: [
                         '', '', ''
@@ -192,36 +192,36 @@
                 }
             },
             consoling() {
-                console.log(this.delivery)
+                console.log(this.address)
             },
-            addDelivery() {
+            addAddress() {
                 if(this.new_name===''){
                     alert('신규 배송지를 알아 볼 수 있는 닉네임을 설정해주세요')
                     return
                 }
-                if(this.delivery.addr===''){
+                if(this.address.addr===''){
                     alert('신규 배송지주소가 없습니다')
                     return
                 }
 
                 $.ajax({
-                    url: this.deliveryStoreUrl,
+                    url: this.addressStoreUrl,
                     method: 'post',
                     dataType: 'json',
                     data: {
                         _token: $('#csrf_token').val(),
                         nickname: this.new_name,
-                        name: this.delivery.name,
-                        phone: this.delivery.phone,
-                        addr: this.delivery.addr,
-                        addr_detail: this.delivery.addr_detail,
-                        addr_post: this.delivery.addr_post,
-                        msg: this.delivery.msg
+                        name: this.address.name,
+                        phone: this.address.phone,
+                        addr: this.address.addr,
+                        addr_detail: this.address.addr_detail,
+                        addr_post: this.address.addr_post,
+                        msg: this.address.msg
                     }
                 }).done((req)=>{
-                    this.delivery.nickname = this.new_name
-                    this.userInfo.user_delivery.push(this.delivery)
-                    this.deliveryCheck = this.new_name
+                    this.address.nickname = this.new_name
+                    this.userInfo.addresses.push(this.address)
+                    this.addressCheck = this.new_name
                     this.new_name = ''
                 })
             },
@@ -233,15 +233,15 @@
                 }, 500)
             },
             addressRegister(res) {
-                this.delivery.addr = res.address
-                this.delivery.addr_post = res.zonecode
+                this.address.addr = res.address
+                this.address.addr_post = res.zonecode
                 $('#addressModal').xeModal('hide')
                 $("#addr_detail").focus()
             }
         },
         mounted() {
-            this.deliveryCheck = '기본배송지'
-            this.$emit('input', this.delivery)
+            this.addressCheck = '기본배송지'
+            this.$emit('input', this.address)
         }
     }
 </script>

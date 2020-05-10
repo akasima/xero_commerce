@@ -5,97 +5,64 @@ namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
-use Xpressengine\Plugins\XeroCommerce\Models\CartGroup;
-use Xpressengine\Plugins\XeroCommerce\Models\SellType;
-use Xpressengine\Plugins\XeroCommerce\Models\SellUnit;
-use Xpressengine\User\Models\User;
+use Xpressengine\Plugins\XeroCommerce\Models\CartItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 
-class CartHandler extends SellSetHandler
+class CartHandler extends OrderableItemHandler
 {
-    public function getCartList()
+    private function getUserId()
     {
-        return $this->getCartQuery()->get();
+        return Auth::id() ? Auth::id() : request()->ip();
     }
 
-    public function getCartListByCartIds($cart_ids)
+    public function getCartItems()
     {
-        if (is_iterable($cart_ids)) {
-            return $this->getCartQuery()->whereIn('id', $cart_ids)->get();
-        }else{
-            return $this->getCartQuery()->where('id', $cart_ids)->get();
-        }
+        return $this->getCartItemQuery()->get();
     }
 
-    private function getCartQuery()
+    private function getCartItemQuery()
     {
-        if (is_null($user_id = Auth::id())) {
-            $user_id = \request()->ip();
-        }
-        return Cart::where('user_id', $user_id)->latest();
-    }
-
-    public function addCart(SellType $sellType, $cartGroupList, $shipment)
-    {
-        $cart = new Cart();
-
-        $cart->user_id = Auth::id() ?: \request()->ip();
-        $cart->shipping_fee = Cart::SHIPPING_FEE_TYPE[$shipment];
-        $sellType->carts()->save($cart);
-        $cart->save();
-        $cartGroupList->each(function (CartGroup $cartGroup) use ($cart) {
-            $cart->addGroup($cartGroup);
-        });
-
-        return $cart;
-    }
-
-    public function drawCart($cart_id)
-    {
-        if (is_array( $cart_id ) || ( is_object( $cart_id ) && ( $cart_id instanceof \Traversable ))) {
-            CartGroup::whereIn('cart_id', $cart_id)->delete();
-
-            return Cart::whereIn('id', $cart_id)->delete();
-        }
-        CartGroup::where('cart_id', $cart_id)->delete();
-
-        return Cart::find($cart_id)->delete();
-    }
-
-    public function resetCart()
-    {
-        $cart_ids = $this->getCartList()->pluck('id');
-        return $this->drawCart($cart_ids);
+        return CartItem::where('user_id', $this->getUserId())->latest();
     }
 
     public function getSellSetList()
     {
-        return $this->getCartList();
+        return $this->getCartItems();
     }
 
-    public function makeCartGroup(SellUnit $sellUnit, array $customValues, $count)
+    public function makeCartItem(ProductVariant $variant, array $customValues, $count)
     {
-        $cartGroup = new CartGroup();
-        $cartGroup->cart_id = 0;
-        $cartGroup->setCount($count);
-        $cartGroup->setCustomValues($customValues);
-        $sellUnit->cartGroup()->save($cartGroup);
-        $cartGroup->save();
+        $cartItem = new CartItem();
+        $cartItem->user_id = $this->getUserId();
+        $cartItem->setCount($count);
+        $cartItem->setCustomValues($customValues);
+        $cartItem->product_id = $variant->product_id;
+        $cartItem->productVariant()->associate($variant);
+        $cartItem->save();
 
-        return $cartGroup;
+        return $cartItem;
     }
 
-    public function changeCartItem(Cart $cart, $cartGroupList, $shipment)
+    public function changeCartItem(CartItem $cartItem, Request $request)
     {
-        $cart->sellGroups()->delete();
-        $cart->shipping_fee = Cart::SHIPPING_FEE_TYPE[$shipment];
+        $cartItem->fill($request->all());
+        $cartItem->save();
+    }
 
-        $cartGroupList->each(function (CartGroup $cartGroup) use ($cart) {
-            $cart->addGroup($cartGroup);
-        });
-        $cart->save();
-
-        if ($cart->getCount() == 0) {
-            $cart->delete();
+    public function deleteCartItem($cartItemId)
+    {
+        if (is_array( $cartItemId ) || ( is_object( $cartItemId ) && ( $cartItemId instanceof \Traversable ))) {
+            return CartItem::whereIn('id', $cartItemId)->delete();
         }
+        return CartItem::where('id', $cartItemId)->delete();
+    }
+
+    /**
+     * 장바구니 비우기
+     * @return mixed
+     */
+    public function resetCart()
+    {
+        return $this->getCartItems()->delete();
     }
 }

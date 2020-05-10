@@ -39,7 +39,7 @@
                         @endif
                         <li class="item-option"><a class="link-option" href="{{ route('logout') }}">로그아웃</a></li>
                         <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.index') }}">마이페이지</a></li>
-                        <li class="item-option"><a class="link-option" href="{{route('xero_commerce::cart.index')}}">장바구니</a></li>
+                        <li class="item-option"><a class="link-option" href="{{route('xero_commerce::cartitem.index')}}">장바구니</a></li>
                         <li class="item-option"><a class="link-option" href="{{route('xero_commerce::order.list')}}">주문조회</a></li>
                     @else
                         <li class="item-option"><a class="link-option" href="{{ route('login') }}">로그인</a></li>

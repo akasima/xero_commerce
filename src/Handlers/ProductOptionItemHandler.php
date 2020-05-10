@@ -2,14 +2,14 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItemRevision;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariantRevision;
 
 class ProductOptionItemHandler
 {
     public function store(array $args)
     {
-        $newProductOptionItem = new ProductOptionItem();
+        $newProductOptionItem = new ProductVariant();
 
         $newProductOptionItem->fill($args);
 
@@ -20,19 +20,19 @@ class ProductOptionItemHandler
 
     public function getOptionItem($productOptionItemId)
     {
-        $item = ProductOptionItem::where('id', $productOptionItemId)->first();
+        $item = ProductVariant::where('id', $productOptionItemId)->first();
 
         return $item;
     }
 
-    public function destroy(ProductOptionItem $item)
+    public function destroy(ProductVariant $item)
     {
         $item->delete();
 
         $this->storeRevision($item);
     }
 
-    public function update(ProductOptionItem $optionItem, array $args)
+    public function update(ProductVariant $optionItem, array $args)
     {
         $attributes = $optionItem->getAttributes();
         foreach ($args as $key => $value) {
@@ -50,12 +50,12 @@ class ProductOptionItemHandler
     private function storeRevision($optionItem)
     {
         $revisionNo = 0;
-        $lastRevision = ProductOptionItemRevision::where('id', $optionItem->id)->max('revision_no');
+        $lastRevision = ProductVariantRevision::where('id', $optionItem->id)->max('revision_no');
         if ($lastRevision !== null) {
             $revisionNo = $lastRevision + 1;
         }
 
-        $revisionOptionItem = new ProductOptionItemRevision();
+        $revisionOptionItem = new ProductVariantRevision();
 
         $revisionOptionItem->fill($optionItem->getAttributes());
 

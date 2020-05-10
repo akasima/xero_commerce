@@ -4,15 +4,16 @@ namespace Xpressengine\Plugins\XeroCommerce\Controllers;
 
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\Cart;
+use Xpressengine\Plugins\XeroCommerce\Models\CartItem;
 use Xpressengine\Plugins\XeroCommerce\Services\CartService;
 use Xpressengine\Plugins\XeroCommerce\Services\WishService;
 
-class CartController extends XeroCommerceBasicController
+class CartItemController extends XeroCommerceBasicController
 {
     public $cartService;
 
     /**
-     * CartController constructor.
+     * CartItemController constructor.
      */
     public function __construct()
     {
@@ -26,11 +27,15 @@ class CartController extends XeroCommerceBasicController
         return \XePresenter::make(
             'cart.index',
             [
-                'cartList' => $this->cartService->getJsonList()
+                'cartItems' => $this->cartService->getJsonList()
             ]
         );
     }
 
+    /**
+     * AJAX용 list
+     * @return mixed
+     */
     public function list()
     {
         return $this->cartService->getJsonList();
@@ -41,30 +46,34 @@ class CartController extends XeroCommerceBasicController
         return $this->cartService->summary($request);
     }
 
-    public function change(Cart $cart, Request $request)
+    public function change(CartItem $cartItem, Request $request)
     {
-        return $this->cartService->change($cart, $request);
+        return $this->cartService->change($cartItem, $request);
     }
 
-    public function draw(Cart $cart)
+    public function delete(CartItem $cartItem)
     {
-        $this->cartService->draw($cart);
+        $this->cartService->delete($cartItem);
     }
 
-    public function drawList(Request $request)
+    public function deleteList(Request $request)
     {
-        $this->cartService->drawList($request->get('cart_id'));
+        $this->cartService->deleteList($request->get('item_ids'));
     }
 
+    /**
+     * 장바구니 여러품목 찜하기
+     * @param Request $request
+     */
     public function wishMany(Request $request)
     {
         $wishService = new WishService();
 
-        $carts = Cart::find($request->get('cart_id'));
-        $selltypes = $carts->map(function(Cart $cart){
-            return $cart->sellType;
+        $cartItems = $this->cartService->getList();
+        $products = $cartItems->map(function(CartItem $cartItem){
+            return $cartItem->product;
         });
 
-        $wishService->storeMany($selltypes);
+        $wishService->storeMany($products);
     }
 }

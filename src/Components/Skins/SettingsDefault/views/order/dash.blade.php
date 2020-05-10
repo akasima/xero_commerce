@@ -130,20 +130,20 @@
                     </td>
                     <td>{{$item->userInfo->name}}</td>
                     <td>{{$item->userInfo->phone}}</td>
-                    <td>@if($item->orderItems[0]->shipment){{$item->orderItems[0]->shipment->recv_name}}@endif</td>
-                    <td rowspan="3">{{$item->orderItems->sum(function($item){return $item->getSellPrice()+$item->getFare();})}}</td>
+                    <td>@if($item->items[0]->shipment){{$item->items[0]->shipment->recv_name}}@endif</td>
+                    <td rowspan="3">{{$item->items->sum(function($item){return $item->getSellPrice()+$item->getFare();})}}</td>
                     <td rowspan="3">{{$item->payment->price}}</td>
                 </tr>
                 <tr>
                     <td>{{\Xpressengine\User\Models\User::find($item->user_id)->email}}</td>
-                    <td>{{$item->orderItems->sum(function($item){return $item->getCount();})}}</td>
+                    <td>{{$item->items->sum(function($item){return $item->getCount();})}}</td>
                     <td>{{$item->where('user_id',$item->user_id)->count()}}</td>
                 </tr>
                 <tr>
                     <td>{{$item->getStatus()}}</td>
                     <td>{{$item->payment->getMethod()}}</td>
-                    <td>@if($item->orderItems[0]->shipment){{$item->orderItems[0]->shipment->ship_no}}@endif</td>
-                    <td>@if($item->orderItems[0]->shipment){{$item->orderItems[0]->shipment->carrier->name}}@endif</td>
+                    <td>@if($item->items[0]->shipment){{$item->items[0]->shipment->ship_no}}@endif</td>
+                    <td>@if($item->items[0]->shipment){{$item->items[0]->shipment->carrier->name}}@endif</td>
                     <td></td>
                 </tr>
                 @endforeach

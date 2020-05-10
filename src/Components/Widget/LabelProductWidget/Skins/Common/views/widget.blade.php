@@ -18,7 +18,7 @@
                     @endif
 
                     <li class="item-rank">
-                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}" class="link-rank">
+                        <a href="{{ route('xero_commerce::product.show', ['slug' => $product->slug]) }}" class="link-rank">
                             <div class="thumbnail-rank" style="background-image:url('{{ $product->getThumbnailSrc() }}')">
                                 <div class="tab-list-number">{{ $idx + 1 }}</div>
                             </div>
@@ -44,7 +44,7 @@
                             @endif
 
                             <li class="item-rank">
-                                <a href="{{ route('xero_commerce::product.show', ['slug' => $product->getSlug()]) }}" class="link-rank">
+                                <a href="{{ route('xero_commerce::product.show', ['slug' => $product->slug]) }}" class="link-rank">
                                     <div class="thumbnail-rank" style="background-image:url('{{ $product->getThumbnailSrc() }}')">
                                         <div class="tab-list-number">{{ $idx + 1 }}</div>
                                     </div>

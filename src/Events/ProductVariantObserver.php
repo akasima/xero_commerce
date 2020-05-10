@@ -10,18 +10,18 @@ namespace Xpressengine\Plugins\XeroCommerce\Events;
 
 
 use Illuminate\Support\Facades\Notification;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 use Xpressengine\Plugins\XeroCommerce\Notifications\StockLack;
 
-class ProductOptionItemObserver
+class ProductVariantObserver
 {
-    public function updated(ProductOptionItem $optionItem)
+    public function updated(ProductVariant $productVariant)
     {
-        $dirty = $optionItem->getDirty();
+        $dirty = $productVariant->getDirty();
         if(isset($dirty['stock'])){
-            if ($optionItem->stock <= $optionItem->alert_stock) {
+            if ($productVariant->stock <= $productVariant->alert_stock) {
                 Notification::route('mail', config('mail.from.address'))
-                    ->notify(new StockLack($optionItem));
+                    ->notify(new StockLack($productVariant));
             }
         }
     }

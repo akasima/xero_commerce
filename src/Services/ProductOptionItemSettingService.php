@@ -5,7 +5,7 @@ namespace Xpressengine\Plugins\XeroCommerce\Services;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\ProductOptionItemHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductOptionItem;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 
 class ProductOptionItemSettingService
 {
@@ -34,19 +34,19 @@ class ProductOptionItemSettingService
         $productOptionItemArgs['product_id'] = $productId;
         $productOptionItemArgs['option_type'] = Product::OPTION_TYPE_SIMPLE;
         $productOptionItemArgs['name'] = $productArgs['name'];
-        $productOptionItemArgs['addition_price'] = 0;
+        $productOptionItemArgs['additional_price'] = 0;
         $productOptionItemArgs['stock'] = $productArgs['stock'];
         $productOptionItemArgs['alert_stock'] = $productArgs['alert_stock'];
 
-        $displayState = ProductOptionItem::DISPLAY_VISIBLE;
+        $displayState = ProductVariant::DISPLAY_VISIBLE;
         if ($productArgs['state_display'] != Product::DISPLAY_VISIBLE) {
-            $displayState = ProductOptionItem::DISPLAY_HIDDEN;
+            $displayState = ProductVariant::DISPLAY_HIDDEN;
         }
         $productOptionItemArgs['state_display'] = $displayState;
 
-        $dealState = ProductOptionItem::DEAL_ON_SALE;
+        $dealState = ProductVariant::DEAL_ON_SALE;
         if ($productArgs['state_deal'] != Product::DEAL_ON_SALE) {
-            $dealState = ProductOptionItem::DEAL_END;
+            $dealState = ProductVariant::DEAL_END;
         }
         $productOptionItemArgs['state_deal'] = $dealState;
 
@@ -72,7 +72,7 @@ class ProductOptionItemSettingService
 
     public function removeProductOptionItems($productId)
     {
-        $items = ProductOptionItem::where('product_id', $productId)->get();
+        $items = ProductVariant::where('product_id', $productId)->get();
 
         foreach ($items as $item) {
             $this->productOptionItemHandler->destroy($item);

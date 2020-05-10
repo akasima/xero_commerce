@@ -22,7 +22,7 @@
                             <li>주문금액</li>
                         </ul>
                     </div><!-- //cart-product-header -->
-                    <div class="cart-product-body" v-for="cartItem in cartList">
+                    <div class="cart-product-body" v-for="cartItem in items">
                         <div class="cart-product-checkbox">
                             <label class="xe-label">
                                 <input type="checkbox" v-model="checkedList" :value="cartItem.id">
@@ -38,44 +38,15 @@
                                 <a href="#" @click.prevent="url(cartItem.url)">{{cartItem.name}}</a>
                             </div><!-- //cart-product-name -->
                             <div class="cart-product-option">
-                                <button type="button" class="xe-btn xe-btn-secondary" @click="changeModal(cartItem)">수량변경</button>
-                                <div class="modal" :id="'cartChangeModal'+cartItem.id" style="overflow: scroll">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content" style="padding:20px">
-                                            <div class="modal-header">
-                                                <h2>주문 추가/변경</h2>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-sm-3">
-                                                        <img :src="cartItem.src" alt="" width="100" height="100">
-                                                    </div>
-                                                    <div class="col-sm-9">
-                                                        <h3>{{cartItem.name}}</h3>
-                                                        <h3>{{cartItem.sell_price.toLocaleString()}} 원</h3>
-                                                    </div>
-                                                </div>
-                                                <option-select-component
-                                                    :already-choose="cartItem.choose"
-                                                    :options="cartItem.option_list"></option-select-component>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="xe-btn xe-btn-black" @click="edit(cartItem)">저장하고 계속</button>
-                                                <button class="xe-btn xe-btn-danger" data-dismiss="xe-modal">저장하지않고 닫기</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <ul class="cart-product-option-list">
-                                    <li v-for="choose in cartItem.choose">
+                                    <li>
                                         <span>
-                                          {{choose.unit.name}}
-                                          <span v-for="(value, key, i) in choose.custom_values">
+                                          {{cartItem.variant_name}}
+                                          <span v-for="(value, key, i) in cartItem.custom_values">
                                             {{ i == 0 ? '(' : '' }}
                                             {{key}} : {{value}}
-                                            {{ i != Object.keys(choose.custom_values).length - 1 ? ',' : ')' }}
+                                            {{ i != Object.keys(cartItem.custom_values).length - 1 ? ',' : ')' }}
                                           </span>
-                                          / {{choose.count}}개
                                         </span>
                                     </li>
                                 </ul>
@@ -94,6 +65,42 @@
                                 <div class="cart-product-quantity">
                                     <span class="cart-product-title">수량</span>
                                     <span class="cart-product-text">{{cartItem.count}}개</span>
+
+                                    <button type="button" class="xe-btn xe-btn-secondary" @click="changeModal(cartItem)">수량변경</button>
+                                    <div class="modal" :id="'cartChangeModal'+cartItem.id" style="overflow: scroll">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content" style="padding:20px">
+                                          <div class="modal-header">
+                                            <h2>주문 추가/변경</h2>
+                                          </div>
+                                          <div class="modal-body">
+                                            <div class="row">
+                                              <div class="col-sm-3">
+                                                <img :src="cartItem.src" alt="" width="100" height="100">
+                                              </div>
+                                              <div class="col-sm-9">
+                                                <h3>{{cartItem.name}}</h3>
+                                                <h3>{{cartItem.sell_price.toLocaleString()}} 원</h3>
+                                              </div>
+                                            </div>
+                                            <div class="xe-spin-box">
+                                              <button type="button" @click="cartItem.count > 1 && cartItem.count--">
+                                                <i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span>
+                                              </button>
+                                              <p>{{cartItem.count}}</p>
+                                              <button type="button" @click="cartItem.count++">
+                                                <i class="xi-plus-thin"></i><span class="xe-sr-only">증가</span>
+                                              </button>
+                                            </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button class="xe-btn xe-btn-black" @click="edit(cartItem)">저장하고 계속</button>
+                                            <button class="xe-btn xe-btn-danger" data-dismiss="xe-modal">저장하지않고 닫기</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
                                 </div><!-- //cart-product-num -->
                                 <div class="cart-product-shipping">
                                     <span class="cart-product-title">배송비</span>
@@ -104,7 +111,7 @@
                                     <span class="cart-product-text">{{cartItem.sell_price.toLocaleString()}}원</span>
                                     <div class="cart-product-btn">
                                         <button type="button" class="btn-buynow" @click="onlyThisCart(cartItem.id)">구매하기</button>
-                                        <button type="button" class="btn-delete" @click="draw(cartItem.id)">삭제하기</button>
+                                        <button type="button" class="btn-delete" @click="remove(cartItem.id)">삭제하기</button>
                                     </div><!-- //cart-product-btn -->
                                 </div><!-- //cart-product-sum -->
                             </div><!-- //cart-product-num-box -->
@@ -115,7 +122,7 @@
                 </div> <!-- //cart-product -->
 
                 <div class="bottom-btn-box">
-                    <button type="button" class="btn-default" @click="drawList">선택상품 삭제</button>
+                    <button type="button" class="btn-default" @click="removeList">선택상품 삭제</button>
                     <button type="button" class="btn-default" @click="wishList">선택상품 찜</button>
                 </div><!-- //cart-product-list-btn -->
 
@@ -133,11 +140,11 @@
             OptionSelectComponent, DeliverySelectComponent
         },
         props: [
-            'cartList', 'cartChangeUrl', 'cartDrawUrl', 'cartDrawListUrl'
+            'cartItems', 'cartChangeUrl', 'cartDeleteUrl', 'cartDeleteListUrl'
         ],
         watch: {
-            cartList() {
-                this.checkedList = this.cartList.map((v) => {
+            cartItems() {
+                this.checkedList = this.cartItems.map((v) => {
                     return v.id
                 });
             },
@@ -146,7 +153,7 @@
             },
             allCheck(el) {
                 if (el) {
-                    this.checkedList = this.cartList.map((v) => {
+                    this.checkedList = this.cartItems.map((v) => {
                         return v.id
                     });
                 } else {
@@ -158,22 +165,23 @@
         data() {
             return {
                 checkedList: [],
-                allCheck: false
+                allCheck: false,
+                items: this.cartItems
             }
         },
         methods: {
             changeModal(cart) {
                 $('#cartChangeModal' + cart.id).xeModal()
             },
-            edit(cart) {
-                var val= this.validate(cart)
+            edit(cartItem) {
+                var val= this.validate(cartItem)
                 if(! val.status){
                     alert(val.msg)
                     return
                 }
                 $.ajax({
-                    url: this.cartChangeUrl + '/' + cart.id,
-                    data: cart
+                    url: this.cartChangeUrl + '/' + cartItem.id,
+                    data: cartItem
                 }).done(() => {
                     this.$emit('change')
                 }).fail(() => {
@@ -204,22 +212,22 @@
                 }
                 return validate;
             },
-            draw(cart_id) {
+            remove(itemId) {
                 $.ajax({
-                    url: this.cartDrawUrl + '/' + cart_id
+                    url: this.cartDeleteUrl + '/' + itemId
                 }).done(() => {
                     this.$emit('change')
                 }).fail(() => {
                     console.log('fail')
                 })
             },
-            drawList() {
+            removeList() {
                 var confirm = window.confirm(this.checkedList.length + ' 개 장바구니를 삭제합니다. 계속 하시겠습니까?')
                 if(confirm){
                     $.ajax({
-                        url: this.cartDrawListUrl,
+                        url: this.cartDeleteListUrl,
                         data: {
-                            cart_id:this.checkedList
+                            item_ids:this.checkedList
                         }
                     }).done(() => {
                         this.$emit('change')

@@ -39,7 +39,7 @@
             </div>
             <div class="xe-shop-btn-box xe-hidden-lg xe-hidden-md">
                 <div>
-                    <a href="{{route('xero_commerce::cart.index')}}">장바구니</a>
+                    <a href="{{route('xero_commerce::cartitem.index')}}">장바구니</a>
                     <a href="{{route('xero_commerce::order.index')}}">주문조회</a>
                 </div>
                 <div>

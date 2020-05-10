@@ -34,7 +34,7 @@
                             <a id="product_{{$product->id}}" href="#" style="margin:0 12px" onclick="event.preventDefault();select_product(this, {{$product->id}})">
                                 <span class="thumbnail" style="background-image: url({{$product->getThumbnailSrc()}})"></span>
                                 <div>
-                                    {{$product->getName()}}
+                                    {{$product->name}}
                                 </div>
                             </a>
                         </li>
