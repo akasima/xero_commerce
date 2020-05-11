@@ -195,8 +195,8 @@ class XeroCommerceCreateTables extends Migration
                 $table->integer('product_id');
                 $table->integer('product_variant_id');
                 $table->text('custom_values');
-                $table->integer('count');shipping_fee
-                $table->smallInteger('');
+                $table->integer('count');
+                $table->smallInteger('shipping_fee');
                 // 주문후 장바구니에서 주문된 상품을 지우기 위한 order_id
                 $table->integer('order_id');
                 $table->timestamps();
