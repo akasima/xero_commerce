@@ -22,8 +22,8 @@ class SelectOption extends ProductCustomOption
         }
         $result .= '>';
         if(!empty($this->settings['options'])) {
-            foreach ($this->settings['options'] as $name => $value) {
-                $result .= "<option value=\"$value\">$name</option>";
+            foreach ($this->settings['options'] as $key => $value) {
+                $result .= "<option value=\"$key\">$value</option>";
             }
         }
         $result .= '</select>';

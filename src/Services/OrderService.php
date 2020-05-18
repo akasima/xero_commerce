@@ -128,14 +128,14 @@ class OrderService
     {
         $this->orderHandler->makeOrderAfterservice('교환', $orderItem, $request);
 
-        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::EXCHANGING);
+        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::CODE_EXCHANGING);
     }
 
     public function refundOrderItem(OrderItem $orderItem, Request $request)
     {
         $this->orderHandler->makeOrderAfterservice('환불', $orderItem, $request);
 
-        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::REFUNDING);
+        return $this->orderHandler->changeOrderItem($orderItem, OrderItem::CODE_REFUNDING);
     }
 
     public function getOrderableOrder($order_id)

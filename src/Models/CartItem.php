@@ -17,7 +17,7 @@ class CartItem extends OrderableItem
     ];
 
     protected $casts = [
-        'custom_values' => 'json'
+        'custom_values' => 'collection'
     ];
 
     function getCount()

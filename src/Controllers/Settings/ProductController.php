@@ -49,7 +49,7 @@ class ProductController extends SettingBaseController
     {
         $product = $this->productSettingService->getProduct($productId);
         $options = $this->productSettingService->getProductOptionArrays($product);
-        $optionItems = $this->productSettingService->getProductOptionItemArrays($product);
+        $optionItems = $this->productSettingService->getProductVariantArrays($product);
         $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
         $customOptions = $this->productSettingService->getProductCustomOptionArrays($product);
 
@@ -97,7 +97,7 @@ class ProductController extends SettingBaseController
         $categoryItems = $productCategoryService->getCategoryItems();
         $productCategorys = $productCategoryService->getProductCategory($productId);
         $options = $this->productSettingService->getProductOptionArrays($product);
-        $optionItems = $this->productSettingService->getProductOptionItemArrays($product);
+        $optionItems = $this->productSettingService->getProductVariantArrays($product);
         $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
         $customOptions = $this->productSettingService->getProductCustomOptionArrays($product);
 

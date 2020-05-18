@@ -127,12 +127,12 @@ class OrderHandler extends OrderableItemHandler
 
     public function afterServiceCheck(Order $order)
     {
-        $hasExchanging = $order->items()->where('code', OrderItem::EXCHANGING)->exists();
-        $hasExchanged = $order->items()->where('code', OrderItem::EXCHANGED)->exists();
-        $hasRefunding = $order->items()->where('code', OrderItem::REFUNDING)->exists();
-        $hasRefunded = $order->items()->where('code', OrderItem::REFUNDED)->exists();
-        $hasCanceling = $order->items()->where('code', OrderItem::CANCELING)->exists();
-        $hasCanceled = $order->items()->where('code', OrderItem::CANCELED)->exists();
+        $hasExchanging = $order->items()->where('code', OrderItem::CODE_EXCHANGING)->exists();
+        $hasExchanged = $order->items()->where('code', OrderItem::CODE_EXCHANGED)->exists();
+        $hasRefunding = $order->items()->where('code', OrderItem::CODE_REFUNDING)->exists();
+        $hasRefunded = $order->items()->where('code', OrderItem::CODE_REFUNDED)->exists();
+        $hasCanceling = $order->items()->where('code', OrderItem::CODE_CANCELING)->exists();
+        $hasCanceled = $order->items()->where('code', OrderItem::CODE_CANCELED)->exists();
 
         if ($hasExchanging) {
             return Order::EXCHANGING;

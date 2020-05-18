@@ -7,15 +7,15 @@ class OrderItem extends OrderableItem
     protected $table = 'xero_commerce__order_items';
 
     protected $casts = [
-        'custom_values' => 'json'
+        'custom_values' => 'collection'
     ];
 
-    const EXCHANGING = 1;
-    const EXCHANGED = 2;
-    const REFUNDING = 3;
-    const REFUNDED = 4;
-    const CANCELING = 5;
-    const CANCELED = 6;
+    const CODE_EXCHANGING = 1;
+    const CODE_EXCHANGED = 2;
+    const CODE_REFUNDING = 3;
+    const CODE_REFUNDED = 4;
+    const CODE_CANCELING = 5;
+    const CODE_CANCELED = 6;
 
     public function order()
     {

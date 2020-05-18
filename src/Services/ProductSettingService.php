@@ -62,28 +62,28 @@ class ProductSettingService
      *
      * @return array
      */
-    public function getProductOptionItemArrays($product)
+    public function getProductVariantArrays($product)
     {
-        $optionItems = [];
+        $variants = [];
 
-        /** @var ProductVariant $optionItem */
-        foreach ($product->optionItems as $optionItem) {
-            $optionData['id'] = $optionItem->id;
-            $optionData['name'] = $optionItem->name;
-            $optionData['combination_values'] = $optionItem->combination_values;
-            $optionData['additional_price'] = $optionItem->additional_price;
-            $optionData['sell_price'] = $optionItem->getSellPrice();
+        /** @var ProductVariant $variant */
+        foreach ($product->variants as $variant) {
+            $optionData['id'] = $variant->id;
+            $optionData['name'] = $variant->name;
+            $optionData['combination_values'] = $variant->combination_values;
+            $optionData['additional_price'] = $variant->additional_price;
+            $optionData['sell_price'] = $variant->getSellPrice();
             $optionData['product_price']=$product->sell_price;
-            $optionData['stock'] = $optionItem->stock;
-            $optionData['alert_stock'] = $optionItem->alert_stock;
-            $optionData['state_display'] = $optionItem->state_display;
-            $optionData['state_deal'] = $optionItem->state_deal;
-            $optionData['data'] = $optionItem;
+            $optionData['stock'] = $variant->stock;
+            $optionData['alert_stock'] = $variant->alert_stock;
+            $optionData['state_display'] = $variant->state_display;
+            $optionData['state_deal'] = $variant->state_deal;
+            $optionData['data'] = $variant;
 
-            $optionItems[] = $optionData;
+            $variants[] = $optionData;
         }
 
-        return $optionItems;
+        return $variants;
     }
 
     /**

@@ -141,7 +141,7 @@ class OrderHandlerTest extends DefaultSet
         $handler = new OrderHandler();
         $order=$this->testMakePayment();
         $orderItem = $order->items()->first();
-        $afterOrder = $handler->changeOrderItem($orderItem, OrderItem::EXCHANGED);
+        $afterOrder = $handler->changeOrderItem($orderItem, OrderItem::CODE_EXCHANGED);
         $this->assertNotEquals(Order::ORDERED, $afterOrder->code);
     }
 
