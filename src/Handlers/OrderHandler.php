@@ -4,10 +4,8 @@ namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
 use Illuminate\Support\Facades\Auth;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\XeroCommerce\Models\CartItem;
 use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderAfterservice;
-use Xpressengine\Plugins\XeroCommerce\Models\OrderItemCustomOption;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderShipment;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
