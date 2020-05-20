@@ -39,12 +39,12 @@ class CartService
         $cartItemList = collect($items)->map(function ($item) use ($product) {
 
             $variantId = $item['variant']['id'];
-            $customValues = array_get($item, 'custom_values', []);
+            $customValues = array_get($item, 'custom_options', []);
             $count = $item['count'];
 
             $existingItem = $this->cartHandler->getCartItems()
                 ->where('product_variant_id', $variantId)
-                ->where('custom_values', $customValues)
+                ->where('custom_options', $customValues)
                 ->where('count', $count)
                 ->first();
 
@@ -56,7 +56,7 @@ class CartService
                 return $existingItem;
             }
 
-            return $this->cartHandler->makeCartItem($product->variants()->find($item['variant']['id']), array_get($item, 'custom_values', []), $item['count']);
+            return $this->cartHandler->makeCartItem($product->variants()->find($item['variant']['id']), array_get($item, 'custom_options', []), $item['count']);
         });
 
         return $cartItemList;

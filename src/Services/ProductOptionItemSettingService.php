@@ -62,9 +62,9 @@ class ProductOptionItemSettingService
         // 기존 옵션들은 삭제
         $this->removeProductOptionItems($productId);
         // 새로운 옵션들을 입력
-        $optionItemsData = $request->get('option_items');
+        $variantsData = $request->get('option_items');
         // 저장
-        foreach ($optionItemsData as $itemData) {
+        foreach ($variantsData as $itemData) {
             $itemData['product_id'] = $productId;
             $this->productOptionItemHandler->store($itemData);
         }

@@ -3,16 +3,16 @@
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
 use App\Facades\XeMedia;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Category\Models\CategoryItem;
-use Xpressengine\Database\Eloquent\DynamicModel;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Plugins\XeroCommerce\Traits\CustomTableInheritanceTrait;
 use Xpressengine\Tag\Tag;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\BasicProduct;
 use Xpressengine\Plugins\XeroCommerce\Models\Products\DigitalProduct;
-use Xpressengine\Plugins\XeroCommerce\Models\Products\TimeProduct;
 
-class Product extends DynamicModel
+class Product extends Model
 {
     use SoftDeletes, CustomTableInheritanceTrait;
 
@@ -38,6 +38,11 @@ class Product extends DynamicModel
         '착불' => 2
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+    }
+
     protected $table = 'xero_commerce__products';
 
     protected $fillable = [
@@ -57,16 +62,13 @@ class Product extends DynamicModel
         'state_display',
         'state_deal',
         'sub_name',
-        'shop_carrier_id'
+        'shop_carrier_id',
+        'detail_info'
     ];
 
     protected static $singleTableTypeField = 'type';
 
-    public static $singleTableType = 'general';
-
-    public static $singleTableName = '일반 상품';
-
-    protected static $singleTableSubclasses = [DigitalProduct::class, TimeProduct::class];
+    protected static $singleTableSubclasses = [BasicProduct::class, DigitalProduct::class];
 
     /**
      * Relationships
@@ -192,7 +194,7 @@ class Product extends DynamicModel
             'contents' => $this->getContents(),
             'data' => $this,
             'shop' => $this->shop,
-            'optionItems' => $this->getVisibleVariantsArray(),
+            'variants' => $this->getVisibleVariantsArray(),
             'shopCarrier' => $this->getShopCarrier(),
             'url' => $this->slugUrl(),
             'labels' => $this->labels,

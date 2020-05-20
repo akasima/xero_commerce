@@ -187,7 +187,7 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         <div class="form-group component-container">
                             <div class="col-sm-12">
                                 <option-table-component :options="{{ json_encode($options) }}"
-                                                        :option-items="{{ json_encode($optionItems) }}"
+                                                        :option-items="{{ json_encode($variants) }}"
                                                         product-id="{{$product->id}}"
                                                         product-option-type="{{$product->option_type}}"></option-table-component>
                             </div>

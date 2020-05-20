@@ -12,12 +12,12 @@ class CartItem extends OrderableItem
     protected $table = 'xero_commerce__cart_items';
 
     protected $fillable = [
-        'custom_values',
+        'custom_options',
         'count',
     ];
 
     protected $casts = [
-        'custom_values' => 'collection'
+        'custom_options' => 'collection'
     ];
 
     function getCount()
@@ -35,14 +35,14 @@ class CartItem extends OrderableItem
         return $this->belongsTo(v::class);
     }
 
-    public function getCustomValues()
+    public function getCustomOptions()
     {
-        return $this->custom_values;
+        return $this->custom_options;
     }
 
-    public function setCustomValues($customValues)
+    public function setCustomOptions($customOptions)
     {
-        $this->custom_values = $customValues;
+        $this->custom_options = $customOptions;
     }
 
     public function renderInformation()
@@ -67,7 +67,8 @@ class CartItem extends OrderableItem
             'shop_carrier' => $this->product->shopCarrier,
             'shipping_fee' => $this->getShippingFeeType(),
             'min'=>$this->product->min_buy_count,
-            'max'=>$this->product->max_buy_count
+            'max'=>$this->product->max_buy_count,
+            'custom_options' => $this->getCustomOptions(),
         ];
     }
 }

@@ -35,7 +35,7 @@ class CartHandler extends OrderableItemHandler
         $cartItem = new CartItem();
         $cartItem->user_id = $this->getUserId();
         $cartItem->setCount($count);
-        $cartItem->setCustomValues($customValues);
+        $cartItem->setCustomOptions($customValues);
         $cartItem->product_id = $variant->product_id;
         $cartItem->productVariant()->associate($variant);
         $cartItem->save();

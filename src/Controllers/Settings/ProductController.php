@@ -11,6 +11,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Badge;
 use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOption;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\BasicProduct;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin\ValidateManager;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
@@ -49,11 +50,11 @@ class ProductController extends SettingBaseController
     {
         $product = $this->productSettingService->getProduct($productId);
         $options = $this->productSettingService->getProductOptionArrays($product);
-        $optionItems = $this->productSettingService->getProductVariantArrays($product);
+        $variants = $this->productSettingService->getProductVariantArrays($product);
         $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
         $customOptions = $this->productSettingService->getProductCustomOptionArrays($product);
 
-        return XePresenter::make('product.show', compact('product', 'options', 'optionItems', 'customOptionTypes', 'customOptions'));
+        return XePresenter::make('product.show', compact('product', 'options', 'variants', 'customOptionTypes', 'customOptions'));
     }
 
     public function create(Request $request, ProductCategoryService $productCategoryService)
@@ -66,7 +67,7 @@ class ProductController extends SettingBaseController
 
         $categoryItems = $productCategoryService->getCategoryItems();
 
-        $type = $request->get('type', Product::$singleTableType);
+        $type = $request->get('type', BasicProduct::$singleTableType);
 
         $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
 
@@ -97,7 +98,7 @@ class ProductController extends SettingBaseController
         $categoryItems = $productCategoryService->getCategoryItems();
         $productCategorys = $productCategoryService->getProductCategory($productId);
         $options = $this->productSettingService->getProductOptionArrays($product);
-        $optionItems = $this->productSettingService->getProductVariantArrays($product);
+        $variants = $this->productSettingService->getProductVariantArrays($product);
         $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
         $customOptions = $this->productSettingService->getProductCustomOptionArrays($product);
 
@@ -111,7 +112,7 @@ class ProductController extends SettingBaseController
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return $product::getSettingsEditView(compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'optionItems', 'customOptionTypes', 'customOptions'));
+        return $product::getSettingsEditView(compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'variants', 'customOptionTypes', 'customOptions'));
     }
 
     public function update(Request $request, $productId)

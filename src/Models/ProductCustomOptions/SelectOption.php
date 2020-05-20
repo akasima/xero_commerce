@@ -11,7 +11,7 @@ class SelectOption extends ProductCustomOption
 
     public static $singleTableName = '목록선택';
 
-    public function renderHtml(array $attrs)
+    public function renderValueInput(array $attrs)
     {
         $result = '<select ';
         foreach ($attrs as $key => $value) {

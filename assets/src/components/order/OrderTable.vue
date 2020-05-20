@@ -47,10 +47,10 @@
                                                 <li>
                                                     <span>
                                                       {{orderItem.variant_name}}
-                                                      <span v-for="(value, key, i) in orderItem.custom_values">
+                                                      <span v-for="(option, i) in orderItem.custom_options">
                                                         {{ i == 0 ? '(' : '' }}
-                                                        {{key}} : {{value}}
-                                                        {{ i != Object.keys(orderItem.custom_values).length - 1 ? ',' : ')' }}
+                                                        {{option.name}} : {{option.display_value}}
+                                                        {{ i != Object.keys(orderItem.custom_options).length - 1 ? ',' : ')' }}
                                                       </span>
                                                       / {{orderItem.count}}개
                                                     </span>

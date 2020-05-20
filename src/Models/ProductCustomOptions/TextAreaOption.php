@@ -2,16 +2,14 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOptions;
 
-use Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOption;
-
-class TextAreaOption extends ProductCustomOption
+class TextAreaOption extends TextOption
 {
 
     public static $singleTableType = 'textarea';
 
     public static $singleTableName = '긴 텍스트';
 
-    public function renderHtml(array $attrs)
+    public function renderValueInput(array $attrs)
     {
         $result = '<textarea ';
         foreach ($attrs as $key => $value) {

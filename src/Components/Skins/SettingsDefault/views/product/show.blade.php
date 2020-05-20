@@ -137,7 +137,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($optionItems as $optionItem)
+                            @foreach($variants as $optionItem)
                                 <tr>
                                     <td>{{ $optionItem['name'] }}</td>
                                     <td>{{ $optionItem['additional_price'] }}</td>

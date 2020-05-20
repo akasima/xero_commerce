@@ -14,6 +14,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Label;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCategory;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductLabel;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\BasicProduct;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductVariant;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
@@ -59,7 +60,7 @@ class ProductSeeder extends Seeder
         $faker = Factory::create('ko_kr');
 
         for ($i = 0; $i < $count; $i++) {
-            $product = new Product();
+            $product = new BasicProduct();
             $product->shop_id = rand(1, Shop::count());
             $product->product_code = $faker->numerify('###########');
             $product->detail_info = json_encode([

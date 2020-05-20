@@ -2,13 +2,12 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
-use Xpressengine\Database\Eloquent\DynamicModel;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOptions\DateOption;
+use Illuminate\Database\Eloquent\Model;
 use Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOptions\SelectOption;
-use Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOptions\TextAreaOption;
+use Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOptions\TextOption;
 use Xpressengine\Plugins\XeroCommerce\Traits\CustomTableInheritanceTrait;
 
-class ProductCustomOption extends DynamicModel
+class ProductCustomOption extends Model
 {
     use CustomTableInheritanceTrait;
 
@@ -31,23 +30,12 @@ class ProductCustomOption extends DynamicModel
 
     protected static $singleTableTypeField = 'type';
 
-    protected static $singleTableSubclasses = [TextAreaOption::class, DateOption::class, SelectOption::class];
+    protected static $singleTableSubclasses = [TextOption::class, SelectOption::class];
 
-    public static $singleTableType = 'text';
-
-    public static $singleTableName = '텍스트';
-
-    public function renderHtml(array $attrs)
+    public function renderValueInput(array $attrs)
     {
-        $result = '<input type="text" ';
-        foreach ($attrs as $key => $value) {
-            $result .= "$key=\"$value\" ";
-        }
-        if($this->is_required) {
-            $result .= 'required ';
-        }
-        $result .= '/>';
-        return $result;
+        // 상속받아 구현 할것
+        return '';
     }
 
 }

@@ -32,7 +32,7 @@ $skin = \Xpressengine\Plugins\XeroCommerce\Components\Skins\XeroCommerceDefault\
                         @include($skin::view('product.object.option'),[
                             'optionType'=>$product->option_type,
                             'options'=>$product->getAvailableOptions(),
-                            'optionItems'=>$product->getVisibleVariantsArray(),
+                            'variants'=>$product->getVisibleVariantsArray(),
                             'customOptions'=>$product->getAvailableCustomOptions(),
                             'choose'=>[]
                         ])

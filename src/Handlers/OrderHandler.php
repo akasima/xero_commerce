@@ -7,6 +7,7 @@ use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Models\CartItem;
 use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderAfterservice;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderItemCustomOption;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderShipment;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
@@ -51,12 +52,14 @@ class OrderHandler extends OrderableItemHandler
             $orderItem->product()->associate($cartItem->productWithTrashed);
             $orderItem->productVariant()->associate($cartItem->productVariant);
             $orderItem->count = $cartItem->count;
-            $orderItem->custom_values = $cartItem->custom_values;
             $orderItem->original_price = $cartItem->getOriginalPrice();
             $orderItem->sell_price = $cartItem->getSellPrice();
             $orderItem->code = 0;
 
             $orderItem->save();
+
+            // 커스텀옵션 연동
+            $orderItem->customOptions()->createMany($cartItem->custom_options->all());
 
             // 주문완료후 장바구니를 비우기 위한 id저장
             $cartItem->order_id = $order->id;

@@ -74,11 +74,15 @@
                                             <ul class="order-product-option">
                                                 <li>
                                                     {{$orderItem->productVariant->name}}
-                                                    @foreach($orderItem->custom_values as $key => $value)
-                                                        {{ $loop->index == 0 ? '(' : '' }}
-                                                        {{$key}} : {{$value}}
-                                                        {{ $loop->index !== sizeof($option['custom_values']) - 1 ? ',' : ')' }}
-                                                    @endforeach
+                                                    @if($orderItem->customOptions->count())
+                                                        (
+                                                        {{
+                                                            $orderItem->customOptions->map(function($option) {
+                                                                return $option->name.' : '.$option->display_value;
+                                                            })->implode(', ')
+                                                        }}
+                                                        )
+                                                    @endif
                                                 </li>
                                             </ul>
                                         </div> <!-- //order-product -->

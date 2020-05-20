@@ -2,7 +2,9 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
-class ProductRevision extends Product
+use Illuminate\Database\Eloquent\Model;
+
+class ProductRevision extends Model
 {
     const CREATED_AT = 'revision_created_at';
     const UPDATED_AT = 'revision_updated_at';

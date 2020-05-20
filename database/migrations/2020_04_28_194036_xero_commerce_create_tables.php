@@ -151,6 +151,8 @@ class XeroCommerceCreateTables extends Migration
                 $table->smallInteger('code');
                 $table->softDeletes();
                 $table->timestamps();
+
+                $table->primary('id');
             });
         }
 
@@ -194,7 +196,7 @@ class XeroCommerceCreateTables extends Migration
                 $table->string('user_id', 36);
                 $table->integer('product_id');
                 $table->integer('product_variant_id');
-                $table->text('custom_values');
+                $table->text('custom_options');
                 $table->integer('count');
                 $table->smallInteger('shipping_fee');
                 // 주문후 장바구니에서 주문된 상품을 지우기 위한 order_id
@@ -212,14 +214,12 @@ class XeroCommerceCreateTables extends Migration
             });
         }
 
-
         if (!Schema::hasTable('xero_commerce__order_items')) {
             Schema::create('xero_commerce__order_items', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('order_id');
                 $table->integer('product_id');
                 $table->integer('product_variant_id');
-                $table->text('custom_values');
                 $table->integer('count');
                 $table->smallInteger('shipping_fee');
                 $table->integer('shipment_id')->nullable();
@@ -227,6 +227,17 @@ class XeroCommerceCreateTables extends Migration
                 $table->integer('sell_price');
                 $table->smallInteger('code');
                 $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('xero_commerce__order_item_custom_options')) {
+            Schema::create('xero_commerce__order_item_custom_options', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('order_item_id');
+                $table->string('type');
+                $table->string('name');
+                $table->string('value');
+                $table->string('display_value');
             });
         }
 
@@ -360,7 +371,7 @@ class XeroCommerceCreateTables extends Migration
     private static function setProductTableColumns($table)
     {
         $table->integer('shop_id');
-        $table->string('type')->default(\Xpressengine\Plugins\XeroCommerce\Models\Product::$singleTableType);
+        $table->string('type')->default(\Xpressengine\Plugins\XeroCommerce\Models\Products\BasicProduct::$singleTableType);
         $table->boolean('publish')->default(false);
         $table->string('product_code', 32)->nullable();
         $table->string('name')->nullable();
@@ -505,6 +516,8 @@ class XeroCommerceCreateTables extends Migration
         Schema::dropIfExists('xero_commerce__wishes');
 
         Schema::dropIfExists('xero_commerce__order_items');
+
+        Schema::dropIfExists('xero_commerce__order_item_custom_options');
 
         Schema::dropIfExists('xero_commerce__order_shipments');
 

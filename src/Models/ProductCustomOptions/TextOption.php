@@ -2,16 +2,20 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOptions;
 
-class DateOption extends TextOption
+use Xpressengine\Plugins\XeroCommerce\Models\ProductCustomOption;
+
+class TextOption extends ProductCustomOption
 {
 
-    public static $singleTableType = 'date';
+    public static $singleTableType = 'text';
 
-    public static $singleTableName = '날짜';
+    public static $singleTableName = '텍스트';
+
+    protected static $singleTableSubclasses = [DateOption::class, TextAreaOption::class];
 
     public function renderValueInput(array $attrs)
     {
-        $result = '<input type="date" ';
+        $result = '<input type="text" ';
         foreach ($attrs as $key => $value) {
             $result .= "$key=\"$value\" ";
         }

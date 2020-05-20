@@ -10,6 +10,7 @@ use Xpressengine\Plugins\XeroCommerce\Models\Carrier;
 use Xpressengine\Plugins\XeroCommerce\Models\Shop;
 use Xpressengine\Plugins\XeroCommerce\Plugin;
 use Xpressengine\Plugins\XeroCommerce\Plugin\Resources;
+use Xpressengine\User\Models\User;
 
 class ShopSeeder extends Seeder
 {
@@ -28,7 +29,7 @@ class ShopSeeder extends Seeder
      */
     public static function storeDefaultShop()
     {
-        $userId = Auth::id();
+        $userId = Auth::check() ? Auth::id() : User::first()->id;
 
         $shop = Shop::where('shop_name', Shop::BASIC_SHOP_NAME)->first();
         if (!$shop) {

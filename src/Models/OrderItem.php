@@ -7,7 +7,7 @@ class OrderItem extends OrderableItem
     protected $table = 'xero_commerce__order_items';
 
     protected $casts = [
-        'custom_values' => 'collection'
+        'custom_options' => 'collection'
     ];
 
     const CODE_EXCHANGING = 1;
@@ -22,6 +22,11 @@ class OrderItem extends OrderableItem
         return $this->belongsTo(Order::class);
     }
 
+    public function customOptions()
+    {
+        return $this->hasMany(OrderItemCustomOption::class, 'order_item_id');
+    }
+
     /**
      * @return array
      */
@@ -30,19 +35,15 @@ class OrderItem extends OrderableItem
         $row = [];
         $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->productWithTrashed->slug]) . '">' . $this->renderSpanBr($this->productWithTrashed->name) . '</a>';
         $spanData = $this->productWithTrashed->name;
-        $customValues = $this->custom_values;
-        if(!empty($customValues)) {
+        $customOptions = $this->customOptions;
+        if(!empty($customOptions)) {
             $spanData .= ' (';
 
-            foreach ($customValues as $key => $value) {
-                $spanData .= $key.' : '.$value;
-                // 마지막 루프면
-                if($key == array_keys($customValues)[count($customValues)-1]) {
-                    $spanData .= ')';
-                } else {
-                    $spanData .= ', ';
-                }
-            }
+            $spanData .= $customOptions->map(function($customOption) {
+                return $customOption->name.' : '.$customOption->value;
+            })->implode(', ');
+
+            $spanData .= ')';
         }
 
         $spanData .= ' / ' . $this->getCount() . '개';
@@ -60,7 +61,7 @@ class OrderItem extends OrderableItem
             'user' => $this->order->userInfo,
             'order_no' => $this->order->order_no,
             'info' => $this->renderInformation(),
-            'custom_values' => $this->custom_values,
+            'custom_options' => $this->customOptions,
             'name' => $this->productWithTrashed->name,
             'variant_name' => $this->productVariant->name,
             'original_price' => $this->getOriginalPrice(),

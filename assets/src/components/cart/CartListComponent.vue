@@ -42,10 +42,10 @@
                                     <li>
                                         <span>
                                           {{cartItem.variant_name}}
-                                          <span v-for="(value, key, i) in cartItem.custom_values">
+                                          <span v-for="(option, i) in cartItem.custom_options">
                                             {{ i == 0 ? '(' : '' }}
-                                            {{key}} : {{value}}
-                                            {{ i != Object.keys(cartItem.custom_values).length - 1 ? ',' : ')' }}
+                                            {{option.name}} : {{option.display_value}}
+                                            {{ i != Object.keys(cartItem.custom_options).length - 1 ? ',' : ')' }}
                                           </span>
                                         </span>
                                     </li>
