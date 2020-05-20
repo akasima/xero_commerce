@@ -183,7 +183,7 @@
                     let invalids = this.customOptions.filter(option => {
                         // 필수옵션인데 값이 없는 경우 true
                         if(option.is_required) {
-                            return typeof option.value == 'undefined';
+                            return !option.value;
                         }
                         return false
                     })

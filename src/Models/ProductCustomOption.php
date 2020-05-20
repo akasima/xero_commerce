@@ -21,6 +21,7 @@ class ProductCustomOption extends Model
         'sort_order',
         'is_required',
         'settings',
+        'value'
     ];
 
     protected $casts = [
@@ -28,14 +29,47 @@ class ProductCustomOption extends Model
         'settings' => 'json',
     ];
 
+    protected $appends = [
+        'value',
+        'display_value',
+    ];
+
     protected static $singleTableTypeField = 'type';
 
     protected static $singleTableSubclasses = [TextOption::class, SelectOption::class];
+
+    protected $defaultValue = '';
 
     public function renderValueInput(array $attrs)
     {
         // 상속받아 구현 할것
         return '';
+    }
+
+    /**
+     * 기본값을 지정
+     * @return string
+     */
+    public function getValueAttribute()
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * 기본값을 지정
+     */
+    public function setValueAttribute($value)
+    {
+        $this->defaultValue = $value;
+    }
+
+    /**
+     * 보여지는 기본값 지정
+     * @return string
+     */
+    public function getDisplayValueAttribute()
+    {
+        return $this->defaultValue;
     }
 
 }
