@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models;
 
+use Illuminate\Support\Collection;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 /**
@@ -10,7 +11,6 @@ use Xpressengine\Database\Eloquent\DynamicModel;
  * @package Xpressengine\Plugins\XeroCommerce\Models
  *
  * @property ProductVariant productVariant
- * @property Product product
  * @property Product product
  */
 abstract class OrderableItem extends DynamicModel
@@ -45,7 +45,7 @@ abstract class OrderableItem extends DynamicModel
         $this->count;
     }
 
-    abstract function getShippingFeeType();
+    abstract public function getShippingFeeType();
 
     function getShippingFeeTypeName()
     {
@@ -83,5 +83,17 @@ abstract class OrderableItem extends DynamicModel
 
         return $this->product->getFare();
     }
+
+    /**
+     * @return Collection
+     */
+    abstract public function getCustomOptions();
+
+    /**
+     * 커스텀옵션 저장용 함수
+     * @param $customOptions
+     * @return mixed
+     */
+    abstract public function setCustomOptions(array $customOptions);
 
 }

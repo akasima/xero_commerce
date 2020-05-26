@@ -55,6 +55,19 @@ class OrderItem extends OrderableItem
         return $this->shipping_fee_type;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getCustomOptions()
+    {
+        return $this->customOptions;
+    }
+
+    public function setCustomOptions(array $customOptions)
+    {
+        $this->customOptions()->createMany($customOptions);
+    }
+
     public function toArray()
     {
         return [

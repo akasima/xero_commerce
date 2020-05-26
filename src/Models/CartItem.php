@@ -30,17 +30,12 @@ class CartItem extends OrderableItem
         $this->count=$count;
     }
 
-    public function sellSet()
-    {
-        return $this->belongsTo(v::class);
-    }
-
     public function getCustomOptions()
     {
         return $this->custom_options;
     }
 
-    public function setCustomOptions($customOptions)
+    public function setCustomOptions(array $customOptions)
     {
         $this->custom_options = $customOptions;
     }
@@ -54,7 +49,6 @@ class CartItem extends OrderableItem
     {
         return [
             'id' => $this->id,
-            'info' => $this->renderInformation(),
             'original_price' => $this->getOriginalPrice(),
             'sell_price' => $this->getSellPrice(),
             'discount_price' => $this->getDiscountPrice(),

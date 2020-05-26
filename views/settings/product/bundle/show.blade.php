@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-            @foreach ($product->items as $item)
+            @foreach ($product->bundle_items as $item)
                 <tr>
                     <td>{{ $item->product->product_code }}</td>
                     <td>{{ $item->product->name }}</td>

@@ -395,21 +395,12 @@ class Product extends Model
 
     /**
      * 주문시 OrderItem을 가공할 수 있는 창구 (type별 오버라이딩용)
-     * @param Order $order
+     * @param OrderItem $orderItem
      * @param OrderableItem $item
+     * @return void
      */
-    public function newOrderItem(Order $order, OrderableItem $item) {
-        $orderItem = $order->items()->newModelInstance();
-        $orderItem->order_id = $order->id;
-        $orderItem->shipping_fee_type = $item->getShippingFeeType();
-        $orderItem->product_id = $item->product_id;
-        $orderItem->product_variant_id = $item->product_variant_id;
-        $orderItem->count = $item->count;
-        $orderItem->original_price = $item->getOriginalPrice();
-        $orderItem->sell_price = $item->getSellPrice();
-        $orderItem->code = 0;
+    public function onOrderItemCreated(OrderItem $orderItem, OrderableItem $item) {
 
-        return $orderItem;
     }
 
 

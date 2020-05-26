@@ -2,8 +2,10 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Models\Products;
 
+use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderableItem;
+use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Models\Product;
 
 /**
@@ -23,6 +25,7 @@ class BundleProduct extends Product
     public function __construct(array $attributes = [])
     {
         $this->fillable[] = 'bundle_items';
+        $this->appends[] = 'bundle_items';
 
         parent::__construct($attributes);
     }
@@ -35,6 +38,11 @@ class BundleProduct extends Product
         return $this->hasMany(BundleProductItem::class, 'parent_product_id');
     }
 
+    public function getBundleItemsAttribute()
+    {
+        return $this->items;
+    }
+
     public function setBundleItemsAttribute($items)
     {
         if($items) {
@@ -43,7 +51,6 @@ class BundleProduct extends Product
                 $model->items()->createMany($items);
             });
         }
-
     }
 
     public static function getSettingsCreateFields()
@@ -63,21 +70,17 @@ class BundleProduct extends Product
 
     /**
      * 번들상품 주문시 번들품목들을 넣어주는 함수
-     * @param Order $order
+     * @param OrderItem $orderItem
      * @param OrderableItem $item
+     * @return void
      */
-    public function newOrderItem(Order $order, OrderableItem $item)
+    public function onOrderItemCreated(OrderItem $orderItem, OrderableItem $item)
     {
-        $orderItem = parent::newOrderItem($order, $item);
-        $orderItem->save();
-
-        foreach ($this->items as $bundleItem) {
-            $childOrderItem = parent::newOrderItem($order, $bundleItem);
+        foreach ($this->bundle_items as $bundleItem) {
+            $childOrderItem = OrderHandler::createOrderItem($orderItem->order_id, $bundleItem);
             $childOrderItem->parent_id = $orderItem->id;
             $childOrderItem->save();
         }
-
-        return $orderItem;
     }
 
 }

@@ -69,7 +69,7 @@
             data: {
                 searchKeyword: '',
                 searchResults: [],
-                items: {!! isset($product) ? $product->items->load('product.variants', 'product.customOptions')->toJson() : '[]' !!}
+                items: {!! isset($product) ? $product->bundle_items->load('product.variants', 'product.customOptions')->toJson() : '[]' !!}
             },
             methods: {
                 search(keyword) {

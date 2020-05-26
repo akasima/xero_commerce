@@ -17,12 +17,12 @@ class BundleProductItem extends OrderableItem
     ];
 
     protected $casts = [
-        'custom_options' => 'array'
+        'custom_options' => 'collection'
     ];
 
-    public function getCustomOptionsAttribute()
+    public function getCustomOptions()
     {
-        $customOptions = json_decode($this->getAttributeFromArray('custom_options'), true);
+        $customOptions = $this->custom_options;
         $typeMap = ProductCustomOption::getSingleTableTypeMap();
 
         return collect($customOptions)->map(function($option) use ($typeMap) {
@@ -30,9 +30,14 @@ class BundleProductItem extends OrderableItem
             $class = $typeMap[$type];
             $option['input_html'] = (new $class)->renderInputHtml();
 
-            $option['display_value'] = isset($option['display_value']) ?: $option['value'];
+            $option['display_value'] = isset($option['display_value']) ? $option['display_value'] : $option['value'];
             return $option;
-        })->all();
+        });
+    }
+
+    public function setCustomOptions(array $customOptions)
+    {
+        $this->custom_options = $customOptions;
     }
 
     public function getShippingFeeType()
@@ -43,7 +48,10 @@ class BundleProductItem extends OrderableItem
 
     function toArray()
     {
-        return parent::toArray();
+        return array_merge(parent::toArray(), [
+            // 커스텀옵션 가져올때 display_value 삽입을 위해 오버라이딩
+            'custom_options' => $this->getCustomOptions()
+        ]);
     }
 
 
