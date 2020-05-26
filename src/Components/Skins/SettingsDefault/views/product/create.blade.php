@@ -303,6 +303,22 @@ use Xpressengine\Plugins\XeroCommerce\Plugin;
                         </div>
                     </div>
                 </div>
+
+                <div class="panel __xe_section_box">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#타입별설정Section" aria-expanded="false">
+                        <a data-toggle="collapse" data-target="#타입별설정Section" class="btn-link panel-toggle collapsed" aria-expanded="false"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">메뉴닫기</span></a>
+                        <h3 class="panel-title">{{ $productClass::$singleTableName }}용 설정</h3>
+                    </div>
+
+                    <div id="타입별설정Section" class="panel-body panel-collapse collapse in" role="tabpanel" aria-expanded="false">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                {!! $productClass::getSettingsCreateFields() !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

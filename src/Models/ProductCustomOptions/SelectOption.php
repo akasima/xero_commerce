@@ -11,9 +11,12 @@ class SelectOption extends ProductCustomOption
 
     public static $singleTableName = '목록선택';
 
-    public function renderValueInput(array $attrs)
+    public function renderInputHtml(array $attrs = [])
     {
         $result = '<select ';
+        if(!array_has($attrs, 'name')) {
+            $result .= "name=\"custom_options[{$this->id}][value]\" ";
+        }
         foreach ($attrs as $key => $value) {
             $result .= "$key=\"$value\" ";
         }

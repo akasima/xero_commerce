@@ -35,7 +35,7 @@
                 <div class="table-cell">
                     <input type="text" class="xe-form-control input-195" v-model="address.name">
                 </div>
-            </div>
+            </div>recv_addr
 
             <div class="table-row">
                 <div class="table-cell header">

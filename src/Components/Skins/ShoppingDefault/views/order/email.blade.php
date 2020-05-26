@@ -13,13 +13,28 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($order->items as $item)
+        @foreach($order->visibleItems as $item)
             @php
-                $json = $item->getJsonFormat();
+                $json = $item->toArray();
             @endphp
             <tr>
                 <td style="width:100px;"><img src="{{$json['src']}}" alt="" style="width:90px; height:120px;"></td>
-                <td>{!! implode($item->renderInformation()) !!}</td>
+                <td>
+                    <a target="_blank{{now()->toTimeString()}}" href="{{route('xero_commerce::product.show', ['strSlug' => $item->product->slug])}}">
+                        <span>{{$item->product->name}}</span> <br>
+                    </a>
+                    {{ $item->product->name }}
+                    @if($item->customOptions)
+                        (
+                        {{
+                            $item->customOptions->map(function($customOption) {
+                                return $customOption->name.' : '.$customOption->value;
+                            })->implode(', ')
+                        }}
+                        )
+                    @endif
+                    / {{ $item->getCount() }}개
+                </td>
                 <td>{{number_format($json['sell_price'])}} 원</td>
                 <td>{{$json['count']}} 개</td>
             </tr>

@@ -45,12 +45,12 @@ class CartItem extends OrderableItem
         $this->custom_options = $customOptions;
     }
 
-    public function renderInformation()
+    public function getShippingFeeType()
     {
-        // TODO: Implement renderInformation() method.
+        return $this->shipping_fee_type;
     }
 
-    function getJsonFormat()
+    function toArray()
     {
         return [
             'id' => $this->id,
@@ -65,7 +65,8 @@ class CartItem extends OrderableItem
             'name' => $this->product->name,
             'variant_name' => $this->productVariant->name,
             'shop_carrier' => $this->product->shopCarrier,
-            'shipping_fee' => $this->getShippingFeeType(),
+            'shipping_fee_type' => $this->getShippingFeeType(),
+            'shipping_fee_type_name' => $this->getShippingFeeTypeName(),
             'min'=>$this->product->min_buy_count,
             'max'=>$this->product->max_buy_count,
             'custom_options' => $this->getCustomOptions(),

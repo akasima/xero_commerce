@@ -243,9 +243,8 @@ class ProductHandler
         $class = Product::getSingleTableTypeMap()[$args['type']] ?: Product::class;
         $newProduct = (new $class)->newInstance();
         $args = $this->numberFormatPrice($args);
+        $args['detail_info'] = array_combine($args['infoKeys'], $args['infoValues']);
         $newProduct->fill($args);
-        $info = array_combine($args['infoKeys'], $args['infoValues']);
-        $newProduct->detail_info = json_encode($info);
 
         $newProduct->save();
 
@@ -288,17 +287,9 @@ class ProductHandler
     public function update(Product $product, $args)
     {
         $args = $this->numberFormatPrice($args);
-        $attributes = $product->getAttributes();
+        $args['detail_info'] = array_combine(key_exists('infoKeys', $args) ? $args['infoKeys'] : [], key_exists('infoValues', $args) ? $args['infoValues'] : []);
 
-        foreach ($args as $name => $value) {
-            if (array_key_exists($name, $attributes) === true) {
-                $product->{$name} = $value;
-            }
-        }
-
-        $info = array_combine(key_exists('infoKeys', $args) ? $args['infoKeys'] : [], key_exists('infoValues', $args) ? $args['infoValues'] : []);
-
-        $product->detail_info = json_encode($info);
+        $product->fill($args);
 
         foreach ($args['images'] as $key => $image) {
             if ($image != null) {

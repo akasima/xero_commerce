@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Services;
 
+use Illuminate\Support\Collection;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\XeroCommerce\Handlers\OrderHandler;
 use Xpressengine\Plugins\XeroCommerce\Handlers\CartHandler;
@@ -33,13 +34,9 @@ class OrderService
         return $cartService->getList();
     }
 
-    public function summary($order = null)
+    public function summary(Collection $orderItems)
     {
-        if (!is_null($order)) {
-            return $this->orderHandler->getSummary($order->items);
-        }
-
-        return $this->orderHandler->getSummary($order = null);
+        return $this->orderHandler->getSummary($orderItems);
     }
 
     public function pay(Order $order, Request $request)
@@ -56,7 +53,7 @@ class OrderService
 
     public function orderItemList(Order $order)
     {
-        return $this->orderHandler->getOrderItemList($order);
+        return $this->orderHandler->getOrderItemList($order, ['parent_id' => 0]);
     }
 
     public function orderList($page, $count, $query)
@@ -76,6 +73,7 @@ class OrderService
     public function makeQueryFromArray($condition)
     {
         return function ($query) use ($condition) {
+
             if (isset($condition['date'])) {
                 $query->whereDate('created_at', '>=', $condition['date'][0])
                     ->whereDate('created_at', '<=', $condition['date'][1]);

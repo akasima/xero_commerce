@@ -68,7 +68,7 @@
                                 <div class="table-cell" style="width:100%">
 
                                     <!-- [D] 재사용 구간 -->
-                                    @foreach($order->items as $orderItem)
+                                    @foreach($order->visibleItems as $orderItem)
                                         <div class="order-product">
                                             <div class="order-product-title">{{$orderItem->product->name}}</div>
                                             <ul class="order-product-option">

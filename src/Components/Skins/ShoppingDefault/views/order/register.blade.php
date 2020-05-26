@@ -6,7 +6,7 @@
         dash-url="{{route('xero_commerce::order.complete',['order' => $order->id])}}"
         success-url="{{route('xero_commerce::order.success',['order' => $order->id])}}"
         fail-url="{{route('xero_commerce::order.fail',['order' => $order->id])}}"
-        :order-item-list='{!! $orderItems !!}'
+        :order-item-list='{!! $orderItems->toJson() !!}'
         :order-summary='{!! json_encode($summary)  !!}'
         :user='{!! \Illuminate\Support\Facades\Auth::user()->makeVisible('email') !!}'
         :user-info='{!! \Xpressengine\Plugins\XeroCommerce\Models\UserInfo::by(\Illuminate\Support\Facades\Auth::id())->load('addresses') !!}'

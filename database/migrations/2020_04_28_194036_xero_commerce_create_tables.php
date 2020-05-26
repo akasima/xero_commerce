@@ -99,6 +99,19 @@ class XeroCommerceCreateTables extends Migration
         self::createProductTables();
         self::createProductOptionTables();
 
+        if (!Schema::hasTable('xero_commerce__bundle_product_items')) {
+            Schema::create('xero_commerce__bundle_product_items', function (Blueprint $table) {
+                // 번들상품 id
+                $table->integer('parent_product_id');
+                // 번들될 대상품목의 id
+                $table->integer('product_id');
+                $table->integer('product_variant_id');
+                $table->text('custom_options');
+                $table->integer('count');
+                $table->timestamps();
+            });
+        }
+
         if (!Schema::hasTable('xero_commerce__images')) {
             Schema::create('xero_commerce__images', function (Blueprint $table) {
                 $table->increments('id');
@@ -198,7 +211,7 @@ class XeroCommerceCreateTables extends Migration
                 $table->integer('product_variant_id');
                 $table->text('custom_options');
                 $table->integer('count');
-                $table->smallInteger('shipping_fee');
+                $table->smallInteger('shipping_fee_type');
                 // 주문후 장바구니에서 주문된 상품을 지우기 위한 order_id
                 $table->integer('order_id');
                 $table->timestamps();
@@ -218,11 +231,11 @@ class XeroCommerceCreateTables extends Migration
             Schema::create('xero_commerce__order_items', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('order_id');
+                $table->integer('parent_id');
                 $table->integer('product_id');
                 $table->integer('product_variant_id');
                 $table->integer('count');
-                $table->smallInteger('shipping_fee');
-                $table->integer('shipment_id')->nullable();
+                $table->smallInteger('shipping_fee_type');
                 $table->integer('original_price');
                 $table->integer('sell_price');
                 $table->smallInteger('code');
@@ -492,6 +505,8 @@ class XeroCommerceCreateTables extends Migration
 
         self::dropIfExistsProductTables();
         self::dropIfExistsProductOptionTables();
+
+        Schema::dropIfExists('xero_commerce__bundle_product_items');
 
         Schema::dropIfExists('xero_commerce__images');
 

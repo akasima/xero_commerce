@@ -74,7 +74,7 @@
                             @php
                                 $i =0;
                             @endphp
-                            @foreach((array)json_decode($product->detail_info) as $key => $val)
+                            @foreach($product->detail_info as $key => $val)
                                 <th>
                                     {{$key}}
                                 </th>
@@ -203,5 +203,18 @@
                 <span class="xe-badge xe-black">#{{ $tag['word'] }}</span>
             @endforeach
         </div>
+
+        <div class="panel-group">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>{{ $product::$singleTableName }}용 정보</h3>
+                </div>
+
+                <div class="panel-body">
+                    {!! $product::getSettingsShowView($product) !!}
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

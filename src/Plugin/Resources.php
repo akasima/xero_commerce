@@ -287,9 +287,6 @@ class Resources
                     Route::get('/search', ['as' => 'xero_commerce:setting.product.search',
                         'uses' => 'ProductController@search',
                         'permission' => 'xero_commerce']);
-                    Route::post('/{productId}/bundle/items', ['as' => 'xero_commerce::setting.product.bundle.items',
-                        'uses' => 'ProductController@storeBundleItem',
-                        'permission' => 'xero_commerce']);
 
                     Route::post('/option/save', ['as' => 'xero_commerce::setting.product.option.save',
                         'uses' => 'ProductOptionController@save',

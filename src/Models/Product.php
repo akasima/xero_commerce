@@ -6,6 +6,7 @@ use App\Facades\XeMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Category\Models\CategoryItem;
+use Xpressengine\Plugins\XeroCommerce\Models\Products\BundleProduct;
 use Xpressengine\Plugins\XeroCommerce\Services\ProductCategoryService;
 use Xpressengine\Plugins\XeroCommerce\Traits\CustomTableInheritanceTrait;
 use Xpressengine\Tag\Tag;
@@ -32,11 +33,6 @@ class Product extends Model
     const OPTION_TYPE_COMBINATION_MERGE = 0;  // 조합 일체 선택형
     const OPTION_TYPE_COMBINATION_SPLIT = 1;  // 조합 분리 선택형
     const OPTION_TYPE_SIMPLE = 2;  // 단독형
-
-    const SHIPPING_FEE_TYPE = [
-        '선불' => 1,
-        '착불' => 2
-    ];
 
     public function __construct(array $attributes = [])
     {
@@ -66,9 +62,13 @@ class Product extends Model
         'detail_info'
     ];
 
+    protected $casts = [
+        'detail_info' => 'array',
+    ];
+
     protected static $singleTableTypeField = 'type';
 
-    protected static $singleTableSubclasses = [BasicProduct::class, DigitalProduct::class];
+    protected static $singleTableSubclasses = [BasicProduct::class, DigitalProduct::class, BundleProduct::class];
 
     /**
      * Relationships
@@ -177,7 +177,7 @@ class Product extends Model
     public function getVisibleVariantsArray()
     {
         return $this->visibleVariants->map(function (ProductVariant $variant) {
-            return $variant->getJsonFormat();
+            return $variant->toArray();
         });
     }
 
@@ -185,22 +185,23 @@ class Product extends Model
      * 뷰에 넘길때 사용할 JSON형식
      * @return array
      */
-    public function getJsonFormat()
+    public function toArray()
     {
-        return [
-            'id' => $this->id,
-            'mainImage' => $this->getThumbnailSrc(),
-            'images' => $this->getImages(),
-            'contents' => $this->getContents(),
-            'data' => $this,
-            'shop' => $this->shop,
-            'variants' => $this->getVisibleVariantsArray(),
-            'shopCarrier' => $this->getShopCarrier(),
-            'url' => $this->slugUrl(),
-            'labels' => $this->labels,
-            'badge' => $this->badges,
-            'categories' => $this->getCategories(),
-        ];
+        $product = parent::toArray();
+        return $product;
+//        return [
+//            'id' => $this->id,
+//            'mainImage' => $this->getThumbnailSrc(),
+//            'images' => $this->getImages(),
+//            'data' => $this,
+//            'shop' => $this->shop,
+//            'variants' => $this->getVisibleVariantsArray(),
+//            'shopCarrier' => $this->getShopCarrier(),
+//            'url' => $this->slugUrl(),
+//            'labels' => $this->labels,
+//            'badge' => $this->badges,
+//            'categories' => $this->getCategories(),
+//        ];
     }
 
     /**
@@ -356,19 +357,6 @@ class Product extends Model
         return route('xero_commerce::product.show', ['strSlug' => $this->slug]);
     }
 
-    function renderForOrderableItem(OrderableItem $orderableItem)
-    {
-        $row = [];
-        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->slug]) . '">' . $orderableItem->renderSpanBr($this->getName()) . '</a>';
-        $row [] = $orderableItem->renderSpanBr($this->getInfo());
-
-        $row [] = $orderableItem->renderSpanBr($orderableItem->productWithTrashed->name . ' / ' . $group->count . '개', "color: grey");
-
-        $row [] = $orderableItem->renderSpanBr($this->shop->shop_name);
-
-        return $row;
-    }
-
     function isShipped()
     {
         return true;
@@ -380,20 +368,49 @@ class Product extends Model
     }
 
     /**
-     * 관리자용 상품등록페이지 지정 (type별로 오버라이딩 할수 있도록 이곳에 구현)
-     * @param $vars
+     * 관리자용 상품등록페이지에 삽입될 View (type별 오버라이딩용)
      * @return mixed
      */
-    public static function getSettingsCreateView($vars) {
-        return \XePresenter::make('product.create', $vars);
+    public static function getSettingsCreateFields() {
+        return '';
     }
 
     /**
-     * 관리자용 상품수정페이지 지정 (type별로 오버라이딩 할수 있도록 이곳에 구현)
-     * @param $vars
+     * 관리자용 상품수정페이지에 삽입될 View (type별 오버라이딩용)
+     * @param Product $product
      * @return mixed
      */
-    public static function getSettingsEditView($vars) {
-        return \XePresenter::make('product.edit', $vars);
+    public static function getSettingsEditFields(Product $product) {
+        return '';
     }
+
+    /**
+     * show() 페이지에 삽입될 view
+     * @param Product $product
+     * @return string
+     */
+    public static function getSettingsShowView(Product $product) {
+        return '';
+    }
+
+    /**
+     * 주문시 OrderItem을 가공할 수 있는 창구 (type별 오버라이딩용)
+     * @param Order $order
+     * @param OrderableItem $item
+     */
+    public function newOrderItem(Order $order, OrderableItem $item) {
+        $orderItem = $order->items()->newModelInstance();
+        $orderItem->order_id = $order->id;
+        $orderItem->shipping_fee_type = $item->getShippingFeeType();
+        $orderItem->product_id = $item->product_id;
+        $orderItem->product_variant_id = $item->product_variant_id;
+        $orderItem->count = $item->count;
+        $orderItem->original_price = $item->getOriginalPrice();
+        $orderItem->sell_price = $item->getSellPrice();
+        $orderItem->code = 0;
+
+        return $orderItem;
+    }
+
+
 }

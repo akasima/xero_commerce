@@ -27,10 +27,10 @@ class OrderHandler extends OrderableItemHandler
             abort(500, '잘못된 주문 요청입니다.');
         }
         $order->items->each(function(OrderItem $orderItem) use ($order) {
-            if(method_exists($orderItem->productWithTrashed,'trashed')) {
-                if($orderItem->productWithTrashed->trashed()){
+            if(method_exists($orderItem->product,'trashed')) {
+                if($orderItem->product->trashed()){
                     $order->delete();
-                    abort('500','현재 제공하지 않는 상품입니다. <br> 상품정보 : '.$orderItem->productWithTrashed->name);
+                    abort('500','현재 제공하지 않는 상품입니다. <br> 상품정보 : '.$orderItem->product->name);
                 }
             }
         });
@@ -43,16 +43,10 @@ class OrderHandler extends OrderableItemHandler
         $order = $this->makeOrder();
 
         foreach ($cartItems as $cartItem) {
-            $orderItem = new OrderItem();
+            $product = $cartItem->product;
 
-            $orderItem->order_id = $order->id;
-            $orderItem->shipping_fee = $cartItem->shipping_fee;
-            $orderItem->product()->associate($cartItem->productWithTrashed);
-            $orderItem->productVariant()->associate($cartItem->productVariant);
-            $orderItem->count = $cartItem->count;
-            $orderItem->original_price = $cartItem->getOriginalPrice();
-            $orderItem->sell_price = $cartItem->getSellPrice();
-            $orderItem->code = 0;
+            // OrderItem을 Product에서 생성 (Product 타입별 처리가 다르기 때문 - 번들상품)
+            $orderItem = $product->newOrderItem($order, $cartItem);
 
             $orderItem->save();
 
@@ -61,6 +55,7 @@ class OrderHandler extends OrderableItemHandler
 
             // 주문완료후 장바구니를 비우기 위한 id저장
             $cartItem->order_id = $order->id;
+            $cartItem->save();
         }
 
         return $this->update($order);
@@ -177,22 +172,20 @@ class OrderHandler extends OrderableItemHandler
                 ->when(!is_null($condition), function ($query) use ($condition) {
                     $query->where($condition);
                 })
-                ->with('items.shipment.carrier', 'items.productVariant')
-                ->latest()->get()->pluck('items')->flatten();
+                ->with('visibleItems.shipment.carrier', 'visibleItems.productVariant')
+                ->latest()->get()->pluck('visibleItems')->flatten();
         } else {
-            $orderItems = $order->items()->when(!is_null($condition), function ($query) use ($condition) {
+            $orderItems = $order->visibleItems()->when(!is_null($condition), function ($query) use ($condition) {
                 $query->where($condition);
-            })->with('shipment.carrier', 'order.items.productVariant')->latest()->get();
+            })->with('shipment.carrier', 'order.visibleItems.productVariant')->latest()->get();
         }
 
-        return $orderItems->map(function (OrderItem $orderItem) {
-            return $orderItem->getJsonFormat();
-        });
+        return $orderItems;
     }
 
     public function makePayment(Order $order)
     {
-        $summary = $this->getSummary($order->items);
+        $summary = $this->getSummary($order->visibleItems);
 
         $payment = new Payment();
 
@@ -414,7 +407,7 @@ class OrderHandler extends OrderableItemHandler
         $orderItems = OrderItem::whereIn('order_id', $orders)->has('afterService')->with('afterService')->get();
 
         return $orderItems->map(function (OrderItem $orderItem) {
-            return $orderItem->getJsonFormat();
+            return $orderItem->toArray();
         });
     }
 

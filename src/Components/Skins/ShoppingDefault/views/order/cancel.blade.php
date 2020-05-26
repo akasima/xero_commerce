@@ -65,7 +65,7 @@
                                                     </div><!-- //cart-product-img -->
                                                     <div class="cell-product-text">
                                                         <div class="cell-product-name">
-                                                            {{$orderItem->productWithTrashed()->getName()}}
+                                                            {{$orderItem->product()->getName()}}
                                                         </div><!-- //cart-product-name -->
                                                         <ul class="cell-product-option">
                                                             @foreach($orderItem->sellGroups as $group)

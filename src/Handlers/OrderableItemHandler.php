@@ -2,16 +2,13 @@
 
 namespace Xpressengine\Plugins\XeroCommerce\Handlers;
 
+use Illuminate\Support\Collection;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderableItem;
 
 abstract class OrderableItemHandler
 {
-    public function getSummary($orderableItems = null)
+    public function getSummary(Collection $orderableItems)
     {
-        if (is_null($orderableItems)) {
-            $orderableItems = $this->getSellSetList();
-        }
-
         $origin = $orderableItems->sum(function (OrderableItem $item) {
             return $item->getOriginalPrice();
         });

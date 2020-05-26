@@ -80,9 +80,13 @@ class OrderController extends XeroCommerceBasicController
     public function registerAgain(Request $request)
     {
         $order = $this->orderService->getOrderableOrder($request->order_id);
+        $orderItems = $this->orderService->orderItemList($order);
+
         $paymentService = new PaymentService();
         $paymentService->statusCheck();
         $paymentService->loadScript();
+
+
         return \XePresenter::make(
             'order.register',
             ['title' => 'test',
@@ -92,8 +96,8 @@ class OrderController extends XeroCommerceBasicController
                     'thirdParty' => AgreementService::get('thirdParty')
                 ],
                 'order' => $order,
-                'orderItems' => $this->orderService->orderItemList($order),
-                'summary' => $this->orderService->summary($order),
+                'orderItems' => $orderItems,
+                'summary' => $this->orderService->summary($orderItems),
                 'payMethods' => $paymentService->methodList()
             ]
         );
@@ -141,7 +145,7 @@ class OrderController extends XeroCommerceBasicController
             [
                 'type' => $type,
                 'order' => $order,
-                'item' => $orderItem->getJsonFormat(),
+                'item' => $orderItem->toArray(),
                 'company' => Carrier::get(),
                 'payMethods' => $paymentService->methodList()
             ]);
@@ -162,7 +166,7 @@ class OrderController extends XeroCommerceBasicController
         return \XePresenter::make('order.cancel',
             [
                 'order' => $order,
-                'summary'=>$this->orderService->summary($order)
+                'summary'=>$this->orderService->summary($order->visibleItems)
             ]);
     }
 

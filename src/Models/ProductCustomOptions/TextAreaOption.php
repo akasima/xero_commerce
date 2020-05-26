@@ -9,9 +9,12 @@ class TextAreaOption extends TextOption
 
     public static $singleTableName = '긴 텍스트';
 
-    public function renderValueInput(array $attrs)
+    public function renderInputHtml(array $attrs = [])
     {
         $result = '<textarea ';
+        if(!array_has($attrs, 'name')) {
+            $result .= "name=\"custom_options[{$this->id}][value]\" ";
+        }
         foreach ($attrs as $key => $value) {
             $result .= "$key=\"$value\" ";
         }

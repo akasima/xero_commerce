@@ -17,7 +17,7 @@ class Wish extends DynamicModel
     /**
      * @return array
      */
-    function getJsonFormat()
+    function toArray()
     {
 
     }

@@ -151,8 +151,8 @@ class OrderController extends SettingBaseController
             $this->orderService->endRefundOrderItem($orderItem);
         }
 
-        if (get_class($orderItem->productWithTrashed()) == 'Xpressengine\Plugins\XeroCommerce\Models\Product') {
-            if($orderItem->productWithTrashed()->trashed()){
+        if (get_class($orderItem->product()) == 'Xpressengine\Plugins\XeroCommerce\Models\Product') {
+            if($orderItem->product()->trashed()){
                 return route('xero_commerce::setting.product.index');
             }
             return route('xero_commerce::setting.product.show', [

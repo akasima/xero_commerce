@@ -13,9 +13,12 @@ class TextOption extends ProductCustomOption
 
     protected static $singleTableSubclasses = [DateOption::class, TextAreaOption::class];
 
-    public function renderValueInput(array $attrs)
+    public function renderInputHtml(array $attrs = [])
     {
         $result = '<input type="text" ';
+        if(!array_has($attrs, 'name')) {
+            $result .= "name=\"custom_options[{$this->id}][value]\" ";
+        }
         foreach ($attrs as $key => $value) {
             $result .= "$key=\"$value\" ";
         }

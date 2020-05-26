@@ -11,18 +11,25 @@ use Xpressengine\Database\Eloquent\DynamicModel;
  *
  * @property ProductVariant productVariant
  * @property Product product
- * @property Product productWithTrashed
+ * @property Product product
  */
 abstract class OrderableItem extends DynamicModel
 {
+    const SHIPPING_FEE_TYPE_PREPAY = 1;
+
+    const SHIPPING_FEE_TYPE_POSTPAY = 2;
+
+    const SHIPPING_FEE_TYPE_NAMES = [
+        1 => '선불',
+        2 => '착불',
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function product()
     {
-        return $this->belongsTo(Product::class);
-    }
-
-    public function productWithTrashed()
-    {
-        return $this->product()->withTrashed();
+        return $this->belongsTo(Product::class, 'product_id')->withTrashed();
     }
 
     /**
@@ -30,22 +37,19 @@ abstract class OrderableItem extends DynamicModel
      */
     public function productVariant()
     {
-        return $this->belongsTo(ProductVariant::class);
+        return $this->belongsTo(ProductVariant::class, 'product_variant_id')->withTrashed();
     }
-
-    /**
-     * @return array
-     */
-    abstract public function renderInformation();
 
     function getCount()
     {
         $this->count;
     }
 
-    function getShippingFeeType()
+    abstract function getShippingFeeType();
+
+    function getShippingFeeTypeName()
     {
-        return array_search($this->shipping_fee, Product::SHIPPING_FEE_TYPE);
+        return array_search($this->shipping_fee_type, self::SHIPPING_FEE_TYPE_NAMES);
     }
 
     function getOriginalPrice()
@@ -60,7 +64,7 @@ abstract class OrderableItem extends DynamicModel
 
     function getThumbnailSrc()
     {
-        return $this->productWithTrashed->getThumbnailSrc();
+        return $this->product->getThumbnailSrc();
     }
 
     public function getDiscountPrice()
@@ -70,20 +74,14 @@ abstract class OrderableItem extends DynamicModel
 
     public function getFare()
     {
-        if ($this->getShippingFeeType() == '착불') {
+        if ($this->getShippingFeeTypeName() == '착불') {
             return 0;
         }
-        if (!$this->productWithTrashed->isShipped()) {
+        if (!$this->product->isShipped()) {
             return 0;
         }
 
-        return $this->productWithTrashed->getFare();
+        return $this->product->getFare();
     }
 
-    public function renderSpanBr($var, $style = "")
-    {
-        return "<span style=\"{$style}\">{$var}</span> <br>";
-    }
-
-    abstract function getJsonFormat();
 }

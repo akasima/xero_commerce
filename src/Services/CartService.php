@@ -29,7 +29,7 @@ class CartService
     public function getJsonList()
     {
         return $this->getList()->map(function (CartItem $cartItem) {
-            return $cartItem->getJsonFormat();
+            return $cartItem->toArray();
         });
     }
 

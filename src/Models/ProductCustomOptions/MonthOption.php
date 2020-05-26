@@ -9,9 +9,9 @@ class MonthOption extends DateOption
 
     public static $singleTableName = '월 선택';
 
-    public function renderValueInput(array $attrs)
+    public function renderInputHtml(array $attrs = [])
     {
-        $html = parent::renderValueInput($attrs);
+        $html = parent::renderInputHtml($attrs);
 
         \XeFrontend::html('product.customOption.month')->content("
         <script>

@@ -6,6 +6,14 @@ class OrderItem extends OrderableItem
 {
     protected $table = 'xero_commerce__order_items';
 
+    protected $fillable = [
+        'count',
+        'shipping_fee_type',
+        'original_price',
+        'sell_price',
+        'code',
+    ];
+
     protected $casts = [
         'custom_options' => 'collection'
     ];
@@ -22,61 +30,14 @@ class OrderItem extends OrderableItem
         return $this->belongsTo(Order::class);
     }
 
+    public function children()
+    {
+        return $this->hasMany(OrderItem::class, 'parent_id');
+    }
+
     public function customOptions()
     {
         return $this->hasMany(OrderItemCustomOption::class, 'order_item_id');
-    }
-
-    /**
-     * @return array
-     */
-    public function renderInformation()
-    {
-        $row = [];
-        $row [] = '<a target="_blank' . now()->toTimeString() . '" href="' . route('xero_commerce::product.show', ['strSlug' => $this->productWithTrashed->slug]) . '">' . $this->renderSpanBr($this->productWithTrashed->name) . '</a>';
-        $spanData = $this->productWithTrashed->name;
-        $customOptions = $this->customOptions;
-        if(!empty($customOptions)) {
-            $spanData .= ' (';
-
-            $spanData .= $customOptions->map(function($customOption) {
-                return $customOption->name.' : '.$customOption->value;
-            })->implode(', ');
-
-            $spanData .= ')';
-        }
-
-        $spanData .= ' / ' . $this->getCount() . '개';
-
-        $row [] = $this->renderSpanBr($spanData, "color: grey");
-        $row [] = $this->renderSpanBr($this->productWithTrashed->shop->shop_name);
-
-        return $row;
-    }
-
-    function getJsonFormat()
-    {
-        return [
-            'id' => $this->id,
-            'user' => $this->order->userInfo,
-            'order_no' => $this->order->order_no,
-            'info' => $this->renderInformation(),
-            'custom_options' => $this->customOptions,
-            'name' => $this->productWithTrashed->name,
-            'variant_name' => $this->productVariant->name,
-            'original_price' => $this->getOriginalPrice(),
-            'sell_price' => $this->getSellPrice(),
-            'discount_price' => $this->getDiscountPrice(),
-            'count' => $this->count,
-            'src' => $this->getThumbnailSrc(),
-            'status' => $this->shipment ? $this->shipment->getStatus() : '',
-            'shipment' => $this->shipment ?: null,
-            'shipment_url' => $this->shipment ? $this->shipment->geturl() : '',
-            'fare' => $this->getFare(),
-            'shipping_fee' => $this->getShippingFeeType(),
-            'shop_carrier' => $this->product->getShopCarrier(),
-            'as' => $this->afterService
-        ];
     }
 
     public function shipment()
@@ -88,4 +49,35 @@ class OrderItem extends OrderableItem
     {
         return $this->hasOne(OrderAfterservice::class);
     }
+
+    public function getShippingFeeType()
+    {
+        return $this->shipping_fee_type;
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'user' => $this->order->userInfo,
+            'order_no' => $this->order->order_no,
+            'custom_options' => $this->customOptions,
+            'name' => $this->product->name,
+            'variant_name' => $this->productVariant->name,
+            'original_price' => $this->getOriginalPrice(),
+            'sell_price' => $this->getSellPrice(),
+            'discount_price' => $this->getDiscountPrice(),
+            'count' => $this->count,
+            'src' => $this->getThumbnailSrc(),
+            'status' => $this->shipment ? $this->shipment->getStatus() : '',
+            'shipment' => $this->shipment ?: null,
+            'shipment_url' => $this->shipment ? $this->shipment->geturl() : '',
+            'fare' => $this->getFare(),
+            'shipping_fee_type' => $this->getShippingFeeType(),
+            'shipping_fee_type_name' => $this->getShippingFeeTypeName(),
+            'shop_carrier' => $this->product->getShopCarrier(),
+            'as' => $this->afterService
+        ];
+    }
+
 }

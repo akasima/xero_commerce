@@ -7,7 +7,7 @@
         <div>{{ $option->description }}</div>
         <div class="box-option">
             <strong>{{ $option->name }} {{ $option->is_required ? '(필수)' : '' }}</strong>
-            {!! $option->renderValueInput([
+            {!! $option->renderInputHtml([
                 'class' => 'form-select',
                 'v-model' => "customOptions[$i]['value']",
                 'v-on:change' => "customOptions[$i]['display_value'] = \$event.target.options ? \$event.target.selectedOptions[0].text : \$event.target.value"
@@ -42,7 +42,7 @@
     <div class="product-info-counter">
         <div v-if="!hasOnlyOneItem" class="product-info-cell" v-for="(selectedOption, key) in select">
             <div class="product-info-counter-title">@{{selectedOption.variant.name}} </div>
-            <div v-for="(v, k) in selectedOption.custom_options" style="padding-left: 10px">@{{ k }} : @{{ v }}</div>
+            <div v-for="option in selectedOption.custom_options" style="padding-left: 10px">@{{ option.name }} : @{{ option.value }}</div>
             <div class="xe-spin-box">
                 <button type="button" @click="selectedOption.count--; if(selectedOption.count<=0)dropOption(key)"><i class="xi-minus-thin"></i><span class="xe-sr-only">감소</span></button>
                 <p>@{{selectedOption.count}}</p>
@@ -169,7 +169,7 @@
                             id: null,
                             variant: el,
                             count: 1,
-                            custom_options: JSON.parse(JSON.stringify(this.customOptions))
+                            custom_options: JSON.parse(JSON.stringify(this.customOptions.filter(option => option.value)))
                         })
                     }
                     this.$emit('input', this.select)

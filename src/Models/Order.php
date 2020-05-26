@@ -34,6 +34,15 @@ class Order extends DynamicModel
         return $this->hasMany(OrderItem::class);
     }
 
+    /**
+     * 하위아이템들이 가려진 목록 (번들상품의 경우를 커버하기 위함)
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function visibleItems()
+    {
+        return $this->items()->where('parent_id', 0);
+    }
+
     public function payment()
     {
         return $this->hasOne('Xpressengine\Plugins\XeroCommerce\Models\Payment');
@@ -62,7 +71,7 @@ class Order extends DynamicModel
     {
         $orderHandler = new OrderHandler();
 
-        $summary = $orderHandler->getSummary($this->items);
+        $summary = $orderHandler->getSummary($this->visibleItems);
 
         return $summary['sum'];
     }

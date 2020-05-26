@@ -15,4 +15,9 @@ class ProductRevision extends Model
     protected $fillable = ['revision_no', 'shop_id', 'product_code', 'name', 'original_price', 'sell_price',
         'discount_percentage', 'min_buy_count', 'max_buy_count', 'description', 'badge_id','tax_type', 'state_display',
         'state_deal', 'sub_name', 'shop_carrier_id', 'origin_deleted_at', 'origin_created_at', 'origin_updated_at'];
+
+    protected $casts = [
+        'detail_info' => 'array',
+    ];
+
 }

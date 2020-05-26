@@ -63,10 +63,10 @@ class ProductSeeder extends Seeder
             $product = new BasicProduct();
             $product->shop_id = rand(1, Shop::count());
             $product->product_code = $faker->numerify('###########');
-            $product->detail_info = json_encode([
+            $product->detail_info = [
                 '상품정보' => '샘플 상품',
                 '비고' => '수정해서 사용'
-            ]);
+            ];
             $product->name = '지금부터 봄까지 입는 데일리 인기신상 ITEM' . ($i + 1);
             $product->sub_name = '간단한 상품설명';
             $product->original_price = $faker->numberBetween(1, 50) * 1000;

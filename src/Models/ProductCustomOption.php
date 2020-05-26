@@ -32,6 +32,7 @@ class ProductCustomOption extends Model
     protected $appends = [
         'value',
         'display_value',
+        'input_html',
     ];
 
     protected static $singleTableTypeField = 'type';
@@ -40,7 +41,7 @@ class ProductCustomOption extends Model
 
     protected $defaultValue = '';
 
-    public function renderValueInput(array $attrs)
+    public function renderInputHtml(array $attrs = [])
     {
         // 상속받아 구현 할것
         return '';
@@ -70,6 +71,11 @@ class ProductCustomOption extends Model
     public function getDisplayValueAttribute()
     {
         return $this->defaultValue;
+    }
+
+    public function getInputHtmlAttribute()
+    {
+        return $this->renderInputHtml();
     }
 
 }

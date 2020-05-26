@@ -55,7 +55,7 @@ class WishHandler
             $product = $wish->product()->first();
             return [
                 'id' => $wish->id,
-                'product' => $product->getJsonFormat(),
+                'product' => $product->toArray(),
                 'choose' => []
             ];
         });

@@ -90,29 +90,19 @@ class ProductVariant extends DynamicModel
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
-    public function productWithTrashed()
-    {
-        return $this->product()->withTrashed();
-    }
-
     public function getName()
     {
         return $this->name;
     }
 
-    public function getInfo()
-    {
-        return '상세옵션';
-    }
-
     public function getOriginalPrice()
     {
-        return $this->productWithTrashed->original_price + $this->additional_price;
+        return $this->product->original_price + $this->additional_price;
     }
 
     public function getSellPrice()
     {
-        return $this->productWithTrashed->sell_price + $this->additional_price;
+        return $this->product->sell_price + $this->additional_price;
     }
 
     public function isVisible()
@@ -125,7 +115,7 @@ class ProductVariant extends DynamicModel
         return $this->getOriginalPrice() - $this->getSellPrice();
     }
 
-    public function getJsonFormat()
+    public function toArray()
     {
         return [
             'id' => $this->id,

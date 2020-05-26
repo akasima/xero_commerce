@@ -11,7 +11,7 @@ class DateOption extends TextOption
 
     protected static $singleTableSubclasses = [MonthOption::class];
 
-    public function renderValueInput(array $attrs)
+    public function renderInputHtml(array $attrs = [])
     {
         $class = array_get($attrs, 'class', '');
         $attrs['class'] = $class.' date-picker';
@@ -36,15 +36,7 @@ class DateOption extends TextOption
         </script>
         ")->load();
 
-        $result = '<input type="text" ';
-        foreach ($attrs as $key => $value) {
-            $result .= "$key=\"$value\" ";
-        }
-        if($this->is_required) {
-            $result .= 'required ';
-        }
-        $result .= '/>';
-        return $result;
+        return parent::renderInputHtml($attrs);
     }
 
 }

@@ -71,11 +71,11 @@ class ProductController extends SettingBaseController
 
         $customOptionTypes = ProductCustomOption::getSingleTableNameMap();
 
-        $productInstance = Product::getSingleTableTypeMap()[$type];
+        $productClass = Product::getSingleTableTypeMap()[$type];
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return $productInstance::getSettingsCreateView(compact('labels', 'badges', 'categoryItems', 'shops', 'type', 'customOptionTypes'));
+        return XePresenter::make('product.create', compact('productClass', 'labels', 'badges', 'categoryItems', 'shops', 'type', 'customOptionTypes'));
     }
 
     public function store(Request $request)
@@ -112,7 +112,7 @@ class ProductController extends SettingBaseController
 
         XeFrontend::rule('product', ValidateManager::getProductValidateRules());
 
-        return $product::getSettingsEditView(compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'variants', 'customOptionTypes', 'customOptions'));
+        return XePresenter::make('product.edit', compact('product', 'productLabelIds', 'labels', 'badges', 'categoryItems', 'productCategorys', 'options', 'variants', 'customOptionTypes', 'customOptions'));
     }
 
     public function update(Request $request, $productId)
@@ -143,16 +143,9 @@ class ProductController extends SettingBaseController
     {
         $products = $this->productSettingService->getProducts($request);
 
+        $products->load(['variants', 'customOptions']);
+
         return XePresenter::makeApi(['type' => 'success', 'products' => $products]);
     }
 
-    public function storeBundleItem(Request $request, $productId)
-    {
-        $product = $this->productSettingService->getProduct($productId);
-        $product->items()->create([
-            'product_id' => $request->product_id,
-            'quantity' => 1
-        ]);
-        return redirect()->route('xero_commerce::setting.product.show', ['productId' => $productId]);
-    }
 }

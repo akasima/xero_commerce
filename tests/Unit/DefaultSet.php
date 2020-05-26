@@ -104,10 +104,10 @@ class DefaultSet extends \PHPUnit\Framework\TestCase
         $product = new Product();
         $product->shop_id = 1;
         $product->product_code = 'test';
-        $product->detail_info = json_encode([
+        $product->detail_info = [
             '상품정보' => '샘플 상품',
             '비고' => '수정해서 사용'
-        ]);
+        ];
         $product->name = '지금부터 봄까지 입는 데일리 인기신상 ITEM';
         $product->sub_name = '간단한 상품설명';
         $product->original_price = 1000;
