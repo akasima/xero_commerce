@@ -80,6 +80,9 @@
     <div class="col-sm-12">
         <div class="panel-group">
             <div class="panel">
+                <div class="text-right panel-heading">
+                    <button class="xe-btn xe-btn-primary" id="downloadExcel">엑셀 다운로드 </button>
+                </div>
                 <div class="panel-body table-scrollable">
                     <table class="table">
                         <thead>
@@ -155,5 +158,10 @@
         $to.datepicker('setDate', new Date());
         // 버튼에 설정된 period (+1d 와 같은 형식)으로 계산
         $from.datepicker('setDate', period);
+    });
+    $('#downloadExcel').click(function(){
+        var form_date = $('#from_date').val();
+        var to_date = $('#to_date').val();
+        window.open('orders/excel?from_date='+form_date+'&to_date='+to_date,"_blank");
     });
 </script>

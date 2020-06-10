@@ -7,9 +7,11 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\XeroCommerce\ExcelExport\OrderExcelExport;
 use Xpressengine\Plugins\XeroCommerce\ExcelExport\ShipmentExport;
 use Xpressengine\Plugins\XeroCommerce\ExcelExport\OrderCheckExport;
 use Xpressengine\Plugins\XeroCommerce\ExcelImport\ShipmentImport;
+use Xpressengine\Plugins\XeroCommerce\Models\Order;
 use Xpressengine\Plugins\XeroCommerce\Models\OrderItem;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderService;
 use Xpressengine\Plugins\XeroCommerce\Services\OrderSettingService;
@@ -76,7 +78,14 @@ class OrderController extends SettingBaseController
             'orderItems' => $this->orderService->getOrderItemList()
         ]);
     }
+    //주문목록 엑셀 다운로드 추가
+    public function orderExcelExport(Request $request){
+        $from_date = !($request->from_date)? date(0):$request->from_date;
+        $to_date = !($request->to_date)? now():$request->to_date;
+        return (new OrderExcelExport($from_date, $to_date))->download($from_date." _ ".$to_date.' 주문목록.xlsx');
 
+
+    }
     public function shipmentExcelExport()
     {
         $orderItemList = $this->orderService->getOrderItemList();
@@ -84,7 +93,7 @@ class OrderController extends SettingBaseController
         return Excel::download(new ShipmentExport($orderItemList),now()->format('YmdHis').'.xlsx');
     }
 
-	public function OrderCheckExcelExport()//02.06수정
+    public function OrderCheckExcelExport()//02.06수정
     {
         $orderItemList = $this->orderService->getOrderItemList();
         $orderItemList = $orderItemList->filter(function($item){return !$item['shipment']->ship_no;});

@@ -409,6 +409,10 @@ class Resources
                         'settings_menu' => 'xero_commerce.order.index',
                         'permission' => 'xero_commerce'
                     ]);
+                    Route::get('/excel',[
+                        'as'=>'xero_commerce::setting.order.excel',
+                        'uses' => 'OrderController@orderExcelExport',
+                    ]);
                     Route::get('/dash', [
                         'as' => 'xero_commerce::setting.order.dash',
                         'uses' => 'OrderController@dash',
@@ -429,8 +433,8 @@ class Resources
                         'as' => 'xero_commerce::setting.order.shipment.exel',
                         'uses' => 'OrderController@shipmentExcelImport'
                     ]);
-					//02.06 추가
-					     Route::get('/shipment/excel1', [
+                    //02.06 추가
+                    Route::get('/shipment/excel1', [
                         'as' => 'xero_commerce::setting.order.shipment.exel',
                         'uses' => 'OrderController@OrderCheckExcelExport'
                     ]);
@@ -438,7 +442,7 @@ class Resources
                         'as' => 'xero_commerce::setting.order.shipment.exel',
                         'uses' => 'OrderController@OrderCheckExcelExport'
                     ]);
-					//여기까지
+                    //여기까지
                     Route::post('/shipment', [
                         'as' => 'xero_commerce::process.order.shipment',
                         'uses' => 'OrderController@processShipment',
