@@ -34,11 +34,6 @@ class Product extends Model
     const OPTION_TYPE_COMBINATION_SPLIT = 1;  // 조합 분리 선택형
     const OPTION_TYPE_SIMPLE = 2;  // 단독형
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
-
     protected $table = 'xero_commerce__products';
 
     protected $fillable = [
