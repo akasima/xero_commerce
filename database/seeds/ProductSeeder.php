@@ -22,6 +22,9 @@ use Xpressengine\Plugins\XeroCommerce\Services\ProductSlugService;
 
 class ProductSeeder extends Seeder
 {
+
+    protected static $images = [];
+
     /**
      * Run the database seeds.
      *
@@ -82,13 +85,13 @@ class ProductSeeder extends Seeder
             $product->save();
 
             if (Product::count() == 4) {
-                $url = file_get_contents(Plugin::path('assets/sample/tmp_tablist.jpg'));
+                $url = self::getProductImage('assets/sample/tmp_tablist.jpg');
             } elseif (Product::count() == 8) {
-                $url = file_get_contents(Plugin::path('assets/sample/tmp_cross2.jpg'));
+                $url = self::getProductImage('assets/sample/tmp_cross2.jpg');
             } elseif (Product::count() == 12) {
-                $url = file_get_contents(Plugin::path('assets/sample/tmp_cross.jpg'));
+                $url = self::getProductImage('assets/sample/tmp_cross.jpg');
             } else {
-                $url = file_get_contents(Plugin::path('assets/sample/tmp_product.jpg'));
+                $url = self::getProductImage('assets/sample/tmp_product.jpg');
             }
 
             $file = XeStorage::create($url, 'public/xero_commerce/product', 'default.jpg');
@@ -119,6 +122,16 @@ class ProductSeeder extends Seeder
                 $newProductLabel->save();
             }
         }
+    }
+
+    public static function getProductImage($path)
+    {
+        ini_set("memory_limit" , -1);
+        
+        if(!isset(self::$images[$path])) {
+            self::$images[$path] = file_get_contents(Plugin::path($path));
+        }
+        return self::$images[$path];
     }
 
     public static function storeProductOption($product_id)
