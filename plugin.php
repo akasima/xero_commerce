@@ -77,10 +77,6 @@ class Plugin extends AbstractPlugin
 
         // seed를 이용하여 기본데이터 생성
         \Artisan::call('plugin:seed', array('plugin' => Plugin::getId(), '--force' => true));
-
-        \Artisan::call('vendor:publish',[
-            '--provider'=>"Maatwebsite\Excel\ExcelServiceProvider"
-        ]);
     }
 
     /**
