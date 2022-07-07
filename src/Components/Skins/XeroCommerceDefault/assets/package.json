@@ -4,7 +4,7 @@
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.17",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "vue": "^2.5.17",
     "vue-daum-postcode": "^0.4.0"
   },
