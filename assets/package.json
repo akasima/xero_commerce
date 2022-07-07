@@ -6,7 +6,7 @@
     "bootstrap-colorpicker": "^3.0.3",
     "bootstrap-vue": "^2.0.0-rc.17",
     "combos": "^0.2.0",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "vue": "^2.5.17",
     "vue-daum-postcode": "^0.4.0",
     "vue-star-rating": "^1.6.1"
