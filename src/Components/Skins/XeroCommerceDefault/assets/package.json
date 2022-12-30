@@ -12,14 +12,14 @@
     "@babel/core": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
     "@fortawesome/fontawesome-free": "^5.3.1",
-    "babel-loader": "^8.0.4",
-    "css-loader": "^1.0.0",
-    "file-loader": "^2.0.0",
-    "style-loader": "^0.23.0",
-    "vue-loader": "^15.4.2",
+    "babel-loader": "^8.3.0",
+    "css-loader": "^6.7.3",
+    "file-loader": "^6.2.0",
+    "style-loader": "^3.3.1",
+    "vue-loader": "^17.0.1",
     "vue-template-compiler": "^2.5.17",
-    "webpack": "^4.26.1",
-    "webpack-cli": "^3.1.2"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "scripts": {
     "build": "./node_modules/webpack/bin/webpack.js -p",
